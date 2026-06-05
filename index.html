@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <!-- Réglage essentiel pour le mobile : la page s'adapte à la largeur de l'écran -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>SPIRIT — Évaluation de la synodalité</title>
+  <meta name="description" content="Évaluer la synodalité d'une pratique, d'un projet ou d'une instance ecclésiale.">
+
+  <!-- Couleur de la barre du navigateur sur mobile (reprend le bleu marine) -->
+  <meta name="theme-color" content="#163458">
+
+  <!-- Lien vers le manifeste : indique au téléphone comment installer l'app -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Réglages pour l'installation sur iPhone/iPad -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SPIRIT">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Icône classique de l'onglet -->
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+
+  <!-- Polices Google : Spectral (titres, serif élégant) et Source Sans 3 (corps) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Notre feuille de style -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <!-- ============================================================
+       CONTENEUR PRINCIPAL DE L'APPLICATION
+       Pour l'instant, il ne contient que l'écran d'accueil.
+       Les écrans suivants (entrée, questionnaire, diagnostic) viendront
+       s'ajouter ici aux prochaines étapes.
+       ============================================================ -->
+  <div class="app">
+
+    <!-- ============================================================
+         NAVIGATION ENTRE ÉCRANS
+         Tous les écrans coexistent ici. Un seul est visible à la fois :
+         app.js ajoute/retire la classe "ecran--actif". Pas de rechargement,
+         navigation instantanée fonctionnant hors-ligne.
+         ============================================================ -->
+
+    <!-- ---------- ÉCRAN D'ACCUEIL ---------- -->
+    <main class="accueil ecran ecran--actif" id="ecran-accueil">
+
+      <!-- Bloc du haut : logo + baseline.
+           Le logo officiel SPIRIT (EcclesiaLab) contient déjà le mot "SPIRIT",
+           on n'ajoute donc pas de titre texte qui ferait doublon.
+           Le titre principal de la page reste présent pour les lecteurs d'écran
+           et le référencement, mais il est masqué visuellement. -->
+      <div class="accueil__entete">
+
+        <h1 class="visuellement-cache">SPIRIT — Évaluation de la synodalité</h1>
+
+        <img class="accueil__logo" src="icons/logo-spirit.png"
+             alt="Logo SPIRIT — EcclesiaLab" width="200" height="200">
+
+        <p class="accueil__baseline">Évaluer la synodalité d'une pratique ecclésiale</p>
+      </div>
+
+      <!-- Bloc du milieu : action principale.
+           Le bouton est déjà en place ; il sera relié au questionnaire
+           à la prochaine étape. -->
+      <div class="accueil__action">
+        <button class="bouton" id="bouton-demarrer">Démarrer une évaluation</button>
+      </div>
+
+      <!-- Bloc du bas : liens secondaires -->
+      <nav class="accueil__liens">
+        <button class="lien-secondaire" id="lien-mes-evaluations">Mes évaluations</button>
+        <button class="lien-secondaire" id="lien-quest-ce-que">Qu'est-ce que SPIRIT ?</button>
+        <button class="lien-secondaire" id="lien-a-propos">À propos</button>
+      </nav>
+
+    </main>
+
+    <!-- ---------- ÉCRAN D'ENTRÉE (nouvelle évaluation) ---------- -->
+    <!-- Caché par défaut (pas de classe "ecran--actif"). On y arrive en
+         cliquant sur "Démarrer une évaluation". -->
+    <section class="ecran entree" id="ecran-entree">
+
+      <!-- Barre de titre avec bouton retour -->
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="entree-retour" aria-label="Retour à l'accueil">‹</button>
+        <h2 class="barre-titre__titre">Nouvelle évaluation</h2>
+      </header>
+
+      <!-- Contenu défilable -->
+      <div class="entree__contenu">
+
+        <!-- Champ : nom de l'objet évalué -->
+        <label class="entree__label" for="champ-nom-objet">Quelle pratique évaluez-vous ?</label>
+        <input
+          type="text"
+          class="entree__champ"
+          id="champ-nom-objet"
+          placeholder="Ex. : Conseil pastoral, Retraite des confirmands…"
+          maxlength="80"
+          autocomplete="off">
+        <p class="entree__aide" id="entree-aide-nom">Ce nom servira à retrouver l'évaluation et à titrer le document final.</p>
+
+        <!-- Choix : type d'objet.
+             Les trois cartes seront générées automatiquement par app.js
+             à partir du fichier de données (TYPES_OBJET). -->
+        <fieldset class="entree__types">
+          <legend class="entree__label">De quelle pratique s'agit-il ?</legend>
+          <div id="liste-types-objet">
+            <!-- Cartes injectées par JavaScript -->
+          </div>
+        </fieldset>
+
+      </div>
+
+      <!-- Bouton de validation, fixé en bas -->
+      <footer class="entree__pied">
+        <button class="bouton" id="bouton-commencer-evaluation" disabled>Commencer l'évaluation</button>
+      </footer>
+
+    </section>
+
+    <!-- ---------- ÉCRAN DE CRITÈRE (questionnaire) ---------- -->
+    <!-- Un seul écran sert pour les 14 critères : son contenu est rempli
+         dynamiquement par app.js selon le critère en cours. -->
+    <section class="ecran critere" id="ecran-critere">
+
+      <!-- Barre de progression segmentée par pierre angulaire -->
+      <div class="progression">
+        <div class="progression__barre" id="progression-barre">
+          <!-- Les 3 segments seront générés par JS -->
+        </div>
+        <div class="progression__infos">
+          <span class="progression__pierre" id="progression-pierre">Communion</span>
+          <span class="progression__compteur" id="progression-compteur">Pilier 1 / 14</span>
+        </div>
+      </div>
+
+      <!-- Contenu du critère -->
+      <div class="critere__contenu">
+        <p class="critere__numero" id="critere-numero">Pilier 1</p>
+        <h2 class="critere__titre" id="critere-titre">—</h2>
+
+        <!-- Bouton pour masquer/afficher les sous-questions.
+             Par défaut, les sous-questions sont AFFICHÉES (aria-expanded="true"). -->
+        <button class="critere__aide-bouton" id="critere-aide-bouton" aria-expanded="true">
+          <span id="critere-aide-fleche">▾</span> <span id="critere-aide-texte">Pour vous aider à répondre</span>
+        </button>
+
+        <!-- Zone des sous-questions (visible par défaut) -->
+        <div class="critere__aide-zone" id="critere-aide-zone">
+          <!-- Les sous-questions seront générées par JS -->
+        </div>
+
+        <!-- Les quatre boutons de modalité -->
+        <div class="modalites" id="modalites">
+          <!-- Les boutons seront générés par JS -->
+        </div>
+      </div>
+
+      <!-- Pied : retour + suivant -->
+      <footer class="critere__pied">
+        <button class="bouton-retour-critere" id="critere-precedent" aria-label="Pilier précédent">‹</button>
+        <button class="bouton" id="critere-suivant" disabled>Suivant</button>
+      </footer>
+
+    </section>
+
+    <!-- ---------- ÉCRAN DE DIAGNOSTIC ---------- -->
+    <section class="ecran diagnostic" id="ecran-diagnostic">
+
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="diagnostic-retour" aria-label="Retour">‹</button>
+        <h2 class="barre-titre__titre">Diagnostic</h2>
+      </header>
+
+      <div class="diagnostic__contenu">
+
+        <!-- En-tête : nom de l'objet évalué + type + date -->
+        <div class="diagnostic__entete">
+          <h3 class="diagnostic__objet" id="diagnostic-objet">—</h3>
+          <p class="diagnostic__meta" id="diagnostic-meta">—</p>
+        </div>
+
+        <!-- Le schéma radial (SVG) sera injecté ici par JS -->
+        <div class="diagnostic__schema" id="diagnostic-schema"></div>
+
+        <!-- Légende des couleurs (générée par JS à partir des modalités) -->
+        <div class="diagnostic__legende" id="diagnostic-legende"></div>
+
+        <!-- Textes de lecture par pierre angulaire (générés par JS) -->
+        <div class="diagnostic__lectures" id="diagnostic-lectures"></div>
+
+        <!-- Actions : placées dans le contenu pour défiler avec lui
+             (et non collées en bas), car le diagnostic est un écran de
+             consultation qu'on parcourt tranquillement. -->
+        <div class="diagnostic__actions">
+          <button class="bouton" id="diagnostic-pdf">Exporter en PDF</button>
+          <button class="bouton bouton--contour" id="diagnostic-accueil">Revenir à l'accueil</button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ---------- ÉCRAN MES ÉVALUATIONS (historique) ---------- -->
+    <section class="ecran historique" id="ecran-historique">
+
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="historique-retour" aria-label="Retour à l'accueil">‹</button>
+        <h2 class="barre-titre__titre">Mes évaluations</h2>
+      </header>
+
+      <div class="historique__contenu">
+        <!-- Message affiché quand il n'y a aucune évaluation -->
+        <p class="historique__vide cache" id="historique-vide">
+          Vous n'avez pas encore d'évaluation enregistrée. Les évaluations terminées apparaîtront ici.
+        </p>
+        <!-- La liste des évaluations sera générée par JS -->
+        <div id="historique-liste"></div>
+      </div>
+
+    </section>
+
+    <!-- ---------- ÉCRAN « QU'EST-CE QUE SPIRIT ? » ---------- -->
+    <section class="ecran page-info" id="ecran-quest-ce-que">
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="quest-ce-que-retour" aria-label="Retour à l'accueil">‹</button>
+        <h2 class="barre-titre__titre">Qu'est-ce que SPIRIT ?</h2>
+      </header>
+      <div class="page-info__contenu">
+
+        <h3 class="page-info__titre">Évaluer la synodalité, un appel du Synode</h3>
+        <p>Le Synode sur la synodalité (2021-2024) a engagé l'Église catholique sur un chemin : marcher ensemble, dans la communion, la participation et la mission. Son Document final invite les communautés à un geste encore peu familier : évaluer leurs pratiques, non pour juger, mais pour discerner et grandir.</p>
+        <p>SPIRIT est né de cet appel. Le nom signifie <em>Synodalité des Pratiques : Indicateurs pour le Renouveau, l'Implémentation et la Transformation</em>.</p>
+
+        <h3 class="page-info__titre">Ce que SPIRIT vous permet de faire</h3>
+        <p>SPIRIT vous aide à évaluer la synodalité d'une pratique ecclésiale : une action, un projet, un groupe. Vous portez un regard sur cette pratique à travers 14 piliers, puis l'application vous renvoie un diagnostic visuel et des pistes pour avancer.</p>
+        <p>Ce que vous évaluez, c'est toujours une pratique, jamais des personnes.</p>
+
+        <h3 class="page-info__titre">Les trois pierres angulaires</h3>
+        <p>Les 14 piliers s'organisent autour des trois pierres angulaires de la synodalité, telles que les nomme le Document final du Synode :</p>
+        <ul class="page-info__liste">
+          <li><strong>Communion</strong> : la qualité des relations, leur enracinement spirituel et l'ouverture aux autres.</li>
+          <li><strong>Participation</strong> : la possibilité pour chacun de contribuer à la vie de l'Église.</li>
+          <li><strong>Mission</strong> : le rayonnement missionnaire et la conversion à laquelle la pratique appelle.</li>
+        </ul>
+
+        <h3 class="page-info__titre">Comment se déroule une évaluation</h3>
+        <p>Vous choisissez la pratique à évaluer et lui donnez un nom. Pour chacun des 14 piliers, vous indiquez s'il est présent, en construction, à bâtir, ou non applicable. Des questions d'aide accompagnent votre réflexion. À la fin, vous obtenez un diagnostic en trois jauges, que vous pouvez exporter en PDF et partager. Dans celui-ci, vous recevrez un rapport détaillé avec un complément d'analyse.</p>
+        <p>Toutes vos réponses restent sur votre appareil. Rien n'est envoyé sur internet.</p>
+
+      </div>
+    </section>
+
+    <!-- ---------- ÉCRAN « À PROPOS » ---------- -->
+    <section class="ecran page-info" id="ecran-a-propos">
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="a-propos-retour" aria-label="Retour à l'accueil">‹</button>
+        <h2 class="barre-titre__titre">À propos</h2>
+      </header>
+      <div class="page-info__contenu">
+
+        <h3 class="page-info__titre">EcclesiaLab</h3>
+        <p>SPIRIT est un projet de l'EcclesiaLab, un laboratoire de théologie au service de la transformation de l'Église catholique en Europe francophone et au Québec. Fondé en 2022 et rattaché à l'Université catholique de Louvain (UCLouvain), l'EcclesiaLab cherche à faire dialoguer la rigueur académique et les réalités vécues sur le terrain pour comprendre, outiller et soutenir les acteurs de la transformation ecclésiale.</p>
+
+        <h3 class="page-info__titre">Le projet SPIRIT</h3>
+        <p>SPIRIT est un projet de recherche-action universitaire consacré à l'évaluation de la synodalité des pratiques ecclésiales. Il s'inscrit dans la phase de mise en œuvre du Synode sur la synodalité (2025-2028), qui appelle l'Église à développer une véritable culture de l'évaluation, dans une perspective évangélique et non gestionnaire.</p>
+        <p>Le projet est dirigé par le professeur Arnaud Join-Lambert (UCLouvain), avec le soutien d'une dizaine de théologiens, théologiennes, canonistes et sociologues.</p>
+
+        <h3 class="page-info__titre">Une démarche validée</h3>
+        <p>Les 14 piliers de SPIRIT ne sont pas le fruit d'une intuition isolée. Ils sont directement tirés du Document final du Synode (2024) et ont été validés par un panel d'experts selon la méthode Delphi, qui permet de construire progressivement un consensus reconnu. Près de 50 théologiens du monde entier ont permis de valider par consensus les critères permettant d'évaluer grâce à cet outil SPIRIT.</p>
+
+        <h3 class="page-info__titre">En savoir plus</h3>
+        <p>EcclesiaLab développe d'autres outils au service des communautés, comme le Radar théologique et une cartographie des lieux d'Église innovants. Retrouvez l'ensemble de ses travaux sur ecclesialab.org.</p>
+
+        <!-- Logo de l'université de rattachement, en pied de page -->
+        <div class="page-info__logo-pied">
+          <img src="icons/logo-uclouvain.png" alt="UCLouvain — Université catholique de Louvain" class="page-info__logo-uclouvain">
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============================================================
+       FENÊTRE DE BIENVENUE (premier lancement)
+       Elle est présente dans la page mais cachée par défaut (classe "cache").
+       Le fichier app.js l'affiche au tout premier lancement, puis retient
+       qu'elle a déjà été vue. Le lien "Qu'est-ce que SPIRIT ?" permet de
+       la rouvrir à tout moment.
+       ============================================================ -->
+  <div class="bienvenue-voile cache" id="bienvenue-voile">
+    <section class="bienvenue" role="dialog" aria-labelledby="bienvenue-titre" aria-modal="true">
+      <h2 class="bienvenue__titre" id="bienvenue-titre">Marcher ensemble, et le mesurer</h2>
+      <div class="bienvenue__texte">
+        <p>La synodalité, c'est l'art de marcher ensemble. Le Synode sur la synodalité (2021-2024) en a tracé le chemin, autour de trois pierres angulaires : la communion, la participation et la mission. Encore faut-il savoir où l'on en est.</p>
+
+        <p>SPIRIT vous offre un regard sur une pratique ecclésiale, qu'il s'agisse d'une action, d'un projet ou d'un groupe. À travers 14 piliers issus du Document final du Synode, vous évaluez cette pratique, puis l'application vous en restitue un diagnostic visuel accompagné de pistes pour avancer.</p>
+
+        <p>Ce que vous évaluez, c'est toujours une pratique, jamais des personnes. Il ne s'agit pas de juger, mais de discerner et de grandir. Et vos réponses ne quittent jamais votre appareil.</p>
+      </div>
+      <div class="bienvenue__bouton-zone">
+        <button class="bouton" id="bouton-commencer-bienvenue">Commencer</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================================
+       DOCUMENT IMPRIMABLE (PDF)
+       Cette section reste INVISIBLE à l'écran (voir styles .impression).
+       Elle n'apparaît qu'au moment de l'impression / export PDF, grâce à
+       la feuille de style @media print. Elle est remplie par app.js juste
+       avant de déclencher l'impression.
+       ============================================================ -->
+  <div class="impression" id="document-impression" aria-hidden="true">
+    <!-- Contenu généré par js/impression.js -->
+  </div>
+  <script src="js/donnees-spirit.js"></script>
+
+  <!-- Logique du diagnostic (calcul + dessin des jauges). Chargé avant app.js. -->
+  <script src="js/diagnostic.js"></script>
+
+  <!-- Logique du document imprimable (export PDF). Chargé avant app.js. -->
+  <script src="js/impression.js"></script>
+
+  <!-- Gestion de l'historique des évaluations. Chargé avant app.js. -->
+  <script src="js/historique.js"></script>
+
+  <!-- Notre logique applicative -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>

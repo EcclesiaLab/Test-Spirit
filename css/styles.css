@@ -1,0 +1,1239 @@
+/*
+  ============================================================
+  STYLES — SPIRIT
+  ============================================================
+  Cette feuille de style est organisée en sections :
+    1. Variables (couleurs, polices, espacements)
+    2. Base (réglages généraux)
+    3. Écran d'accueil
+    4. Boutons et liens
+    5. Fenêtre de bienvenue (premier lancement)
+    6. Utilitaires
+
+  PRINCIPE : "mobile-first". Les styles sont d'abord pensés pour un
+  écran de téléphone. On limite la largeur du contenu pour que ça reste
+  lisible si l'app est ouverte sur un écran plus large.
+  ============================================================
+*/
+
+/* ===========================================================
+   1. VARIABLES
+   Les couleurs de la charte EcclesiaLab et les réglages réutilisables.
+   Pour changer une couleur partout dans l'app, il suffit de la modifier ici.
+   =========================================================== */
+:root {
+  /* Couleurs de la charte EcclesiaLab */
+  --marine: #163458;          /* bleu marine — couleur principale */
+  --marine-clair: #2A4D74;    /* variante plus claire du marine */
+  --orange: #FA8214;          /* orange — couleur d'accent */
+  --orange-fonce: #D96E0A;    /* orange un peu plus foncé (survol de bouton) */
+
+  /* Couleurs neutres */
+  --creme: #F7F4EE;           /* fond chaleureux (évite le blanc clinique) */
+  --creme-fonce: #ECE7DD;     /* fond légèrement plus soutenu */
+  --blanc: #FFFFFF;
+  --texte: #1C2B3A;           /* couleur du texte courant (marine très foncé) */
+  --texte-doux: #5A6A7A;      /* texte secondaire, moins appuyé */
+  --bordure: #DDD7CC;         /* lignes de séparation discrètes */
+
+  /* Typographie */
+  --police-titre: "Spectral", Georgia, "Times New Roman", serif;
+  --police-corps: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Espacements (échelle cohérente) */
+  --espace-xs: 0.5rem;
+  --espace-sm: 1rem;
+  --espace-md: 1.5rem;
+  --espace-lg: 2.5rem;
+  --espace-xl: 4rem;
+
+  /* Arrondis */
+  --arrondi: 14px;
+  --arrondi-petit: 8px;
+
+  /* Largeur maximale du contenu (pour les grands écrans) */
+  --largeur-max: 32rem;
+}
+
+/* ===========================================================
+   2. BASE
+   =========================================================== */
+
+/* Réinitialisation douce : on enlève les marges par défaut et on
+   inclut les bordures/paddings dans le calcul des largeurs. */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* Empêche le zoom automatique du texte sur certains mobiles en mode paysage */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--police-corps);
+  color: var(--texte);
+  background-color: var(--creme);
+  /* Léger dégradé pour donner de la profondeur sans surcharger */
+  background-image: linear-gradient(180deg, var(--creme) 0%, var(--creme-fonce) 100%);
+  background-attachment: fixed;
+  line-height: 1.6;
+  min-height: 100vh;
+  /* Améliore le rendu des polices */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Conteneur principal qui centre le contenu et limite sa largeur */
+.app {
+  max-width: var(--largeur-max);
+  margin: 0 auto;
+  /* Hauteur fixe égale à l'écran : le contenu défile à l'intérieur des écrans,
+     et les pieds de page (boutons "Suivant" etc.) restent collés en bas.
+     100dvh = hauteur réellement visible sur mobile (tient compte des barres
+     du navigateur) ; 100vh sert de repli pour les navigateurs plus anciens. */
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ===========================================================
+   3. ÉCRAN D'ACCUEIL
+   =========================================================== */
+
+.accueil {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--espace-md);
+  text-align: center;
+  /* Sécurité : si l'écran est vraiment minuscule, on permet le défilement
+     plutôt que de couper le contenu — mais l'accueil est calibré pour tenir
+     sur les écrans courants, donc la barre n'apparaît pas en pratique. */
+  overflow-y: auto;
+}
+
+/* Réduit l'espace au-dessus du logo pour gagner en hauteur sur petits écrans */
+.accueil__entete {
+  padding-top: var(--espace-sm);
+}
+
+/* Le logo SPIRIT (médaillon EcclesiaLab). Il porte déjà le nom,
+   donc on lui donne une présence un peu plus grande. */
+.accueil__logo {
+  width: 200px;
+  height: 200px;
+  max-width: 60%;
+  margin: 0 auto var(--espace-md);
+  display: block;
+}
+
+.accueil__baseline {
+  font-size: 1.05rem;
+  color: var(--texte-doux);
+  font-style: italic;
+  max-width: 22rem;
+  margin: 0 auto;
+}
+
+/* Bloc du milieu : action principale */
+.accueil__action {
+  padding: var(--espace-lg) 0;
+}
+
+/* Bloc du bas : liens secondaires */
+.accueil__liens {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-sm);
+  padding-bottom: var(--espace-md);
+}
+
+/* ===========================================================
+   4. BOUTONS ET LIENS
+   =========================================================== */
+
+/* Bouton principal (plein, bleu marine) */
+.bouton {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  /* Centrage horizontal du bouton quel que soit le conteneur */
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--espace-sm) var(--espace-md);
+  font-family: var(--police-corps);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--creme);
+  background-color: var(--marine);
+  border: none;
+  border-radius: var(--arrondi);
+  cursor: pointer;
+  /* Hauteur tactile confortable (au moins 48px) */
+  min-height: 52px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 8px rgba(22, 52, 88, 0.18);
+}
+
+.bouton:hover {
+  background-color: var(--marine-clair);
+}
+
+.bouton:active {
+  /* Léger enfoncement au clic, pour un retour tactile */
+  transform: translateY(1px);
+}
+
+/* Variante "accent" du bouton (orange) — pour les actions secondaires fortes,
+   par exemple "Reprendre l'évaluation en cours" */
+.bouton--accent {
+  background-color: var(--orange);
+  color: var(--blanc);
+  box-shadow: 0 2px 8px rgba(250, 130, 20, 0.25);
+}
+
+.bouton--accent:hover {
+  background-color: var(--orange-fonce);
+}
+
+/* Variante "contour" (fond transparent, bordure) — action secondaire douce */
+.bouton--contour {
+  background-color: transparent;
+  color: var(--marine);
+  border: 1.5px solid var(--marine);
+  box-shadow: none;
+}
+
+.bouton--contour:hover {
+  background-color: var(--marine);
+  color: var(--creme);
+}
+
+/* Espace entre deux boutons empilés */
+.bouton + .bouton {
+  margin-top: var(--espace-sm);
+}
+
+/* Liens secondaires discrets (bas de l'écran d'accueil) */
+.lien-secondaire {
+  background: none;
+  border: none;
+  font-family: var(--police-corps);
+  font-size: 0.98rem;
+  color: var(--texte-doux);
+  cursor: pointer;
+  padding: var(--espace-xs);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.lien-secondaire:hover {
+  color: var(--marine);
+}
+
+/* ===========================================================
+   5. FENÊTRE DE BIENVENUE (premier lancement)
+   Affichée par-dessus l'écran d'accueil, une seule fois.
+   =========================================================== */
+
+/* Le voile sombre qui couvre tout l'écran derrière la fenêtre */
+.bienvenue-voile {
+  position: fixed;
+  inset: 0; /* raccourci pour top/right/bottom/left: 0 */
+  background-color: rgba(22, 52, 88, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espace-md);
+  z-index: 100;
+  /* Petite animation d'apparition */
+  animation: apparition 0.3s ease;
+}
+
+/* La carte blanche contenant le texte de bienvenue */
+.bienvenue {
+  background-color: var(--blanc);
+  border-radius: var(--arrondi);
+  max-width: 30rem;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto; /* permet de faire défiler si le texte est long */
+  padding: var(--espace-lg) var(--espace-md);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.bienvenue__titre {
+  font-family: var(--police-titre);
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--marine);
+  margin-bottom: var(--espace-md);
+  text-align: center;
+}
+
+.bienvenue__texte p {
+  margin-bottom: var(--espace-sm);
+  font-size: 1rem;
+  color: var(--texte);
+}
+
+/* Les citations du Document final, mises en valeur */
+.bienvenue__texte em {
+  color: var(--marine);
+}
+
+.bienvenue__bouton-zone {
+  margin-top: var(--espace-md);
+  text-align: center;
+}
+
+/* ===========================================================
+   SYSTÈME D'ÉCRANS
+   Tous les écrans sont cachés par défaut ; seul celui qui porte
+   la classe "ecran--actif" s'affiche. Géré par app.js.
+   =========================================================== */
+.ecran {
+  display: none;
+}
+
+.ecran--actif {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  /* min-height: 0 est indispensable : sans cela, un écran flex refuse de
+     devenir plus petit que son contenu, ce qui empêche sa zone interne de
+     défiler (cas des écrans longs comme le diagnostic). */
+  min-height: 0;
+  /* Petite animation d'entrée en fondu */
+  animation: apparition 0.25s ease;
+}
+
+/* ===========================================================
+   BARRE DE TITRE (écrans internes)
+   Une barre en haut des écrans, avec un bouton retour et un titre.
+   =========================================================== */
+.barre-titre {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-sm);
+  padding: var(--espace-sm) var(--espace-md);
+  border-bottom: 1px solid var(--bordure);
+  background-color: var(--creme);
+}
+
+.barre-titre__retour {
+  background: none;
+  border: none;
+  color: var(--marine);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 var(--espace-xs);
+  /* Zone tactile confortable */
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--arrondi-petit);
+  transition: background-color 0.2s ease;
+}
+
+.barre-titre__retour:hover {
+  background-color: var(--creme-fonce);
+}
+
+.barre-titre__titre {
+  font-family: var(--police-titre);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--marine);
+}
+
+/* ===========================================================
+   ÉCRAN D'ENTRÉE (nouvelle évaluation)
+   =========================================================== */
+
+/* Zone de contenu qui défile si nécessaire */
+.entree__contenu {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--espace-md);
+}
+
+/* Libellé d'une question (nom, type) */
+.entree__label {
+  display: block;
+  font-weight: 600;
+  color: var(--texte);
+  margin-bottom: var(--espace-xs);
+  font-size: 1.02rem;
+}
+
+/* Champ texte du nom de l'objet */
+.entree__champ {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  border: 1.5px solid var(--bordure);
+  border-radius: var(--arrondi-petit);
+  font-size: 1rem;
+  font-family: var(--police-corps);
+  color: var(--texte);
+  background-color: var(--blanc);
+  transition: border-color 0.2s ease;
+}
+
+.entree__champ:focus {
+  outline: none;
+  border-color: var(--marine);
+}
+
+/* Texte d'aide sous le champ */
+.entree__aide {
+  font-size: 0.86rem;
+  color: var(--texte-doux);
+  margin-top: var(--espace-xs);
+}
+
+/* Bloc des types d'objet */
+.entree__types {
+  border: none;
+  margin-top: var(--espace-lg);
+  padding: 0;
+}
+
+/* Une carte de type d'objet (générée par JS) */
+.carte-type {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1.5px solid var(--bordure);
+  background-color: var(--blanc);
+  border-radius: var(--arrondi);
+  padding: 0.85rem 1rem;
+  margin-bottom: var(--espace-sm);
+  cursor: pointer;
+  font-family: var(--police-corps);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.carte-type:hover {
+  border-color: var(--marine-clair);
+}
+
+/* Carte sélectionnée : bordure marine épaisse + légère ombre */
+.carte-type--active {
+  border: 2px solid var(--marine);
+  box-shadow: 0 2px 6px rgba(22, 52, 88, 0.10);
+}
+
+.carte-type__titre {
+  display: block;
+  font-weight: 600;
+  color: var(--texte);
+  font-size: 1rem;
+}
+
+.carte-type--active .carte-type__titre {
+  color: var(--marine);
+}
+
+.carte-type__description {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+  margin-top: 2px;
+}
+
+/* Pied de l'écran d'entrée : bouton de validation fixé en bas */
+.entree__pied {
+  padding: var(--espace-sm) var(--espace-md);
+  border-top: 1px solid var(--bordure);
+  background-color: var(--creme);
+}
+
+/* Bouton désactivé (tant que le formulaire est incomplet) */
+.bouton:disabled {
+  background-color: var(--bordure);
+  color: var(--texte-doux);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+
+
+/* ===========================================================
+   ÉCRAN DE CRITÈRE (questionnaire)
+   =========================================================== */
+
+/* --- Barre de progression segmentée --- */
+.progression {
+  padding: var(--espace-md) var(--espace-md) 0;
+}
+
+.progression__barre {
+  display: flex;
+  gap: 4px;
+  margin-bottom: var(--espace-xs);
+}
+
+/* Un segment de la barre (un par pierre angulaire). Sa largeur est
+   proportionnelle au nombre de critères de la pierre (géré par JS). */
+.progression__segment {
+  height: 5px;
+  border-radius: 3px;
+  background-color: var(--creme-fonce);
+  overflow: hidden;
+}
+
+/* La partie colorée (avancement) à l'intérieur d'un segment */
+.progression__remplissage {
+  height: 100%;
+  width: 0%;             /* mis à jour par JS */
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progression__infos {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--texte-doux);
+}
+
+.progression__pierre {
+  font-weight: 600;
+}
+
+/* --- Contenu du critère --- */
+.critere__contenu {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--espace-sm) var(--espace-md);
+}
+
+.critere__numero {
+  font-size: 0.78rem;
+  color: var(--texte-doux);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.critere__titre {
+  font-family: var(--police-titre);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--marine);
+  line-height: 1.25;
+  margin-bottom: var(--espace-sm);
+}
+
+/* --- Bouton "Voir les questions d'aide" --- */
+.critere__aide-bouton {
+  background: none;
+  border: none;
+  font-family: var(--police-corps);
+  font-size: 0.88rem;
+  color: var(--marine);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-bottom: var(--espace-sm);
+}
+
+/* --- Zone des sous-questions (dépliée) --- */
+.critere__aide-zone {
+  background-color: var(--creme-fonce);
+  border-radius: var(--arrondi-petit);
+  padding: 0.7rem 0.8rem;
+  margin-bottom: var(--espace-sm);
+}
+
+.critere__aide-zone ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.critere__aide-zone li {
+  font-size: 0.85rem;
+  color: #4A5A6A;
+  line-height: 1.4;
+  padding-left: 1rem;
+  position: relative;
+  margin-bottom: 0.4rem;
+}
+
+.critere__aide-zone li:last-child {
+  margin-bottom: 0;
+}
+
+/* Petite puce devant chaque sous-question */
+.critere__aide-zone li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--orange);
+}
+
+/* --- Les boutons de modalité --- */
+.modalites {
+  display: flex;
+  flex-direction: column;
+}
+
+.modalite {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  text-align: left;
+  border: 1.5px solid var(--bordure);
+  background-color: var(--blanc);
+  border-radius: var(--arrondi);
+  padding: 0.65rem 0.9rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.98rem;
+  font-family: var(--police-corps);
+  color: var(--texte);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.modalite:hover {
+  border-color: var(--marine-clair);
+}
+
+/* La pastille de couleur devant chaque modalité */
+.modalite__pastille {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Pastille spéciale "Non applicable" : contour pointillé, sans remplissage */
+.modalite__pastille--vide {
+  background-color: transparent !important;
+  border: 1.5px dashed #B4B2A9;
+}
+
+/* Modalité sélectionnée : bordure plus épaisse + gras.
+   La couleur précise (bordure + fond teinté) est appliquée par JS,
+   pour coller à la modalité choisie. */
+.modalite--active {
+  border-width: 2px;
+  font-weight: 600;
+}
+
+/* --- Pied de l'écran de critère --- */
+.critere__pied {
+  display: flex;
+  gap: 0.7rem;
+  padding: var(--espace-sm) var(--espace-md);
+  border-top: 1px solid var(--bordure);
+  background-color: var(--creme);
+}
+
+/* Bouton retour (flèche) à gauche */
+.bouton-retour-critere {
+  flex: 0 0 auto;
+  border: 1.5px solid var(--marine);
+  background-color: transparent;
+  color: var(--marine);
+  border-radius: var(--arrondi);
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0 1.1rem;
+  cursor: pointer;
+  min-height: 52px;
+  transition: background-color 0.2s ease;
+}
+
+.bouton-retour-critere:hover {
+  background-color: var(--creme-fonce);
+}
+
+/* Le bouton "Suivant" prend le reste de la largeur. */
+.critere__pied .bouton {
+  flex: 1;
+  width: auto;
+  max-width: none;
+  margin-top: 0;
+}
+
+
+/* ===========================================================
+   ÉCRAN DE DIAGNOSTIC
+   =========================================================== */
+
+.diagnostic__contenu {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--espace-md);
+}
+
+.diagnostic__entete {
+  text-align: center;
+  margin-bottom: var(--espace-md);
+}
+
+.diagnostic__objet {
+  font-family: var(--police-titre);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--marine);
+  line-height: 1.3;
+}
+
+.diagnostic__meta {
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+  margin-top: 2px;
+}
+
+/* Zone du schéma SVG : centré, agrandi pour bien occuper l'écran.
+   Le SVG étant vectoriel, il grandit sans perte de netteté. */
+.diagnostic__schema {
+  max-width: 440px;
+  margin: 0 auto var(--espace-md);
+}
+
+.diagnostic__schema svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Légende des couleurs */
+.diagnostic__legende {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem 1rem;
+  margin-bottom: var(--espace-lg);
+  font-size: 0.8rem;
+  color: var(--texte-doux);
+}
+
+.diagnostic__legende-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.diagnostic__legende-pastille {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.diagnostic__legende-pastille--vide {
+  background-color: transparent !important;
+  border: 1.5px dashed #B4B2A9;
+}
+
+/* Textes de lecture par pierre */
+.diagnostic__lectures {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-sm);
+}
+
+/* Une carte de lecture pour une pierre angulaire */
+.lecture-pierre {
+  border-left: 4px solid var(--bordure); /* couleur ajustée par JS */
+  background-color: var(--blanc);
+  border-radius: var(--arrondi-petit);
+  padding: var(--espace-sm) var(--espace-md);
+}
+
+.lecture-pierre__titre {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.lecture-pierre__texte {
+  font-size: 0.9rem;
+  color: #4A5A6A;
+  line-height: 1.5;
+}
+
+/* Zone d'actions du diagnostic : dans le flux qui défile, avec un espace
+   au-dessus pour la détacher des textes de lecture. */
+.diagnostic__actions {
+  margin-top: var(--espace-lg);
+}
+
+.diagnostic__actions .bouton {
+  margin-top: 0;
+}
+
+.diagnostic__actions .bouton + .bouton {
+  margin-top: var(--espace-sm);
+}
+
+
+/* ===========================================================
+   ÉCRAN MES ÉVALUATIONS (historique)
+   =========================================================== */
+
+.historique__contenu {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--espace-md);
+}
+
+/* Message quand la liste est vide */
+.historique__vide {
+  text-align: center;
+  color: var(--texte-doux);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-top: var(--espace-lg);
+  padding: 0 var(--espace-sm);
+}
+
+/* Une carte d'évaluation archivée */
+.eval-carte {
+  background-color: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--arrondi);
+  padding: var(--espace-md);
+  margin-bottom: var(--espace-sm);
+}
+
+.eval-carte__nom {
+  font-family: var(--police-titre);
+  font-weight: 600;
+  color: var(--marine);
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.eval-carte__meta {
+  font-size: 0.82rem;
+  color: var(--texte-doux);
+  margin: 3px 0 var(--espace-sm);
+}
+
+/* Aperçu miniature des trois jauges (barres) */
+.eval-carte__apercu {
+  display: flex;
+  gap: 5px;
+  margin-bottom: var(--espace-sm);
+}
+
+.eval-carte__jauge {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--creme-fonce);
+  overflow: hidden;
+  display: flex;
+}
+
+/* Un segment coloré dans une mini-jauge */
+.eval-carte__segment {
+  height: 100%;
+}
+
+/* Zone des boutons d'action */
+.eval-carte__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Bouton "Rouvrir" : prend la largeur restante */
+.eval-carte__rouvrir {
+  flex: 1;
+  text-align: center;
+  background-color: var(--marine);
+  color: var(--creme);
+  border: none;
+  border-radius: var(--arrondi-petit);
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: var(--police-corps);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.eval-carte__rouvrir:hover {
+  background-color: var(--marine-clair);
+}
+
+/* Bouton "Supprimer" : contour rouge discret */
+.eval-carte__supprimer {
+  flex: 0 0 auto;
+  background-color: transparent;
+  color: #C9433A;
+  border: 1.5px solid #C9433A;
+  border-radius: var(--arrondi-petit);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.9rem;
+  font-family: var(--police-corps);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.eval-carte__supprimer:hover {
+  background-color: #C9433A;
+  color: var(--blanc);
+}
+
+
+/* ===========================================================
+   PAGES D'INFORMATION (Qu'est-ce que SPIRIT ?, À propos)
+   =========================================================== */
+
+.page-info__contenu {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--espace-md);
+}
+
+/* Titre de section dans une page d'info */
+.page-info__titre {
+  font-family: var(--police-titre);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--marine);
+  margin-top: var(--espace-md);
+  margin-bottom: var(--espace-xs);
+}
+
+/* Premier titre : pas d'espace superflu en haut */
+.page-info__contenu .page-info__titre:first-child {
+  margin-top: 0;
+}
+
+.page-info__contenu p {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--texte);
+  margin-bottom: var(--espace-sm);
+}
+
+/* La citation / le sigle développé en italique ressort en marine */
+.page-info__contenu em {
+  color: var(--marine);
+  font-style: italic;
+}
+
+/* Liste des trois pierres angulaires */
+.page-info__liste {
+  list-style: none;
+  margin: 0 0 var(--espace-sm);
+  padding: 0;
+}
+
+.page-info__liste li {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--texte);
+  padding-left: 1.1rem;
+  position: relative;
+  margin-bottom: var(--espace-xs);
+}
+
+.page-info__liste li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--orange);
+  font-weight: 700;
+}
+
+/* Logo de l'université en pied de la page À propos */
+.page-info__logo-pied {
+  margin-top: var(--espace-lg);
+  padding-top: var(--espace-md);
+  border-top: 1px solid var(--bordure);
+  text-align: center;
+}
+
+.page-info__logo-uclouvain {
+  max-width: 180px;
+  width: 55%;
+  height: auto;
+  opacity: 0.9;
+}
+
+
+/* Classe pour masquer un élément tout en le gardant accessible aux
+   lecteurs d'écran (pour les personnes malvoyantes). */
+.visuellement-cache {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Classe pour cacher complètement un élément (on l'ajoute/retire via JavaScript) */
+.cache {
+  display: none !important;
+}
+
+/* Animation d'apparition en fondu */
+@keyframes apparition {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ===========================================================
+   ADAPTATION AUX GRANDS ÉCRANS
+   À partir de 600px de large, on agrandit un peu le logo.
+   =========================================================== */
+@media (min-width: 600px) {
+  .accueil__logo {
+    width: 230px;
+    height: 230px;
+  }
+}
+
+
+/* ===========================================================
+   DOCUMENT IMPRIMABLE (PDF)
+   ===========================================================
+   Principe : le document #document-impression est CACHÉ à l'écran,
+   et l'interface de l'app est cachée À L'IMPRESSION. La bascule se fait
+   via @media print en bas de cette section.
+*/
+
+/* À l'écran : le document imprimable est masqué. */
+.impression {
+  display: none;
+}
+
+/* ===========================================================
+   STYLES APPLIQUÉS UNIQUEMENT À L'IMPRESSION (@media print)
+   =========================================================== */
+@media print {
+
+  /* On force l'impression des couleurs de fond (jauges, pastilles).
+     Note : non garanti à 100 % selon les navigateurs/téléphones. */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* On cache toute l'interface de l'application... */
+  .app {
+    display: none !important;
+  }
+
+  /* ... et on affiche le document imprimable. */
+  .impression {
+    display: block !important;
+    font-family: var(--police-corps);
+    color: #1C2B3A;
+    background: #fff;
+    padding: 0;
+  }
+
+  /* Réglages de page : marges d'impression */
+  @page {
+    margin: 1.5cm;
+  }
+
+  /* Pas d'ombres ni de fonds parasites */
+  body {
+    background: #fff !important;
+  }
+
+  /* --- En-tête du PDF --- */
+  .pdf-entete {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 2px solid #163458;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+  }
+
+  .pdf-logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .pdf-titre {
+    font-family: var(--police-titre);
+    font-size: 20pt;
+    color: #163458;
+    margin: 0;
+  }
+
+  .pdf-sous-titre {
+    font-size: 9pt;
+    color: #5A6A7A;
+    margin: 2px 0 0;
+  }
+
+  /* --- Bloc objet évalué --- */
+  .pdf-objet-bloc {
+    margin-bottom: 18px;
+  }
+
+  .pdf-objet-label {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #5A6A7A;
+    margin: 0;
+  }
+
+  .pdf-objet-nom {
+    font-family: var(--police-titre);
+    font-size: 16pt;
+    color: #163458;
+    margin: 2px 0;
+  }
+
+  .pdf-objet-meta {
+    font-size: 9pt;
+    color: #5A6A7A;
+    margin: 0;
+  }
+
+  /* --- Sections --- */
+  .pdf-section {
+    margin-bottom: 20px;
+  }
+
+  .pdf-section-titre {
+    font-family: var(--police-titre);
+    font-size: 13pt;
+    color: #163458;
+    border-bottom: 1px solid #DDD7CC;
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+  }
+
+  /* Force un saut de page avant cette section (le détail des critères) */
+  .pdf-saut-page {
+    page-break-before: always;
+  }
+
+  /* --- Schéma radial --- */
+  .pdf-schema {
+    max-width: 320px;
+    margin: 0 auto 10px;
+  }
+
+  .pdf-schema svg {
+    width: 100%;
+    height: auto;
+  }
+
+  /* --- Légende --- */
+  .pdf-legende {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 16px;
+    font-size: 8.5pt;
+    color: #5A6A7A;
+  }
+
+  .pdf-legende-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* --- Lectures par pierre --- */
+  .pdf-lecture {
+    margin-bottom: 10px;
+  }
+
+  .pdf-lecture-titre {
+    font-size: 11pt;
+    margin: 0 0 2px;
+  }
+
+  .pdf-lecture-texte {
+    font-size: 10pt;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  /* --- Détail des critères --- */
+  .pdf-pierre-titre {
+    font-size: 11pt;
+    margin: 12px 0 4px;
+  }
+
+  .pdf-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 8px;
+  }
+
+  .pdf-table tr {
+    border-bottom: 1px solid #ECE7DD;
+    /* Évite qu'une ligne soit coupée entre deux pages */
+    page-break-inside: avoid;
+  }
+
+  .pdf-td-critere {
+    font-size: 10pt;
+    padding: 5px 8px 5px 0;
+    vertical-align: top;
+  }
+
+  .pdf-td-reponse {
+    font-size: 9.5pt;
+    padding: 5px 0;
+    white-space: nowrap;
+    text-align: right;
+    vertical-align: top;
+  }
+
+  /* Pastille de couleur (réponse) */
+  .pdf-pastille {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  /* --- Pistes d'action (attente) --- */
+  .pdf-pistes-attente {
+    font-size: 10pt;
+    font-style: italic;
+    color: #5A6A7A;
+    line-height: 1.4;
+  }
+
+  /* --- Pied de page --- */
+  .pdf-pied {
+    margin-top: 24px;
+    padding-top: 8px;
+    border-top: 1px solid #DDD7CC;
+    text-align: center;
+    font-size: 8pt;
+    color: #5A6A7A;
+  }
+}

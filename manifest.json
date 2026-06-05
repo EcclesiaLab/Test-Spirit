@@ -1,0 +1,31 @@
+{
+  "name": "SPIRIT — Évaluation de la synodalité",
+  "short_name": "SPIRIT",
+  "description": "Évaluer la synodalité d'une pratique, d'un projet ou d'une instance ecclésiale, à partir des critères du Document final du Synode sur la synodalité.",
+
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+
+  "background_color": "#163458",
+  "theme_color": "#163458",
+
+  "lang": "fr",
+  "dir": "ltr",
+
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
