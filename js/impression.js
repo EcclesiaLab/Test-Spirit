@@ -30,10 +30,11 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
   const conteneur = document.getElementById("document-impression");
 
   const type = TYPES_OBJET.find((t) => t.id === evaluation.typeObjet);
-  const typeLibelle = type ? type.libelle : "";
+  const typeLibelle = type ? tr(type.libelle) : "";
   // Date fournie (archive) ou date du jour (évaluation qui vient de finir).
   const dateSource = dateISO ? new Date(dateISO) : new Date();
-  const date = dateSource.toLocaleDateString("fr-FR", {
+  const locale = (getLangue() === "en") ? "en-GB" : "fr-FR";
+  const date = dateSource.toLocaleDateString(locale, {
     day: "numeric", month: "long", year: "numeric"
   });
 
@@ -43,33 +44,33 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
   html += '<div class="pdf-entete">';
   html += '<img class="pdf-logo" src="icons/logo-spirit.png" alt="SPIRIT">';
   html += '<div class="pdf-entete-texte">';
-  html += '<h1 class="pdf-titre">Évaluation de la synodalité</h1>';
-  html += '<p class="pdf-sous-titre">Cadre SPIRIT — d\'après le Document final du Synode 2024</p>';
+  html += '<h1 class="pdf-titre">' + t("pdf_titre") + '</h1>';
+  html += '<p class="pdf-sous-titre">' + t("pdf_sous_titre") + '</p>';
   html += '</div>';
   html += '</div>';
 
   /* --- Objet évalué --- */
   html += '<div class="pdf-objet-bloc">';
-  html += '<p class="pdf-objet-label">Objet évalué</p>';
+  html += '<p class="pdf-objet-label">' + t("pdf_objet_label") + '</p>';
   html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet) + '</p>';
-  html += '<p class="pdf-objet-meta">' + typeLibelle + ' · Évaluation du ' + date + '</p>';
+  html += '<p class="pdf-objet-meta">' + typeLibelle + ' · ' + t("pdf_evaluation_du") + ' ' + date + '</p>';
   html += '</div>';
 
   /* --- 2. Schéma radial + légende --- */
   html += '<div class="pdf-section">';
-  html += '<h2 class="pdf-section-titre">Diagnostic</h2>';
+  html += '<h2 class="pdf-section-titre">' + t("pdf_diagnostic") + '</h2>';
   html += '<div class="pdf-schema">' + construireSchemaRadial(reponses) + '</div>';
   html += '<div class="pdf-legende">' + construireLegendeTexte() + '</div>';
   html += '</div>';
 
   /* --- 3. Textes de lecture par pierre --- */
   html += '<div class="pdf-section">';
-  html += '<h2 class="pdf-section-titre">Lecture par dimension</h2>';
+  html += '<h2 class="pdf-section-titre">' + t("pdf_lecture") + '</h2>';
   PIERRES_ANGULAIRES.forEach((pierre) => {
     const compo = calculerComposition(pierre.id, reponses);
     const texte = redigerLecture(pierre.id, compo);
     html += '<div class="pdf-lecture">';
-    html += '<h3 class="pdf-lecture-titre" style="color:' + pierre.couleur + '">' + pierre.nom + '</h3>';
+    html += '<h3 class="pdf-lecture-titre" style="color:' + pierre.couleur + '">' + tr(pierre.nom) + '</h3>';
     html += '<p class="pdf-lecture-texte">' + texte + '</p>';
     html += '</div>';
   });
@@ -77,18 +78,18 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
 
   /* --- 4. Détail des 14 critères --- */
   html += '<div class="pdf-section pdf-saut-page">';
-  html += '<h2 class="pdf-section-titre">Détail des piliers</h2>';
+  html += '<h2 class="pdf-section-titre">' + t("pdf_detail") + '</h2>';
   PIERRES_ANGULAIRES.forEach((pierre) => {
-    html += '<h3 class="pdf-pierre-titre" style="color:' + pierre.couleur + '">' + pierre.nom + '</h3>';
+    html += '<h3 class="pdf-pierre-titre" style="color:' + pierre.couleur + '">' + tr(pierre.nom) + '</h3>';
     const criteresPierre = CRITERES.filter((c) => c.pierre === pierre.id);
     html += '<table class="pdf-table">';
     criteresPierre.forEach((critere) => {
       const idRep = reponses[critere.id];
       const modalite = MODALITES.find((m) => m.id === idRep);
-      const libelleRep = modalite ? modalite.libelle : "—";
+      const libelleRep = modalite ? tr(modalite.libelle) : "—";
       const couleurRep = (modalite && modalite.couleur) ? modalite.couleur : "#999999";
       html += '<tr>';
-      html += '<td class="pdf-td-critere"><strong>' + critere.numero + '.</strong> ' + echapper(critere.titre) + '</td>';
+      html += '<td class="pdf-td-critere"><strong>' + critere.numero + '.</strong> ' + echapper(tr(critere.titre)) + '</td>';
       html += '<td class="pdf-td-reponse"><span class="pdf-pastille" style="background:' + couleurRep + '"></span>' + libelleRep + '</td>';
       html += '</tr>';
     });
@@ -98,12 +99,12 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
 
   /* --- 5. Pistes d'action (emplacement réservé) --- */
   html += '<div class="pdf-section">';
-  html += '<h2 class="pdf-section-titre">Pistes d\'action</h2>';
-  html += '<p class="pdf-pistes-attente">Les pistes d\'action personnalisées seront proposées dans une prochaine version de SPIRIT, à partir des piliers en construction ou à bâtir.</p>';
+  html += '<h2 class="pdf-section-titre">' + t("pdf_pistes") + '</h2>';
+  html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_attente") + '</p>';
   html += '</div>';
 
   /* --- 6. Pied de page --- */
-  html += '<div class="pdf-pied">Généré par SPIRIT — EcclesiaLab — ecclesialab.org</div>';
+  html += '<div class="pdf-pied">' + t("pdf_pied") + '</div>';
 
   conteneur.innerHTML = html;
 }
@@ -116,7 +117,7 @@ function construireLegendeTexte() {
     const bordure = (m.couleur === null) ? "border:1.5px dashed #999;" : "";
     html += '<span class="pdf-legende-item">';
     html += '<span class="pdf-pastille" style="background:' + couleur + ';' + bordure + '"></span>';
-    html += m.libelle + '</span>';
+    html += tr(m.libelle) + '</span>';
   });
   return html;
 }

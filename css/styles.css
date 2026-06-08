@@ -109,6 +109,7 @@ body {
 
 .accueil {
   flex: 1;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -130,8 +131,8 @@ body {
 .accueil__logo {
   width: 200px;
   height: 200px;
-  max-width: 60%;
-  margin: 0 auto var(--espace-md);
+  max-width: 55%;
+  margin: 0 auto var(--espace-sm);
   display: block;
 }
 
@@ -152,8 +153,8 @@ body {
 .accueil__liens {
   display: flex;
   flex-direction: column;
-  gap: var(--espace-sm);
-  padding-bottom: var(--espace-md);
+  gap: var(--espace-xs);
+  padding-bottom: var(--espace-sm);
 }
 
 /* ===========================================================
@@ -972,6 +973,50 @@ body {
   width: 55%;
   height: auto;
   opacity: 0.9;
+}
+
+
+/* ===========================================================
+   SÉLECTEUR DE LANGUE
+   =========================================================== */
+.selecteur-langue {
+  position: absolute;
+  top: var(--espace-sm);
+  right: var(--espace-sm);
+  display: flex;
+  gap: 2px;
+  z-index: 5;
+}
+
+.selecteur-langue__option {
+  border: 1px solid var(--bordure);
+  background-color: var(--blanc);
+  color: var(--texte-doux);
+  font-family: var(--police-corps);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.55rem;
+  cursor: pointer;
+  border-radius: var(--arrondi-petit);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.selecteur-langue__option--actif {
+  background-color: var(--marine);
+  color: var(--creme);
+  border-color: var(--marine);
+}
+
+/* Écran de choix de la langue (premier lancement) */
+.choix-langue {
+  text-align: center;
+}
+
+.choix-langue__boutons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-sm);
+  margin-top: var(--espace-md);
 }
 
 

@@ -52,6 +52,12 @@
     <!-- ---------- ÉCRAN D'ACCUEIL ---------- -->
     <main class="accueil ecran ecran--actif" id="ecran-accueil">
 
+      <!-- Sélecteur de langue, discret en haut à droite -->
+      <div class="selecteur-langue" id="selecteur-langue">
+        <button class="selecteur-langue__option" data-langue-code="fr">FR</button>
+        <button class="selecteur-langue__option" data-langue-code="en">EN</button>
+      </div>
+
       <!-- Bloc du haut : logo + baseline.
            Le logo officiel SPIRIT (EcclesiaLab) contient déjà le mot "SPIRIT",
            on n'ajoute donc pas de titre texte qui ferait doublon.
@@ -64,21 +70,22 @@
         <img class="accueil__logo" src="icons/logo-spirit.png"
              alt="Logo SPIRIT — EcclesiaLab" width="200" height="200">
 
-        <p class="accueil__baseline">Évaluer la synodalité d'une pratique ecclésiale</p>
+        <p class="accueil__baseline" data-t="accueil_baseline">Évaluer la synodalité d'une pratique ecclésiale</p>
       </div>
 
       <!-- Bloc du milieu : action principale.
            Le bouton est déjà en place ; il sera relié au questionnaire
            à la prochaine étape. -->
       <div class="accueil__action">
-        <button class="bouton" id="bouton-demarrer">Démarrer une évaluation</button>
+        <button class="bouton" id="bouton-demarrer" data-t="accueil_demarrer">Démarrer une évaluation</button>
       </div>
 
       <!-- Bloc du bas : liens secondaires -->
       <nav class="accueil__liens">
-        <button class="lien-secondaire" id="lien-mes-evaluations">Mes évaluations</button>
-        <button class="lien-secondaire" id="lien-quest-ce-que">Qu'est-ce que SPIRIT ?</button>
-        <button class="lien-secondaire" id="lien-a-propos">À propos</button>
+        <button class="lien-secondaire" id="lien-mes-evaluations" data-t="accueil_mes_evaluations">Mes évaluations</button>
+        <button class="lien-secondaire" id="lien-quest-ce-que" data-t="accueil_quest_ce_que">Qu'est-ce que SPIRIT ?</button>
+        <button class="lien-secondaire" id="lien-a-propos" data-t="accueil_a_propos">À propos</button>
+        <button class="lien-secondaire" id="lien-partager" data-t="accueil_partager">Partager SPIRIT</button>
       </nav>
 
     </main>
@@ -91,28 +98,29 @@
       <!-- Barre de titre avec bouton retour -->
       <header class="barre-titre">
         <button class="barre-titre__retour" id="entree-retour" aria-label="Retour à l'accueil">‹</button>
-        <h2 class="barre-titre__titre">Nouvelle évaluation</h2>
+        <h2 class="barre-titre__titre" data-t="entree_titre">Nouvelle évaluation</h2>
       </header>
 
       <!-- Contenu défilable -->
       <div class="entree__contenu">
 
         <!-- Champ : nom de l'objet évalué -->
-        <label class="entree__label" for="champ-nom-objet">Quelle pratique évaluez-vous ?</label>
+        <label class="entree__label" for="champ-nom-objet" data-t="entree_question_nom">Quelle pratique évaluez-vous ?</label>
         <input
           type="text"
           class="entree__champ"
           id="champ-nom-objet"
           placeholder="Ex. : Conseil pastoral, Retraite des confirmands…"
+          data-t-placeholder="entree_placeholder"
           maxlength="80"
           autocomplete="off">
-        <p class="entree__aide" id="entree-aide-nom">Ce nom servira à retrouver l'évaluation et à titrer le document final.</p>
+        <p class="entree__aide" id="entree-aide-nom" data-t="entree_aide_nom">Ce nom servira à retrouver l'évaluation et à titrer le document final.</p>
 
         <!-- Choix : type d'objet.
              Les trois cartes seront générées automatiquement par app.js
              à partir du fichier de données (TYPES_OBJET). -->
         <fieldset class="entree__types">
-          <legend class="entree__label">De quelle pratique s'agit-il ?</legend>
+          <legend class="entree__label" data-t="entree_question_type">De quelle pratique s'agit-il ?</legend>
           <div id="liste-types-objet">
             <!-- Cartes injectées par JavaScript -->
           </div>
@@ -122,7 +130,7 @@
 
       <!-- Bouton de validation, fixé en bas -->
       <footer class="entree__pied">
-        <button class="bouton" id="bouton-commencer-evaluation" disabled>Commencer l'évaluation</button>
+        <button class="bouton" id="bouton-commencer-evaluation" data-t="entree_commencer" disabled>Commencer l'évaluation</button>
       </footer>
 
     </section>
@@ -168,7 +176,7 @@
       <!-- Pied : retour + suivant -->
       <footer class="critere__pied">
         <button class="bouton-retour-critere" id="critere-precedent" aria-label="Pilier précédent">‹</button>
-        <button class="bouton" id="critere-suivant" disabled>Suivant</button>
+        <button class="bouton" id="critere-suivant" data-t="pilier_suivant" disabled>Suivant</button>
       </footer>
 
     </section>
@@ -178,7 +186,7 @@
 
       <header class="barre-titre">
         <button class="barre-titre__retour" id="diagnostic-retour" aria-label="Retour">‹</button>
-        <h2 class="barre-titre__titre">Diagnostic</h2>
+        <h2 class="barre-titre__titre" data-t="diagnostic_titre">Diagnostic</h2>
       </header>
 
       <div class="diagnostic__contenu">
@@ -202,8 +210,8 @@
              (et non collées en bas), car le diagnostic est un écran de
              consultation qu'on parcourt tranquillement. -->
         <div class="diagnostic__actions">
-          <button class="bouton" id="diagnostic-pdf">Exporter en PDF</button>
-          <button class="bouton bouton--contour" id="diagnostic-accueil">Revenir à l'accueil</button>
+          <button class="bouton" id="diagnostic-pdf" data-t="diagnostic_pdf">Exporter en PDF</button>
+          <button class="bouton bouton--contour" id="diagnostic-accueil" data-t="diagnostic_accueil">Revenir à l'accueil</button>
         </div>
 
       </div>
@@ -215,12 +223,12 @@
 
       <header class="barre-titre">
         <button class="barre-titre__retour" id="historique-retour" aria-label="Retour à l'accueil">‹</button>
-        <h2 class="barre-titre__titre">Mes évaluations</h2>
+        <h2 class="barre-titre__titre" data-t="historique_titre">Mes évaluations</h2>
       </header>
 
       <div class="historique__contenu">
         <!-- Message affiché quand il n'y a aucune évaluation -->
-        <p class="historique__vide cache" id="historique-vide">
+        <p class="historique__vide cache" id="historique-vide" data-t="historique_vide">
           Vous n'avez pas encore d'évaluation enregistrée. Les évaluations terminées apparaîtront ici.
         </p>
         <!-- La liste des évaluations sera générée par JS -->
@@ -233,29 +241,55 @@
     <section class="ecran page-info" id="ecran-quest-ce-que">
       <header class="barre-titre">
         <button class="barre-titre__retour" id="quest-ce-que-retour" aria-label="Retour à l'accueil">‹</button>
-        <h2 class="barre-titre__titre">Qu'est-ce que SPIRIT ?</h2>
+        <h2 class="barre-titre__titre" data-t="page_quest_titre">Qu'est-ce que SPIRIT ?</h2>
       </header>
       <div class="page-info__contenu">
 
-        <h3 class="page-info__titre">Évaluer la synodalité, un appel du Synode</h3>
-        <p>Le Synode sur la synodalité (2021-2024) a engagé l'Église catholique sur un chemin : marcher ensemble, dans la communion, la participation et la mission. Son Document final invite les communautés à un geste encore peu familier : évaluer leurs pratiques, non pour juger, mais pour discerner et grandir.</p>
-        <p>SPIRIT est né de cet appel. Le nom signifie <em>Synodalité des Pratiques : Indicateurs pour le Renouveau, l'Implémentation et la Transformation</em>.</p>
+        <!-- Version française -->
+        <div data-lang="fr">
+          <h3 class="page-info__titre">Évaluer la synodalité, un appel du Synode</h3>
+          <p>Le Synode sur la synodalité (2021-2024) a engagé l'Église catholique sur un chemin : marcher ensemble, dans la communion, la participation et la mission. Son Document final invite les communautés à un geste encore peu familier : évaluer leurs pratiques, non pour juger, mais pour discerner et grandir.</p>
+          <p>SPIRIT est né de cet appel. Le nom signifie <em>Synodalité des Pratiques : Indicateurs pour le Renouveau, l'Implémentation et la Transformation</em>.</p>
 
-        <h3 class="page-info__titre">Ce que SPIRIT vous permet de faire</h3>
-        <p>SPIRIT vous aide à évaluer la synodalité d'une pratique ecclésiale : une action, un projet, un groupe. Vous portez un regard sur cette pratique à travers 14 piliers, puis l'application vous renvoie un diagnostic visuel et des pistes pour avancer.</p>
-        <p>Ce que vous évaluez, c'est toujours une pratique, jamais des personnes.</p>
+          <h3 class="page-info__titre">Ce que SPIRIT vous permet de faire</h3>
+          <p>SPIRIT vous aide à évaluer la synodalité d'une pratique ecclésiale : une action, un projet, un groupe. Vous portez un regard sur cette pratique à travers 14 piliers, puis l'application vous renvoie un diagnostic visuel et des pistes pour avancer.</p>
+          <p>Ce que vous évaluez, c'est toujours une pratique, jamais des personnes.</p>
 
-        <h3 class="page-info__titre">Les trois pierres angulaires</h3>
-        <p>Les 14 piliers s'organisent autour des trois pierres angulaires de la synodalité, telles que les nomme le Document final du Synode :</p>
-        <ul class="page-info__liste">
-          <li><strong>Communion</strong> : la qualité des relations, leur enracinement spirituel et l'ouverture aux autres.</li>
-          <li><strong>Participation</strong> : la possibilité pour chacun de contribuer à la vie de l'Église.</li>
-          <li><strong>Mission</strong> : le rayonnement missionnaire et la conversion à laquelle la pratique appelle.</li>
-        </ul>
+          <h3 class="page-info__titre">Les trois pierres angulaires</h3>
+          <p>Les 14 piliers s'organisent autour des trois pierres angulaires de la synodalité, telles que les nomme le Document final du Synode :</p>
+          <ul class="page-info__liste">
+            <li><strong>Communion</strong> : la qualité des relations, leur enracinement spirituel et l'ouverture aux autres.</li>
+            <li><strong>Participation</strong> : la possibilité pour chacun de contribuer à la vie de l'Église.</li>
+            <li><strong>Mission</strong> : le rayonnement missionnaire et la conversion à laquelle la pratique appelle.</li>
+          </ul>
 
-        <h3 class="page-info__titre">Comment se déroule une évaluation</h3>
-        <p>Vous choisissez la pratique à évaluer et lui donnez un nom. Pour chacun des 14 piliers, vous indiquez s'il est présent, en construction, à bâtir, ou non applicable. Des questions d'aide accompagnent votre réflexion. À la fin, vous obtenez un diagnostic en trois jauges, que vous pouvez exporter en PDF et partager. Dans celui-ci, vous recevrez un rapport détaillé avec un complément d'analyse.</p>
-        <p>Toutes vos réponses restent sur votre appareil. Rien n'est envoyé sur internet.</p>
+          <h3 class="page-info__titre">Comment se déroule une évaluation</h3>
+          <p>Vous choisissez la pratique à évaluer et lui donnez un nom. Pour chacun des 14 piliers, vous indiquez s'il est présent, en construction, à bâtir, ou non applicable. Des questions d'aide accompagnent votre réflexion. À la fin, vous obtenez un diagnostic en trois jauges, que vous pouvez exporter en PDF et partager. Dans celui-ci, vous recevrez un rapport détaillé avec un complément d'analyse.</p>
+          <p>Toutes vos réponses restent sur votre appareil. Rien n'est envoyé sur internet.</p>
+        </div>
+
+        <!-- Version anglaise -->
+        <div data-lang="en">
+          <h3 class="page-info__titre">Evaluating synodality, a call of the Synod</h3>
+          <p>The Synod on synodality (2021-2024) set the Catholic Church on a path: walking together, in communion, participation and mission. Its Final Document invites communities to a still unfamiliar gesture: to evaluate their practices, not to judge, but to discern and grow.</p>
+          <p>SPIRIT was born of this call. The name stands for <em>Synodal Practice Indicators for Renewal, Implementation and Transformation</em>.</p>
+
+          <h3 class="page-info__titre">What SPIRIT lets you do</h3>
+          <p>SPIRIT helps you evaluate the synodality of an ecclesial practice: an action, a project, a group. You take a considered look at this practice through 14 pillars, and the application returns a visual diagnosis along with steps to move forward.</p>
+          <p>What you evaluate is always a practice, never people.</p>
+
+          <h3 class="page-info__titre">The three cornerstones</h3>
+          <p>The 14 pillars are organised around the three cornerstones of synodality, as named by the Final Document of the Synod:</p>
+          <ul class="page-info__liste">
+            <li><strong>Communion</strong>: the quality of relationships, their spiritual roots and openness to others.</li>
+            <li><strong>Participation</strong>: the possibility for everyone to contribute to the life of the Church.</li>
+            <li><strong>Mission</strong>: missionary outreach and the conversion to which the practice calls.</li>
+          </ul>
+
+          <h3 class="page-info__titre">How an evaluation unfolds</h3>
+          <p>You choose the practice to evaluate and give it a name. For each of the 14 pillars, you indicate whether it is present, under construction, to be built, or not applicable. Guiding questions support your reflection. At the end, you obtain a diagnosis in three gauges, which you can export as a PDF and share. In it, you will receive a detailed report with further analysis.</p>
+          <p>All your answers stay on your device. Nothing is sent over the internet.</p>
+        </div>
 
       </div>
     </section>
@@ -264,22 +298,41 @@
     <section class="ecran page-info" id="ecran-a-propos">
       <header class="barre-titre">
         <button class="barre-titre__retour" id="a-propos-retour" aria-label="Retour à l'accueil">‹</button>
-        <h2 class="barre-titre__titre">À propos</h2>
+        <h2 class="barre-titre__titre" data-t="page_apropos_titre">À propos</h2>
       </header>
       <div class="page-info__contenu">
 
-        <h3 class="page-info__titre">EcclesiaLab</h3>
-        <p>SPIRIT est un projet de l'EcclesiaLab, un laboratoire de théologie au service de la transformation de l'Église catholique en Europe francophone et au Québec. Fondé en 2022 et rattaché à l'Université catholique de Louvain (UCLouvain), l'EcclesiaLab cherche à faire dialoguer la rigueur académique et les réalités vécues sur le terrain pour comprendre, outiller et soutenir les acteurs de la transformation ecclésiale.</p>
+        <!-- Version française -->
+        <div data-lang="fr">
+          <h3 class="page-info__titre">EcclesiaLab</h3>
+          <p>SPIRIT est un projet de l'EcclesiaLab, un laboratoire de théologie au service de la transformation de l'Église catholique en Europe francophone et au Québec. Fondé en 2022 et rattaché à l'Université catholique de Louvain (UCLouvain), l'EcclesiaLab cherche à faire dialoguer la rigueur académique et les réalités vécues sur le terrain pour comprendre, outiller et soutenir les acteurs de la transformation ecclésiale.</p>
 
-        <h3 class="page-info__titre">Le projet SPIRIT</h3>
-        <p>SPIRIT est un projet de recherche-action universitaire consacré à l'évaluation de la synodalité des pratiques ecclésiales. Il s'inscrit dans la phase de mise en œuvre du Synode sur la synodalité (2025-2028), qui appelle l'Église à développer une véritable culture de l'évaluation, dans une perspective évangélique et non gestionnaire.</p>
-        <p>Le projet est dirigé par le professeur Arnaud Join-Lambert (UCLouvain), avec le soutien d'une dizaine de théologiens, théologiennes, canonistes et sociologues.</p>
+          <h3 class="page-info__titre">Le projet SPIRIT</h3>
+          <p>SPIRIT est un projet de recherche-action universitaire consacré à l'évaluation de la synodalité des pratiques ecclésiales. Il s'inscrit dans la phase de mise en œuvre du Synode sur la synodalité (2025-2028), qui appelle l'Église à développer une véritable culture de l'évaluation, dans une perspective évangélique et non gestionnaire.</p>
+          <p>Le projet est dirigé par le professeur Arnaud Join-Lambert (UCLouvain), avec le soutien d'une dizaine de théologiens, théologiennes, canonistes et sociologues.</p>
 
-        <h3 class="page-info__titre">Une démarche validée</h3>
-        <p>Les 14 piliers de SPIRIT ne sont pas le fruit d'une intuition isolée. Ils sont directement tirés du Document final du Synode (2024) et ont été validés par un panel d'experts selon la méthode Delphi, qui permet de construire progressivement un consensus reconnu. Près de 50 théologiens du monde entier ont permis de valider par consensus les critères permettant d'évaluer grâce à cet outil SPIRIT.</p>
+          <h3 class="page-info__titre">Une démarche validée</h3>
+          <p>Les 14 piliers de SPIRIT ne sont pas le fruit d'une intuition isolée. Ils sont directement tirés du Document final du Synode (2024) et ont été validés par un panel d'experts selon la méthode Delphi, qui permet de construire progressivement un consensus reconnu. Près de 50 théologiens du monde entier ont permis de valider par consensus les critères permettant d'évaluer grâce à cet outil SPIRIT.</p>
 
-        <h3 class="page-info__titre">En savoir plus</h3>
-        <p>EcclesiaLab développe d'autres outils au service des communautés, comme le Radar théologique et une cartographie des lieux d'Église innovants. Retrouvez l'ensemble de ses travaux sur ecclesialab.org.</p>
+          <h3 class="page-info__titre">En savoir plus</h3>
+          <p>EcclesiaLab développe d'autres outils au service des communautés, comme le Radar théologique et une cartographie des lieux d'Église innovants. Retrouvez l'ensemble de ses travaux sur ecclesialab.org.</p>
+        </div>
+
+        <!-- Version anglaise -->
+        <div data-lang="en">
+          <h3 class="page-info__titre">EcclesiaLab</h3>
+          <p>SPIRIT is a project of EcclesiaLab, a theology laboratory serving the transformation of the Catholic Church in French-speaking Europe and Québec. Founded in 2022 and attached to the University of Louvain (UCLouvain), EcclesiaLab seeks to bring academic rigour into dialogue with realities lived in the field, in order to understand, equip and support those engaged in ecclesial transformation.</p>
+
+          <h3 class="page-info__titre">The SPIRIT project</h3>
+          <p>SPIRIT is a university action-research project devoted to evaluating the synodality of ecclesial practices. It is part of the implementation phase of the Synod on synodality (2025-2028), which calls the Church to develop a genuine culture of evaluation, in an evangelical rather than managerial perspective.</p>
+          <p>The project is directed by Professor Arnaud Join-Lambert (UCLouvain), with the support of around ten theologians, canon lawyers and sociologists.</p>
+
+          <h3 class="page-info__titre">A validated approach</h3>
+          <p>The 14 pillars of SPIRIT are not the fruit of an isolated intuition. They are drawn directly from the Final Document of the Synod (2024) and were validated by a panel of experts using the Delphi method, which builds a recognised consensus step by step. Nearly 50 theologians from around the world helped to validate by consensus the criteria used to evaluate with the SPIRIT tool.</p>
+
+          <h3 class="page-info__titre">Learn more</h3>
+          <p>EcclesiaLab develops other tools serving communities, such as the Theological Radar and a mapping of innovative Church initiatives. Find all of its work at ecclesialab.org.</p>
+        </div>
 
         <!-- Logo de l'université de rattachement, en pied de page -->
         <div class="page-info__logo-pied">
@@ -292,6 +345,21 @@
   </div>
 
   <!-- ============================================================
+       CHOIX DE LA LANGUE (tout premier lancement)
+       S'affiche avant la bienvenue, uniquement si aucune langue n'a encore
+       été choisie. Bilingue par nature.
+       ============================================================ -->
+  <div class="bienvenue-voile cache" id="choix-langue-voile">
+    <section class="bienvenue choix-langue" role="dialog" aria-modal="true">
+      <h2 class="bienvenue__titre">Choisissez votre langue<br>Choose your language</h2>
+      <div class="choix-langue__boutons">
+        <button class="bouton" data-choix-langue="fr">Français</button>
+        <button class="bouton" data-choix-langue="en">English</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================================
        FENÊTRE DE BIENVENUE (premier lancement)
        Elle est présente dans la page mais cachée par défaut (classe "cache").
        Le fichier app.js l'affiche au tout premier lancement, puis retient
@@ -300,16 +368,28 @@
        ============================================================ -->
   <div class="bienvenue-voile cache" id="bienvenue-voile">
     <section class="bienvenue" role="dialog" aria-labelledby="bienvenue-titre" aria-modal="true">
-      <h2 class="bienvenue__titre" id="bienvenue-titre">Bienvenue dans SPIRIT</h2>
+      <h2 class="bienvenue__titre" id="bienvenue-titre" data-t="bienvenue_titre">Bienvenue dans SPIRIT</h2>
       <div class="bienvenue__texte">
-        <p>La synodalité, c'est l'art de marcher ensemble. Le Synode sur la synodalité (2021-2024) en a tracé le chemin, autour de trois pierres angulaires : la communion, la participation et la mission. Encore faut-il savoir où l'on en est.</p>
+        <!-- Version française -->
+        <div data-lang="fr">
+          <p>La synodalité, c'est l'art de marcher ensemble. Le Synode sur la synodalité (2021-2024) en a tracé le chemin, autour de trois pierres angulaires : la communion, la participation et la mission. Encore faut-il savoir où l'on en est.</p>
 
-        <p>SPIRIT vous offre un regard sur une pratique ecclésiale, qu'il s'agisse d'une action, d'un projet ou d'un groupe. À travers 14 piliers issus du Document final du Synode, vous évaluez cette pratique, puis l'application vous en restitue un diagnostic visuel accompagné de pistes pour avancer.</p>
+          <p>SPIRIT vous offre un regard sur une pratique ecclésiale, qu'il s'agisse d'une action, d'un projet ou d'un groupe. À travers 14 piliers issus du Document final du Synode, vous évaluez cette pratique, puis l'application vous en restitue un diagnostic visuel accompagné de pistes pour avancer.</p>
 
-        <p>Ce que vous évaluez, c'est toujours une pratique, jamais des personnes. Il ne s'agit pas de juger, mais de discerner et de grandir. Et vos réponses ne quittent jamais votre appareil.</p>
+          <p>Ce que vous évaluez, c'est toujours une pratique, jamais des personnes. Il ne s'agit pas de juger, mais de discerner et de grandir. Et vos réponses ne quittent jamais votre appareil.</p>
+        </div>
+
+        <!-- Version anglaise -->
+        <div data-lang="en">
+          <p>Synodality is the art of walking together. The Synod on synodality (2021-2024) traced the path, around three cornerstones: communion, participation and mission. The question remains: where do we stand?</p>
+
+          <p>SPIRIT offers you a considered look at an ecclesial practice, whether an action, a project or a group. Through 14 pillars drawn from the Final Document of the Synod, you evaluate this practice, and the application returns a visual diagnosis along with steps to move forward.</p>
+
+          <p>What you evaluate is always a practice, never people. It is not about judging, but about discerning and growing. And your answers never leave your device.</p>
+        </div>
       </div>
       <div class="bienvenue__bouton-zone">
-        <button class="bouton" id="bouton-commencer-bienvenue">Commencer</button>
+        <button class="bouton" id="bouton-commencer-bienvenue" data-t="bienvenue_commencer">Commencer</button>
       </div>
     </section>
   </div>
@@ -324,6 +404,13 @@
   <div class="impression" id="document-impression" aria-hidden="true">
     <!-- Contenu généré par js/impression.js -->
   </div>
+  <!-- Gestion de la langue (bilingue FR/EN). Chargé en PREMIER car les
+       autres scripts utilisent ses fonctions tr() et t(). -->
+  <script src="js/langue.js"></script>
+
+  <!-- Dictionnaire des textes d'interface (FR/EN). -->
+  <script src="js/traductions.js"></script>
+
   <script src="js/donnees-spirit.js"></script>
 
   <!-- Logique du diagnostic (calcul + dessin des jauges). Chargé avant app.js. -->

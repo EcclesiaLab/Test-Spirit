@@ -102,7 +102,7 @@ function dessinerJauge(idPierre, composition, cx, cy, rayon) {
   svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (rayon - 8) + '" fill="#ffffff"></circle>';
 
   // Nom de la pierre, éventuellement sur deux lignes si long
-  svg += texteCentreSurDeuxLignes(pierre.nom, cx, cy);
+  svg += texteCentreSurDeuxLignes(tr(pierre.nom), cx, cy);
 
   return svg;
 }
@@ -165,7 +165,8 @@ function construireSchemaRadial(reponses) {
   svg += '<text x="' + centre.x + '" y="' + (centre.y - 3) + '" text-anchor="middle" ' +
          'font-family="Spectral, serif" font-size="11" font-weight="600" fill="#F7F4EE">SPIRIT</text>';
   svg += '<text x="' + centre.x + '" y="' + (centre.y + 9) + '" text-anchor="middle" ' +
-         'font-family="Source Sans 3, sans-serif" font-size="7.5" fill="#C9D3E0">synodalité</text>';
+         'font-family="Source Sans 3, sans-serif" font-size="7.5" fill="#C9D3E0">' +
+         (getLangue() === "en" ? "synodality" : "synodalité") + '</text>';
 
   svg += '</svg>';
   return svg;
@@ -184,7 +185,7 @@ function construireLegende() {
     const styleCouleur = (m.couleur === null) ? "" : ' style="background-color:' + m.couleur + '"';
     html += '<span class="diagnostic__legende-item">' +
               '<span class="diagnostic__legende-pastille' + classeVide + '"' + styleCouleur + '></span>' +
-              m.libelle +
+              tr(m.libelle) +
             '</span>';
   });
   return html;
@@ -200,49 +201,70 @@ function construireLegende() {
 function redigerLecture(idPierre, composition) {
   const c = composition.compte;
   const applicables = composition.applicables;
+  const en = (getLangue() === "en");
 
   // Cas particulier : aucune dimension applicable
   if (applicables === 0) {
-    return "Aucun pilier de cette dimension n'a été jugé applicable à la pratique évaluée.";
+    return en
+      ? "No pillar in this dimension was considered applicable to the practice evaluated."
+      : "Aucun pilier de cette dimension n'a été jugé applicable à la pratique évaluée.";
   }
 
   const parties = [];
 
-  // On formule en nombre de piliers, sans pourcentage ni note.
+  // On formule en nombre de piliers (libellés selon la langue).
   if (c["present"] > 0) {
-    parties.push(formuler(c["present"], "déjà bien présent", "déjà bien présents"));
+    parties.push(formuler(c["present"],
+      en ? "already well present" : "déjà bien présent",
+      en ? "already well present" : "déjà bien présents"));
   }
   if (c["a-developper"] > 0) {
-    parties.push(formuler(c["a-developper"], "en construction", "en construction"));
+    parties.push(formuler(c["a-developper"],
+      en ? "under construction" : "en construction",
+      en ? "under construction" : "en construction"));
   }
   if (c["non-present"] > 0) {
-    parties.push(formuler(c["non-present"], "encore à bâtir", "encore à bâtir"));
+    parties.push(formuler(c["non-present"],
+      en ? "still to be built" : "encore à bâtir",
+      en ? "still to be built" : "encore à bâtir"));
   }
 
   // Construction de la phrase
-  let texte = "Sur " + applicables + " pilier" + (applicables > 1 ? "s" : "") +
-              " pris en compte : " + assemblerListe(parties) + ".";
+  let texte;
+  if (en) {
+    texte = "Out of " + applicables + " pillar" + (applicables > 1 ? "s" : "") +
+            " considered: " + assemblerListe(parties) + ".";
+  } else {
+    texte = "Sur " + applicables + " pilier" + (applicables > 1 ? "s" : "") +
+            " pris en compte : " + assemblerListe(parties) + ".";
+  }
 
   // Une nuance d'encouragement selon la dominante
   if (c["present"] === applicables) {
-    texte += " Cette dimension est pleinement vécue dans la pratique évaluée.";
+    texte += en
+      ? " This dimension is fully lived out in the practice evaluated."
+      : " Cette dimension est pleinement vécue dans la pratique évaluée.";
   } else if (c["non-present"] > c["present"] + c["a-developper"]) {
-    texte += " Cette dimension constitue un axe de croissance important.";
+    texte += en
+      ? " This dimension is an important area for growth."
+      : " Cette dimension constitue un axe de croissance important.";
   }
 
   return texte;
 }
 
-// Met un nombre + le bon singulier/pluriel : ex. "2 critères déjà bien présents"
+// Met un nombre + le bon singulier/pluriel.
 function formuler(n, singulier, pluriel) {
   return n + " " + (n > 1 ? pluriel : singulier);
 }
 
-// Assemble une liste en français : "a", "a et b", "a, b et c"
+// Assemble une liste selon la langue : "a", "a et b", "a, b et c"
+// (en anglais : "a", "a and b", "a, b and c").
 function assemblerListe(parties) {
+  const connecteur = (getLangue() === "en") ? " and " : " et ";
   if (parties.length === 1) return parties[0];
-  if (parties.length === 2) return parties[0] + " et " + parties[1];
-  return parties.slice(0, -1).join(", ") + " et " + parties[parties.length - 1];
+  if (parties.length === 2) return parties[0] + connecteur + parties[1];
+  return parties.slice(0, -1).join(", ") + connecteur + parties[parties.length - 1];
 }
 
 
@@ -256,7 +278,7 @@ function construireLectures(reponses) {
     const compo = calculerComposition(pierre.id, reponses);
     const texte = redigerLecture(pierre.id, compo);
     html += '<div class="lecture-pierre" style="border-left-color:' + pierre.couleur + '">' +
-              '<div class="lecture-pierre__titre" style="color:' + pierre.couleur + '">' + pierre.nom + '</div>' +
+              '<div class="lecture-pierre__titre" style="color:' + pierre.couleur + '">' + tr(pierre.nom) + '</div>' +
               '<div class="lecture-pierre__texte">' + texte + '</div>' +
             '</div>';
   });
@@ -274,11 +296,12 @@ function afficherDiagnostic(evaluation, reponses, dateISO) {
   document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet;
 
   const type = TYPES_OBJET.find((t) => t.id === evaluation.typeObjet);
-  const typeLibelle = type ? type.libelle : "";
+  const typeLibelle = type ? tr(type.libelle) : "";
   // Si une date est fournie (évaluation archivée), on l'utilise ;
   // sinon, c'est une évaluation qui vient de se terminer → date du jour.
   const dateSource = dateISO ? new Date(dateISO) : new Date();
-  const date = dateSource.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+  const locale = (getLangue() === "en") ? "en-GB" : "fr-FR";
+  const date = dateSource.toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
   document.getElementById("diagnostic-meta").textContent = typeLibelle + " · " + date;
 
   // Schéma radial

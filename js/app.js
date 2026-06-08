@@ -83,6 +83,13 @@ function fermerBienvenue() {
 }
 
 function gererBienvenueAuDemarrage() {
+  // 1. Si la langue n'a jamais été choisie, on affiche d'abord l'écran de
+  //    choix de langue. La bienvenue suivra une fois la langue choisie.
+  if (!langueDejaChoisie()) {
+    afficherChoixLangue();
+    return;
+  }
+  // 2. Sinon, on affiche la bienvenue si elle n'a pas encore été vue.
   let dejaVue = false;
   try {
     dejaVue = localStorage.getItem(CLE_BIENVENUE_VUE) === "oui";
@@ -92,6 +99,19 @@ function gererBienvenueAuDemarrage() {
   if (!dejaVue) {
     afficherBienvenue();
   }
+}
+
+// Affiche l'écran de choix de la langue (premier lancement).
+function afficherChoixLangue() {
+  parId("choix-langue-voile").classList.remove("cache");
+}
+
+// Appelé quand l'utilisateur choisit sa langue au premier lancement.
+function choisirLangueInitiale(code) {
+  changerLangue(code);                       // applique et mémorise la langue
+  parId("choix-langue-voile").classList.add("cache");
+  // On enchaîne sur la bienvenue (premier lancement = jamais vue).
+  afficherBienvenue();
 }
 
 
@@ -124,8 +144,8 @@ function genererCartesType() {
     carte.dataset.idType = type.id; // on retient l'id dans l'attribut data-id-type
 
     carte.innerHTML =
-      '<span class="carte-type__titre">' + type.libelle + '</span>' +
-      '<span class="carte-type__description">' + type.description + '</span>';
+      '<span class="carte-type__titre">' + tr(type.libelle) + '</span>' +
+      '<span class="carte-type__description">' + tr(type.description) + '</span>';
 
     // Au clic : on sélectionne cette carte.
     carte.addEventListener("click", () => choisirType(type.id));
@@ -321,9 +341,9 @@ function majProgression(critere) {
 
   // Libellés : nom de la pierre + compteur global
   const pierreObj = PIERRES_ANGULAIRES.find((p) => p.id === critere.pierre);
-  parId("progression-pierre").textContent = pierreObj.nom;
+  parId("progression-pierre").textContent = tr(pierreObj.nom);
   parId("progression-pierre").style.color = pierreObj.couleur;
-  parId("progression-compteur").textContent = "Pilier " + critere.numero + " / " + CRITERES.length;
+  parId("progression-compteur").textContent = t("pilier_compteur") + " " + critere.numero + " / " + CRITERES.length;
 }
 
 // Génère les sous-questions d'aide pour un critère donné.
@@ -332,7 +352,7 @@ function genererSousQuestions(critere) {
   const liste = document.createElement("ul");
   critere.sousQuestions.forEach((q) => {
     const li = document.createElement("li");
-    li.textContent = q;
+    li.textContent = tr(q);
     liste.appendChild(li);
   });
   zone.innerHTML = "";
@@ -363,7 +383,7 @@ function genererModalites(critere) {
     }
 
     const texte = document.createElement("span");
-    texte.textContent = modalite.libelle;
+    texte.textContent = tr(modalite.libelle);
 
     bouton.appendChild(pastille);
     bouton.appendChild(texte);
@@ -417,15 +437,15 @@ function afficherCritere(index) {
   indexCritereActuel = index;
 
   // Remplir les textes
-  parId("critere-numero").textContent = "Pilier " + critere.numero;
-  parId("critere-titre").textContent = critere.titre;
+  parId("critere-numero").textContent = t("pilier_compteur") + " " + critere.numero;
+  parId("critere-titre").textContent = tr(critere.titre);
 
   // Sous-questions AFFICHÉES par défaut (déplié)
   const zone = parId("critere-aide-zone");
   zone.classList.remove("cache");
   parId("critere-aide-bouton").setAttribute("aria-expanded", "true");
   parId("critere-aide-fleche").textContent = "▾";
-  parId("critere-aide-texte").textContent = "Pour vous aider à répondre";
+  parId("critere-aide-texte").textContent = t("pilier_aide");
   genererSousQuestions(critere);
 
   // Modalités
@@ -439,9 +459,9 @@ function afficherCritere(index) {
 
   // Au dernier critère, le bouton invite à voir le diagnostic.
   if (index === CRITERES.length - 1) {
-    parId("critere-suivant").textContent = "Voir le diagnostic";
+    parId("critere-suivant").textContent = t("pilier_voir_diagnostic");
   } else {
-    parId("critere-suivant").textContent = "Suivant";
+    parId("critere-suivant").textContent = t("pilier_suivant");
   }
 
   // On affiche l'écran de critère.
@@ -458,12 +478,12 @@ function basculerSousQuestions() {
     zone.classList.remove("cache");
     parId("critere-aide-bouton").setAttribute("aria-expanded", "true");
     parId("critere-aide-fleche").textContent = "▾";
-    parId("critere-aide-texte").textContent = "Pour vous aider à répondre";
+    parId("critere-aide-texte").textContent = t("pilier_aide");
   } else {
     zone.classList.add("cache");
     parId("critere-aide-bouton").setAttribute("aria-expanded", "false");
     parId("critere-aide-fleche").textContent = "▸";
-    parId("critere-aide-texte").textContent = "Pour vous aider à répondre";
+    parId("critere-aide-texte").textContent = t("pilier_aide");
   }
 }
 
@@ -554,7 +574,7 @@ function construireCarteEvaluation(evaluation) {
   carte.className = "eval-carte";
 
   const type = TYPES_OBJET.find((t) => t.id === evaluation.typeObjet);
-  const typeLibelle = type ? type.libelle : "";
+  const typeLibelle = type ? tr(type.libelle) : "";
   const date = new Date(evaluation.dateFin).toLocaleDateString("fr-FR", {
     day: "numeric", month: "long", year: "numeric"
   });
@@ -569,8 +589,8 @@ function construireCarteEvaluation(evaluation) {
   html += '</div>';
 
   html += '<div class="eval-carte__actions">';
-  html += '<button class="eval-carte__rouvrir">Rouvrir</button>';
-  html += '<button class="eval-carte__supprimer">Supprimer</button>';
+  html += '<button class="eval-carte__rouvrir">' + t("historique_rouvrir") + '</button>';
+  html += '<button class="eval-carte__supprimer">' + t("historique_supprimer") + '</button>';
   html += '</div>';
 
   carte.innerHTML = html;
@@ -632,12 +652,121 @@ function rouvrirEvaluation(id) {
 // Demande confirmation avant de supprimer une évaluation, puis rafraîchit.
 function demanderSuppression(evaluation) {
   const ok = confirm(
-    "Supprimer définitivement l'évaluation « " + evaluation.nomObjet + " » ?\n\n" +
-    "Cette action est irréversible."
+    t("msg_suppression") + " « " + evaluation.nomObjet + " » ?\n\n" +
+    t("msg_suppression_fin")
   );
   if (ok) {
     supprimerEvaluation(evaluation.id);
     afficherHistorique();
+  }
+}
+
+
+/* ===========================================================
+   PARTAGE DE L'APPLICATION
+   Permet à un utilisateur de transmettre SPIRIT à quelqu'un d'autre.
+   Utilise le partage natif du téléphone (panneau Messages, Mail, WhatsApp…)
+   quand il est disponible ; sinon, copie le lien dans le presse-papier.
+   =========================================================== */
+function partagerApplication() {
+  // L'adresse partagée est celle de la page courante : ainsi le lien est
+  // toujours correct, que l'app soit sur GitHub ou sur ecclesialab.org.
+  const lien = window.location.href;
+  const titre = "SPIRIT";
+  const texte = t("msg_partage_texte");
+
+  // 1re option : le partage natif du téléphone (API Web Share).
+  if (navigator.share) {
+    navigator.share({ title: titre, text: texte, url: lien })
+      .catch(() => {
+        // L'utilisateur a annulé le partage : on ne fait rien.
+      });
+    return;
+  }
+
+  // 2e option (repli) : copier le lien dans le presse-papier.
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(lien)
+      .then(() => alert(t("msg_lien_copie") + "\n\n" + lien))
+      .catch(() => alert(t("msg_lien_partager") + "\n\n" + lien));
+    return;
+  }
+
+  // 3e option (dernier repli) : on affiche simplement le lien à recopier.
+  alert(t("msg_lien_partager") + "\n\n" + lien);
+}
+
+
+/* ===========================================================
+   APPLICATION DES TRADUCTIONS À L'INTERFACE
+   Parcourt la page et met chaque texte dans la langue active :
+   - les éléments [data-t] reçoivent le texte de la clé correspondante ;
+   - les éléments [data-t-placeholder] reçoivent un placeholder traduit ;
+   - les blocs [data-lang] sont affichés ou masqués selon la langue.
+   Appelée au démarrage et à chaque changement de langue.
+   =========================================================== */
+function appliquerTraductions() {
+  // 1. Textes simples (boutons, titres, libellés)
+  document.querySelectorAll("[data-t]").forEach((el) => {
+    el.textContent = t(el.getAttribute("data-t"));
+  });
+
+  // 2. Placeholders de champs
+  document.querySelectorAll("[data-t-placeholder]").forEach((el) => {
+    el.setAttribute("placeholder", t(el.getAttribute("data-t-placeholder")));
+  });
+
+  // 3. Blocs de texte long bilingues : on n'affiche que la langue active
+  const active = getLangue();
+  document.querySelectorAll("[data-lang]").forEach((bloc) => {
+    bloc.style.display = (bloc.getAttribute("data-lang") === active) ? "" : "none";
+  });
+
+  // 4. Cas particuliers réécrits dynamiquement : on rafraîchit le sélecteur
+  majSelecteurLangue();
+}
+
+// Met à jour l'affichage du sélecteur de langue (le bouton montre l'AUTRE langue,
+// celle vers laquelle on peut basculer).
+function majSelecteurLangue() {
+  const sel = parId("selecteur-langue");
+  if (!sel) return;
+  // On affiche les deux codes, en mettant en évidence l'actif.
+  const active = getLangue();
+  sel.querySelectorAll("[data-langue-code]").forEach((b) => {
+    const code = b.getAttribute("data-langue-code");
+    b.classList.toggle("selecteur-langue__option--actif", code === active);
+  });
+}
+
+// Change la langue, mémorise, et rafraîchit toute l'interface.
+function changerLangue(code) {
+  definirLangue(code);
+  appliquerTraductions();
+  // Si un écran au contenu dynamique est affiché, on le régénère pour qu'il
+  // passe dans la nouvelle langue.
+  rafraichirEcranCourant();
+}
+
+// Régénère le contenu dynamique de l'écran actuellement affiché, si besoin.
+function rafraichirEcranCourant() {
+  const actif = document.querySelector(".ecran--actif");
+  if (!actif) return;
+  const id = actif.id;
+  if (id === "ecran-critere") {
+    // On réaffiche le pilier courant (titre, sous-questions, modalités traduits).
+    afficherCritere(indexCritereActuel);
+  } else if (id === "ecran-diagnostic") {
+    // On régénère le diagnostic dans la bonne langue.
+    if (consultationArchive) {
+      afficherDiagnostic(evaluationConsultation, reponsesConsultation, dateConsultation);
+    } else {
+      afficherDiagnostic(evaluationEnCours, reponses);
+    }
+  } else if (id === "ecran-historique") {
+    afficherHistorique();
+  } else if (id === "ecran-entree") {
+    genererCartesType();
   }
 }
 
@@ -661,9 +790,8 @@ function brancherBoutons() {
     if (enCours && enCours.nomObjet) {
       // Une évaluation est en cours : on demande quoi faire.
       const reprendre = confirm(
-        "Une évaluation est en cours : « " + enCours.nomObjet + " ».\n\n" +
-        "Cliquez sur OK pour la reprendre, ou sur Annuler pour en commencer une nouvelle " +
-        "(l'évaluation en cours sera alors perdue)."
+        t("msg_reprise") + " : « " + enCours.nomObjet + " ».\n\n" +
+        t("msg_reprise_detail")
       );
       if (reprendre) {
         reprendreEvaluation(enCours);
@@ -685,6 +813,19 @@ function brancherBoutons() {
   // Lien "À propos" : affiche la page d'information dédiée.
   parId("lien-a-propos").addEventListener("click", () => {
     afficherEcran("ecran-a-propos");
+  });
+
+  // Lien "Partager SPIRIT" : ouvre le partage natif (ou copie le lien).
+  parId("lien-partager").addEventListener("click", partagerApplication);
+
+  // --- Sélecteur de langue sur l'accueil ---
+  document.querySelectorAll("#selecteur-langue [data-langue-code]").forEach((b) => {
+    b.addEventListener("click", () => changerLangue(b.getAttribute("data-langue-code")));
+  });
+
+  // --- Écran de choix de langue au premier lancement ---
+  document.querySelectorAll("[data-choix-langue]").forEach((b) => {
+    b.addEventListener("click", () => choisirLangueInitiale(b.getAttribute("data-choix-langue")));
   });
 
   // --- Pages d'information : boutons retour ---
@@ -755,6 +896,12 @@ function brancherBoutons() {
    8. DÉMARRAGE
    =========================================================== */
 document.addEventListener("DOMContentLoaded", () => {
+  // On fixe la langue active AVANT de générer les contenus (qui utilisent tr()).
+  // Au démarrage, on FIXE sans mémoriser : tant que l'utilisateur n'a pas choisi,
+  // l'écran de choix doit pouvoir s'afficher au premier lancement.
+  fixerLangueSansMemoriser(determinerLangueInitiale());
+  appliquerTraductions();         // applique les textes d'interface à la page
+
   genererCartesType();            // cartes de type d'objet
   construireBarreProgression();   // segments de la barre de progression
   brancherBoutons();              // on relie tous les boutons
