@@ -225,16 +225,27 @@ body {
 
 /* Liens secondaires discrets (bas de l'écran d'accueil) */
 .lien-secondaire {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  text-align: left;
   background: none;
   border: none;
   font-family: var(--police-corps);
   font-size: 0.98rem;
   color: var(--texte-doux);
   cursor: pointer;
-  padding: var(--espace-xs);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color 0.2s ease;
+  padding: 0.55rem var(--espace-xs);
+  border-radius: var(--arrondi-petit);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Icône au trait : reprend la couleur du texte (donc change au survol). */
+.lien-secondaire__icone {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .lien-secondaire:hover {
