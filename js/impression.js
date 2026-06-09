@@ -104,16 +104,36 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
   html += '</div>';
 
   /* --- 6. Fondements : les 14 piliers et le Document final du Synode ---
-     Dernière feuille du PDF. Le contenu est une image (la fiche préparée par
-     l'équipe), affichée selon la langue active. On force un saut de page pour
-     qu'elle occupe sa propre feuille, et on ajoute dessous une ligne
-     d'attribution en texte (donc sélectionnable). */
-  const ficheFondements = (getLangue() === "en")
-    ? "images/fondements-en.png"
-    : "images/fondements-fr.png";
+     Dernière feuille du PDF, en texte natif (sélectionnable). On parcourt
+     les pierres angulaires, puis pour chaque pilier on affiche son titre et
+     ses citations du Document final (clé = identifiant du pilier dans
+     JUSTIFICATIONS). La référence s'affiche "DF" en français, "FD" en anglais. */
+  const prefixeRef = (getLangue() === "en") ? "FD" : "DF";
+  const langActive = getLangue();
 
-  html += '<div class="pdf-section pdf-saut-page pdf-fondements">';
-  html += '<img class="pdf-fondements-image" src="' + ficheFondements + '" alt="' + echapper(t("pdf_fondements_alt")) + '">';
+  html += '<div class="pdf-section pdf-saut-page">';
+  html += '<h2 class="pdf-section-titre">' + t("pdf_fondements_titre") + '</h2>';
+
+  PIERRES_ANGULAIRES.forEach((pierre) => {
+    html += '<div class="pdf-fond-pierre" style="background:' + pierre.couleur + '">';
+    html += '<div class="pdf-fond-pierre-nom">' + tr(pierre.nom) + '</div>';
+    html += '<div class="pdf-fond-pierre-soustitre">' + echapper(tr(pierre.sousTitre)) + '</div>';
+    html += '</div>';
+
+    CRITERES.filter((c) => c.pierre === pierre.id).forEach((critere) => {
+      const citations = JUSTIFICATIONS[critere.id] || [];
+      html += '<div class="pdf-fond-pilier">';
+      html += '<div class="pdf-fond-pilier-titre">' + critere.numero + '. ' + echapper(tr(critere.titre)) + '</div>';
+      citations.forEach((cit) => {
+        const texte = (langActive === "en") ? cit.en : cit.fr;
+        html += '<p class="pdf-fond-citation">';
+        html += '<span class="pdf-fond-ref" style="color:' + pierre.couleur + '">' + prefixeRef + ' ' + cit.num + '</span> — ';
+        html += echapper(texte) + '</p>';
+      });
+      html += '</div>';
+    });
+  });
+
   html += '<p class="pdf-fondements-source">' + t("pdf_fondements_source") + '</p>';
   html += '</div>';
 

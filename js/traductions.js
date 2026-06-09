@@ -113,8 +113,6 @@ const TRADUCTIONS = {
   "pdf_fondements_titre": { fr: "Fondements — Les 14 piliers et le Document final du Synode",
                             en: "Foundations — The 14 pillars and the Synod Final Document" },
   "pdf_fondements_source": { fr: "Citations extraites du Document final du Synode sur la synodalité (2024). © Secrétariat général du Synode des évêques.",
-                             en: "Quotations from the Final Document of the Synod on Synodality (2024). © General Secretariat of the Synod of Bishops." },
-  "pdf_fondements_alt": { fr: "Les 14 piliers SPIRIT et leurs justifications issues du Document final du Synode",
-                          en: "The 14 SPIRIT pillars and their justifications from the Synod Final Document" }
+                             en: "Quotations from the Final Document of the Synod on Synodality (2024). © General Secretariat of the Synod of Bishops." }
 
 };

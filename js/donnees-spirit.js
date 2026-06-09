@@ -338,3 +338,91 @@ const TYPES_OBJET = [
                    en: "A permanent team, a council, a service" }
   }
 ];
+
+/* ============================================================
+   JUSTIFICATIONS DES PILIERS (Document final du Synode, 2024)
+   Affichées sur la dernière feuille du PDF, regroupées par
+   pierre angulaire. Clé = identifiant du pilier (voir CRITERES).
+   Chaque citation : { num, fr, en }. La référence s'affiche
+   "DF <num>" en français et "FD <num>" en anglais.
+   ⚠ Citations issues du Document final du Synode sur la
+   synodalité — ne pas modifier le texte sans validation.
+   ============================================================ */
+const JUSTIFICATIONS = {
+  "hospitalite": [
+    { num: "115", fr: "« La relation entre le lieu et l’espace suggère également une réflexion sur l’Église en tant que “ maison ”. Lorsqu’elle n’est pas comprise comme un espace fermé et inaccessible, à défendre à tout prix, l’image de la maison évoque des possibilités d’accueil, d’hospitalité et d’inclusion. »",
+      en: "“The relation between place and space leads us also to reflect on the Church as ‘home’. When it is not thought of as a closed space, inaccessible, to be defended at all costs, the image of home evokes the possibility of welcome, hospitality, and inclusion.”" },
+    { num: "35", fr: "« Nous apprenons que nous avons la même dignité, que nous sommes créés pour la réciprocité, que nous avons besoin d’être écoutés et que nous sommes capables d’écouter. »",
+      en: "“We learn that we are equal in dignity and created for reciprocity, that we need to be listened to, and that we are able to listen.”" }
+  ],
+  "diversite": [
+    { num: "110", fr: "« La dimension locale de l’Église préserve la riche diversité des expressions de foi enracinées dans des contextes culturels et historiques spécifiques, et la communion des Églises manifeste la communion des fidèles au sein de l’Église unique. La conversion synodale invite donc chacun à élargir l’espace de son cœur. »",
+      en: "“This local dimension to our Church preserves the rich diversity of expressions of faith that are grounded in a specific cultural and historical milieu. The communion of local Churches is the expression of the unity of the faithful within the one Church. Thus, synodal conversion calls each person to enlarge the space of their heart.”" },
+    { num: "34", fr: "« Les différences de vocation, d’âge, de sexe, de profession, de condition et d’appartenance sociale, présentes dans toute communauté chrétienne, offrent à chacun la rencontre avec l’altérité indispensable à la maturation personnelle. »",
+      en: "“Differences that are found in every Christian community with respect to age, vocation, sex, profession and social belonging provide an opportunity for an encounter with otherness that is indispensable to personal growth and maturity.”" }
+  ],
+  "parole-de-dieu": [
+    { num: "27", fr: "« Les assemblées synodales sont des événements qui célèbrent l’union du Christ avec son Église par l’action de l’Esprit. La liturgie est une écoute de la Parole de Dieu et une réponse à son initiative d’alliance. L’assemblée synodale, elle aussi, est une écoute de cette même Parole, qui résonne aussi bien dans les signes des temps que dans le cœur des fidèles, et une réponse de l’assemblée qui discerne la volonté de Dieu pour la mettre en pratique. »",
+      en: "“Synodal assemblies are events that celebrate the union of Christ with His Church through the action of the Spirit. The liturgy is a listening to the Word of God and a response to His covenantal initiative. Similarly, the synodal assembly is a listening to this same Word, which resounds as much in the signs of the times as in the hearts of the faithful, and also a response of the assembly that is discerning God’s will in order to put it into practice.”" }
+  ],
+  "eucharistie": [
+    { num: "26", fr: "« La célébration de l’Eucharistie, surtout le dimanche, est la modalité première et fondamentale selon laquelle le peuple saint de Dieu se réunit et se rencontre. (…) l’Église, Corps du Christ, apprend de l’Eucharistie à articuler unité et pluralité : unité de l’Église et multiplicité des assemblées eucharistiques ; unité du mystère sacramentel et variété des traditions liturgiques ; unité de la célébration et diversité des vocations, des charismes et des ministères. »",
+      en: "“The celebration of the Eucharist, especially on Sundays, is the first and fundamental way the holy People of God gather and meet. (…) the Church, the Body of Christ, learns from the Eucharist how to combine unity and plurality: the unity of the Church and the multiplicity of Eucharistic assemblies; unity of the sacramental mystery and variety of liturgical traditions; unity of celebration and plurality of vocations, charisms and ministries.”" }
+  ],
+  "oecumenisme": [
+    { num: "138", fr: "« Le dialogue œcuménique est fondamental pour développer une compréhension de la synodalité et de l’unité de l’Église. Il nous pousse à imaginer des pratiques synodales œcuméniques, y compris des formes de consultation et de discernement sur des questions urgentes d’intérêt commun, telles que la célébration d’un synode œcuménique sur l’évangélisation. »",
+      en: "“Ecumenical dialogue is fundamental to developing an understanding of synodality and the unity of the Church. It urges us to develop ecumenical synodal practices, including forms of consultation and discernment on questions of shared and urgent interest, as the celebration of an ecumenical Synod on evangelisation could be.”" },
+    { num: "42", fr: "« La pluralité des religions et des cultures, la multiplicité des traditions spirituelles et théologiques, la variété des dons de l’Esprit et des tâches dans la communauté, ainsi que la diversité des âges, des sexes et des appartenances sociales au sein de l’Église, constituent une invitation pour chacun à reconnaître et à assumer sa propre partialité, en renonçant à la prétention d’être au centre et en s’ouvrant à l’accueil d’autres perspectives. »",
+      en: "“The plurality of religions and cultures, the diversity of spiritual and theological traditions, the variety of the gifts of the Spirit and of the tasks of the community, as well as the diversity of age, sex and social affiliation within the Church, are an invitation to each person to recognise their particular situatedness, resist the temptation of being at the centre, and open oneself to the acceptance of other perspectives.”" }
+  ],
+  "discernement-decision": [
+    { num: "87", fr: "« Dans l’Église synodale, “ la communauté tout entière, dans la libre et riche diversité de ses membres, est convoquée pour prier, écouter, analyser, dialoguer, discerner et conseiller afin de prendre des décisions ” (CTI, n. 68) pour la mission. Favoriser la participation la plus large possible de l’ensemble du peuple de Dieu aux processus décisionnels est le moyen le plus efficace de promouvoir une Église synodale. »",
+      en: "“In the synodal Church ‘the whole community, in the free and rich diversity of its members, is called together to pray, listen, analyse, dialogue, discern and offer advice on taking pastoral decisions’ (ITC 68) for mission. The way to promote a synodal Church is to foster as great a participation of all the People of God as possible in decision-making processes.”" }
+  ],
+  "coresponsabilite": [
+    { num: "36", fr: "« L’aspiration à élargir les possibilités de participation et d’exercice de la coresponsabilité différenciée de tous les baptisés, hommes et femmes, est apparue. »",
+      en: "“A desire emerged to expand possibilities for participation and for the exercise of differentiated co-responsibility by all the Baptised, men and women.”" },
+    { num: "74", fr: "« Une répartition plus articulée des tâches et des responsabilités, un discernement plus courageux de ce qui appartient en propre au ministère ordonné et de ce qui peut et doit être délégué à d’autres, favoriseront son exercice d’une manière spirituellement plus saine et pastoralement plus dynamique. »",
+      en: "“A wider distribution of tasks and responsibilities and a more courageous discernment of what properly belongs to the ordained ministry and what can and must be delegated to others will enable each ministry to be exercised in a more spiritually sound and pastorally dynamic manner.”" }
+  ],
+  "transparence": [
+    { num: "80", fr: "« Les processus décisionnels nécessitent un discernement ecclésial, qui requiert une écoute dans un climat de confiance, celle-ci étant soutenue par la transparence et le rendre compte. La confiance doit être mutuelle. »",
+      en: "“Decision-making processes need ecclesial discernment, which requires listening in a climate of trust that is supported by transparency and accountability. Trust must be mutual.”" },
+    { num: "97", fr: "« Là où l’Église jouit de la confiance, les pratiques de transparence, de rendre-compte et d’évaluation contribuent à la consolider, et elles sont un élément encore plus critique là où la crédibilité de l’Église doit être reconstruite. »",
+      en: "“Wherever the Church enjoys trust, the practice of transparency, accountability, and evaluation helps to strengthen its credibility. These practices are even more critical where the Church’s credibility needs rebuilding.”" }
+  ],
+  "formation": [
+    { num: "143", fr: "« [Que] la formation soit intégrale, continue et partagée. Son but n’est pas seulement l’acquisition de connaissances théoriques, mais la promotion de capacités d’ouverture et de rencontre, de partage et de collaboration, de réflexion et de discernement en commun. »",
+      en: "“The formation provided by the Christian community [should] be integral, ongoing and shared. Such formation must aim not only at acquiring theoretical knowledge but also at promoting the capacity for openness and encounter, sharing and collaboration, reflection and discernment in common.”" },
+    { num: "100", fr: "« [L’évaluation] aide l’Église à tirer les leçons de l’expérience, à recalibrer les plans d’action et à rester attentive à la voix de l’Esprit Saint, en focalisant l’attention sur les résultats des décisions en rapport avec la mission. »",
+      en: "“The evaluation also assists the local Church in learning from experience, adjusting plans of action, determining the outcomes of its decisions in relation to its mission.”" }
+  ],
+  "centralite-christ": [
+    { num: "14", fr: "« L’Église existe pour témoigner au monde de l’événement décisif de l’histoire : la résurrection de Jésus. Le Ressuscité apporte la paix au monde et nous donne son Esprit. Le Christ vivant est source de la vraie liberté, fondement d’une espérance inébranlable, et révélation tant du véritable visage de Dieu que de la destinée ultime de l’être humain. »",
+      en: "“The Church exists to bear witness in the world to the most decisive moment in history: the Resurrection of Jesus. The Risen Christ brings peace to the world and gives us the gift of His Spirit. The living Christ is the source of true freedom, the foundation for a hope that does not disappoint, the revelation of the true face of God and humanity’s ultimate destiny.”" }
+  ],
+  "activite-missionnaire": [
+    { num: "32", fr: "« La synodalité n’est pas une fin en soi : elle est orientée vers la mission que le Christ a confiée à l’Église dans l’Esprit. (…) La synodalité et la mission sont intimement liées : la mission éclaire la synodalité et la synodalité pousse à la mission. »",
+      en: "“Synodality is not an end in itself. Rather, it serves the mission that Christ entrusted to the Church in the Spirit. (...) Synodality and mission are intimately linked: mission illuminates synodality and synodality spurs to mission.”" },
+    { num: "59", fr: "« Dans une Église synodale missionnaire, sous la conduite de leurs pasteurs, les communautés seront capables d’envoyer des personnes et de soutenir celles qu’elles auront envoyées. »",
+      en: "“In a missionary synodal Church, under the leadership of their pastors, communities will be able to send people out in mission and support those they have sent.”" }
+  ],
+  "services-ministeres": [
+    { num: "75", fr: "« Au fil de son histoire, l’Église a institué des ministères spécifiques, distincts des ministères ordonnés, pour répondre aux besoins de la communauté et de la mission. »",
+      en: "“Throughout its history, the Church has adopted other ministries apart from those of the ordained in response to the needs of the community and the mission.”" },
+    { num: "77", fr: "« Les fidèles laïcs, hommes et femmes, doivent se voir offrir davantage de possibilités de participation, en explorant également d’autres formes de service et de ministères en réponse aux besoins pastoraux de notre temps, dans un esprit de collaboration et de coresponsabilité différenciée. »",
+      en: "“The lay faithful, both men and women, should be given greater opportunities for participation, also exploring new forms of service and ministry in response to the pastoral needs of our time in a spirit of collaboration and differentiated co-responsibility.”" }
+  ],
+  "contextes-culturels": [
+    { num: "53", fr: "« L’appel au renouvellement des relations dans le Seigneur Jésus résonne dans la pluralité des contextes où ses disciples vivent et réalisent la mission de l’Église. Chacun de ces contextes présente des richesses particulières, liées au pluralisme des cultures, dont il est indispensable de tenir compte. »",
+      en: "“The call to renewed relationships in the Lord Jesus flourishes in the different contexts in which His disciples live and carry out the Church’s mission. The plurality of cultures requires that the uniqueness of each cultural context is taken into account.”" },
+    { num: "110", fr: "« L’Église ne peut être comprise sans être enracinée dans un territoire concret, dans un espace et un temps où se forme une expérience partagée de la rencontre avec Dieu Sauveur. »",
+      en: "“The Church cannot be understood apart from its roots in a specific territory, in that space and time where a shared experience of encounter with the saving God occurs.”" }
+  ],
+  "conversion-transformations": [
+    { num: "28", fr: "« En termes simples et synthétiques, on peut dire que la synodalité est un chemin de renouveau spirituel et de réforme structurelle pour rendre l’Église plus participative et missionnaire, c’est-à-dire pour la rendre plus capable de marcher avec chaque homme et chaque femme en rayonnant la lumière du Christ. »",
+      en: "“In simple and concise terms, synodality is a path of spiritual renewal and structural reform that enables the Church to be more participatory and missionary so that it can walk with every man and woman, radiating the light of Christ.”" },
+    { num: "44", fr: "« Le renouveau de la communauté chrétienne n’est possible qu’en reconnaissant la primauté de la grâce. Si la profondeur spirituelle personnelle et communautaire fait défaut, la synodalité se réduit à une logique d’organisation. »",
+      en: "“The renewal of the Christian community is possible only by recognising the primacy of grace. If spiritual depth at both personal and communal levels is lacking, synodality is reduced to organisational expediency.”" }
+  ]
+};
