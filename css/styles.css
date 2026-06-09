@@ -227,9 +227,10 @@ body {
 .lien-secondaire {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.7rem;
   width: 100%;
-  text-align: left;
+  text-align: center;
   background: none;
   border: none;
   font-family: var(--police-corps);
