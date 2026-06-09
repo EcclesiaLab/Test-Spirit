@@ -859,13 +859,18 @@ function brancherBoutons() {
   parId("critere-precedent").addEventListener("click", allerCriterePrecedent);
 
   // --- Écran de diagnostic ---
-  // Retour : en consultation d'archive, on revient à l'historique ;
-  // sinon (évaluation qu'on vient de finir), on revient au dernier critère.
+  // Retour : en consultation d'archive, on revient à l'historique.
+  // Après une évaluation qu'on vient de terminer, on NE retourne PAS au
+  // questionnaire : revenir modifier ses réponses après avoir vu le score
+  // fausserait l'évaluation (biais de confirmation) et créerait un doublon
+  // dans l'historique, car l'évaluation est déjà archivée à ce stade.
+  // On ramène donc à l'accueil, comme le bouton "Revenir à l'accueil".
   parId("diagnostic-retour").addEventListener("click", () => {
     if (consultationArchive) {
       afficherHistorique();
     } else {
-      afficherCritere(CRITERES.length - 1);
+      consultationArchive = false;
+      afficherEcran("ecran-accueil");
     }
   });
 
