@@ -103,7 +103,21 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_attente") + '</p>';
   html += '</div>';
 
-  /* --- 6. Pied de page --- */
+  /* --- 6. Fondements : les 14 piliers et le Document final du Synode ---
+     Dernière feuille du PDF. Le contenu est une image (la fiche préparée par
+     l'équipe), affichée selon la langue active. On force un saut de page pour
+     qu'elle occupe sa propre feuille, et on ajoute dessous une ligne
+     d'attribution en texte (donc sélectionnable). */
+  const ficheFondements = (getLangue() === "en")
+    ? "images/fondements-en.png"
+    : "images/fondements-fr.png";
+
+  html += '<div class="pdf-section pdf-saut-page pdf-fondements">';
+  html += '<img class="pdf-fondements-image" src="' + ficheFondements + '" alt="' + echapper(t("pdf_fondements_alt")) + '">';
+  html += '<p class="pdf-fondements-source">' + t("pdf_fondements_source") + '</p>';
+  html += '</div>';
+
+  /* --- 7. Pied de page --- */
   html += '<div class="pdf-pied">' + t("pdf_pied") + '</div>';
 
   conteneur.innerHTML = html;

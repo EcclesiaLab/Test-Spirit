@@ -130,7 +130,7 @@ body {
    donc on lui donne une présence un peu plus grande. */
 .accueil__logo {
   width: 200px;
-  height: 200px;
+  height: auto;
   max-width: 55%;
   margin: 0 auto var(--espace-sm);
   display: block;
@@ -1052,7 +1052,7 @@ body {
 @media (min-width: 600px) {
   .accueil__logo {
     width: 230px;
-    height: 230px;
+    height: auto;
   }
 }
 
@@ -1280,5 +1280,19 @@ body {
     text-align: center;
     font-size: 8pt;
     color: #5A6A7A;
+  }
+
+  /* --- Dernière feuille : fiche des fondements (image) --- */
+  .pdf-fondements-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .pdf-fondements-source {
+    margin-top: 8px;
+    font-size: 8pt;
+    font-style: italic;
+    color: #5A6A7A;
+    text-align: center;
   }
 }

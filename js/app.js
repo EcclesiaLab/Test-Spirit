@@ -27,6 +27,27 @@ if ("serviceWorker" in navigator) {
       .register("service-worker.js")
       .then(() => console.log("SPIRIT : service worker enregistré (mode hors-ligne actif)."))
       .catch((erreur) => console.log("SPIRIT : service worker non enregistré.", erreur));
+
+    // --- Rechargement automatique lors d'une mise à jour ---
+    // Problème résolu ici : avec une stratégie "cache d'abord", après une mise
+    // à jour l'utilisateur voit encore l'ancienne version au premier lancement,
+    // et devait fermer puis rouvrir l'app pour voir la nouvelle.
+    //
+    // Solution : si une version est DÉJÀ installée (utilisateur de retour), on
+    // écoute l'événement "controllerchange", déclenché quand le nouveau service
+    // worker prend le relais. À ce moment-là, on recharge la page UNE seule fois
+    // pour afficher la nouvelle version, sans intervention de l'utilisateur.
+    //
+    // On ne le fait que si un service worker contrôle déjà la page : sinon
+    // (toute première visite), il n'y a aucune ancienne version à remplacer.
+    if (navigator.serviceWorker.controller) {
+      let dejaRecharge = false;
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (dejaRecharge) return; // garde-fou : on ne recharge qu'une fois
+        dejaRecharge = true;
+        window.location.reload();
+      });
+    }
   });
 }
 
