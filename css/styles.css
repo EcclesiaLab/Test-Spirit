@@ -1286,7 +1286,7 @@ body {
 
   /* --- Pied de page --- */
   .pdf-pied {
-    margin-top: 24px;
+    margin-top: 14px;
     padding-top: 8px;
     border-top: 1px solid #DDD7CC;
     text-align: center;
@@ -1298,34 +1298,34 @@ body {
   .pdf-fond-pierre {
     color: #fff;
     border-radius: 5px;
-    padding: 7px 12px;
-    margin: 16px 0 10px;
+    padding: 6px 12px;
+    margin: 11px 0 7px;
   }
   .pdf-fond-pierre-nom {
     font-family: var(--police-titre);
-    font-size: 13pt;
+    font-size: 12pt;
     font-weight: 600;
   }
   .pdf-fond-pierre-soustitre {
-    font-size: 8.5pt;
+    font-size: 8pt;
     margin-top: 1px;
   }
   .pdf-fond-pilier {
-    margin-bottom: 10px;
+    margin-bottom: 7px;
     break-inside: avoid;
     page-break-inside: avoid;
   }
   .pdf-fond-pilier-titre {
-    font-size: 10pt;
+    font-size: 9.5pt;
     font-weight: 700;
     color: var(--marine);
-    margin-bottom: 3px;
+    margin-bottom: 2px;
   }
   .pdf-fond-citation {
-    font-size: 9pt;
-    line-height: 1.45;
+    font-size: 8.5pt;
+    line-height: 1.36;
     color: #3A4654;
-    margin: 0 0 4px;
+    margin: 0 0 3px;
     text-align: justify;
   }
   .pdf-fond-ref {
@@ -1333,8 +1333,8 @@ body {
     white-space: nowrap;
   }
   .pdf-fondements-source {
-    margin-top: 14px;
-    padding-top: 8px;
+    margin-top: 10px;
+    padding-top: 6px;
     border-top: 1px solid #DDD7CC;
     font-size: 8pt;
     font-style: italic;
