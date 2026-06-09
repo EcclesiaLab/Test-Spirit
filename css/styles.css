@@ -785,6 +785,19 @@ body {
   line-height: 1.5;
 }
 
+/* Note transitoire sur les pistes d'action : encadré discret, ton informatif. */
+.diagnostic__pistes-note {
+  margin-top: var(--espace-md);
+  padding: var(--espace-sm);
+  background: var(--creme-fonce);
+  border-left: 3px solid var(--orange);
+  border-radius: var(--arrondi-petit);
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--texte-doux);
+  line-height: 1.5;
+}
+
 /* Zone d'actions du diagnostic : dans le flux qui défile, avec un espace
    au-dessus pour la détacher des textes de lecture. */
 .diagnostic__actions {

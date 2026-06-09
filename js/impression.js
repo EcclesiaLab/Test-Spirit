@@ -101,6 +101,7 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
   html += '<div class="pdf-section">';
   html += '<h2 class="pdf-section-titre">' + t("pdf_pistes") + '</h2>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_attente") + '</p>';
+  html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_validation") + '</p>';
   html += '</div>';
 
   /* --- 6. Fondements : les 14 piliers et le Document final du Synode ---
