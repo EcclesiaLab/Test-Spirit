@@ -207,9 +207,10 @@ function rafraichirBoutonCommencer() {
 function reinitialiserEntree() {
   evaluationEnCours = { nomObjet: "", typeObjet: null };
   parId("champ-nom-objet").value = "";
-  document.querySelectorAll(".carte-type").forEach((carte) => {
-    carte.classList.remove("carte-type--active");
-  });
+  // On régénère les cartes de type pour qu'elles soient toujours dans la
+  // langue courante (l'utilisateur a pu changer de langue depuis un autre
+  // écran avant d'arriver ici).
+  genererCartesType();
   rafraichirBoutonCommencer();
 }
 
@@ -596,7 +597,8 @@ function construireCarteEvaluation(evaluation) {
 
   const type = TYPES_OBJET.find((t) => t.id === evaluation.typeObjet);
   const typeLibelle = type ? tr(type.libelle) : "";
-  const date = new Date(evaluation.dateFin).toLocaleDateString("fr-FR", {
+  const locale = (getLangue() === "en") ? "en-GB" : "fr-FR";
+  const date = new Date(evaluation.dateFin).toLocaleDateString(locale, {
     day: "numeric", month: "long", year: "numeric"
   });
 
@@ -670,10 +672,16 @@ function rouvrirEvaluation(id) {
   afficherDiagnostic(evaluationConsultation, evaluation.reponses, evaluation.dateFin);
 }
 
+// Entoure un texte des guillemets adaptés à la langue active
+// (« … » en français, " … " en anglais).
+function entreGuillemets(texte) {
+  return (getLangue() === "en") ? "\u201C" + texte + "\u201D" : "\u00AB " + texte + " \u00BB";
+}
+
 // Demande confirmation avant de supprimer une évaluation, puis rafraîchit.
 function demanderSuppression(evaluation) {
   const ok = confirm(
-    t("msg_suppression") + " « " + evaluation.nomObjet + " » ?\n\n" +
+    t("msg_suppression") + " " + entreGuillemets(evaluation.nomObjet) + " ?\n\n" +
     t("msg_suppression_fin")
   );
   if (ok) {
@@ -735,6 +743,11 @@ function appliquerTraductions() {
   // 2. Placeholders de champs
   document.querySelectorAll("[data-t-placeholder]").forEach((el) => {
     el.setAttribute("placeholder", t(el.getAttribute("data-t-placeholder")));
+  });
+
+  // 2 bis. Étiquettes d'accessibilité (aria-label) : pour les lecteurs d'écran.
+  document.querySelectorAll("[data-t-aria]").forEach((el) => {
+    el.setAttribute("aria-label", t(el.getAttribute("data-t-aria")));
   });
 
   // 3. Blocs de texte long bilingues : on n'affiche que la langue active
@@ -811,7 +824,7 @@ function brancherBoutons() {
     if (enCours && enCours.nomObjet) {
       // Une évaluation est en cours : on demande quoi faire.
       const reprendre = confirm(
-        t("msg_reprise") + " : « " + enCours.nomObjet + " ».\n\n" +
+        t("msg_reprise") + " : " + entreGuillemets(enCours.nomObjet) + ".\n\n" +
         t("msg_reprise_detail")
       );
       if (reprendre) {
