@@ -308,8 +308,8 @@ const CRITERES = [
    id technique inchangé ; seul le libellé est bilingue.
    =========================================================== */
 const MODALITES = [
-  { id: "present",        libelle: { fr: "Solidement établi", en: "Firmly established" }, couleur: "#1D9E75" },
-  { id: "a-developper",   libelle: { fr: "En chantier", en: "Under construction" }, couleur: "#EF9F27" },
+  { id: "present",        libelle: { fr: "Solidement établi", en: "Well established" }, couleur: "#1D9E75" },
+  { id: "a-developper",   libelle: { fr: "En chantier", en: "Under development" }, couleur: "#EF9F27" },
   { id: "non-present",    libelle: { fr: "À bâtir",         en: "To be built" },    couleur: "#444441" },
   { id: "non-applicable", libelle: { fr: "Non applicable",  en: "Not applicable" }, couleur: null }
 ];
@@ -321,21 +321,21 @@ const MODALITES = [
 const TYPES_OBJET = [
   {
     id: "action-ponctuelle",
-    libelle: { fr: "Action ponctuelle", en: "One-off action" },
-    description: { fr: "Un événement, une célébration, une retraite, une mission ponctuelle",
-                   en: "An event, a celebration, a retreat, a one-off mission" }
+    libelle: { fr: "Activité ponctuelle", en: "One-time activity" },
+    description: { fr: "Un événement, une célébration, une retraite, une mission ponctuelle, etc.",
+                   en: "An event, a celebration, a retreat, a one-off mission, etc." }
   },
   {
     id: "projet-parcours",
-    libelle: { fr: "Projet ou parcours", en: "Project or journey" },
-    description: { fr: "Une initiative étalée dans le temps, avec une fin prévue",
-                   en: "An initiative spread over time, with a planned end" }
+    libelle: { fr: "Projet ou parcours", en: "Project or program" },
+    description: { fr: "Parcours de formation spirituelle, projet de café chrétien, etc.",
+                   en: "A spiritual formation journey, a Christian café project, etc." }
   },
   {
     id: "groupe-instance",
-    libelle: { fr: "Groupe", en: "Group" },
-    description: { fr: "Une équipe permanente, un conseil, un service",
-                   en: "A permanent team, a council, a service" }
+    libelle: { fr: "Dynamique de groupe", en: "Group dynamics" },
+    description: { fr: "Au sein d'une équipe permanente, d'un conseil, d'un service, etc.",
+                   en: "Within a permanent team, a council, a service, etc." }
   }
 ];
 

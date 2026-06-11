@@ -215,13 +215,13 @@ function redigerLecture(idPierre, composition) {
   // On formule en nombre de piliers (libellés selon la langue).
   if (c["present"] > 0) {
     parties.push(formuler(c["present"],
-      en ? "firmly established" : "solidement établi",
-      en ? "firmly established" : "solidement établis"));
+      en ? "well established" : "solidement établi",
+      en ? "well established" : "solidement établis"));
   }
   if (c["a-developper"] > 0) {
     parties.push(formuler(c["a-developper"],
-      en ? "under construction" : "en chantier",
-      en ? "under construction" : "en chantier"));
+      en ? "under development" : "en chantier",
+      en ? "under development" : "en chantier"));
   }
   if (c["non-present"] > 0) {
     parties.push(formuler(c["non-present"],

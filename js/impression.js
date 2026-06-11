@@ -97,11 +97,13 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
   });
   html += '</div>';
 
-  /* --- 5. Pistes d'action (emplacement réservé) --- */
+  /* --- 5. Pistes de progression (emplacement réservé) --- */
   html += '<div class="pdf-section">';
   html += '<h2 class="pdf-section-titre">' + t("pdf_pistes") + '</h2>';
+  html += '<p class="pdf-pistes-destinataire">' + t("pdf_pistes_destinataire") + '</p>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_attente") + '</p>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_validation") + '</p>';
+  html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_groupe") + '</p>';
   html += '</div>';
 
   /* --- 6. Fondements : les 14 piliers et le Document final du Synode ---
@@ -114,6 +116,7 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
 
   html += '<div class="pdf-section pdf-saut-page">';
   html += '<h2 class="pdf-section-titre">' + t("pdf_fondements_titre") + '</h2>';
+  html += '<p class="pdf-fondements-intro">' + t("pdf_fondements_intro") + '</p>';
 
   PIERRES_ANGULAIRES.forEach((pierre) => {
     html += '<div class="pdf-fond-pierre" style="background:' + pierre.couleur + '">';

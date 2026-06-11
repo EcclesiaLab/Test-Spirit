@@ -1294,7 +1294,21 @@ body {
     font-size: 10pt;
     font-style: italic;
     color: #5A6A7A;
-    line-height: 1.4;
+    line-height: 1.55;
+    margin: 0 0 14px;
+  }
+  .pdf-pistes-destinataire {
+    font-size: 9pt;
+    font-style: italic;
+    color: #8A96A4;
+    margin: 0 0 12px;
+  }
+  .pdf-fondements-intro {
+    font-size: 9.5pt;
+    font-style: italic;
+    color: #5A6A7A;
+    line-height: 1.45;
+    margin: 0 0 12px;
   }
 
   /* --- Pied de page --- */
