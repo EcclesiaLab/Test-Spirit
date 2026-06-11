@@ -23,7 +23,7 @@ const TRADUCTIONS = {
 
   // --- Accueil ---
   "accueil_baseline":        { fr: "Évaluer la synodalité d'une pratique ecclésiale",
-                               en: "Evaluating the synodality of an ecclesial practice" },
+                               en: "Assessing the synodality of an ecclesial practice" },
   "accueil_demarrer":        { fr: "Démarrer une évaluation", en: "Start an evaluation" },
   "accueil_mes_evaluations": { fr: "Mes évaluations",         en: "My evaluations" },
   "accueil_quest_ce_que":    { fr: "Qu'est-ce que SPIRIT ?",  en: "What is SPIRIT?" },
@@ -99,10 +99,10 @@ const TRADUCTIONS = {
                          en: "To share SPIRIT, copy this link:" },
 
   // --- PDF ---
-  "pdf_titre":        { fr: "Évaluer la synodalité des pratiques", en: "Evaluating the synodality of practices" },
+  "pdf_titre":        { fr: "Évaluer la synodalité des pratiques", en: "Assessing the synodality of practices" },
   "pdf_sous_titre":   { fr: "Cadre SPIRIT — d'après le <em>Document final</em> du Synode 2024",
                         en: "SPIRIT framework — based on the 2024 Synod <em>Final Document</em>" },
-  "pdf_objet_label":  { fr: "Objet évalué", en: "Practice evaluated" },
+  "pdf_objet_label":  { fr: "Pratique évaluée", en: "Practice evaluated" },
   "pdf_evaluation_du":{ fr: "Évaluation du", en: "Evaluation of" },
   "pdf_diagnostic":   { fr: "Diagnostic", en: "Diagnosis" },
   "pdf_lecture":      { fr: "Lecture par pierre angulaire", en: "Reading by cornerstone" },

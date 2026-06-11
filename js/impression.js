@@ -176,6 +176,18 @@ function echapper(texte) {
    =========================================================== */
 function lancerImpression(evaluation, reponses, dateISO) {
   construireDocumentImpression(evaluation, reponses, dateISO);
+
+  // L'en-tête d'impression du navigateur (celui qui affiche la date et l'heure)
+  // reprend le titre du document. On le règle temporairement sur le titre
+  // SPIRIT localisé, puis on le restaure une fois l'impression terminée.
+  const titreOriginal = document.title;
+  document.title = "SPIRIT — " + t("pdf_titre");
+  function restaurerTitre() {
+    document.title = titreOriginal;
+    window.removeEventListener("afterprint", restaurerTitre);
+  }
+  window.addEventListener("afterprint", restaurerTitre);
+
   // Petit délai pour laisser le temps au navigateur d'afficher le contenu
   // (notamment le chargement du logo) avant d'ouvrir la boîte d'impression.
   setTimeout(function () {
