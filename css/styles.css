@@ -961,6 +961,20 @@ body {
   font-style: italic;
 }
 
+/* Logo institutionnel en bas de la page « Qu'est-ce que SPIRIT » */
+.page-info__logo-zone {
+  margin-top: var(--espace-lg);
+  padding-top: var(--espace-md);
+  border-top: 1px solid var(--creme-fonce);
+  text-align: center;
+}
+.page-info__logo {
+  width: 160px;
+  max-width: 60%;
+  height: auto;
+  opacity: 0.9;
+}
+
 /* Liste des trois pierres angulaires */
 .page-info__liste {
   list-style: none;

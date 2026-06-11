@@ -146,10 +146,23 @@ function construireSchemaRadial(reponses) {
   let svg = '<svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg" role="img" ' +
             'aria-label="Diagramme radial des trois pierres angulaires de la synodalité">';
 
-  // Lignes reliant le centre à chaque noeud
+  // Lignes reliant le centre à chaque noeud.
+  // On raccourcit chaque ligne pour qu'elle parte du BORD du cercle central
+  // (rayon 26) et s'arrête au BORD de la jauge (rayon rayonJauge), au lieu de
+  // courir derrière les deux cercles.
+  const rayonCentre = 26;
   Object.keys(positions).forEach((id) => {
     const p = positions[id];
-    svg += '<line x1="' + centre.x + '" y1="' + centre.y + '" x2="' + p.x + '" y2="' + p.y +
+    const dx = p.x - centre.x;
+    const dy = p.y - centre.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const ux = dx / dist;  // direction unitaire centre → noeud
+    const uy = dy / dist;
+    const x1 = (centre.x + ux * rayonCentre).toFixed(1); // bord du cercle central
+    const y1 = (centre.y + uy * rayonCentre).toFixed(1);
+    const x2 = (p.x - ux * rayonJauge).toFixed(1);       // bord de la jauge
+    const y2 = (p.y - uy * rayonJauge).toFixed(1);
+    svg += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 +
            '" stroke="#C9C2B4" stroke-width="2"></line>';
   });
 

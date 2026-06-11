@@ -779,6 +779,13 @@ function appliquerTraductions() {
     el.setAttribute("aria-label", t(el.getAttribute("data-t-aria")));
   });
 
+  // 2 ter. Textes pouvant contenir une mise en forme (ex. <em>) : on injecte
+  // en HTML. Réservé aux textes du dictionnaire (de confiance), jamais à des
+  // saisies utilisateur.
+  document.querySelectorAll("[data-t-html]").forEach((el) => {
+    el.innerHTML = t(el.getAttribute("data-t-html"));
+  });
+
   // 3. Blocs de texte long bilingues : on n'affiche que la langue active
   const active = getLangue();
   document.querySelectorAll("[data-lang]").forEach((bloc) => {
