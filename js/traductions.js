@@ -67,6 +67,10 @@ const TRADUCTIONS = {
   "bienvenue_titre":     { fr: "Bienvenue dans SPIRIT", en: "Welcome to SPIRIT" },
   "bienvenue_commencer": { fr: "Commencer",             en: "Get started" },
 
+  // --- Fenêtre « Comment ça fonctionne ? » ---
+  "fonctionnement_titre":   { fr: "Comment ça fonctionne ?", en: "How does it work?" },
+  "fonctionnement_compris": { fr: "J'ai compris",            en: "Got it" },
+
   // --- Écran de choix de la langue (premier lancement) ---
   "choix_langue_titre": { fr: "Choisissez votre langue", en: "Choose your language" },
 
@@ -104,7 +108,7 @@ const TRADUCTIONS = {
   "pdf_lecture":      { fr: "Lecture par dimension", en: "Reading by dimension" },
   "pdf_detail":       { fr: "Détail des piliers", en: "Pillar details" },
   "pdf_pistes":       { fr: "Pistes d'action", en: "Action steps" },
-  "pdf_pistes_attente": { fr: "Les pistes d'action personnalisées seront proposées dans une prochaine version de SPIRIT, à partir des piliers en construction ou à bâtir.",
+  "pdf_pistes_attente": { fr: "Les pistes d'action personnalisées seront proposées dans une prochaine version de SPIRIT, à partir des piliers en chantier ou à bâtir.",
                           en: "Personalised action steps will be offered in a future version of SPIRIT, based on the pillars under construction or to be built." },
   "pdf_pistes_validation": { fr: "En attendant, toutes les phrases issues du Document final du Synode sur la synodalité ont été réunies dans les pages suivantes comme pistes de réflexion. Elles ont été validées par un panel de 50 théologiens lors de la phase théorique de création de l'outil.",
                              en: "In the meantime, all the phrases drawn from the Final Document of the Synod on Synodality have been gathered on the following pages as prompts for reflection. They were validated by a panel of 50 theologians during the theoretical phase of the tool's creation." },

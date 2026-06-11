@@ -84,6 +84,10 @@ function afficherEcran(idEcran) {
     cible.scrollTop = 0;
     window.scrollTo(0, 0);
   }
+  // À la première arrivée sur l'écran d'entrée, on montre le mode d'emploi.
+  if (idEcran === "ecran-entree") {
+    montrerFonctionnementSiPremiereFois();
+  }
 }
 
 
@@ -100,6 +104,31 @@ function fermerBienvenue() {
     localStorage.setItem(CLE_BIENVENUE_VUE, "oui");
   } catch (e) {
     console.log("SPIRIT : impossible d'enregistrer l'état de la bienvenue.");
+  }
+}
+
+/* --- Fenêtre « Comment ça fonctionne ? » ---
+   S'affiche une seule fois, à la première arrivée sur l'écran d'entrée. */
+const CLE_FONCTIONNEMENT_VU = "spirit_fonctionnement_vu";
+
+function montrerFonctionnementSiPremiereFois() {
+  let dejaVu = false;
+  try {
+    dejaVu = localStorage.getItem(CLE_FONCTIONNEMENT_VU) === "oui";
+  } catch (e) {
+    dejaVu = false;
+  }
+  if (!dejaVu) {
+    parId("fonctionnement-voile").classList.remove("cache");
+  }
+}
+
+function fermerFonctionnement() {
+  parId("fonctionnement-voile").classList.add("cache");
+  try {
+    localStorage.setItem(CLE_FONCTIONNEMENT_VU, "oui");
+  } catch (e) {
+    console.log("SPIRIT : impossible d'enregistrer l'état du mode d'emploi.");
   }
 }
 
@@ -809,6 +838,7 @@ function brancherBoutons() {
 
   // --- Fenêtre de bienvenue ---
   parId("bouton-commencer-bienvenue").addEventListener("click", fermerBienvenue);
+  parId("bouton-fermer-fonctionnement").addEventListener("click", fermerFonctionnement);
 
   // Lien "Qu'est-ce que SPIRIT ?" : affiche la page d'information dédiée.
   parId("lien-quest-ce-que").addEventListener("click", () => {

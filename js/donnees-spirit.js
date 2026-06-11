@@ -308,8 +308,8 @@ const CRITERES = [
    id technique inchangé ; seul le libellé est bilingue.
    =========================================================== */
 const MODALITES = [
-  { id: "present",        libelle: { fr: "Présent",         en: "Present" },        couleur: "#1D9E75" },
-  { id: "a-developper",   libelle: { fr: "En construction", en: "Under construction" }, couleur: "#EF9F27" },
+  { id: "present",        libelle: { fr: "Solidement établi", en: "Firmly established" }, couleur: "#1D9E75" },
+  { id: "a-developper",   libelle: { fr: "En chantier", en: "Under construction" }, couleur: "#EF9F27" },
   { id: "non-present",    libelle: { fr: "À bâtir",         en: "To be built" },    couleur: "#444441" },
   { id: "non-applicable", libelle: { fr: "Non applicable",  en: "Not applicable" }, couleur: null }
 ];

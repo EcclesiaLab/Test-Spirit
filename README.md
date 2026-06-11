@@ -10,7 +10,7 @@ L'application est un projet d'**EcclesiaLab**, laboratoire de recherche sur l'in
 
 ## Ce que fait l'application
 
-- **Évaluer** une pratique ecclésiale en répondant, pilier par pilier, à un questionnaire avec quatre modalités de réponse (*Présent / En construction / À bâtir / Non applicable*).
+- **Évaluer** une pratique ecclésiale en répondant, pilier par pilier, à un questionnaire avec quatre modalités de réponse (*Solidement établi / En chantier / À bâtir / Non applicable*).
 - **Visualiser** un diagnostic sous forme de trois jauges (une par pierre angulaire), accompagné d'une lecture textuelle.
 - **Exporter** le résultat en PDF via la fonction d'impression du navigateur.
 - **Conserver** l'historique des évaluations sur l'appareil (consultation, réouverture, suppression).
