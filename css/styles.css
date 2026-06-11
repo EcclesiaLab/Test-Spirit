@@ -278,24 +278,25 @@ body {
   border-radius: var(--arrondi);
   max-width: 30rem;
   width: 100%;
-  max-height: 85vh;
+  max-height: 92vh;
   overflow-y: auto; /* permet de faire défiler si le texte est long */
-  padding: var(--espace-lg) var(--espace-md);
+  padding: var(--espace-md);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
 }
 
 .bienvenue__titre {
   font-family: var(--police-titre);
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: var(--marine);
-  margin-bottom: var(--espace-md);
+  margin-bottom: var(--espace-sm);
   text-align: center;
 }
 
 .bienvenue__texte p {
   margin-bottom: var(--espace-sm);
-  font-size: 1rem;
+  font-size: 0.98rem;
+  line-height: 1.45;
   color: var(--texte);
 }
 
@@ -305,7 +306,7 @@ body {
 }
 
 .bienvenue__bouton-zone {
-  margin-top: var(--espace-md);
+  margin-top: var(--espace-sm);
   text-align: center;
 }
 
