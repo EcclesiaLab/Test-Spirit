@@ -22,8 +22,8 @@
 const TRADUCTIONS = {
 
   // --- Accueil ---
-  "accueil_baseline":        { fr: "Évaluer la synodalité d'une pratique ecclésiale",
-                               en: "Assessing the synodality of an ecclesial practice" },
+  "accueil_baseline":        { fr: "Évaluer la synodalité d'une pratique chrétienne",
+                               en: "Assessing the synodality of a Christian practice" },
   "accueil_demarrer":        { fr: "Démarrer une évaluation", en: "Start an evaluation" },
   "accueil_mes_evaluations": { fr: "Mes évaluations",         en: "My evaluations" },
   "accueil_quest_ce_que":    { fr: "Qu'est-ce que SPIRIT ?",  en: "What is SPIRIT?" },
@@ -91,8 +91,8 @@ const TRADUCTIONS = {
                           en: "Click OK to resume it, or Cancel to start a new one (the evaluation in progress will then be lost)." },
   "msg_reprendre": { fr: "Reprendre", en: "Resume" },
   "msg_nouvelle":  { fr: "Nouvelle",  en: "New" },
-  "msg_partage_texte": { fr: "Découvrez SPIRIT, un outil pour évaluer la synodalité d'une pratique ecclésiale.",
-                         en: "Discover SPIRIT, a tool to evaluate the synodality of an ecclesial practice." },
+  "msg_partage_texte": { fr: "Découvrez SPIRIT, un outil pour évaluer la synodalité d'une pratique chrétienne.",
+                         en: "Discover SPIRIT, a tool to evaluate the synodality of a Christian practice." },
   "msg_lien_copie": { fr: "Lien copié : vous pouvez maintenant le coller et l'envoyer.",
                       en: "Link copied: you can now paste and send it." },
   "msg_lien_partager": { fr: "Pour partager SPIRIT, copiez ce lien :",

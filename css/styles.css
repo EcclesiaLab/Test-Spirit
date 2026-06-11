@@ -1336,6 +1336,19 @@ body {
     color: #5A6A7A;
   }
 
+  /* --- Logos institutionnels en fin de document --- */
+  .pdf-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    margin-top: 20px;
+  }
+  .pdf-logo-fin {
+    height: 34px;
+    width: auto;
+  }
+
   /* --- Dernière feuille : fondements (texte natif) --- */
   .pdf-fond-pierre {
     color: #fff;

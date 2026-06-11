@@ -333,7 +333,7 @@ const TYPES_OBJET = [
   },
   {
     id: "groupe-instance",
-    libelle: { fr: "Dynamique de groupe", en: "Group dynamics" },
+    libelle: { fr: "Dynamique de groupe", en: "Group dynamic" },
     description: { fr: "Au sein d'une équipe permanente, d'un conseil, d'un service, etc.",
                    en: "Within a permanent team, a council, a service, etc." }
   }

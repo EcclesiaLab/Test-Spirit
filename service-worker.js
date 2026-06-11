@@ -26,7 +26,7 @@
 */
 
 // ---- Numéro de version du cache (à incrémenter à chaque mise à jour) ----
-const CACHE_VERSION = "spirit-v40";
+const CACHE_VERSION = "spirit-v41";
 
 // ---- Liste des fichiers à mettre en cache dès l'installation ----
 // Ce sont les fichiers minimum pour que l'app s'affiche hors-ligne.
@@ -47,7 +47,8 @@ const FICHIERS_A_CACHER = [
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/logo-spirit.png",
-  "./icons/logo-uclouvain.png"
+  "./icons/logo-uclouvain.png",
+  "./icons/logo-ecclesialab.png"
 ];
 
 /*
