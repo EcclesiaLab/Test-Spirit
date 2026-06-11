@@ -80,20 +80,36 @@ function dessinerJauge(idPierre, composition, cx, cy, rayon) {
   // Groupe tourné de -90° pour que les arcs démarrent en haut du cercle
   svg += '<g transform="rotate(-90 ' + cx + ' ' + cy + ')" fill="none" stroke-width="' + epaisseur + '">';
 
-  let offset = 0; // décalage cumulé (en longueur d'arc)
+  // On collecte d'abord les segments non vides (modalités effectivement présentes).
+  const actifs = [];
   segments.forEach((seg) => {
     const n = composition.compte[seg.modalite];
     if (n > 0) {
-      const longueur = n * longueurParCritere;
-      // dasharray = "longueur du trait, longueur du vide (le reste)"
-      const reste = circonference - longueur;
-      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + rayon + '" ' +
-             'stroke="' + seg.couleur + '" ' +
-             'stroke-dasharray="' + longueur.toFixed(2) + ' ' + reste.toFixed(2) + '" ' +
-             'stroke-dashoffset="' + (-offset).toFixed(2) + '"></circle>';
-      offset += longueur;
+      actifs.push({ couleur: seg.couleur, longueur: n * longueurParCritere });
     }
   });
+
+  // Cas particulier : une seule modalité couvrant TOUT l'anneau → cercle plein
+  // (pas de tirets), pour éviter une encoche inutile.
+  if (actifs.length === 1 && actifs[0].longueur >= circonference - 0.5) {
+    svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + rayon + '" ' +
+           'stroke="' + actifs[0].couleur + '"></circle>';
+  } else {
+    // Sinon, on dessine chaque segment avec un petit espace de part et d'autre.
+    // Cet espace évite que les extrémités de segments tombent sur la "couture"
+    // du tracé (à midi) et créent un bec disgracieux à la jonction.
+    const espace = 3; // en longueur d'arc
+    let offset = 0;
+    actifs.forEach((seg) => {
+      const longVisible = Math.max(seg.longueur - espace, 0.5);
+      const reste = circonference - longVisible;
+      svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + rayon + '" ' +
+             'stroke="' + seg.couleur + '" ' +
+             'stroke-dasharray="' + longVisible.toFixed(2) + ' ' + reste.toFixed(2) + '" ' +
+             'stroke-dashoffset="' + (-(offset + espace / 2)).toFixed(2) + '"></circle>';
+      offset += seg.longueur;
+    });
+  }
 
   svg += '</g>';
 
