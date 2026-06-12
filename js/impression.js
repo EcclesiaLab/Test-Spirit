@@ -104,6 +104,13 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_attente") + '</p>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_validation") + '</p>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_groupe") + '</p>';
+  /* Logos institutionnels placés ici, en bas de la section "Pistes de
+     progression" (avant le saut de page vers les références), pour éviter
+     qu'ils se retrouvent seuls sur une page. */
+  html += '<div class="pdf-logos">';
+  html += '<img class="pdf-logo-fin" src="icons/logo-ecclesialab.png" alt="EcclesiaLab">';
+  html += '<img class="pdf-logo-fin" src="icons/logo-uclouvain.png" alt="UCLouvain">';
+  html += '</div>';
   html += '</div>';
 
   /* --- 6. Fondements : les 14 piliers et le Document final du Synode ---
@@ -141,13 +148,7 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
   html += '<p class="pdf-fondements-source">' + t("pdf_fondements_source") + '</p>';
   html += '</div>';
 
-  /* --- 7. Logos institutionnels en fin de document --- */
-  html += '<div class="pdf-logos">';
-  html += '<img class="pdf-logo-fin" src="icons/logo-ecclesialab.png" alt="EcclesiaLab">';
-  html += '<img class="pdf-logo-fin" src="icons/logo-uclouvain.png" alt="UCLouvain">';
-  html += '</div>';
-
-  /* --- 8. Pied de page --- */
+  /* --- 7. Pied de page --- */
   html += '<div class="pdf-pied">' + t("pdf_pied") + '</div>';
 
   conteneur.innerHTML = html;
