@@ -145,11 +145,7 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
     });
   });
 
-  html += '<p class="pdf-fondements-source">' + t("pdf_fondements_source") + '</p>';
   html += '</div>';
-
-  /* --- 7. Pied de page --- */
-  html += '<div class="pdf-pied">' + t("pdf_pied") + '</div>';
 
   conteneur.innerHTML = html;
 }

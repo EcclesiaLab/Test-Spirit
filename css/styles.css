@@ -1353,47 +1353,38 @@ body {
   .pdf-fond-pierre {
     color: #fff;
     border-radius: 5px;
-    padding: 6px 12px;
-    margin: 11px 0 7px;
+    padding: 4px 10px;
+    margin: 7px 0 4px;
   }
   .pdf-fond-pierre-nom {
     font-family: var(--police-titre);
-    font-size: 12pt;
+    font-size: 11pt;
     font-weight: 600;
   }
   .pdf-fond-pierre-soustitre {
-    font-size: 8pt;
+    font-size: 7.5pt;
     margin-top: 1px;
   }
   .pdf-fond-pilier {
-    margin-bottom: 7px;
+    margin-bottom: 4px;
     break-inside: avoid;
     page-break-inside: avoid;
   }
   .pdf-fond-pilier-titre {
-    font-size: 9.5pt;
+    font-size: 9pt;
     font-weight: 700;
     color: var(--marine);
-    margin-bottom: 2px;
+    margin-bottom: 1px;
   }
   .pdf-fond-citation {
-    font-size: 8.5pt;
-    line-height: 1.36;
+    font-size: 8pt;
+    line-height: 1.28;
     color: #3A4654;
-    margin: 0 0 3px;
+    margin: 0 0 2px;
     text-align: justify;
   }
   .pdf-fond-ref {
     font-weight: 700;
     white-space: nowrap;
-  }
-  .pdf-fondements-source {
-    margin-top: 10px;
-    padding-top: 6px;
-    border-top: 1px solid #DDD7CC;
-    font-size: 8pt;
-    font-style: italic;
-    color: #5A6A7A;
-    text-align: center;
   }
 }
