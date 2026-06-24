@@ -121,7 +121,7 @@ const CRITERES = [
       { fr: "Est-elle inspirée par la prière ?",
         en: "Is the practice inspired by prayer?" },
       { fr: "La Parole de Dieu est-elle le fondement du discernement dans cette pratique ?",
-        en: "Is the Word of God the foundation for discernment in this practice?" }
+        en: "Is the Word of God the foundation for discernment in the practice?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -150,7 +150,7 @@ const CRITERES = [
       { fr: "Favorise-t-elle le dialogue avec d'autres traditions religieuses, ainsi qu'avec les non-croyants ?",
         en: "Does the practice foster dialogue with other religious traditions, and those of no faith?" },
       { fr: "Cette pratique résiste-t-elle à la tentation du repli sur soi ?",
-        en: "Does this practice resist the temptation of self-centredness?" }
+        en: "Does the practice resist the temptation of self-centredness?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -264,7 +264,7 @@ const CRITERES = [
       { fr: "La pratique soutient-elle une diversité de services et de ministères en réponse aux besoins pastoraux ?",
         en: "Does the practice support a variety of services and ministries in response to the pastoral needs?" },
       { fr: "Les femmes ont-elles l'occasion d'assumer des rôles de responsabilité dans cette pratique ?",
-        en: "Do women have opportunities to take on roles of responsibility in this practice?" }
+        en: "Do women have opportunities to take on roles of responsibility in the practice?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -292,7 +292,7 @@ const CRITERES = [
              en: "Synodal conversion through concrete transformations" },
     sousQuestions: [
       { fr: "Cette pratique conduit-elle à une conversion personnelle des participants ?",
-        en: "Does this practice lead to a personal conversion of the participants?" },
+        en: "Does the practice lead to a personal conversion of the participants?" },
       { fr: "Permet-elle une transformation communautaire ?",
         en: "Does the practice enable communal transformation?" },
       { fr: "Contribue-t-elle à un renouveau spirituel et à une réforme structurelle de l'Église ?",
