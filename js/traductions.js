@@ -49,7 +49,7 @@ const TRADUCTIONS = {
 
   // --- Diagnostic ---
   "diagnostic_titre":    { fr: "Diagnostic",          en: "Diagnosis" },
-  "diagnostic_pdf":      { fr: "Exporter en PDF",     en: "Export as PDF" },
+  "diagnostic_pdf":      { fr: "Exporter mon diagnostic en PDF", en: "Export my diagnosis as PDF" },
   "diagnostic_references": { fr: "Pour aller plus loin", en: "Going deeper" },
   "diagnostic_accueil":  { fr: "Revenir à l'accueil", en: "Back to home" },
 

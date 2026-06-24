@@ -218,6 +218,25 @@ body {
   color: var(--creme);
 }
 
+/* Variante "lien" (allure de lien texte souligné) — action tertiaire discrète,
+   par ex. "Revenir à l'accueil" (le chevron ‹ en haut fait déjà ce retour).
+   Garde la hauteur tactile de base, mais sans fond, bordure ni ombre. */
+.bouton--lien {
+  background-color: transparent;
+  color: var(--marine);
+  border: none;
+  box-shadow: none;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.bouton--lien:hover {
+  background-color: transparent;
+  color: var(--marine-clair);
+  text-decoration: underline;
+}
+
 /* Espace entre deux boutons empilés */
 .bouton + .bouton {
   margin-top: var(--espace-sm);
