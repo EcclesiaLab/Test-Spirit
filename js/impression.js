@@ -113,16 +113,39 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
   html += '</div>';
   html += '</div>';
 
-  /* --- 6. Fondements : les 14 piliers et le Document final du Synode ---
-     Dernière feuille du PDF, en texte natif (sélectionnable). On parcourt
-     les pierres angulaires, puis pour chaque pilier on affiche son titre et
-     ses citations du Document final (clé = identifiant du pilier dans
-     JUSTIFICATIONS). La référence s'affiche "DF" en français, "FD" en anglais. */
+  /* Les citations du Document final ne sont plus dans ce PDF : elles sont
+     désormais générées séparément par le bouton « Pour aller plus loin »
+     (voir construireDocumentReferences ci-dessous). */
+
+  conteneur.innerHTML = html;
+}
+
+
+/* ===========================================================
+   DOCUMENT « POUR ALLER PLUS LOIN » (références seules)
+   Construit, dans le même conteneur caché #document-impression, un document
+   INDÉPENDANT ne contenant que les citations du Document final, organisées
+   par pierre angulaire puis par pilier. C'est ce que produit le bouton
+   « Pour aller plus loin » / « Going deeper ». Contenu générique (identique
+   pour toutes les évaluations) : il ne dépend pas des réponses de l'utilisateur.
+   =========================================================== */
+function construireDocumentReferences() {
+  const conteneur = document.getElementById("document-impression");
   const prefixeRef = (getLangue() === "en") ? "FD" : "DF";
   const langActive = getLangue();
 
-  html += '<div class="pdf-section pdf-saut-page">';
-  html += '<h2 class="pdf-section-titre">' + t("pdf_fondements_titre") + '</h2>';
+  let html = "";
+
+  /* En-tête propre : logo + titre « Pour aller plus loin » + sous-titre */
+  html += '<div class="pdf-entete">';
+  html += '<img class="pdf-logo" src="icons/logo-spirit.png" alt="SPIRIT">';
+  html += '<div class="pdf-entete-texte">';
+  html += '<h1 class="pdf-titre">' + t("pdf_ref_titre") + '</h1>';
+  html += '<p class="pdf-sous-titre">' + t("pdf_fondements_titre") + '</p>';
+  html += '</div>';
+  html += '</div>';
+
+  html += '<div class="pdf-section">';
   html += '<p class="pdf-fondements-intro">' + t("pdf_fondements_intro") + '</p>';
 
   PIERRES_ANGULAIRES.forEach((pierre) => {
@@ -144,6 +167,12 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
       html += '</div>';
     });
   });
+
+  /* Logos institutionnels en fin de document */
+  html += '<div class="pdf-logos">';
+  html += '<img class="pdf-logo-fin" src="icons/logo-ecclesialab.png" alt="EcclesiaLab">';
+  html += '<img class="pdf-logo-fin" src="icons/logo-uclouvain.png" alt="UCLouvain">';
+  html += '</div>';
 
   html += '</div>';
 
@@ -193,6 +222,28 @@ function lancerImpression(evaluation, reponses, dateISO) {
 
   // Petit délai pour laisser le temps au navigateur d'afficher le contenu
   // (notamment le chargement du logo) avant d'ouvrir la boîte d'impression.
+  setTimeout(function () {
+    window.print();
+  }, 200);
+}
+
+
+/* ===========================================================
+   DÉCLENCHEMENT DE L'IMPRESSION « POUR ALLER PLUS LOIN »
+   Même mécanisme que lancerImpression, mais sur le document des références
+   (citations du Document final) construit par construireDocumentReferences.
+   =========================================================== */
+function lancerImpressionReferences() {
+  construireDocumentReferences();
+
+  const titreOriginal = document.title;
+  document.title = "SPIRIT — " + t("pdf_ref_titre");
+  function restaurerTitre() {
+    document.title = titreOriginal;
+    window.removeEventListener("afterprint", restaurerTitre);
+  }
+  window.addEventListener("afterprint", restaurerTitre);
+
   setTimeout(function () {
     window.print();
   }, 200);

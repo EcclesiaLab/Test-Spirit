@@ -86,7 +86,7 @@ const CRITERES = [
     titre: { fr: "Hospitalité et égale dignité", en: "Hospitality and Equal Dignity" },
     sousQuestions: [
       { fr: "Cette pratique accueille-t-elle chacun, en particulier ceux qui se sentent marginalisés, différents ou hésitants à participer ?",
-        en: "Does this practice welcome everyone, especially those who may feel marginalised, different, or hesitant to participate?" },
+        en: "Does the practice you are evaluating welcome everyone, especially those who may feel marginalised, different, or hesitant to participate?" },
       { fr: "La pratique respecte-t-elle l'égale dignité de chaque participant ?",
         en: "Does the practice respect the equal dignity of every participant?" },
       { fr: "La pratique encourage-t-elle une écoute réciproque ?",
@@ -98,14 +98,14 @@ const CRITERES = [
     id: "diversite",
     numero: 2,
     pierre: "communion",
-    titre: { fr: "Accueil de la diversité", en: "Embracing diversity" },
+    titre: { fr: "Accueil de la différence et de la diversité", en: "Embracing difference and diversity" },
     sousQuestions: [
-      { fr: "Cette pratique préserve-t-elle la riche diversité des expressions de la foi ?",
-        en: "Does this practice preserve the rich diversity of expressions of faith?" },
-      { fr: "Invite-t-elle chacun à s'ouvrir à l'altérité pour grandir et mûrir ?",
-        en: "Does this practice invite each person to open themselves to alterity in order to grow and mature?" },
-      { fr: "Renforce-t-elle les liens avec l'Église locale ?",
-        en: "Does the practice strengthen bonds with the local Church?" }
+      { fr: "La pratique invite-t-elle chacun à s'ouvrir à l'altérité pour grandir et mûrir ?",
+        en: "Does the practice invite each person to open themselves to otherness in order to grow and mature?" },
+      { fr: "Valorise-t-elle la diversité des expressions de la foi ?",
+        en: "Does the practice value the diversity of expressions of faith?" },
+      { fr: "Reflète-t-elle les liens avec l'Église locale ?",
+        en: "Does the practice reflect bonds with the local Church?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -169,8 +169,8 @@ const CRITERES = [
         en: "Is the practice carried out by a community rather than by a single individual acting alone?" },
       { fr: "Les personnes qui participent se sentent-elles libres de s'exprimer ouvertement et d'exprimer un désaccord ?",
         en: "Do people who participate feel free to speak openly and express disagreement?" },
-      { fr: "Y a-t-il une conscience du risque qu'un groupe social ou culturel puisse dominer, et des mesures sont-elles prises pour l'empêcher ?",
-        en: "Is there an awareness of the risk that one social or cultural group might dominate, and are steps taken to prevent this?" }
+      { fr: "Des mesures sont-elles prises pour qu'aucun groupe social ou culturel ne domine le processus de discernement ou de décision ?",
+        en: "Are steps taken to ensure that no social or cultural group dominates the discernment or decision-making process?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -195,13 +195,13 @@ const CRITERES = [
              en: "Transparency, accountability, and evaluation" },
     sousQuestions: [
       { fr: "Les responsabilités au sein de cette pratique sont-elles clairement définies et comprises ?",
-        en: "Are responsibilities within this practice clearly defined and understood?" },
+        en: "Are responsibilities within the practice clearly defined and understood?" },
       { fr: "La gestion des ressources humaines et financières est-elle documentée ?",
-        en: "Is the management of human and financial resources in this practice documented?" },
+        en: "Is the management of human and financial resources in the practice documented?" },
       { fr: "Les informations essentielles sont-elles partagées ouvertement et en temps utile ?",
-        en: "Is essential information shared openly and in a timely manner in this practice?" },
-      { fr: "Une évaluation périodique de la pratique est-elle prévue ?",
-        en: "Is there a periodic evaluation of the practice?" }
+        en: "Is essential information shared openly and in a timely manner in the practice?" },
+      { fr: "Une évaluation régulière de la pratique est-elle prévue ?",
+        en: "Is there a regular evaluation of the practice?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -261,8 +261,8 @@ const CRITERES = [
     sousQuestions: [
       { fr: "Les charismes de chacun sont-ils reconnus au service des besoins de la communauté et de la mission ?",
         en: "Are the charisms of each individual recognised for the needs of the community and the mission?" },
-      { fr: "La pratique valorise-t-elle une diversité de services et de ministères en réponse aux besoins pastoraux ?",
-        en: "Does the practice valorise a variety of services and ministries in response to the pastoral needs?" },
+      { fr: "La pratique soutient-elle une diversité de services et de ministères en réponse aux besoins pastoraux ?",
+        en: "Does the practice support a variety of services and ministries in response to the pastoral needs?" },
       { fr: "Les femmes ont-elles l'occasion d'assumer des rôles de responsabilité dans cette pratique ?",
         en: "Do women have opportunities to take on roles of responsibility in this practice?" }
     ],
@@ -276,11 +276,11 @@ const CRITERES = [
              en: "Considering cultural and societal contexts" },
     sousQuestions: [
       { fr: "La pratique manifeste-t-elle une attention aux réalités historiques, contemporaines, sociales, culturelles et numériques ?",
-        en: "Does the practice exhibit attention to historical, contemporary, social, cultural, and digital realities?" },
+        en: "Does the practice pay attention to historical, contemporary, social, cultural, and digital realities?" },
       { fr: "Prend-elle en compte les réalités de la mobilité culturelle et géographique ?",
         en: "Does the practice take the realities of cultural and geographic mobility into account?" },
-      { fr: "Engage-t-elle un dialogue avec d'autres acteurs de la société ?",
-        en: "Does the practice engage in dialogue with other societal actors?" }
+      { fr: "Engage-t-elle un dialogue avec d'autres acteurs de la société, de la culture, de la politique, etc. ?",
+        en: "Does the practice engage in dialogue with other actors in society, culture, politics etc.?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -295,8 +295,8 @@ const CRITERES = [
         en: "Does this practice lead to a personal conversion of the participants?" },
       { fr: "Permet-elle une transformation communautaire ?",
         en: "Does the practice enable communal transformation?" },
-      { fr: "Contribue-t-elle à une réforme concrète de l'Église ?",
-        en: "Does the practice contribute to a concrete reform of the Church?" }
+      { fr: "Contribue-t-elle à un renouveau spirituel et à une réforme structurelle de l'Église ?",
+        en: "Does the practice contribute to a spiritual renewal and structural reform of the Church?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   }
@@ -363,7 +363,9 @@ const JUSTIFICATIONS = {
   ],
   "parole-de-dieu": [
     { num: "27", fr: "« Les assemblées synodales sont des événements qui célèbrent l’union du Christ avec son Église par l’action de l’Esprit. C’est Lui qui assure l’unité du corps ecclésial du Christ dans l’assemblée eucharistique comme dans l’assemblée synodale. La liturgie est une écoute de la Parole de Dieu et une réponse à son initiative d’alliance. L’assemblée synodale, elle aussi, est une écoute de cette même Parole, qui résonne aussi bien dans les signes des temps que dans le cœur des fidèles, et une réponse de l’assemblée qui discerne la volonté de Dieu pour la mettre en pratique. »",
-      en: "“Synodal assemblies are events that celebrate the union of Christ with His Church through the action of the Spirit. It is the Spirit who ensures the unity of the ecclesial body of Christ in the Eucharistic assembly as well as in the synodal assembly. The liturgy is a listening to the Word of God and a response to His covenantal initiative. Similarly, the synodal assembly is a listening to this same Word, which resounds as much in the signs of the times as in the hearts of the faithful, and also a response of the assembly that is discerning God’s will in order to put it into practice.”" }
+      en: "“Synodal assemblies are events that celebrate the union of Christ with His Church through the action of the Spirit. It is the Spirit who ensures the unity of the ecclesial body of Christ in the Eucharistic assembly as well as in the synodal assembly. The liturgy is a listening to the Word of God and a response to His covenantal initiative. Similarly, the synodal assembly is a listening to this same Word, which resounds as much in the signs of the times as in the hearts of the faithful, and also a response of the assembly that is discerning God’s will in order to put it into practice.”" },
+    { num: "83", fr: "« L’écoute de la Parole de Dieu est le point de départ et le critère de tout discernement ecclésial. Les Écritures Saintes, en effet, attestent que Dieu a parlé à son peuple, jusqu’à nous donner en Jésus la plénitude de toute la Révélation (cf. DV 2), et indiquent les lieux où nous pouvons entendre sa voix. »",
+      en: "“Listening to the Word of God is the starting point and criterion for all ecclesial discernment. The Scriptures testify that God has spoken to His People to the point of giving us in Jesus the fullness of all Revelation (cf. DV 2). They indicate the places where we can hear His voice.”" }
   ],
   "eucharistie": [
     { num: "26", fr: "« La célébration de l’Eucharistie, surtout le dimanche, est la modalité première et fondamentale selon laquelle le peuple saint de Dieu se réunit et se rencontre. (…) l’Église, Corps du Christ, apprend de l’Eucharistie à articuler unité et pluralité : unité de l’Église et multiplicité des assemblées eucharistiques ; unité du mystère sacramentel et variété des traditions liturgiques ; unité de la célébration et diversité des vocations, des charismes et des ministères. »",

@@ -955,6 +955,12 @@ function brancherBoutons() {
     }
   });
 
+  // Bouton « Pour aller plus loin » : génère un PDF séparé contenant
+  // uniquement les citations du Document final (contenu générique).
+  parId("diagnostic-references").addEventListener("click", () => {
+    lancerImpressionReferences();
+  });
+
   // Revenir à l'accueil.
   parId("diagnostic-accueil").addEventListener("click", () => {
     consultationArchive = false;

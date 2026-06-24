@@ -50,6 +50,7 @@ const TRADUCTIONS = {
   // --- Diagnostic ---
   "diagnostic_titre":    { fr: "Diagnostic",          en: "Diagnosis" },
   "diagnostic_pdf":      { fr: "Exporter en PDF",     en: "Export as PDF" },
+  "diagnostic_references": { fr: "Pour aller plus loin", en: "Going deeper" },
   "diagnostic_accueil":  { fr: "Revenir à l'accueil", en: "Back to home" },
 
   // --- Historique ---
@@ -100,6 +101,7 @@ const TRADUCTIONS = {
 
   // --- PDF ---
   "pdf_titre":        { fr: "Évaluer la synodalité des pratiques", en: "Assessing the synodality of practices" },
+  "pdf_ref_titre":    { fr: "Pour aller plus loin", en: "Going deeper" },
   "pdf_sous_titre":   { fr: "Cadre SPIRIT — d'après le <em>Document final</em> du Synode 2024",
                         en: "SPIRIT framework — based on the 2024 Synod <em>Final Document</em>" },
   "pdf_objet_label":  { fr: "Pratique évaluée", en: "Practice evaluated" },
@@ -112,12 +114,12 @@ const TRADUCTIONS = {
                                en: "(For those who have tried out the SPIRIT tool)" },
   "pdf_pistes_attente": { fr: "Les pistes de progression personnalisées seront proposées dans une prochaine version de SPIRIT, à partir des piliers en chantier ou à bâtir.",
                           en: "Personalised pathways for progress will be offered in a future version of SPIRIT, based on the pillars under construction or to be built." },
-  "pdf_pistes_validation": { fr: "En attendant, toutes les phrases issues du <em>Document final</em> du Synode sur la synodalité ont été réunies dans les pages suivantes comme pistes de réflexion. Elles ont été validées par un panel de 50 théologiens et théologiennes issus du monde entier lors de la phase théorique de création de l'outil.",
-                             en: "In the meantime, all the phrases drawn from the <em>Final Document</em> of the Synod on Synodality have been gathered on the following pages as prompts for reflection. They were validated by a panel of 50 theologians from around the world during the theoretical phase of the tool's creation." },
+  "pdf_pistes_validation": { fr: "En attendant, toutes les phrases issues du <em>Document final</em> du Synode sur la synodalité ont été réunies comme pistes de réflexion, accessibles via le bouton « Pour aller plus loin » de l'application. Elles ont été validées par un panel de 50 théologiens et théologiennes issus du monde entier lors de la phase théorique de création de l'outil.",
+                             en: "In the meantime, all the phrases drawn from the <em>Final Document</em> of the Synod on Synodality have been gathered as prompts for reflection, available via the 'Going deeper' button in the app. They were validated by a panel of 50 theologians from around the world during the theoretical phase of the tool's creation." },
   "pdf_pistes_groupe": { fr: "Pour une utilisation en groupe, chacun fait sa propre évaluation sur SPIRIT, puis les PDF individuels peuvent être confrontés afin d'en tirer des pistes d'action.",
                          en: "For group use, each person carries out their own evaluation on SPIRIT; the individual PDFs can then be compared to draw out shared pathways for progress." },
-  "diagnostic_pistes_note": { fr: "Les pistes de progression personnalisées sont en cours de développement. En attendant, des phrases issues du <em>Document final</em> du Synode — validées par un panel de 50 théologiens et théologiennes — sont proposées comme pistes de réflexion dans le PDF (dernière page).",
-                              en: "Personalised pathways for progress are still in development. In the meantime, phrases from the Synod <em>Final Document</em> — validated by a panel of 50 theologians — are offered as prompts for reflection in the PDF (last page)." },
+  "diagnostic_pistes_note": { fr: "Les pistes de progression personnalisées sont en cours de développement. En attendant, des phrases issues du <em>Document final</em> du Synode — validées par un panel de 50 théologiens et théologiennes — sont proposées comme pistes de réflexion via le bouton « Pour aller plus loin ».",
+                              en: "Personalised pathways for progress are still in development. In the meantime, phrases from the Synod <em>Final Document</em> — validated by a panel of 50 theologians — are offered as prompts for reflection via the 'Going deeper' button." },
 
   // Dernière feuille du PDF : les 14 piliers et leurs fondements (Document final du Synode)
   "pdf_fondements_titre": { fr: "Références dans le <em>Document final</em> du Synode",
