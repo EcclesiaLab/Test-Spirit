@@ -626,7 +626,8 @@ function construireCarteEvaluation(evaluation) {
 
   const type = TYPES_OBJET.find((t) => t.id === evaluation.typeObjet);
   const typeLibelle = type ? tr(type.libelle) : "";
-  const locale = (getLangue() === "en") ? "en-GB" : "fr-FR";
+  const lg = getLangue();
+  const locale = (lg === "en") ? "en-GB" : (lg === "nl") ? "nl-BE" : "fr-FR";
   const date = new Date(evaluation.dateFin).toLocaleDateString(locale, {
     day: "numeric", month: "long", year: "numeric"
   });
@@ -702,9 +703,9 @@ function rouvrirEvaluation(id) {
 }
 
 // Entoure un texte des guillemets adaptés à la langue active
-// (« … » en français, " … " en anglais).
+// (« … » en français, " … " en anglais et en néerlandais).
 function entreGuillemets(texte) {
-  return (getLangue() === "en") ? "\u201C" + texte + "\u201D" : "\u00AB " + texte + " \u00BB";
+  return (getLangue() === "fr") ? "\u00AB " + texte + " \u00BB" : "\u201C" + texte + "\u201D";
 }
 
 // Demande confirmation avant de supprimer une évaluation, puis rafraîchit.

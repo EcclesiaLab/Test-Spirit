@@ -21,7 +21,7 @@
 const CLE_LANGUE = "spirit_langue";
 
 // Langues disponibles dans l'application.
-const LANGUES_DISPONIBLES = ["fr", "en"];
+const LANGUES_DISPONIBLES = ["fr", "en", "nl"];
 
 // Langue active en mémoire (initialisée au démarrage).
 let langueActive = "fr";
