@@ -41,11 +41,11 @@ const TRADUCTIONS = {
   "entree_commencer":    { fr: "Commencer l'évaluation",      en: "Begin the evaluation", nl: "De evaluatie beginnen" },
 
   // --- Questionnaire (piliers) ---
-  "pilier_compteur":   { fr: "Pilier",  en: "Pillar", nl: "Pijler" },   // suivi de "X / 14"
+  "pilier_compteur":   { fr: "Pilier",  en: "Pillar", nl: "Criterium" },   // suivi de "X / 14"
   "pilier_aide":       { fr: "Pour vous aider à répondre", en: "To help you answer", nl: "Om je te helpen antwoorden" },
   "pilier_suivant":    { fr: "Suivant", en: "Next", nl: "Volgende" },
   "pilier_voir_diagnostic": { fr: "Voir le diagnostic", en: "View the diagnosis", nl: "De diagnose bekijken" },
-  "pilier_precedent":  { fr: "Pilier précédent", en: "Previous pillar", nl: "Vorige pijler" },
+  "pilier_precedent":  { fr: "Pilier précédent", en: "Previous pillar", nl: "Vorig criterium" },
 
   // --- Diagnostic ---
   "diagnostic_titre":    { fr: "Diagnostic",          en: "Diagnosis", nl: "Diagnose" },
@@ -107,13 +107,13 @@ const TRADUCTIONS = {
   "pdf_objet_label":  { fr: "Pratique évaluée", en: "Practice evaluated", nl: "Geëvalueerde geloofspraktijk" },
   "pdf_evaluation_du":{ fr: "Évaluation du", en: "Evaluation of", nl: "Evaluatie van" },
   "pdf_diagnostic":   { fr: "Diagnostic", en: "Diagnosis", nl: "Diagnose" },
-  "pdf_lecture":      { fr: "Lecture par pierre angulaire", en: "Reading by cornerstone", nl: "Lezing per hoeksteen" },
-  "pdf_detail":       { fr: "Détail des piliers", en: "Pillar details", nl: "Detail van de pijlers" },
+  "pdf_lecture":      { fr: "Lecture par pierre angulaire", en: "Reading by cornerstone", nl: "Lezing per pijler" },
+  "pdf_detail":       { fr: "Détail des piliers", en: "Pillar details", nl: "Detail van de criteria" },
   "pdf_pistes":       { fr: "Pistes de progression", en: "Pathways for progress", nl: "Groeimogelijkheden" },
   "pdf_pistes_destinataire": { fr: "(À destination des personnes qui ont testé l'outil SPIRIT)",
                                en: "(For those who have tried out the SPIRIT tool)", nl: "(Bestemd voor wie het SPIRIT-instrument heeft uitgetest)" },
   "pdf_pistes_attente": { fr: "Les pistes de progression personnalisées seront proposées dans une prochaine version de SPIRIT, à partir des piliers en chantier ou à bâtir.",
-                          en: "Personalised pathways for progress will be offered in a future version of SPIRIT, based on the pillars under construction or to be built.", nl: "De gepersonaliseerde groeimogelijkheden worden aangeboden in een volgende versie van SPIRIT, op basis van de pijlers ‘in opbouw’ of ‘nog op te bouwen’." },
+                          en: "Personalised pathways for progress will be offered in a future version of SPIRIT, based on the pillars under construction or to be built.", nl: "De gepersonaliseerde groeimogelijkheden worden aangeboden in een volgende versie van SPIRIT, op basis van de criteria ‘in opbouw’ of ‘nog op te bouwen’." },
   "pdf_pistes_validation": { fr: "En attendant, toutes les phrases issues du <em>Document final</em> du Synode sur la synodalité ont été réunies comme pistes de réflexion, accessibles via le bouton « Pour aller plus loin » de l'application. Elles ont été validées par un panel de 50 théologiens et théologiennes issus du monde entier lors de la phase théorique de création de l'outil.",
                              en: "In the meantime, all the phrases drawn from the <em>Final Document</em> of the Synod on Synodality have been gathered as prompts for reflection, available via the 'Going deeper' button in the app. They were validated by a panel of 50 theologians from around the world during the theoretical phase of the tool's creation.", nl: "In afwachting daarvan zijn alle zinnen uit het <em>Slotdocument</em> van de Synode over synodaliteit samengebracht als denkpistes, toegankelijk via de knop ‘Verder verdiepen’ in de applicatie. Ze werden gevalideerd door een panel van 50 theologen en theologes uit de hele wereld tijdens de theoretische fase van de ontwikkeling van het instrument." },
   "pdf_pistes_groupe": { fr: "Pour une utilisation en groupe, chacun fait sa propre évaluation sur SPIRIT, puis les PDF individuels peuvent être confrontés afin d'en tirer des pistes d'action.",
