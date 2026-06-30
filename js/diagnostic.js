@@ -159,8 +159,14 @@ function construireSchemaRadial(reponses) {
     mission:      { x: 229, y: 230 }
   };
 
+  const ariaSchema = (getLangue() === "en")
+    ? "Radial diagram of the three cornerstones of synodality"
+    : (getLangue() === "nl")
+    ? "Radiaal diagram van de drie pijlers van synodaliteit"
+    : "Diagramme radial des trois pierres angulaires de la synodalité";
+
   let svg = '<svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg" role="img" ' +
-            'aria-label="Diagramme radial des trois pierres angulaires de la synodalité">';
+            'aria-label="' + ariaSchema + '">';
 
   // Lignes reliant le centre à chaque noeud.
   // On raccourcit chaque ligne pour qu'elle parte du BORD du cercle central
@@ -195,7 +201,7 @@ function construireSchemaRadial(reponses) {
          'font-family="Spectral, serif" font-size="11" font-weight="600" fill="#F7F4EE">SPIRIT</text>';
   svg += '<text x="' + centre.x + '" y="' + (centre.y + 9) + '" text-anchor="middle" ' +
          'font-family="Source Sans 3, sans-serif" font-size="7.5" fill="#C9D3E0">' +
-         (getLangue() === "en" ? "synodality" : "synodalité") + '</text>';
+         (getLangue() === "en" ? "synodality" : getLangue() === "nl" ? "synodaliteit" : "synodalité") + '</text>';
 
   svg += '</svg>';
   return svg;
@@ -230,39 +236,40 @@ function construireLegende() {
 function redigerLecture(idPierre, composition) {
   const c = composition.compte;
   const applicables = composition.applicables;
-  const en = (getLangue() === "en");
+  const lang = getLangue();
 
   // Cas particulier : aucune dimension applicable
   if (applicables === 0) {
-    return en
-      ? "No pillar in this dimension was considered applicable to the practice evaluated."
-      : "Aucun pilier de cette dimension n'a été jugé applicable à la pratique évaluée.";
+    if (lang === "en") return "No pillar in this dimension was considered applicable to the practice evaluated.";
+    if (lang === "nl") return "Geen enkel criterium van deze pijler werd van toepassing geacht voor de geëvalueerde geloofspraktijk.";
+    return "Aucun pilier de cette dimension n'a été jugé applicable à la pratique évaluée.";
   }
 
   const parties = [];
 
-  // On formule en nombre de piliers (libellés selon la langue).
+  // On formule en nombre de piliers/critères (libellés selon la langue).
   if (c["present"] > 0) {
-    parties.push(formuler(c["present"],
-      en ? "well established" : "solidement établi",
-      en ? "well established" : "solidement établis"));
+    const lab = (lang === "en") ? "well established" : (lang === "nl") ? "stevig verankerd" : null;
+    if (lab) parties.push(formuler(c["present"], lab, lab));
+    else parties.push(formuler(c["present"], "solidement établi", "solidement établis"));
   }
   if (c["a-developper"] > 0) {
-    parties.push(formuler(c["a-developper"],
-      en ? "under development" : "en chantier",
-      en ? "under development" : "en chantier"));
+    const lab = (lang === "en") ? "under development" : (lang === "nl") ? "in opbouw" : "en chantier";
+    parties.push(formuler(c["a-developper"], lab, lab));
   }
   if (c["non-present"] > 0) {
-    parties.push(formuler(c["non-present"],
-      en ? "still to be built" : "encore à bâtir",
-      en ? "still to be built" : "encore à bâtir"));
+    const lab = (lang === "en") ? "still to be built" : (lang === "nl") ? "nog op te bouwen" : "encore à bâtir";
+    parties.push(formuler(c["non-present"], lab, lab));
   }
 
   // Construction de la phrase
   let texte;
-  if (en) {
+  if (lang === "en") {
     texte = "Out of " + applicables + " pillar" + (applicables > 1 ? "s" : "") +
             " considered: " + assemblerListe(parties) + ".";
+  } else if (lang === "nl") {
+    texte = "Van de " + applicables + " in aanmerking genomen " + (applicables > 1 ? "criteria" : "criterium") +
+            ": " + assemblerListe(parties) + ".";
   } else {
     texte = "Sur " + applicables + " pilier" + (applicables > 1 ? "s" : "") +
             " pris en compte : " + assemblerListe(parties) + ".";
@@ -270,12 +277,16 @@ function redigerLecture(idPierre, composition) {
 
   // Une nuance d'encouragement selon la dominante
   if (c["present"] === applicables) {
-    texte += en
+    texte += (lang === "en")
       ? " This dimension is fully lived out in the practice evaluated."
+      : (lang === "nl")
+      ? " Deze pijler wordt volledig beleefd in de geëvalueerde geloofspraktijk."
       : " Cette dimension est pleinement vécue dans la pratique évaluée.";
   } else if (c["non-present"] > c["present"] + c["a-developper"]) {
-    texte += en
+    texte += (lang === "en")
       ? " This dimension is an important area for growth."
+      : (lang === "nl")
+      ? " Deze pijler is een belangrijk aandachtspunt voor groei."
       : " Cette dimension constitue un axe de croissance important.";
   }
 
@@ -290,7 +301,7 @@ function formuler(n, singulier, pluriel) {
 // Assemble une liste selon la langue : "a", "a et b", "a, b et c"
 // (en anglais : "a", "a and b", "a, b and c").
 function assemblerListe(parties) {
-  const connecteur = (getLangue() === "en") ? " and " : " et ";
+  const connecteur = (getLangue() === "en") ? " and " : (getLangue() === "nl") ? " en " : " et ";
   if (parties.length === 1) return parties[0];
   if (parties.length === 2) return parties[0] + connecteur + parties[1];
   return parties.slice(0, -1).join(", ") + connecteur + parties[parties.length - 1];
@@ -329,7 +340,8 @@ function afficherDiagnostic(evaluation, reponses, dateISO) {
   // Si une date est fournie (évaluation archivée), on l'utilise ;
   // sinon, c'est une évaluation qui vient de se terminer → date du jour.
   const dateSource = dateISO ? new Date(dateISO) : new Date();
-  const locale = (getLangue() === "en") ? "en-GB" : "fr-FR";
+  const lg = getLangue();
+  const locale = (lg === "en") ? "en-GB" : (lg === "nl") ? "nl-BE" : "fr-FR";
   const date = dateSource.toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
   document.getElementById("diagnostic-meta").textContent = typeLibelle + " · " + date;
 

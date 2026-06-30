@@ -33,7 +33,8 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
   const typeLibelle = type ? tr(type.libelle) : "";
   // Date fournie (archive) ou date du jour (évaluation qui vient de finir).
   const dateSource = dateISO ? new Date(dateISO) : new Date();
-  const locale = (getLangue() === "en") ? "en-GB" : "fr-FR";
+  const lgPdf = getLangue();
+  const locale = (lgPdf === "en") ? "en-GB" : (lgPdf === "nl") ? "nl-BE" : "fr-FR";
   const date = dateSource.toLocaleDateString(locale, {
     day: "numeric", month: "long", year: "numeric"
   });
@@ -131,7 +132,7 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
    =========================================================== */
 function construireDocumentReferences() {
   const conteneur = document.getElementById("document-impression");
-  const prefixeRef = (getLangue() === "en") ? "FD" : "DF";
+  const prefixeRef = (getLangue() === "en") ? "FD" : (getLangue() === "nl") ? "SD" : "DF";
   const langActive = getLangue();
 
   let html = "";
@@ -159,7 +160,7 @@ function construireDocumentReferences() {
       html += '<div class="pdf-fond-pilier">';
       html += '<div class="pdf-fond-pilier-titre">' + critere.numero + '. ' + echapper(tr(critere.titre)) + '</div>';
       citations.forEach((cit) => {
-        const texte = (langActive === "en") ? cit.en : cit.fr;
+        const texte = cit[langActive] || cit.fr;
         html += '<p class="pdf-fond-citation">';
         html += '<span class="pdf-fond-ref" style="color:' + pierre.couleur + '">' + prefixeRef + ' ' + cit.num + '</span> — ';
         html += echapper(texte) + '</p>';

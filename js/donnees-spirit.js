@@ -85,7 +85,7 @@ const CRITERES = [
     pierre: "communion",
     titre: { fr: "Hospitalité et égale dignité", en: "Hospitality and Equal Dignity", nl: "Gastvrijheid en gelijkwaardigheid" },
     sousQuestions: [
-      { fr: "Cette pratique accueille-t-elle chacun, en particulier ceux qui se sentent marginalisés, différents ou hésitants à participer ?",
+      { fr: "La pratique accueille-t-elle chacun, en particulier ceux qui se sentent marginalisés, différents ou hésitants à participer ?",
         en: "Does the practice you are evaluating welcome everyone, especially those who may feel marginalised, different, or hesitant to participate?", nl: "Is iedereen welkom bij de geloofspraktijk die je evalueert, met name mensen die zich misschien gemarginaliseerd of anders voelen of die zich terughoudend opstellen?" },
       { fr: "La pratique respecte-t-elle l'égale dignité de chaque participant ?",
         en: "Does the practice respect the equal dignity of every participant?", nl: "Wordt de gelijkwaardigheid van elke deelnemer gerespecteerd in deze geloofspraktijk?" },
@@ -120,7 +120,7 @@ const CRITERES = [
         en: "Is the practice rooted in attentive listening to the Word of God?", nl: "Is deze geloofspraktijk geworteld in het aandachtig luisteren naar het Woord van God?" },
       { fr: "Est-elle inspirée par la prière ?",
         en: "Is the practice inspired by prayer?", nl: "Wordt deze geloofspraktijk geïnspireerd door gebed?" },
-      { fr: "La Parole de Dieu est-elle le fondement du discernement dans cette pratique ?",
+      { fr: "La Parole de Dieu est-elle le fondement du discernement dans la pratique ?",
         en: "Is the Word of God the foundation for discernment in the practice?", nl: "Vormt het Woord van God de basis voor onderscheiding in deze geloofspraktijk?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
@@ -149,7 +149,7 @@ const CRITERES = [
         en: "Does the practice foster dialogue with other Churches and Christian communities?", nl: "Bevordert deze geloofspraktijk de dialoog met andere Kerken en christelijke gemeenschappen?" },
       { fr: "Favorise-t-elle le dialogue avec d'autres traditions religieuses, ainsi qu'avec les non-croyants ?",
         en: "Does the practice foster dialogue with other religious traditions, and those of no faith?", nl: "Bevordert deze geloofspraktijk de dialoog met andere religieuze tradities en met mensen zonder geloof?" },
-      { fr: "Cette pratique résiste-t-elle à la tentation du repli sur soi ?",
+      { fr: "La pratique résiste-t-elle à la tentation du repli sur soi ?",
         en: "Does the practice resist the temptation of self-centredness?", nl: "Weerstaat deze geloofspraktijk de verleiding tot egocentrisme?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
@@ -194,7 +194,7 @@ const CRITERES = [
     titre: { fr: "Transparence, reddition de comptes et évaluation",
              en: "Transparency, accountability, and evaluation", nl: "Transparantie, verantwoording en evaluatie" },
     sousQuestions: [
-      { fr: "Les responsabilités au sein de cette pratique sont-elles clairement définies et comprises ?",
+      { fr: "Les responsabilités au sein de la pratique sont-elles clairement définies et comprises ?",
         en: "Are responsibilities within the practice clearly defined and understood?", nl: "Zijn de verantwoordelijkheden binnen de geloofspraktijk duidelijk vastgelegd en worden ze begrepen?" },
       { fr: "La gestion des ressources humaines et financières est-elle documentée ?",
         en: "Is the management of human and financial resources in the practice documented?", nl: "Wordt het beheer van de mensen en financiële middelen binnen de geloofspraktijk gedocumenteerd?" },
@@ -263,7 +263,7 @@ const CRITERES = [
         en: "Are the charisms of each individual recognised for the needs of the community and the mission?", nl: "Worden de charisma’s van elk individu erkend in het licht van de behoeften van de gemeenschap en de zending?" },
       { fr: "La pratique soutient-elle une diversité de services et de ministères en réponse aux besoins pastoraux ?",
         en: "Does the practice support a variety of services and ministries in response to the pastoral needs?", nl: "Maakt de geloofspraktijk verschillende diensttaken en ambten mogelijk om tegemoet te komen aan de pastorale behoeften?" },
-      { fr: "Les femmes ont-elles l'occasion d'assumer des rôles de responsabilité dans cette pratique ?",
+      { fr: "Les femmes ont-elles l'occasion d'assumer des rôles de responsabilité dans la pratique ?",
         en: "Do women have opportunities to take on roles of responsibility in the practice?", nl: "Hebben vrouwen mogelijkheden om verantwoordelijke functies binnen de geloofspraktijk te bekleden?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
@@ -291,7 +291,7 @@ const CRITERES = [
     titre: { fr: "Conversion synodale par des transformations concrètes",
              en: "Synodal conversion through concrete transformations", nl: "Synodale bekering door concrete transformaties" },
     sousQuestions: [
-      { fr: "Cette pratique conduit-elle à une conversion personnelle des participants ?",
+      { fr: "La pratique conduit-elle à une conversion personnelle des participants ?",
         en: "Does the practice lead to a personal conversion of the participants?", nl: "Leidt deze geloofspraktijk tot een persoonlijke bekering van de deelnemers?" },
       { fr: "Permet-elle une transformation communautaire ?",
         en: "Does the practice enable communal transformation?", nl: "Zorgt deze geloofspraktijk voor een gemeenschappelijke transformatie?" },
