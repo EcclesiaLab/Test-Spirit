@@ -36,7 +36,7 @@
 const PIERRES_ANGULAIRES = [
   {
     id: "communion",
-    nom: { fr: "Communion", en: "Communion", nl: "Communio" },
+    nom: { fr: "Communion", en: "Communion", nl: "Gemeenschap" },
     formule: { fr: "Pour vivre la communion", en: "To live communion" },
     sousTitre: {
       fr: "Qualité des relations ecclésiales, racines spirituelles et ouverture aux autres",
@@ -56,7 +56,7 @@ const PIERRES_ANGULAIRES = [
   },
   {
     id: "mission",
-    nom: { fr: "Mission", en: "Mission", nl: "Missie" },
+    nom: { fr: "Mission", en: "Mission", nl: "Zending" },
     formule: { fr: "Pour s'ouvrir à la mission", en: "To open itself to mission" },
     sousTitre: {
       fr: "Rayonnement missionnaire et conversion ecclésiale",
