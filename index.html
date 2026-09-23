@@ -184,6 +184,16 @@
         <div class="modalites" id="modalites">
           <!-- Les boutons seront générés par JS -->
         </div>
+
+        <!-- Zone d'observation libre (facultative), dépliable -->
+        <div class="commentaire">
+          <button class="commentaire__bouton" id="commentaire-bouton" type="button" aria-expanded="false" aria-controls="commentaire-zone">
+            <span id="commentaire-fleche">▸</span> <span id="commentaire-texte" data-t="commentaire_ajouter">Ajouter une observation</span>
+          </button>
+          <div class="commentaire__zone cache" id="commentaire-zone">
+            <textarea class="commentaire__champ" id="commentaire-champ" rows="3" data-t-placeholder="commentaire_placeholder"></textarea>
+          </div>
+        </div>
       </div>
 
       <!-- Pied : retour + suivant -->

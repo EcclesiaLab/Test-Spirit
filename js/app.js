@@ -253,6 +253,7 @@ function validerEntree() {
 
   // On démarre une nouvelle série de réponses, et on affiche le 1er critère.
   reponses = {};
+  commentaires = {};
   afficherCritere(0);
 }
 
@@ -263,6 +264,7 @@ function reprendreEvaluation(donnees) {
   evaluationEnCours.nomObjet = donnees.nomObjet;
   evaluationEnCours.typeObjet = donnees.typeObjet;
   reponses = donnees.reponses || {};
+  commentaires = donnees.commentaires || {};
   // On reprend au critère où l'utilisateur s'était arrêté (sécurité sur l'index).
   let index = donnees.indexCritere || 0;
   if (index < 0 || index >= CRITERES.length) index = 0;
@@ -286,6 +288,7 @@ function sauvegarderEnCours() {
     nomObjet: evaluationEnCours.nomObjet,
     typeObjet: evaluationEnCours.typeObjet,
     reponses: reponses,
+    commentaires: commentaires,
     indexCritere: indexCritereActuel,
     dateModification: new Date().toISOString()
   };
@@ -325,6 +328,9 @@ let indexCritereActuel = 0;
 
 // Les réponses de l'utilisateur, sous la forme { idCritere: idModalite }.
 let reponses = {};
+
+// Observations libres saisies par l'utilisateur, par critère (id -> texte).
+let commentaires = {};
 
 // État de consultation d'une évaluation archivée.
 // Quand on rouvre une évaluation depuis l'historique, on est en "consultation"
@@ -502,6 +508,9 @@ function afficherCritere(index) {
   // Modalités
   genererModalites(critere);
 
+  // Observation libre
+  preparerCommentaire(critere);
+
   // Barre de progression
   majProgression(critere);
 
@@ -536,6 +545,60 @@ function basculerSousQuestions() {
     parId("critere-aide-fleche").textContent = "▸";
     parId("critere-aide-texte").textContent = t("pilier_aide");
   }
+}
+
+
+// --- Observation libre (facultative) par critère ---
+
+// Prépare la zone d'observation à l'affichage d'un critère : on remplit le
+// texte déjà saisi et on ouvre la zone si elle n'est pas vide.
+function preparerCommentaire(critere) {
+  const champ = parId("commentaire-champ");
+  const zone = parId("commentaire-zone");
+  const texte = commentaires[critere.id] || "";
+  champ.value = texte;
+
+  if (texte.trim() !== "") {
+    zone.classList.remove("cache");
+    parId("commentaire-bouton").setAttribute("aria-expanded", "true");
+    parId("commentaire-fleche").textContent = "▾";
+  } else {
+    zone.classList.add("cache");
+    parId("commentaire-bouton").setAttribute("aria-expanded", "false");
+    parId("commentaire-fleche").textContent = "▸";
+  }
+  majEtatBoutonCommentaire();
+}
+
+// Ouvre ou ferme la zone d'observation (sans effacer le texte).
+function basculerCommentaire() {
+  const zone = parId("commentaire-zone");
+  const ouvre = zone.classList.contains("cache");
+  zone.classList.toggle("cache");
+  parId("commentaire-bouton").setAttribute("aria-expanded", ouvre ? "true" : "false");
+  parId("commentaire-fleche").textContent = ouvre ? "▾" : "▸";
+  if (ouvre) parId("commentaire-champ").focus();
+}
+
+// Enregistre l'observation saisie pour le critère courant (sauvegarde auto).
+function enregistrerCommentaire() {
+  const critere = CRITERES[indexCritereActuel];
+  if (!critere) return;
+  const valeur = parId("commentaire-champ").value;
+  if (valeur.trim() === "") {
+    delete commentaires[critere.id];
+  } else {
+    commentaires[critere.id] = valeur;
+  }
+  majEtatBoutonCommentaire();
+  sauvegarderEnCours();
+}
+
+// Met en évidence le bouton quand une observation est saisie pour ce critère.
+function majEtatBoutonCommentaire() {
+  const critere = CRITERES[indexCritereActuel];
+  const rempli = critere && (commentaires[critere.id] || "").trim() !== "";
+  parId("commentaire-bouton").classList.toggle("commentaire__bouton--rempli", rempli);
 }
 
 // Passe au critère suivant. Si on est au dernier critère, on termine
@@ -590,7 +653,7 @@ function terminerQuestionnaire() {
   consultationArchive = false;
 
   // Archivage automatique dans l'historique (décidé au cadrage).
-  archiverEvaluation(evaluationEnCours, reponses);
+  archiverEvaluation(evaluationEnCours, reponses, commentaires);
 
   // L'évaluation "en cours" est terminée : on l'efface de la reprise.
   effacerEnCours();
@@ -923,6 +986,8 @@ function brancherBoutons() {
   // --- Écran de critère ---
   // Déplier / replier les sous-questions d'aide.
   parId("critere-aide-bouton").addEventListener("click", basculerSousQuestions);
+  parId("commentaire-bouton").addEventListener("click", basculerCommentaire);
+  parId("commentaire-champ").addEventListener("input", enregistrerCommentaire);
 
   // Bouton "Suivant" (ou "Voir le diagnostic" au dernier critère).
   parId("critere-suivant").addEventListener("click", allerCritereSuivant);

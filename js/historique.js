@@ -59,7 +59,7 @@ function ecrireHistorique(liste) {
 
 // Archive une évaluation terminée : l'ajoute en tête de la liste.
 // Renvoie l'identifiant attribué.
-function archiverEvaluation(evaluation, reponses) {
+function archiverEvaluation(evaluation, reponses, commentaires) {
   const liste = lireHistorique();
 
   const entree = {
@@ -67,6 +67,7 @@ function archiverEvaluation(evaluation, reponses) {
     nomObjet: evaluation.nomObjet,
     typeObjet: evaluation.typeObjet,
     reponses: Object.assign({}, reponses), // copie, pour ne pas lier les références
+    commentaires: Object.assign({}, commentaires || {}),
     dateFin: new Date().toISOString()
   };
 

@@ -1407,3 +1407,48 @@ body {
     white-space: nowrap;
   }
 }
+
+/* --- Observation libre par pilier (facultative) --- */
+.commentaire {
+  margin-top: var(--espace-sm);
+}
+.commentaire__bouton {
+  background: none;
+  border: none;
+  font-family: var(--police-corps);
+  font-size: 0.88rem;
+  color: var(--marine);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.commentaire__bouton--rempli {
+  color: var(--orange-fonce);
+  font-weight: 600;
+}
+.commentaire__zone {
+  margin-top: var(--espace-xs);
+}
+.commentaire__champ {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 4.5rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--bordure);
+  border-radius: var(--arrondi-petit);
+  font-family: var(--police-corps);
+  font-size: 0.9rem;
+  color: var(--texte);
+  background-color: var(--blanc);
+  resize: vertical;
+  line-height: 1.4;
+}
+.commentaire__champ:focus {
+  outline: none;
+  border-color: var(--marine);
+  box-shadow: 0 0 0 3px rgba(22, 52, 88, 0.12);
+}

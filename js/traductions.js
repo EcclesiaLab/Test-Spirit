@@ -43,6 +43,8 @@ const TRADUCTIONS = {
   // --- Questionnaire (piliers) ---
   "pilier_compteur":   { fr: "Pilier",  en: "Pillar", nl: "Criterium" },   // suivi de "X / 14"
   "pilier_aide":       { fr: "Pour vous aider à répondre", en: "To help you answer", nl: "Om je te helpen antwoorden" },
+  "commentaire_ajouter": { fr: "Ajouter une observation", en: "Add an observation", nl: "Een opmerking toevoegen" },
+  "commentaire_placeholder": { fr: "Vos observations sur la pratique (facultatif)…", en: "Your observations about the practice (optional)…", nl: "Je observaties over de geloofspraktijk (optioneel)…" },
   "pilier_suivant":    { fr: "Suivant", en: "Next", nl: "Volgende" },
   "pilier_voir_diagnostic": { fr: "Voir le diagnostic", en: "View the diagnosis", nl: "De diagnose bekijken" },
   "pilier_precedent":  { fr: "Pilier précédent", en: "Previous pillar", nl: "Vorig criterium" },
