@@ -331,7 +331,23 @@ function construireLectures(reponses) {
    Fonction appelée par app.js quand le questionnaire est terminé.
    Remplit l'écran de diagnostic et l'affiche.
    =========================================================== */
-function afficherDiagnostic(evaluation, reponses, dateISO) {
+// Construit la liste des observations libres (celles qui sont non vides),
+// pour l'écran de diagnostic. Renvoie "" s'il n'y en a aucune.
+function construireObservations(commentaires) {
+  commentaires = commentaires || {};
+  const items = CRITERES
+    .filter((c) => (commentaires[c.id] || "").trim() !== "")
+    .map((c) =>
+      '<div class="diagnostic__obs-item">' +
+      '<p class="diagnostic__obs-pilier">' + c.numero + '. ' + echapper(tr(c.titre)) + '</p>' +
+      '<p class="diagnostic__obs-texte">' + echapper(commentaires[c.id].trim()) + '</p>' +
+      '</div>'
+    );
+  if (items.length === 0) return "";
+  return '<h3 class="diagnostic__obs-titre">' + t("diagnostic_observations_titre") + '</h3>' + items.join("");
+}
+
+function afficherDiagnostic(evaluation, reponses, dateISO, commentaires) {
   // En-tête : nom de l'objet + type + date
   document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet;
 
@@ -353,6 +369,9 @@ function afficherDiagnostic(evaluation, reponses, dateISO) {
 
   // Textes de lecture
   document.getElementById("diagnostic-lectures").innerHTML = construireLectures(reponses);
+
+  // Observations libres saisies par l'utilisateur
+  document.getElementById("diagnostic-observations").innerHTML = construireObservations(commentaires);
 
   // On affiche l'écran
   afficherEcran("ecran-diagnostic");

@@ -337,6 +337,7 @@ let commentaires = {};
 // (lecture seule) : ces variables gardent ses données le temps de l'affichage.
 let consultationArchive = false;
 let reponsesConsultation = {};
+let commentairesConsultation = {};
 let evaluationConsultation = {};
 let dateConsultation = null;
 
@@ -659,7 +660,7 @@ function terminerQuestionnaire() {
   effacerEnCours();
 
   // On affiche le diagnostic à partir des réponses collectées.
-  afficherDiagnostic(evaluationEnCours, reponses);
+  afficherDiagnostic(evaluationEnCours, reponses, undefined, commentaires);
 }
 
 // Affiche l'écran historique : construit la liste des évaluations archivées.
@@ -759,10 +760,11 @@ function rouvrirEvaluation(id) {
 
   consultationArchive = true;
   reponsesConsultation = evaluation.reponses;
+  commentairesConsultation = evaluation.commentaires || {};
   evaluationConsultation = { nomObjet: evaluation.nomObjet, typeObjet: evaluation.typeObjet };
   dateConsultation = evaluation.dateFin;
 
-  afficherDiagnostic(evaluationConsultation, evaluation.reponses, evaluation.dateFin);
+  afficherDiagnostic(evaluationConsultation, evaluation.reponses, evaluation.dateFin, evaluation.commentaires || {});
 }
 
 // Entoure un texte des guillemets adaptés à la langue active
@@ -893,9 +895,9 @@ function rafraichirEcranCourant() {
   } else if (id === "ecran-diagnostic") {
     // On régénère le diagnostic dans la bonne langue.
     if (consultationArchive) {
-      afficherDiagnostic(evaluationConsultation, reponsesConsultation, dateConsultation);
+      afficherDiagnostic(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation);
     } else {
-      afficherDiagnostic(evaluationEnCours, reponses);
+      afficherDiagnostic(evaluationEnCours, reponses, undefined, commentaires);
     }
   } else if (id === "ecran-historique") {
     afficherHistorique();
@@ -1015,9 +1017,9 @@ function brancherBoutons() {
   // archive, sinon celles de l'évaluation en cours.
   parId("diagnostic-pdf").addEventListener("click", () => {
     if (consultationArchive) {
-      lancerImpression(evaluationConsultation, reponsesConsultation, dateConsultation);
+      lancerImpression(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation);
     } else {
-      lancerImpression(evaluationEnCours, reponses);
+      lancerImpression(evaluationEnCours, reponses, undefined, commentaires);
     }
   });
 

@@ -111,6 +111,8 @@ const TRADUCTIONS = {
   "pdf_diagnostic":   { fr: "Diagnostic", en: "Diagnosis", nl: "Diagnose" },
   "pdf_lecture":      { fr: "Lecture par pierre angulaire", en: "Reading by cornerstone", nl: "Lezing per pijler" },
   "pdf_detail":       { fr: "Détail des piliers", en: "Pillar details", nl: "Detail van de criteria" },
+  "pdf_observation": { fr: "Observation", en: "Observation", nl: "Opmerking" },
+  "diagnostic_observations_titre": { fr: "Vos observations", en: "Your observations", nl: "Je observaties" },
   "pdf_pistes":       { fr: "Pistes de progression", en: "Pathways for progress", nl: "Groeimogelijkheden" },
   "pdf_pistes_destinataire": { fr: "(À destination des personnes qui ont testé l'outil SPIRIT)",
                                en: "(For those who have tried out the SPIRIT tool)", nl: "(Bestemd voor wie het SPIRIT-instrument heeft uitgetest)" },

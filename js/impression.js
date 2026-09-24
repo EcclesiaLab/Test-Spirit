@@ -26,7 +26,7 @@
    CONSTRUCTION DU DOCUMENT IMPRIMABLE
    Remplit #document-impression à partir de l'évaluation et des réponses.
    =========================================================== */
-function construireDocumentImpression(evaluation, reponses, dateISO) {
+function construireDocumentImpression(evaluation, reponses, dateISO, commentaires) {
   const conteneur = document.getElementById("document-impression");
 
   const type = TYPES_OBJET.find((t) => t.id === evaluation.typeObjet);
@@ -93,6 +93,10 @@ function construireDocumentImpression(evaluation, reponses, dateISO) {
       html += '<td class="pdf-td-critere"><strong>' + critere.numero + '.</strong> ' + echapper(tr(critere.titre)) + '</td>';
       html += '<td class="pdf-td-reponse"><span class="pdf-pastille" style="background:' + couleurRep + '"></span>' + libelleRep + '</td>';
       html += '</tr>';
+      const obs = (commentaires && commentaires[critere.id]) ? commentaires[critere.id].trim() : "";
+      if (obs !== "") {
+        html += '<tr><td class="pdf-obs" colspan="2"><span class="pdf-obs-label">' + t("pdf_observation") + ' : </span>' + echapper(obs) + '</td></tr>';
+      }
     });
     html += '</table>';
   });
@@ -207,8 +211,8 @@ function echapper(texte) {
    On construit le document, puis on ouvre la boîte d'impression du
    navigateur (qui propose "Enregistrer au format PDF").
    =========================================================== */
-function lancerImpression(evaluation, reponses, dateISO) {
-  construireDocumentImpression(evaluation, reponses, dateISO);
+function lancerImpression(evaluation, reponses, dateISO, commentaires) {
+  construireDocumentImpression(evaluation, reponses, dateISO, commentaires);
 
   // L'en-tête d'impression du navigateur (celui qui affiche la date et l'heure)
   // reprend le titre du document. On le règle temporairement sur le titre

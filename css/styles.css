@@ -550,6 +550,7 @@ body {
 /* --- Contenu du critère --- */
 .critere__contenu {
   flex: 1;
+  min-height: 0; /* indispensable : sans cela, le contenu ne défile pas et pousse le pied (bouton Suivant) hors de l'écran */
   overflow-y: auto;
   padding: var(--espace-sm) var(--espace-md);
 }
@@ -1451,4 +1452,47 @@ body {
   outline: none;
   border-color: var(--marine);
   box-shadow: 0 0 0 3px rgba(22, 52, 88, 0.12);
+}
+
+/* --- Observations à l'écran de diagnostic --- */
+.diagnostic__observations {
+  margin-top: var(--espace-md);
+}
+.diagnostic__obs-titre {
+  font-size: 1rem;
+  color: var(--marine);
+  margin: 0 0 var(--espace-xs);
+}
+.diagnostic__obs-item {
+  background-color: var(--creme-fonce);
+  border-radius: var(--arrondi-petit);
+  padding: 0.5rem 0.7rem;
+  margin-bottom: var(--espace-xs);
+}
+.diagnostic__obs-pilier {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--texte);
+  margin: 0 0 0.15rem;
+}
+.diagnostic__obs-texte {
+  font-size: 0.85rem;
+  color: #4A5A6A;
+  line-height: 1.4;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* --- Observations dans le PDF --- */
+.pdf-obs {
+  font-style: italic;
+  font-size: 0.82rem;
+  color: #555555;
+  padding: 0.1rem 0.5rem 0.5rem;
+  white-space: pre-wrap;
+}
+.pdf-obs-label {
+  font-style: normal;
+  font-weight: 600;
+  color: #333333;
 }
