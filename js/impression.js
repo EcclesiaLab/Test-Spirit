@@ -15,7 +15,8 @@
     1. En-tête : logo, titre, nom de l'objet, type, date
     2. Le schéma radial + légende
     3. Les textes de lecture par pierre
-    4. Le détail des 14 critères avec la modalité choisie
+    4. Le détail des 14 critères avec la modalité choisie, les questions
+       d'aide de chaque pilier et l'observation éventuelle
     5. Les pistes d'action (emplacement réservé tant que non rédigées)
     6. Pied de page
   ============================================================
@@ -90,7 +91,17 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
       const libelleRep = modalite ? tr(modalite.libelle) : "—";
       const couleurRep = (modalite && modalite.couleur) ? modalite.couleur : "#999999";
       html += '<tr>';
-      html += '<td class="pdf-td-critere"><strong>' + critere.numero + '.</strong> ' + echapper(tr(critere.titre)) + '</td>';
+      html += '<td class="pdf-td-critere"><strong>' + critere.numero + '.</strong> ' + echapper(tr(critere.titre));
+      // Questions d'aide du pilier, listées sous son titre (dans la même
+      // cellule, pour qu'elles restent sur la même page que le pilier).
+      if (critere.sousQuestions && critere.sousQuestions.length > 0) {
+        html += '<ul class="pdf-sq">';
+        critere.sousQuestions.forEach((q) => {
+          html += '<li>' + echapper(tr(q)) + '</li>';
+        });
+        html += '</ul>';
+      }
+      html += '</td>';
       html += '<td class="pdf-td-reponse"><span class="pdf-pastille" style="background:' + couleurRep + '"></span>' + libelleRep + '</td>';
       html += '</tr>';
       const obs = (commentaires && commentaires[critere.id]) ? commentaires[critere.id].trim() : "";

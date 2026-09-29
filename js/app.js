@@ -84,10 +84,9 @@ function afficherEcran(idEcran) {
     cible.scrollTop = 0;
     window.scrollTo(0, 0);
   }
-  // À la première arrivée sur l'écran d'entrée, on montre le mode d'emploi.
-  if (idEcran === "ecran-entree") {
-    montrerFonctionnementSiPremiereFois();
-  }
+  // Remarque : la fenêtre « Comment ça fonctionne ? » n'est plus déclenchée
+  // ici, mais au clic sur « Démarrer une évaluation » (voir brancherBoutons),
+  // pour ne pas réapparaître quand on revient en arrière depuis le 1er pilier.
 }
 
 
@@ -105,31 +104,48 @@ function fermerBienvenue() {
   } catch (e) {
     console.log("SPIRIT : impossible d'enregistrer l'état de la bienvenue.");
   }
+  // Sur smartphone, on enchaîne sur la proposition d'installation.
+  proposerInstallationSiPremiereFois();
 }
 
 /* --- Fenêtre « Comment ça fonctionne ? » ---
-   S'affiche une seule fois, à la première arrivée sur l'écran d'entrée. */
-const CLE_FONCTIONNEMENT_VU = "spirit_fonctionnement_vu";
+   S'affiche au début des 5 premières évaluations lancées depuis l'accueil.
+   Un compteur, gardé dans la mémoire locale du téléphone, retient combien
+   de fois elle a déjà été montrée. Pour changer le nombre d'affichages,
+   il suffit de modifier NB_AFFICHAGES_FONCTIONNEMENT. */
+const CLE_FONCTIONNEMENT_COMPTE = "spirit_fonctionnement_compte";
+const CLE_FONCTIONNEMENT_VU = "spirit_fonctionnement_vu"; // ancienne clé (jusqu'à la v60)
+const NB_AFFICHAGES_FONCTIONNEMENT = 5;
 
-function montrerFonctionnementSiPremiereFois() {
-  let dejaVu = false;
+// Renvoie le nombre de fois où la fenêtre a déjà été montrée.
+function lireCompteFonctionnement() {
   try {
-    dejaVu = localStorage.getItem(CLE_FONCTIONNEMENT_VU) === "oui";
+    const compte = parseInt(localStorage.getItem(CLE_FONCTIONNEMENT_COMPTE), 10);
+    if (!isNaN(compte)) return compte;
+    // Utilisateur d'une version précédente : s'il avait déjà vu la fenêtre
+    // (ancienne clé), on compte ce premier affichage.
+    return localStorage.getItem(CLE_FONCTIONNEMENT_VU) === "oui" ? 1 : 0;
   } catch (e) {
-    dejaVu = false;
+    return 0;
   }
-  if (!dejaVu) {
-    parId("fonctionnement-voile").classList.remove("cache");
+}
+
+// Montre la fenêtre si elle n'a pas encore été vue 5 fois, et incrémente
+// le compteur. Le compteur augmente dès l'affichage (et non à la fermeture),
+// pour qu'une fenêtre fermée en quittant l'app compte quand même.
+function montrerFonctionnementSiBesoin() {
+  const compte = lireCompteFonctionnement();
+  if (compte >= NB_AFFICHAGES_FONCTIONNEMENT) return;
+  parId("fonctionnement-voile").classList.remove("cache");
+  try {
+    localStorage.setItem(CLE_FONCTIONNEMENT_COMPTE, String(compte + 1));
+  } catch (e) {
+    console.log("SPIRIT : impossible d'enregistrer le compteur du mode d'emploi.");
   }
 }
 
 function fermerFonctionnement() {
   parId("fonctionnement-voile").classList.add("cache");
-  try {
-    localStorage.setItem(CLE_FONCTIONNEMENT_VU, "oui");
-  } catch (e) {
-    console.log("SPIRIT : impossible d'enregistrer l'état du mode d'emploi.");
-  }
 }
 
 function gererBienvenueAuDemarrage() {
@@ -148,6 +164,10 @@ function gererBienvenueAuDemarrage() {
   }
   if (!dejaVue) {
     afficherBienvenue();
+  } else {
+    // 3. Bienvenue déjà vue : sur smartphone, on propose l'installation
+    //    si cela n'a pas encore été fait.
+    proposerInstallationSiPremiereFois();
   }
 }
 
@@ -162,6 +182,137 @@ function choisirLangueInitiale(code) {
   parId("choix-langue-voile").classList.add("cache");
   // On enchaîne sur la bienvenue (premier lancement = jamais vue).
   afficherBienvenue();
+}
+
+
+/* ===========================================================
+   INSTALLATION SUR SMARTPHONE (fenêtre de première visite)
+   Quand SPIRIT est ouvert dans le navigateur d'un smartphone, on propose
+   une fois de l'ajouter à l'écran d'accueil. Rien n'est envoyé nulle part :
+   tout se passe sur le téléphone.
+   - iPhone : Apple ne permet pas d'installer en un geste ; on montre
+     le visuel des étapes dans Safari.
+   - Android : le navigateur (Chrome, Edge, Samsung Internet) fournit
+     souvent une « invitation d'installation » ; on affiche alors un vrai
+     bouton « Installer ». Sinon, on montre le visuel des étapes.
+   Ordinateurs et tablettes : rien n'est proposé.
+   =========================================================== */
+const CLE_INSTALLATION_PROPOSEE = "spirit_installation_proposee";
+
+// Invitation d'installation fournie par le navigateur (Android), gardée de
+// côté pour être déclenchée au clic sur notre bouton « Installer ».
+let invitationInstallation = null;
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  // On remplace la petite bannière automatique du navigateur par notre fenêtre.
+  event.preventDefault();
+  invitationInstallation = event;
+  // Si la fenêtre est déjà ouverte, on y fait apparaître le bouton.
+  majContenuInstallation();
+});
+
+// L'app vient d'être installée : on ferme la fenêtre et on masque le rappel.
+window.addEventListener("appinstalled", () => {
+  invitationInstallation = null;
+  fermerInstallation();
+  majLienInstallationAPropos();
+});
+
+// SPIRIT est-il ouvert comme application installée (et non dans le navigateur) ?
+function estAppInstallee() {
+  const modeApp = window.matchMedia && window.matchMedia("(display-mode: standalone)").matches;
+  return modeApp || window.navigator.standalone === true; // 2e test : ancien iPhone
+}
+
+// Renvoie "iphone", "android", ou null (ordinateur, tablette).
+function detecterTelephone() {
+  const ua = navigator.userAgent || "";
+  if (/iPhone|iPod/.test(ua)) return "iphone";
+  if (/Android/.test(ua) && /Mobile/.test(ua)) return "android";
+  return null;
+}
+
+// Sur iPhone, l'installation passe par Safari. On repère les autres
+// navigateurs (Chrome, Firefox, Edge…) et les navigateurs intégrés
+// aux applications (Facebook, Instagram, Gmail…).
+function estSafariIphone() {
+  const ua = navigator.userAgent || "";
+  return !/CriOS|FxiOS|EdgiOS|OPiOS|GSA\/|FBAN|FBAV|Instagram|LinkedInApp/.test(ua);
+}
+
+// Faut-il proposer l'installation ici ? (smartphone + pas encore installée)
+function installationPossibleIci() {
+  return detecterTelephone() !== null && !estAppInstallee();
+}
+
+// Affiche la fenêtre une seule fois (première visite).
+function proposerInstallationSiPremiereFois() {
+  if (!installationPossibleIci()) return;
+  let dejaProposee = false;
+  try {
+    dejaProposee = localStorage.getItem(CLE_INSTALLATION_PROPOSEE) === "oui";
+  } catch (e) {
+    dejaProposee = false;
+  }
+  if (!dejaProposee) afficherInstallation();
+}
+
+function afficherInstallation() {
+  majContenuInstallation();
+  parId("installation-voile").classList.remove("cache");
+}
+
+function fermerInstallation() {
+  parId("installation-voile").classList.add("cache");
+  try {
+    localStorage.setItem(CLE_INSTALLATION_PROPOSEE, "oui");
+  } catch (e) {
+    console.log("SPIRIT : impossible d'enregistrer l'état de l'installation.");
+  }
+}
+
+// Adapte le contenu de la fenêtre au téléphone et à la langue.
+function majContenuInstallation() {
+  const tel = detecterTelephone();
+  if (!tel) return;
+  const boutonNatif = (tel === "android" && invitationInstallation !== null);
+  const visuel = parId("installation-visuel");
+
+  // Android avec invitation : bouton « Installer » à la place du visuel.
+  parId("installation-bouton-natif").classList.toggle("cache", !boutonNatif);
+  visuel.classList.toggle("cache", boutonNatif);
+  if (!boutonNatif) {
+    // Ex. : images/installation-iphone-fr.png
+    visuel.src = "images/installation-" + tel + "-" + getLangue() + ".png";
+    visuel.alt = t("installation_alt_" + tel);
+  }
+
+  // Notes propres à l'iPhone.
+  parId("installation-note-iphone").classList.toggle("cache", tel !== "iphone");
+  parId("installation-note-safari").classList.toggle("cache", !(tel === "iphone" && !estSafariIphone()));
+
+  // Bouton de fermeture : « Plus tard » face au bouton Installer,
+  // « J'ai compris » quand on montre les étapes à suivre.
+  parId("installation-fermer").textContent = boutonNatif ? t("installation_plus_tard") : t("fonctionnement_compris");
+}
+
+// Android : ouvre la fenêtre d'installation du navigateur.
+function lancerInstallationNative() {
+  if (!invitationInstallation) return;
+  invitationInstallation.prompt();
+  const apres = () => {
+    // Une invitation ne peut servir qu'une fois.
+    invitationInstallation = null;
+    fermerInstallation();
+    majLienInstallationAPropos();
+  };
+  invitationInstallation.userChoice.then(apres, apres);
+}
+
+// Montre le bouton de rappel dans « À propos » seulement quand c'est utile.
+function majLienInstallationAPropos() {
+  const bloc = parId("a-propos-installation");
+  if (bloc) bloc.classList.toggle("cache", !installationPossibleIci());
 }
 
 
@@ -913,6 +1064,11 @@ function brancherBoutons() {
   parId("bouton-commencer-bienvenue").addEventListener("click", fermerBienvenue);
   parId("bouton-fermer-fonctionnement").addEventListener("click", fermerFonctionnement);
 
+  // --- Fenêtre « Installer SPIRIT » ---
+  parId("installation-fermer").addEventListener("click", fermerInstallation);
+  parId("installation-bouton-natif").addEventListener("click", lancerInstallationNative);
+  parId("a-propos-installer").addEventListener("click", afficherInstallation);
+
   // Lien "Qu'est-ce que SPIRIT ?" : affiche la page d'information dédiée.
   parId("lien-quest-ce-que").addEventListener("click", () => {
     afficherEcran("ecran-quest-ce-que");
@@ -936,11 +1092,13 @@ function brancherBoutons() {
         effacerEnCours();
         reinitialiserEntree();
         afficherEcran("ecran-entree");
+        montrerFonctionnementSiBesoin();
       }
     } else {
       // Aucune évaluation en cours : nouvelle entrée.
       reinitialiserEntree();
       afficherEcran("ecran-entree");
+      montrerFonctionnementSiBesoin();
     }
   });
 
@@ -949,6 +1107,7 @@ function brancherBoutons() {
 
   // Lien "À propos" : affiche la page d'information dédiée.
   parId("lien-a-propos").addEventListener("click", () => {
+    majLienInstallationAPropos();
     afficherEcran("ecran-a-propos");
   });
 
@@ -1055,5 +1214,6 @@ document.addEventListener("DOMContentLoaded", () => {
   genererCartesType();            // cartes de type d'objet
   construireBarreProgression();   // segments de la barre de progression
   brancherBoutons();              // on relie tous les boutons
-  gererBienvenueAuDemarrage();    // bienvenue au 1er lancement
+  majLienInstallationAPropos();   // rappel d'installation dans « À propos »
+  gererBienvenueAuDemarrage();    // bienvenue au 1er lancement (puis installation)
 });

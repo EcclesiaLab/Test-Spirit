@@ -363,6 +363,12 @@
           <p>EcclesiaLab ontwikkelt nog andere instrumenten ten dienste van christelijke gemeenschappen, zoals de Theologische Radar en een kaart van vernieuwende en inspirerende kerkelijke initiatieven. Ontdek al zijn werk en instrumenten op ecclesialab.org.</p>
         </div>
 
+        <!-- Rappel de l'installation : visible seulement sur un smartphone
+             où SPIRIT n'est pas encore installé (géré par app.js). -->
+        <div class="page-info__installation cache" id="a-propos-installation">
+          <button class="bouton bouton--contour" id="a-propos-installer" data-t="installation_titre">Installer SPIRIT sur votre téléphone</button>
+        </div>
+
         <!-- Logo de l'université de rattachement, en pied de page -->
         <div class="page-info__logo-pied">
           <img src="icons/logo-uclouvain.png" alt="UCLouvain — Université catholique de Louvain" class="page-info__logo-uclouvain">
@@ -429,8 +435,8 @@
 
   <!-- ============================================================
        FENÊTRE « COMMENT ÇA FONCTIONNE ? »
-       S'affiche une seule fois, à la première arrivée sur l'écran
-       d'entrée (avant la toute première évaluation).
+       S'affiche au début des 5 premières évaluations lancées depuis
+       l'accueil (compteur géré par app.js).
        ============================================================ -->
   <div class="bienvenue-voile cache" id="fonctionnement-voile">
     <section class="bienvenue" role="dialog" aria-labelledby="fonctionnement-titre" aria-modal="true">
@@ -459,6 +465,34 @@
       </div>
       <div class="bienvenue__bouton-zone">
         <button class="bouton" id="bouton-fermer-fonctionnement" data-t="fonctionnement_compris">J'ai compris</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================================
+       FENÊTRE « INSTALLER SPIRIT » (smartphone, première visite)
+       S'affiche une seule fois, juste après la bienvenue, et uniquement
+       sur un smartphone où SPIRIT est ouvert dans le navigateur (donc pas
+       encore installé). app.js adapte le contenu au téléphone :
+         - iPhone : visuel des étapes dans Safari ;
+         - Android : bouton « Installer » du navigateur quand il est
+           disponible, sinon visuel des étapes dans Chrome.
+       On peut la rouvrir depuis la page « À propos ».
+       ============================================================ -->
+  <div class="bienvenue-voile cache" id="installation-voile">
+    <section class="bienvenue installation" role="dialog" aria-labelledby="installation-titre" aria-modal="true">
+      <h2 class="bienvenue__titre" id="installation-titre" data-t="installation_titre">Installer SPIRIT sur votre téléphone</h2>
+      <p class="installation__intro" data-t="installation_intro">Une fois sur votre écran d'accueil, SPIRIT s'ouvre comme une application, même hors connexion.</p>
+      <!-- Notes affichées selon le téléphone (gérées par app.js) -->
+      <p class="installation__note cache" id="installation-note-iphone" data-t="installation_note_iphone"></p>
+      <p class="installation__note installation__note--alerte cache" id="installation-note-safari" data-t="installation_note_safari"></p>
+      <!-- Android : bouton qui ouvre la fenêtre d'installation du navigateur -->
+      <button class="bouton cache" id="installation-bouton-natif" data-t="installation_installer">Installer</button>
+      <!-- Visuel des étapes (image choisie selon le téléphone et la langue) -->
+      <img class="installation__visuel cache" id="installation-visuel" alt="">
+      <div class="bienvenue__bouton-zone">
+        <button class="bouton bouton--lien" id="installation-fermer">J'ai compris</button>
+        <p class="installation__rappel" data-t="installation_rappel">Vous retrouverez ces explications dans « À propos ».</p>
       </div>
     </section>
   </div>

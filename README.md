@@ -48,11 +48,14 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 │   ├── diagnostic.js       Calcul et affichage des trois jauges
 │   ├── historique.js       Archivage des évaluations terminées
 │   └── impression.js       Construction du document PDF
-└── icons/
-    ├── icon-192.png        Icône PWA (écran d'accueil)
-    ├── icon-512.png        Icône PWA (splash screen)
-    ├── logo-spirit.png     Logo affiché dans l'application
-    └── logo-uclouvain.png  Logo institutionnel (page « À propos »)
+├── icons/
+│   ├── icon-192.png        Icône PWA (écran d'accueil)
+│   ├── icon-512.png        Icône PWA (splash screen)
+│   ├── logo-spirit.png     Logo affiché dans l'application
+│   └── logo-uclouvain.png  Logo institutionnel (page « À propos »)
+└── images/
+    └── installation-{iphone|android}-{fr|en|nl}.png
+                            Visuels de la fenêtre « Installer SPIRIT » (smartphone)
 ```
 
 ---

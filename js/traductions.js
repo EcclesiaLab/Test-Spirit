@@ -74,6 +74,30 @@ const TRADUCTIONS = {
   "fonctionnement_titre":   { fr: "Comment ça fonctionne ?", en: "How does it work?", nl: "Hoe werkt het?" },
   "fonctionnement_compris": { fr: "J'ai compris",            en: "Got it", nl: "Begrepen" },
 
+  // --- Fenêtre « Installer SPIRIT » (smartphone, première visite) ---
+  "installation_titre":  { fr: "Installer SPIRIT sur votre téléphone", en: "Install SPIRIT on your phone", nl: "SPIRIT op je telefoon installeren" },
+  "installation_intro":  { fr: "Une fois sur votre écran d'accueil, SPIRIT s'ouvre comme une application, même hors connexion.",
+                           en: "Once on your home screen, SPIRIT opens like an app, even without an internet connection.",
+                           nl: "Eenmaal op je beginscherm opent SPIRIT als een app, ook zonder internetverbinding." },
+  "installation_note_iphone": { fr: "Faites-le avant votre première évaluation : sur iPhone, ce qui est saisi dans Safari n'est pas repris dans l'application installée.",
+                                en: "Do this before your first evaluation: on iPhone, what you enter in Safari is not carried over to the installed app.",
+                                nl: "Doe dit vóór je eerste evaluatie: op een iPhone wordt wat je in Safari invult niet overgenomen in de geïnstalleerde app." },
+  "installation_note_safari": { fr: "Pour installer SPIRIT, ouvrez d'abord cette page dans Safari.",
+                                en: "To install SPIRIT, first open this page in Safari.",
+                                nl: "Open deze pagina eerst in Safari om SPIRIT te installeren." },
+  "installation_installer": { fr: "Installer", en: "Install", nl: "Installeren" },
+  "installation_plus_tard": { fr: "Plus tard", en: "Later", nl: "Later" },
+  "installation_rappel": { fr: "Vous retrouverez ces explications dans « À propos ».",
+                           en: "You can find these instructions again under 'About'.",
+                           nl: "Je vindt deze uitleg terug onder ‘Over’." },
+  // Texte alternatif des visuels (lu par les lecteurs d'écran)
+  "installation_alt_iphone": { fr: "1. Touchez ••• à droite de la barre d'adresse, puis Partager. 2. Choisissez Sur l'écran d'accueil. 3. Touchez Ajouter.",
+                               en: "1. Tap ••• to the right of the address bar, then Share. 2. Choose Add to Home Screen. 3. Tap Add.",
+                               nl: "1. Tik op ••• rechts van de adresbalk en daarna op Deel. 2. Kies Zet op beginscherm. 3. Tik op Voeg toe." },
+  "installation_alt_android": { fr: "1. Touchez le menu à trois points, en haut à droite. 2. Choisissez Installer l'application (ou Ajouter à l'écran d'accueil). 3. Confirmez avec Installer.",
+                                en: "1. Tap the three-dot menu at the top right. 2. Choose Install app (or Add to Home screen). 3. Confirm with Install.",
+                                nl: "1. Tik rechtsboven op het menu met de drie puntjes. 2. Kies App installeren (of Toevoegen aan startscherm). 3. Bevestig met Installeren." },
+
   // --- Écran de choix de la langue (premier lancement) ---
   "choix_langue_titre": { fr: "Choisissez votre langue", en: "Choose your language", nl: "Kies je taal" },
 

@@ -329,6 +329,77 @@ body {
   text-align: center;
 }
 
+/* --- Fenêtre « Installer SPIRIT » (smartphone) ---
+   Plus compacte que les autres fenêtres, car le visuel est haut : on réduit
+   les marges et on garde le bouton de fermeture toujours visible en bas
+   (le reste défile au-dessus si l'écran est petit). */
+#installation-voile {
+  padding: 0.75rem;
+}
+.installation {
+  padding-bottom: 0;
+}
+.installation .bienvenue__titre {
+  font-size: 1.3rem;
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+}
+.installation__intro {
+  font-size: 0.92rem;
+  line-height: 1.4;
+  text-align: center;
+  margin-bottom: 0.7rem;
+}
+/* Petite note sur fond crème (précaution propre à l'iPhone) */
+.installation__note {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--texte-doux);
+  background-color: var(--creme);
+  border-radius: var(--arrondi-petit);
+  padding: 0.45rem 0.7rem;
+  margin-bottom: 0.7rem;
+}
+/* Variante « alerte » : il faut changer de navigateur */
+.installation__note--alerte {
+  color: var(--texte);
+  border-left: 3px solid var(--orange);
+}
+/* Le visuel des étapes : pleine largeur de la fenêtre, proportions gardées */
+.installation__visuel {
+  display: block;
+  width: 100%;
+  max-width: 20rem;
+  height: auto;
+  margin: 0 auto;
+}
+#installation-bouton-natif {
+  margin-bottom: var(--espace-xs);
+}
+/* Zone du bouton « collée » en bas de la fenêtre pendant le défilement */
+.installation .bienvenue__bouton-zone {
+  position: sticky;
+  bottom: 0;
+  margin-top: 0;
+  padding: 0.35rem 0 0.8rem;
+  background-color: var(--blanc);
+  box-shadow: 0 -10px 12px -10px rgba(22, 52, 88, 0.25);
+}
+.installation .bienvenue__bouton-zone .bouton {
+  min-height: 44px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.installation__rappel {
+  font-size: 0.8rem;
+  color: var(--texte-doux);
+  margin-top: 0.15rem;
+}
+/* Bouton de rappel dans la page « À propos » */
+.page-info__installation {
+  margin-top: var(--espace-md);
+}
+
 /* ===========================================================
    SYSTÈME D'ÉCRANS
    Tous les écrans sont cachés par défaut ; seul celui qui porte
@@ -1286,6 +1357,9 @@ body {
   .pdf-pierre-titre {
     font-size: 11pt;
     margin: 12px 0 4px;
+    /* Ne pas laisser le nom d'une pierre seul en bas de page */
+    break-after: avoid;
+    page-break-after: avoid;
   }
 
   .pdf-table {
@@ -1312,6 +1386,18 @@ body {
     white-space: nowrap;
     text-align: right;
     vertical-align: top;
+  }
+
+  /* Questions d'aide listées sous le titre de chaque pilier */
+  .pdf-sq {
+    margin: 3px 0 1px;
+    padding-left: 14px;
+    font-size: 8.5pt;
+    line-height: 1.35;
+    color: #5A6A7A;
+  }
+  .pdf-sq li {
+    margin: 1px 0;
   }
 
   /* Pastille de couleur (réponse) */
