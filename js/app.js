@@ -78,6 +78,9 @@ function afficherEcran(idEcran) {
   });
   // ... puis on l'ajoute à celui demandé.
   const cible = parId(idEcran);
+  // On note l'écran affiché sur <body> : la feuille de style s'en sert pour
+  // élargir la mise en page sur ordinateur, écran par écran.
+  document.body.dataset.ecran = idEcran;
   if (cible) {
     cible.classList.add("ecran--actif");
     // On remonte en haut de l'écran (utile si l'écran précédent était défilé).

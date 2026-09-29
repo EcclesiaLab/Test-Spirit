@@ -1177,6 +1177,69 @@ body {
 }
 
 /* ===========================================================
+   VERSION ORDINATEUR (à partir de 960px de large)
+   Le téléphone n'est pas concerné : ces règles ne s'appliquent qu'aux
+   écrans larges. L'app s'élargit seulement sur certains écrans, repérés
+   grâce à l'attribut body[data-ecran] posé par app.js :
+     - Diagnostic : deux colonnes, schéma à gauche (il reste visible
+       pendant qu'on lit), textes et boutons à droite ;
+     - Mes évaluations : les cartes côte à côte, en grille.
+   Les autres écrans gardent la colonne centrale du téléphone.
+   =========================================================== */
+@media (min-width: 960px) {
+  body[data-ecran="ecran-diagnostic"] .app,
+  body[data-ecran="ecran-historique"] .app {
+    max-width: 72rem;
+  }
+
+  /* --- Mes évaluations : grille de cartes --- */
+  .historique__contenu {
+    padding: var(--espace-md) var(--espace-lg) var(--espace-lg);
+  }
+  #historique-liste {
+    display: grid;
+    /* autant de colonnes que la largeur le permet, chacune d'au moins 19rem */
+    grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+    gap: var(--espace-sm);
+    align-items: start;
+  }
+  #historique-liste .eval-carte {
+    margin-bottom: 0;
+  }
+
+  /* --- Diagnostic : deux colonnes --- */
+  .diagnostic__contenu {
+    padding: var(--espace-md) var(--espace-lg) var(--espace-lg);
+  }
+  .diagnostic__entete {
+    margin-bottom: var(--espace-lg);
+  }
+  .diagnostic__objet {
+    font-size: 1.8rem;
+  }
+  .diagnostic__grille {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--espace-xl);
+    align-items: start;
+  }
+  /* Le schéma reste en place pendant qu'on fait défiler les textes */
+  .diagnostic__col-visuel {
+    position: sticky;
+    top: 0;
+  }
+  .diagnostic__schema {
+    max-width: 480px;
+  }
+  .diagnostic__legende {
+    margin-bottom: 0;
+  }
+  .diagnostic__actions .bouton {
+    max-width: none;
+  }
+}
+
+/* ===========================================================
    ADAPTATION AUX GRANDS ÉCRANS
    À partir de 600px de large, on agrandit un peu le logo.
    =========================================================== */

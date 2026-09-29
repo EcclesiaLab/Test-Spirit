@@ -220,11 +220,20 @@
           <p class="diagnostic__meta" id="diagnostic-meta">—</p>
         </div>
 
+        <!-- Sur ordinateur, le contenu se répartit en deux colonnes :
+             à gauche le schéma (qui reste visible), à droite les textes.
+             Sur téléphone, ces deux blocs s'empilent comme avant. -->
+        <div class="diagnostic__grille">
+        <div class="diagnostic__col-visuel">
+
         <!-- Le schéma radial (SVG) sera injecté ici par JS -->
         <div class="diagnostic__schema" id="diagnostic-schema"></div>
 
         <!-- Légende des couleurs (générée par JS à partir des modalités) -->
         <div class="diagnostic__legende" id="diagnostic-legende"></div>
+
+        </div><!-- /diagnostic__col-visuel -->
+        <div class="diagnostic__col-texte">
 
         <!-- Textes de lecture par pierre angulaire (générés par JS) -->
         <div class="diagnostic__lectures" id="diagnostic-lectures"></div>
@@ -243,6 +252,9 @@
           <button class="bouton bouton--contour" id="diagnostic-references" data-t="diagnostic_references">Pour aller plus loin</button>
           <button class="bouton bouton--lien" id="diagnostic-accueil" data-t="diagnostic_accueil">Revenir à l'accueil</button>
         </div>
+
+        </div><!-- /diagnostic__col-texte -->
+        </div><!-- /diagnostic__grille -->
 
       </div>
 
