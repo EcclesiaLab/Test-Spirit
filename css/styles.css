@@ -166,6 +166,8 @@
 html {
   /* Empêche le zoom automatique du texte sur certains mobiles en mode paysage */
   -webkit-text-size-adjust: 100%;
+  /* La page occupe exactement la hauteur visible de l'écran (voir body). */
+  height: 100%;
 }
 
 body {
@@ -176,7 +178,12 @@ body {
   background-image: linear-gradient(180deg, var(--creme) 0%, var(--creme-fonce) 100%);
   background-attachment: fixed;
   line-height: 1.6;
-  min-height: 100vh;
+  /* La page elle-même ne défile jamais : chaque écran fait défiler son propre
+     contenu. Auparavant (min-height: 100vh), la page était un peu plus haute
+     que l'écran quand la barre d'adresse de Chrome (Android) était visible :
+     au rechargement, Chrome pouvait la faire défiler et tout se décalait. */
+  height: 100%;
+  overflow: hidden;
   /* Améliore le rendu des polices */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -188,10 +195,10 @@ body {
   margin: 0 auto;
   /* Hauteur fixe égale à l'écran : le contenu défile à l'intérieur des écrans,
      et les pieds de page (boutons "Suivant" etc.) restent collés en bas.
-     100dvh = hauteur réellement visible sur mobile (tient compte des barres
-     du navigateur) ; 100vh sert de repli pour les navigateurs plus anciens. */
-  height: 100vh;
-  height: 100dvh;
+     100 % = hauteur de la page, elle-même égale à la hauteur visible de
+     l'écran (barres du navigateur déduites), de façon stable même après
+     un rechargement. */
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -392,6 +399,9 @@ body {
   max-width: 30rem;
   width: 100%;
   max-height: 92vh;
+  /* Hauteur réellement visible (barres du navigateur déduites) quand le
+     navigateur la connaît : évite qu'une fenêtre dépasse en bas sur Android. */
+  max-height: 92dvh;
   overflow-y: auto; /* permet de faire défiler si le texte est long */
   padding: var(--espace-md);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
@@ -1305,6 +1315,30 @@ body {
 }
 
 /* ===========================================================
+   ÉCRANS PEU HAUTS (moins de 640px visibles, fréquent sur Android
+   quand la barre d'adresse et la barre de navigation sont affichées) :
+   l'accueil est resserré pour que le bouton « Démarrer une évaluation »
+   et les liens tiennent à l'écran sans avoir à faire défiler.
+   =========================================================== */
+@media (max-height: 640px) and (max-width: 959px) {
+  .accueil__entete {
+    /* laisse la place au sélecteur de langue, en haut à droite */
+    padding-top: var(--espace-md);
+  }
+  .accueil__logo {
+    max-width: 36%;
+    margin-bottom: var(--espace-xs);
+  }
+  .accueil__action {
+    padding: var(--espace-sm) 0;
+  }
+  .lien-secondaire {
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+  }
+}
+
+/* ===========================================================
    IPHONE RÉCENTS : ZONE DE LA BARRE D'ACCUEIL
    Sur les iPhone sans bouton d'accueil, une fine barre en bas de l'écran
    sert à revenir à l'accueil du téléphone. Quand SPIRIT est installée,
@@ -1528,7 +1562,14 @@ body {
     margin: 1.5cm;
   }
 
-  /* Pas d'ombres ni de fonds parasites */
+  /* Pas d'ombres ni de fonds parasites. À l'impression, la page doit
+     pouvoir s'étendre sur plusieurs feuilles : on annule la hauteur fixe
+     et le « pas de défilement » de l'écran. */
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+  }
   body {
     background: #fff !important;
   }
