@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <!-- Réglage essentiel pour le mobile : la page s'adapte à la largeur de l'écran -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <title>SPIRIT — Évaluation de la synodalité</title>
+  <meta name="description" content="Évaluer la synodalité d'une pratique, d'un projet ou d'un groupe ecclésial.">
+
+  <!-- Couleur de la barre du navigateur sur mobile (reprend le bleu marine) -->
+  <meta name="theme-color" content="#163458">
+
+  <!-- Lien vers le manifeste : indique au téléphone comment installer l'app -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Réglages pour l'installation sur iPhone/iPad -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SPIRIT">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Icône classique de l'onglet -->
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+
+  <!-- Polices Google : Spectral (titres, serif élégant) et Source Sans 3 (corps) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Notre feuille de style -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <!-- ============================================================
+       CONTENEUR PRINCIPAL DE L'APPLICATION
+       Pour l'instant, il ne contient que l'écran d'accueil.
+       Les écrans suivants (entrée, questionnaire, diagnostic) viendront
+       s'ajouter ici aux prochaines étapes.
+       ============================================================ -->
+  <div class="app">
+
+    <!-- ============================================================
+         NAVIGATION ENTRE ÉCRANS
+         Tous les écrans coexistent ici. Un seul est visible à la fois :
+         app.js ajoute/retire la classe "ecran--actif". Pas de rechargement,
+         navigation instantanée fonctionnant hors-ligne.
+         ============================================================ -->
+
+    <!-- ---------- ÉCRAN D'ACCUEIL ---------- -->
+    <main class="accueil ecran ecran--actif" id="ecran-accueil">
+
+      <!-- Sélecteur de langue, discret en haut à droite -->
+      <div class="selecteur-langue" id="selecteur-langue">
+        <button class="selecteur-langue__option" data-langue-code="fr">FR</button>
+        <button class="selecteur-langue__option" data-langue-code="en">EN</button>
+        <button class="selecteur-langue__option" data-langue-code="nl">NL</button>
+      </div>
+
+      <!-- Bloc du haut : logo + baseline.
+           Le logo officiel SPIRIT (EcclesiaLab) contient déjà le mot "SPIRIT",
+           on n'ajoute donc pas de titre texte qui ferait doublon.
+           Le titre principal de la page reste présent pour les lecteurs d'écran
+           et le référencement, mais il est masqué visuellement. -->
+      <div class="accueil__entete">
+
+        <h1 class="visuellement-cache">SPIRIT — Évaluation de la synodalité</h1>
+
+        <img class="accueil__logo" src="icons/logo-spirit.png"
+             alt="Logo SPIRIT — EcclesiaLab" width="200" height="200">
+
+        <p class="accueil__baseline" data-t="accueil_baseline">Évaluer la synodalité d'une pratique chrétienne</p>
+      </div>
+
+      <!-- Bloc du milieu : action principale.
+           Le bouton est déjà en place ; il sera relié au questionnaire
+           à la prochaine étape. -->
+      <div class="accueil__action">
+        <button class="bouton" id="bouton-demarrer" data-t="accueil_demarrer">Démarrer une évaluation</button>
+      </div>
+
+      <!-- Bloc du bas : liens secondaires -->
+      <nav class="accueil__liens">
+        <button class="lien-secondaire" id="lien-mes-evaluations">
+          <svg class="lien-secondaire__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="18" x2="12" y2="18"/></svg>
+          <span data-t="accueil_mes_evaluations">Mes évaluations</span>
+        </button>
+        <button class="lien-secondaire" id="lien-quest-ce-que">
+          <svg class="lien-secondaire__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.4 1 2.5h6c0-1.1.3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>
+          <span data-t="accueil_quest_ce_que">Qu'est-ce que SPIRIT ?</span>
+        </button>
+        <button class="lien-secondaire" id="lien-a-propos">
+          <svg class="lien-secondaire__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r="0.7" fill="currentColor" stroke="none"/></svg>
+          <span data-t="accueil_a_propos">À propos</span>
+        </button>
+        <button class="lien-secondaire" id="lien-partager">
+          <svg class="lien-secondaire__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><line x1="8.2" y1="10.8" x2="15.8" y2="6.2"/><line x1="8.2" y1="13.2" x2="15.8" y2="17.8"/></svg>
+          <span data-t="accueil_partager">Partager SPIRIT</span>
+        </button>
+      </nav>
+
+    </main>
+
+    <!-- ---------- ÉCRAN D'ENTRÉE (nouvelle évaluation) ---------- -->
+    <!-- Caché par défaut (pas de classe "ecran--actif"). On y arrive en
+         cliquant sur "Démarrer une évaluation". -->
+    <section class="ecran entree" id="ecran-entree">
+
+      <!-- Barre de titre avec bouton retour -->
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="entree-retour" aria-label="Retour à l'accueil" data-t-aria="retour_accueil">‹</button>
+        <h2 class="barre-titre__titre" data-t="entree_titre">Nouvelle évaluation</h2>
+      </header>
+
+      <!-- Contenu défilable -->
+      <div class="entree__contenu">
+
+        <!-- Champ : nom de l'objet évalué -->
+        <label class="entree__label" for="champ-nom-objet" data-t="entree_question_nom">Quelle pratique évaluez-vous ?</label>
+        <input
+          type="text"
+          class="entree__champ"
+          id="champ-nom-objet"
+          placeholder="Ex. : Conseil pastoral, Retraite des confirmands…"
+          data-t-placeholder="entree_placeholder"
+          maxlength="80"
+          autocomplete="off">
+        <p class="entree__aide" id="entree-aide-nom" data-t="entree_aide_nom">Ce nom servira à retrouver l'évaluation et à titrer le document final.</p>
+
+        <!-- Choix : type d'objet.
+             Les trois cartes seront générées automatiquement par app.js
+             à partir du fichier de données (TYPES_OBJET). -->
+        <fieldset class="entree__types">
+          <legend class="entree__label" data-t="entree_question_type">De quelle pratique s'agit-il ?</legend>
+          <div id="liste-types-objet">
+            <!-- Cartes injectées par JavaScript -->
+          </div>
+        </fieldset>
+
+      </div>
+
+      <!-- Bouton de validation, fixé en bas -->
+      <footer class="entree__pied">
+        <button class="bouton" id="bouton-commencer-evaluation" data-t="entree_commencer" disabled>Commencer l'évaluation</button>
+      </footer>
+
+    </section>
+
+    <!-- ---------- ÉCRAN DE CRITÈRE (questionnaire) ---------- -->
+    <!-- Un seul écran sert pour les 14 critères : son contenu est rempli
+         dynamiquement par app.js selon le critère en cours. -->
+    <section class="ecran critere" id="ecran-critere">
+
+      <!-- Barre de progression segmentée par pierre angulaire -->
+      <div class="progression">
+        <div class="progression__barre" id="progression-barre">
+          <!-- Les 3 segments seront générés par JS -->
+        </div>
+        <div class="progression__infos">
+          <span class="progression__pierre" id="progression-pierre">Communion</span>
+          <span class="progression__compteur" id="progression-compteur">Pilier 1 / 14</span>
+        </div>
+      </div>
+
+      <!-- Contenu du critère -->
+      <div class="critere__contenu">
+        <p class="critere__numero" id="critere-numero">Pilier 1</p>
+        <h2 class="critere__titre" id="critere-titre">—</h2>
+
+        <!-- Bouton pour masquer/afficher les sous-questions.
+             Par défaut, les sous-questions sont AFFICHÉES (aria-expanded="true"). -->
+        <button class="critere__aide-bouton" id="critere-aide-bouton" aria-expanded="true">
+          <span id="critere-aide-fleche">▾</span> <span id="critere-aide-texte">Pour vous aider à répondre</span>
+        </button>
+
+        <!-- Zone des sous-questions (visible par défaut) -->
+        <div class="critere__aide-zone" id="critere-aide-zone">
+          <!-- Les sous-questions seront générées par JS -->
+        </div>
+
+        <!-- Les quatre boutons de modalité -->
+        <div class="modalites" id="modalites">
+          <!-- Les boutons seront générés par JS -->
+        </div>
+
+        <!-- Zone d'observation libre (facultative), dépliable -->
+        <div class="commentaire">
+          <button class="commentaire__bouton" id="commentaire-bouton" type="button" aria-expanded="false" aria-controls="commentaire-zone">
+            <span id="commentaire-fleche">▸</span> <span id="commentaire-texte" data-t="commentaire_ajouter">Ajouter une observation</span>
+          </button>
+          <div class="commentaire__zone cache" id="commentaire-zone">
+            <textarea class="commentaire__champ" id="commentaire-champ" rows="3" data-t-placeholder="commentaire_placeholder"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pied : retour + suivant -->
+      <footer class="critere__pied">
+        <button class="bouton-retour-critere" id="critere-precedent" aria-label="Pilier précédent" data-t-aria="pilier_precedent">‹</button>
+        <button class="bouton" id="critere-suivant" data-t="pilier_suivant" disabled>Suivant</button>
+      </footer>
+
+    </section>
+
+    <!-- ---------- ÉCRAN DE DIAGNOSTIC ---------- -->
+    <section class="ecran diagnostic" id="ecran-diagnostic">
+
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="diagnostic-retour" aria-label="Retour" data-t-aria="retour_accueil">‹</button>
+        <h2 class="barre-titre__titre" data-t="diagnostic_titre">Diagnostic</h2>
+      </header>
+
+      <div class="diagnostic__contenu">
+
+        <!-- En-tête : nom de l'objet évalué + type + date -->
+        <div class="diagnostic__entete">
+          <h3 class="diagnostic__objet" id="diagnostic-objet">—</h3>
+          <p class="diagnostic__meta" id="diagnostic-meta">—</p>
+        </div>
+
+        <!-- Le schéma radial (SVG) sera injecté ici par JS -->
+        <div class="diagnostic__schema" id="diagnostic-schema"></div>
+
+        <!-- Légende des couleurs (générée par JS à partir des modalités) -->
+        <div class="diagnostic__legende" id="diagnostic-legende"></div>
+
+        <!-- Textes de lecture par pierre angulaire (générés par JS) -->
+        <div class="diagnostic__lectures" id="diagnostic-lectures"></div>
+
+        <!-- Observations libres saisies par l'utilisateur (générées par JS) -->
+        <div class="diagnostic__observations" id="diagnostic-observations"></div>
+
+        <!-- Note transitoire sur les pistes d'action -->
+        <p class="diagnostic__pistes-note" data-t-html="diagnostic_pistes_note">Les pistes de progression personnalisées sont en cours de développement. En attendant, des phrases issues du <em>Document final</em> du Synode — validées par un panel de 50 théologiens et théologiennes — sont proposées comme pistes de réflexion dans le PDF (dernière page).</p>
+
+        <!-- Actions : placées dans le contenu pour défiler avec lui
+             (et non collées en bas), car le diagnostic est un écran de
+             consultation qu'on parcourt tranquillement. -->
+        <div class="diagnostic__actions">
+          <button class="bouton" id="diagnostic-pdf" data-t="diagnostic_pdf">Exporter mon diagnostic en PDF</button>
+          <button class="bouton bouton--contour" id="diagnostic-references" data-t="diagnostic_references">Pour aller plus loin</button>
+          <button class="bouton bouton--lien" id="diagnostic-accueil" data-t="diagnostic_accueil">Revenir à l'accueil</button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ---------- ÉCRAN MES ÉVALUATIONS (historique) ---------- -->
+    <section class="ecran historique" id="ecran-historique">
+
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="historique-retour" aria-label="Retour à l'accueil" data-t-aria="retour_accueil">‹</button>
+        <h2 class="barre-titre__titre" data-t="historique_titre">Mes évaluations</h2>
+      </header>
+
+      <div class="historique__contenu">
+        <!-- Message affiché quand il n'y a aucune évaluation -->
+        <p class="historique__vide cache" id="historique-vide" data-t="historique_vide">
+          Vous n'avez pas encore d'évaluation enregistrée. Les évaluations terminées apparaîtront ici.
+        </p>
+        <!-- La liste des évaluations sera générée par JS -->
+        <div id="historique-liste"></div>
+      </div>
+
+    </section>
+
+    <!-- ---------- ÉCRAN « QU'EST-CE QUE SPIRIT ? » ---------- -->
+    <section class="ecran page-info" id="ecran-quest-ce-que">
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="quest-ce-que-retour" aria-label="Retour à l'accueil" data-t-aria="retour_accueil">‹</button>
+        <h2 class="barre-titre__titre" data-t="page_quest_titre">Qu'est-ce que SPIRIT ?</h2>
+      </header>
+      <div class="page-info__contenu">
+
+        <!-- Version française (texte validé par l'équipe) -->
+        <div data-lang="fr">
+          <h3 class="page-info__titre">Évaluer la synodalité d'une pratique chrétienne</h3>
+          <p>Le <em>Document final</em> du Synode sur la synodalité (2024) présente la communion, la participation et la mission comme 3 pierres angulaires (§ 142). Il nous invite également à <em>« construire, de manière synodale, des formes et des procédures efficaces de rendre-compte et d'évaluation »</em> (§ 101).</p>
+          <p>SPIRIT est né de cet appel. Le nom signifie <em>Synodalité des Pratiques : Indicateurs pour le Renouveau, l'Implémentation et la Transformation</em>.</p>
+
+          <h3 class="page-info__titre">Ce que SPIRIT vous permet de faire</h3>
+          <p>En 15 minutes, l'outil SPIRIT aide à mesurer le caractère synodal d'une pratique chrétienne, qu'il s'agisse d'une activité ponctuelle, d'un projet ou d'un parcours, ou encore de la dynamique d'un groupe. En répondant à un questionnaire sur 14 piliers issus du <em>Document final</em> du Synode, vous obtenez un diagnostic visuel qui montre où vous en êtes dans votre démarche synodale et les pistes possibles de progression.</p>
+
+          <h3 class="page-info__titre">Un outil scientifiquement validé</h3>
+          <p>Les 14 piliers de SPIRIT, répartis selon les trois pierres angulaires de la synodalité, ont été validés par un panel de 50 théologiens et théologiennes du monde entier selon la méthode Delphi, qui permet de construire progressivement un consensus scientifique.</p>
+
+          <h3 class="page-info__titre">Comment ça fonctionne ?</h3>
+          <p>Vous choisissez la pratique à évaluer et lui donnez un nom. Pour chacun des 14 piliers, répartis selon les 3 pierres angulaires de la synodalité (communion, participation et mission), vous indiquez s'il est solidement établi, en chantier, à bâtir ou non applicable. Des questions vous aident dans votre réflexion. Vous n'avez pas à répondre à chacune d'entre elles, mais vous évaluez l'ensemble du pilier. Au terme, l'application génère un diagnostic visuel, que vous pouvez exporter en PDF. Ce diagnostic individuel peut contribuer à une réflexion collective. Le PDF inclut un rapport détaillé d'évaluation pour chacun des piliers ainsi que des pistes possibles de progression. Des références au <em>Document final</em> y sont proposées pour chaque pilier.</p>
+        </div>
+
+        <!-- Version anglaise (traduction officielle de l'équipe) -->
+        <div data-lang="en">
+          <h3 class="page-info__titre">Assessing the synodality of a Christian practice</h3>
+          <p>The <em>Final Document</em> of the Synod on Synodality (2024) presents communion, participation and mission as three cornerstones (§ 142). It also invites us to develop <em>"effective forms and processes of accountability and evaluation in a synodal way"</em> (§ 101). SPIRIT was born out of this call. The name stands for <em>Synodal Practice Indicators for Renewal, Implementation, and Transformation</em>.</p>
+
+          <h3 class="page-info__titre">What SPIRIT enables you to do</h3>
+          <p>In just 15 minutes, the SPIRIT tool helps assess the synodal character of a Christian practice: a one-time activity, a project or program, or the dynamics of a group. By answering a questionnaire based on 14 pillars drawn from the <em>Final Document</em> of the Synod on Synodality, you receive a visual assessment showing where you are in your synodal journey and possible areas for progress.</p>
+
+          <h3 class="page-info__titre">A Scientifically Validated Tool</h3>
+          <p>The 14 SPIRIT pillars, organized according to the three cornerstones of synodality, were validated by a panel of 50 theologians from around the world using the Delphi method, a structured research process that progressively builds scientific consensus among experts.</p>
+
+          <h3 class="page-info__titre">How does it work?</h3>
+          <p>You choose the practice you wish to assess and give it a name. For each of the 14 pillars, organized according to the three cornerstones of synodality (communion, participation and mission) you indicate whether it is well established, under development, to be built or not applicable. Guiding questions are provided to support your reflection. You do not need to answer every question; rather, you assess the pillar as a whole. At the end of the process, the application generates a visual assessment, which you can export as a PDF. The PDF includes a detailed evaluation report for each pillar, along with possible pathways for progress. References to the <em>Final Document</em> of the Synod on Synodality are also provided for each pillar.</p>
+        </div>
+
+        <!-- Version néerlandaise (traduction à valider par l'équipe) -->
+        <div data-lang="nl">
+          <h3 class="page-info__titre">De synodaliteit van een geloofspraktijk evalueren</h3>
+          <p>Het <em>Slotdocument</em> van de Synode over synodaliteit (2024) presenteert gemeenschap, participatie en zending als 3 pijlers (§ 142). Het nodigt ons ook uit om <em>op synodale wijze efficiënte methoden en procedures voor verantwoording en evaluatie te ontwikkelen</em> (§ 101). SPIRIT is uit die oproep ontstaan. De naam staat voor <em>Synodaliteit van Praktijken : Indicatoren voor Renovatie, Implementatie en Transformatie</em>.</p>
+
+          <h3 class="page-info__titre">Wat je met SPIRIT kunt doen</h3>
+          <p>In 15 minuten helpt het SPIRIT-instrument om het synodale karakter van een geloofspraktijk in te schatten, of het nu gaat om een eenmalige activiteit, een project of traject, of de dynamiek van een groep. Door een vragenlijst over 14 criteria uit het <em>Slotdocument</em> van de Synode te beantwoorden, krijg je een visuele diagnose die toont waar je staat in je synodale weg en welke groeimogelijkheden er zijn.</p>
+
+          <h3 class="page-info__titre">Een wetenschappelijk gevalideerd instrument</h3>
+          <p>De 14 criteria van SPIRIT, verdeeld over de drie pijlers van synodaliteit, werden gevalideerd door een panel van 50 theologen en theologes uit de hele wereld volgens de Delphi-methode, een gestructureerd onderzoeksproces dat geleidelijk een wetenschappelijke consensus opbouwt.</p>
+
+          <h3 class="page-info__titre">Hoe werkt het?</h3>
+          <p>Je kiest de geloofspraktijk die je wilt evalueren en geeft ze een naam. Voor elk van de 14 criteria, verdeeld over de 3 pijlers van synodaliteit (gemeenschap, participatie en zending), geef je aan of het stevig verankerd, in opbouw, nog op te bouwen of niet van toepassing is. Vragen helpen je bij je reflectie. Je hoeft ze niet allemaal te beantwoorden, maar je beoordeelt het criterium in zijn geheel. Op het einde genereert de applicatie een visuele diagnose, die je als pdf kunt exporteren. Deze individuele diagnose kan bijdragen aan een gezamenlijke reflectie. De pdf bevat een gedetailleerd evaluatierapport voor elk criterium en mogelijke groeimogelijkheden. Voor elk criterium worden verwijzingen naar het <em>Slotdocument</em> aangeboden.</p>
+        </div>
+
+        <div class="page-info__logo-zone">
+          <img class="page-info__logo" src="icons/logo-uclouvain.png" alt="UCLouvain">
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ---------- ÉCRAN « À PROPOS » ---------- -->
+    <section class="ecran page-info" id="ecran-a-propos">
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="a-propos-retour" aria-label="Retour à l'accueil" data-t-aria="retour_accueil">‹</button>
+        <h2 class="barre-titre__titre" data-t="page_apropos_titre">À propos</h2>
+      </header>
+      <div class="page-info__contenu">
+
+        <!-- Version française (texte validé par l'équipe) -->
+        <div data-lang="fr">
+          <h3 class="page-info__titre">EcclesiaLab</h3>
+          <p>SPIRIT est un projet de l'EcclesiaLab, un laboratoire de théologie au service de la transformation de l'Église catholique en Europe francophone et au Québec. Fondé en 2022 et rattaché à l'Université catholique de Louvain (UCLouvain), l'EcclesiaLab cherche à faire dialoguer la rigueur académique et les réalités vécues sur le terrain pour comprendre, outiller et soutenir les acteurs de la transformation ecclésiale.</p>
+
+          <h3 class="page-info__titre">En savoir plus</h3>
+          <p>EcclesiaLab développe d'autres outils au service des communautés chrétiennes, comme le Radar théologique et une cartographie des lieux d'Église innovants et inspirants. Retrouvez l'ensemble de ses travaux et outils sur ecclesialab.org.</p>
+        </div>
+
+        <!-- Version anglaise (traduction officielle de l'équipe) -->
+        <div data-lang="en">
+          <h3 class="page-info__titre">EcclesiaLab</h3>
+          <p>SPIRIT is a project of EcclesiaLab, a theology laboratory dedicated to supporting the transformation of the Catholic Church in French-speaking Europe and Québec. Founded in 2022 and affiliated with the Catholic University of Louvain (UCLouvain), EcclesiaLab seeks to bring academic rigor into dialogue with lived realities in the field in order to understand, equip and support those engaged in ecclesial transformation.</p>
+
+          <h3 class="page-info__titre">Find out more</h3>
+          <p>EcclesiaLab is developing other tools to support Christian communities, including the Theological Radar and a mapping platform of innovative and inspiring Church initiatives. Discover all of EcclesiaLab's projects, research, and tools on ecclesialab.org.</p>
+        </div>
+
+        <!-- Version néerlandaise (traduction à valider par l'équipe) -->
+        <div data-lang="nl">
+          <h3 class="page-info__titre">EcclesiaLab</h3>
+          <p>SPIRIT is een project van EcclesiaLab, een theologisch laboratorium ten dienste van de transformatie van de katholieke Kerk in Franstalig Europa en Québec. EcclesiaLab werd opgericht in 2022 en is verbonden aan de Université catholique de Louvain (UCLouvain). Het laboratorium wil academische nauwgezetheid in dialoog brengen met de geleefde realiteit op het terrein, om de actoren van kerkelijke transformatie te begrijpen, te ondersteunen en van instrumenten te voorzien.</p>
+
+          <h3 class="page-info__titre">Meer weten</h3>
+          <p>EcclesiaLab ontwikkelt nog andere instrumenten ten dienste van christelijke gemeenschappen, zoals de Theologische Radar en een kaart van vernieuwende en inspirerende kerkelijke initiatieven. Ontdek al zijn werk en instrumenten op ecclesialab.org.</p>
+        </div>
+
+        <!-- Rappel de l'installation : visible seulement sur un smartphone
+             où SPIRIT n'est pas encore installé (géré par app.js). -->
+        <div class="page-info__installation cache" id="a-propos-installation">
+          <button class="bouton bouton--contour" id="a-propos-installer" data-t="installation_titre">Installer SPIRIT sur votre téléphone</button>
+        </div>
+
+        <!-- Logo de l'université de rattachement, en pied de page -->
+        <div class="page-info__logo-pied">
+          <img src="icons/logo-uclouvain.png" alt="UCLouvain — Université catholique de Louvain" class="page-info__logo-uclouvain">
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============================================================
+       CHOIX DE LA LANGUE (tout premier lancement)
+       S'affiche avant la bienvenue, uniquement si aucune langue n'a encore
+       été choisie. Bilingue par nature.
+       ============================================================ -->
+  <div class="bienvenue-voile cache" id="choix-langue-voile">
+    <section class="bienvenue choix-langue" role="dialog" aria-modal="true">
+      <h2 class="bienvenue__titre">Choisissez votre langue<br>Choose your language<br>Kies je taal</h2>
+      <div class="choix-langue__boutons">
+        <button class="bouton" data-choix-langue="fr">Français</button>
+        <button class="bouton" data-choix-langue="en">English</button>
+        <button class="bouton" data-choix-langue="nl">Nederlands</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================================
+       FENÊTRE DE BIENVENUE (premier lancement)
+       Elle est présente dans la page mais cachée par défaut (classe "cache").
+       Le fichier app.js l'affiche au tout premier lancement, puis retient
+       qu'elle a déjà été vue. Le lien "Qu'est-ce que SPIRIT ?" permet de
+       la rouvrir à tout moment.
+       ============================================================ -->
+  <div class="bienvenue-voile cache" id="bienvenue-voile">
+    <section class="bienvenue" role="dialog" aria-labelledby="bienvenue-titre" aria-modal="true">
+      <h2 class="bienvenue__titre" id="bienvenue-titre" data-t="bienvenue_titre">Bienvenue dans SPIRIT</h2>
+      <div class="bienvenue__texte">
+        <!-- Version française (texte validé par l'équipe) -->
+        <div data-lang="fr">
+          <p>En 15 minutes, l'outil SPIRIT aide à mesurer le caractère synodal d'une pratique chrétienne : activité ponctuelle, projet ou parcours, dynamique d'un groupe. En répondant à un questionnaire sur 14 piliers issus du <em>Document final</em> du Synode sur la synodalité (2024), vous obtenez un diagnostic visuel qui montre où vous en êtes dans votre démarche synodale et les pistes possibles de progression.</p>
+
+          <p>Évaluer avec SPIRIT ne signifie pas juger, mais discerner et faire grandir. Vos données sont conservées uniquement sur votre téléphone. À vous de jouer !</p>
+        </div>
+
+        <!-- Version anglaise (traduction officielle de l'équipe) -->
+        <div data-lang="en">
+          <p>In just 15 minutes, the SPIRIT tool helps assess the synodal character of a Christian practice: a one-time activity, a project or program, or the dynamics of a group. By answering a questionnaire based on 14 pillars drawn from the <em>Final Document</em> of the Synod on Synodality (2024), you receive a visual assessment showing where you are in your synodal journey and possible areas for growth.</p>
+
+          <p>Evaluating with SPIRIT does not mean judging, but rather discerning and fostering growth. Your data is stored only on your phone. It's your turn!</p>
+        </div>
+
+        <!-- Version néerlandaise (traduction à valider par l'équipe) -->
+        <div data-lang="nl">
+          <p>In 15 minuten helpt het SPIRIT-instrument om het synodale karakter van een geloofspraktijk in te schatten: een eenmalige activiteit, een project of traject, de dynamiek van een groep. Door een vragenlijst over 14 criteria uit het <em>Slotdocument</em> van de Synode over synodaliteit (2024) te beantwoorden, krijg je een visuele diagnose die toont waar je staat in je synodale weg en welke groeimogelijkheden er zijn.</p>
+
+          <p>Evalueren met SPIRIT betekent niet oordelen, maar onderscheiden en laten groeien. Je gegevens worden alleen op je telefoon bewaard. Aan jou!</p>
+        </div>
+      </div>
+      <div class="bienvenue__bouton-zone">
+        <button class="bouton" id="bouton-commencer-bienvenue" data-t="bienvenue_commencer">Commencer</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================================
+       FENÊTRE « COMMENT ÇA FONCTIONNE ? »
+       S'affiche au début des 5 premières évaluations lancées depuis
+       l'accueil (compteur géré par app.js).
+       ============================================================ -->
+  <div class="bienvenue-voile cache" id="fonctionnement-voile">
+    <section class="bienvenue" role="dialog" aria-labelledby="fonctionnement-titre" aria-modal="true">
+      <h2 class="bienvenue__titre" id="fonctionnement-titre" data-t="fonctionnement_titre">Comment ça fonctionne ?</h2>
+      <div class="bienvenue__texte">
+        <!-- Version française (texte validé par l'équipe) -->
+        <div data-lang="fr">
+          <p>Vous choisissez la pratique à évaluer et lui donnez un nom. Pour chacun des 14 piliers, répartis selon les 3 pierres angulaires de la synodalité (communion, participation et mission), vous indiquez s'il est <em>« solidement établi, en chantier, à bâtir ou non applicable »</em>. Des questions vous aident dans votre réflexion. Vous n'avez pas à répondre à chacune d'entre elles, mais vous évaluez l'ensemble du pilier.</p>
+
+          <p>Au terme, l'application génère un diagnostic visuel, que vous pouvez exporter en PDF. Ce diagnostic individuel peut contribuer à une réflexion collective. Le PDF inclut un rapport détaillé d'évaluation pour chacun des piliers ainsi que des pistes possibles de progression. Des références au <em>Document final</em> y sont proposées pour chaque pilier.</p>
+        </div>
+
+        <!-- Version anglaise (traduction officielle de l'équipe) -->
+        <div data-lang="en">
+          <p>You choose the practice you wish to assess and give it a name. For each of the 14 pillars, organized according to the three cornerstones of synodality (communion, participation and mission) you indicate whether it is <em>"well established, under development, to be built or not applicable"</em>. Guiding questions are provided to support your reflection. You do not need to answer every question; rather, you assess the pillar as a whole.</p>
+
+          <p>At the end of the process, the application generates a visual assessment, which you can export as a PDF. The PDF includes a detailed evaluation report for each pillar, along with possible pathways for progress. References to the <em>Final Document</em> of the Synod on Synodality are also provided for each pillar.</p>
+        </div>
+
+        <!-- Version néerlandaise (traduction à valider par l'équipe) -->
+        <div data-lang="nl">
+          <p>Je kiest de geloofspraktijk die je wilt evalueren en geeft ze een naam. Voor elk van de 14 criteria, verdeeld over de 3 pijlers van synodaliteit (gemeenschap, participatie en zending), geef je aan of het “stevig verankerd, in opbouw, nog op te bouwen of niet van toepassing” is. Vragen helpen je bij je reflectie. Je hoeft ze niet allemaal te beantwoorden, maar je beoordeelt het criterium in zijn geheel.</p>
+
+          <p>Op het einde genereert de applicatie een visuele diagnose, die je als pdf kunt exporteren. Deze individuele diagnose kan bijdragen aan een gezamenlijke reflectie. De pdf bevat een gedetailleerd evaluatierapport voor elk criterium en mogelijke groeimogelijkheden. Voor elk criterium worden verwijzingen naar het <em>Slotdocument</em> aangeboden.</p>
+        </div>
+      </div>
+      <div class="bienvenue__bouton-zone">
+        <button class="bouton" id="bouton-fermer-fonctionnement" data-t="fonctionnement_compris">J'ai compris</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================================
+       FENÊTRE « INSTALLER SPIRIT » (smartphone, première visite)
+       S'affiche une seule fois, juste après la bienvenue, et uniquement
+       sur un smartphone où SPIRIT est ouvert dans le navigateur (donc pas
+       encore installé). app.js adapte le contenu au téléphone :
+         - iPhone : visuel des étapes dans Safari ;
+         - Android : bouton « Installer » du navigateur quand il est
+           disponible, sinon visuel des étapes dans Chrome.
+       On peut la rouvrir depuis la page « À propos ».
+       ============================================================ -->
+  <div class="bienvenue-voile cache" id="installation-voile">
+    <section class="bienvenue installation" role="dialog" aria-labelledby="installation-titre" aria-modal="true">
+      <h2 class="bienvenue__titre" id="installation-titre" data-t="installation_titre">Installer SPIRIT sur votre téléphone</h2>
+      <p class="installation__intro" data-t="installation_intro">Une fois sur votre écran d'accueil, SPIRIT s'ouvre comme une application, même hors connexion.</p>
+      <!-- Notes affichées selon le téléphone (gérées par app.js) -->
+      <p class="installation__note cache" id="installation-note-iphone" data-t="installation_note_iphone"></p>
+      <p class="installation__note installation__note--alerte cache" id="installation-note-safari" data-t="installation_note_safari"></p>
+      <!-- Android : bouton qui ouvre la fenêtre d'installation du navigateur -->
+      <button class="bouton cache" id="installation-bouton-natif" data-t="installation_installer">Installer</button>
+      <!-- Visuel des étapes (image choisie selon le téléphone et la langue) -->
+      <img class="installation__visuel cache" id="installation-visuel" alt="">
+      <div class="bienvenue__bouton-zone">
+        <button class="bouton bouton--lien" id="installation-fermer">J'ai compris</button>
+        <p class="installation__rappel" data-t="installation_rappel">Vous retrouverez ces explications dans « À propos ».</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================================
+       DOCUMENT IMPRIMABLE (PDF)
+       Cette section reste INVISIBLE à l'écran (voir styles .impression).
+       Elle n'apparaît qu'au moment de l'impression / export PDF, grâce à
+       la feuille de style @media print. Elle est remplie par app.js juste
+       avant de déclencher l'impression.
+       ============================================================ -->
+  <div class="impression" id="document-impression" aria-hidden="true">
+    <!-- Contenu généré par js/impression.js -->
+  </div>
+  <!-- Gestion de la langue (bilingue FR/EN). Chargé en PREMIER car les
+       autres scripts utilisent ses fonctions tr() et t(). -->
+  <script src="js/langue.js"></script>
+
+  <!-- Dictionnaire des textes d'interface (FR/EN). -->
+  <script src="js/traductions.js"></script>
+
+  <script src="js/donnees-spirit.js"></script>
+
+  <!-- Logique du diagnostic (calcul + dessin des jauges). Chargé avant app.js. -->
+  <script src="js/diagnostic.js"></script>
+
+  <!-- Logique du document imprimable (export PDF). Chargé avant app.js. -->
+  <script src="js/impression.js"></script>
+
+  <!-- Gestion de l'historique des évaluations. Chargé avant app.js. -->
+  <script src="js/historique.js"></script>
+
+  <!-- Notre logique applicative -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>
