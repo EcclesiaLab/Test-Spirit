@@ -75,12 +75,9 @@ const TRADUCTIONS = {
   "lexique_intro":          { fr: "Quelques mots de l'Église et de SPIRIT, expliqués simplement.",
                               en: "A few words from the Church and from SPIRIT, explained simply.",
                               nl: "Enkele woorden uit de Kerk en uit SPIRIT, eenvoudig uitgelegd." },
-  "lexique_pierre_prefixe": { fr: "L'une des trois pierres angulaires de SPIRIT : ",
-                              en: "One of SPIRIT's three cornerstones: ",
-                              nl: "Een van de drie pijlers van SPIRIT: " },
-  // Sous les 4 réponses de chaque pilier (v68, provisoire)
-  // (  = espace insécable : évite qu'un « ; » ou un « : » se retrouve seul en début de ligne)
-  "critere_na_note": { fr: "« Non applicable » : le pilier ne concerne pas la pratique évaluée ; il n'est pas compté dans le diagnostic.",
+  // Sous les 4 réponses du premier pilier (v68, provisoire)
+  // (\u00a0 = espace insécable : évite qu'un « ; » ou un « : » se retrouve seul en début de ligne)
+  "critere_na_note": { fr: "«\u00a0Non applicable\u00a0»\u00a0: le pilier ne concerne pas la pratique évaluée\u00a0; il n'est pas compté dans le diagnostic.",
                        en: "“Not applicable”: the pillar does not concern the practice being evaluated; it is not counted in the diagnosis.",
                        nl: "‘Niet van toepassing’: het criterium heeft geen betrekking op de geëvalueerde geloofspraktijk; het wordt niet meegeteld in de diagnose." },
 

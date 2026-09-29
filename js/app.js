@@ -653,6 +653,11 @@ function afficherCritere(index) {
   if (!critere) return;
   indexCritereActuel = index;
 
+  // Chaque pilier s'ouvre en haut de sa zone de défilement. Sans cela, après
+  // avoir fait défiler un pilier, le suivant s'ouvrait à mi-hauteur et son
+  // titre était masqué.
+  document.querySelector("#ecran-critere .critere__contenu").scrollTop = 0;
+
   // Remplir les textes
   parId("critere-numero").textContent = t("pilier_compteur") + " " + critere.numero;
   parId("critere-titre").textContent = tr(critere.titre);
@@ -667,6 +672,10 @@ function afficherCritere(index) {
 
   // Modalités
   genererModalites(critere);
+
+  // Explication de « Non applicable » : sous le premier pilier seulement,
+  // pour ne pas la répéter (elle est détaillée dans le lexique).
+  parId("critere-na-note").classList.toggle("cache", index !== 0);
 
   // Observation libre
   preparerCommentaire(critere);
