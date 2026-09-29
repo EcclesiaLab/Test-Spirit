@@ -12,8 +12,9 @@
     7. Branchement des boutons
     8. Démarrage
 
-  Ce fichier grandira aux prochaines étapes (questionnaire, calcul du
-  diagnostic, génération du PDF, historique...).
+  S'y ajoutent : questionnaire, historique, partage, traductions de
+  l'interface, installation sur smartphone. Le calcul et le dessin du
+  diagnostic sont dans diagnostic.js, le PDF dans impression.js.
   ============================================================
 */
 
@@ -322,8 +323,8 @@ function majLienInstallationAPropos() {
 /* ===========================================================
    6. ÉTAT DE L'ÉVALUATION EN COURS
    On garde en mémoire, le temps de la session, ce que l'utilisateur
-   est en train de renseigner. (À l'étape suivante, on y ajoutera les
-   réponses aux critères, et on sauvegardera tout cela en mémoire locale.)
+   est en train de renseigner (nom et type de la pratique). Les réponses
+   et observations sont plus bas ; tout est sauvegardé en mémoire locale.
    =========================================================== */
 let evaluationEnCours = {
   nomObjet: "",
@@ -397,7 +398,7 @@ function reinitialiserEntree() {
   rafraichirBoutonCommencer();
 }
 
-// Valide l'écran d'entrée et passe à la suite (le questionnaire, à venir).
+// Valide l'écran d'entrée et passe au questionnaire (1er pilier).
 function validerEntree() {
   evaluationEnCours.nomObjet = parId("champ-nom-objet").value.trim();
   // Sécurité : on ne continue que si tout est bien rempli.
@@ -630,8 +631,8 @@ function choisirModalite(critere, modalite, boutonClique) {
     b.classList.remove("modalite--active");
     b.style.borderColor = "";
     b.style.backgroundColor = "";
-    const t = b.querySelector("span:last-child");
-    if (t) t.style.color = "";
+    const libelle = b.querySelector("span:last-child");
+    if (libelle) libelle.style.color = "";
   });
   activerModalite(boutonClique, modalite);
 
@@ -757,7 +758,7 @@ function majEtatBoutonCommentaire() {
 }
 
 // Passe au critère suivant. Si on est au dernier critère, on termine
-// le questionnaire (et, à terme, on affiche le diagnostic).
+// le questionnaire et on affiche le diagnostic.
 function allerCritereSuivant() {
   // Sécurité : il faut une réponse pour avancer (le bouton est normalement
   // désactivé sinon, mais on double la vérification).
@@ -844,9 +845,7 @@ function construireCarteEvaluation(evaluation) {
 
   const type = TYPES_OBJET.find((t) => t.id === evaluation.typeObjet);
   const typeLibelle = type ? tr(type.libelle) : "";
-  const lg = getLangue();
-  const locale = (lg === "en") ? "en-GB" : (lg === "nl") ? "nl-BE" : "fr-FR";
-  const date = new Date(evaluation.dateFin).toLocaleDateString(locale, {
+  const date = new Date(evaluation.dateFin).toLocaleDateString(localeDates(), {
     day: "numeric", month: "long", year: "numeric"
   });
 
@@ -922,9 +921,9 @@ function rouvrirEvaluation(id) {
 }
 
 // Entoure un texte des guillemets adaptés à la langue active
-// (« … » en français, " … " en anglais et en néerlandais).
+// (« … » en français, “…” en anglais et en néerlandais : clé « guillemets »).
 function entreGuillemets(texte) {
-  return (getLangue() === "fr") ? "\u00AB " + texte + " \u00BB" : "\u201C" + texte + "\u201D";
+  return tAvec("guillemets", { texte: texte });
 }
 
 // Demande confirmation avant de supprimer une évaluation, puis rafraîchit.
@@ -1006,7 +1005,7 @@ function appliquerTraductions() {
     el.innerHTML = t(el.getAttribute("data-t-html"));
   });
 
-  // 3. Blocs de texte long bilingues : on n'affiche que la langue active
+  // 3. Blocs de texte long (un bloc par langue) : on n'affiche que la langue active
   const active = getLangue();
   document.querySelectorAll("[data-lang]").forEach((bloc) => {
     bloc.style.display = (bloc.getAttribute("data-lang") === active) ? "" : "none";
@@ -1016,8 +1015,8 @@ function appliquerTraductions() {
   majSelecteurLangue();
 }
 
-// Met à jour l'affichage du sélecteur de langue (le bouton montre l'AUTRE langue,
-// celle vers laquelle on peut basculer).
+// Met à jour le sélecteur de langue : les trois codes (FR, EN, NL) sont
+// affichés, et celui de la langue active est mis en évidence.
 function majSelecteurLangue() {
   const sel = parId("selecteur-langue");
   if (!sel) return;

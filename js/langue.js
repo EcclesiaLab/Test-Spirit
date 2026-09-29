@@ -1,19 +1,23 @@
 /*
   ============================================================
-  LANGUE — gestion du bilingue (français / anglais)
+  LANGUE — gestion des trois langues (français / anglais / néerlandais)
   ============================================================
 
   Ce module gère la langue de l'application. Il :
     - retient la langue choisie sur l'appareil (localStorage) ;
     - détecte la langue du téléphone au tout premier lancement
-      (français si la langue n'est ni le français ni l'anglais) ;
-    - fournit la fonction t() qui renvoie le bon texte.
+      (français si la langue n'est ni le français, ni l'anglais,
+      ni le néerlandais) ;
+    - fournit les fonctions qui renvoient le bon texte.
 
-  DEUX FAÇONS D'OBTENIR UN TEXTE TRADUIT :
+  TROIS FAÇONS D'OBTENIR UN TEXTE TRADUIT :
     1. t("cle") : pour les textes d'interface, cherchés dans le
        dictionnaire TRADUCTIONS (voir traductions.js).
-    2. tr(objet) : pour un objet { fr, en } déjà en main (par ex. le
+    2. tAvec("cle", { nombre: 3 }) : comme t(), pour un texte qui contient
+       des repères à remplacer, écrits entre accolades (ex. {nombre}).
+    3. tr(objet) : pour un objet { fr, en, nl } déjà en main (par ex. le
        titre d'un pilier), renvoie la bonne langue.
+  Et localeDates() donne le format de date de la langue active.
   ============================================================
 */
 
@@ -95,7 +99,7 @@ function getLangue() {
 }
 
 
-// tr(objet) : renvoie la bonne langue d'un objet { fr, en }.
+// tr(objet) : renvoie la bonne langue d'un objet { fr, en, nl }.
 // Tolère aussi une chaîne simple (renvoyée telle quelle) pour la robustesse.
 function tr(objet) {
   if (objet === null || objet === undefined) return "";
@@ -111,4 +115,24 @@ function t(cle) {
   const entree = TRADUCTIONS[cle];
   if (!entree) return cle;
   return entree[langueActive] !== undefined ? entree[langueActive] : (entree.fr || cle);
+}
+
+
+// tAvec("cle", valeurs) : comme t(), puis remplace chaque repère {nom}
+// par la valeur correspondante.
+// Ex. : tAvec("lecture_phrase", { nombre: 4 }) → « Sur 4 … »
+function tAvec(cle, valeurs) {
+  let texte = t(cle);
+  Object.keys(valeurs || {}).forEach((nom) => {
+    texte = texte.split("{" + nom + "}").join(valeurs[nom]);
+  });
+  return texte;
+}
+
+
+// Format des dates selon la langue active (ex. « 29 septembre 2026 »).
+const LOCALES_DATES = { fr: "fr-FR", en: "en-GB", nl: "nl-BE" };
+
+function localeDates() {
+  return LOCALES_DATES[langueActive] || "fr-FR";
 }

@@ -36,9 +36,8 @@
 
   <!-- ============================================================
        CONTENEUR PRINCIPAL DE L'APPLICATION
-       Pour l'instant, il ne contient que l'écran d'accueil.
-       Les écrans suivants (entrée, questionnaire, diagnostic) viendront
-       s'ajouter ici aux prochaines étapes.
+       Il contient tous les écrans : accueil, entrée, questionnaire,
+       diagnostic, historique et pages d'information.
        ============================================================ -->
   <div class="app">
 
@@ -74,9 +73,8 @@
         <p class="accueil__baseline" data-t="accueil_baseline">Évaluer la synodalité d'une pratique chrétienne</p>
       </div>
 
-      <!-- Bloc du milieu : action principale.
-           Le bouton est déjà en place ; il sera relié au questionnaire
-           à la prochaine étape. -->
+      <!-- Bloc du milieu : action principale (démarrer ou reprendre
+           une évaluation). -->
       <div class="accueil__action">
         <button class="bouton" id="bouton-demarrer" data-t="accueil_demarrer">Démarrer une évaluation</button>
       </div>
@@ -394,7 +392,7 @@
   <!-- ============================================================
        CHOIX DE LA LANGUE (tout premier lancement)
        S'affiche avant la bienvenue, uniquement si aucune langue n'a encore
-       été choisie. Bilingue par nature.
+       été choisie. Écrit dans les trois langues à la fois.
        ============================================================ -->
   <div class="bienvenue-voile cache" id="choix-langue-voile">
     <section class="bienvenue choix-langue" role="dialog" aria-modal="true">
@@ -519,11 +517,11 @@
   <div class="impression" id="document-impression" aria-hidden="true">
     <!-- Contenu généré par js/impression.js -->
   </div>
-  <!-- Gestion de la langue (bilingue FR/EN). Chargé en PREMIER car les
+  <!-- Gestion de la langue (FR/EN/NL). Chargé en PREMIER car les
        autres scripts utilisent ses fonctions tr() et t(). -->
   <script src="js/langue.js"></script>
 
-  <!-- Dictionnaire des textes d'interface (FR/EN). -->
+  <!-- Dictionnaire des textes d'interface (FR/EN/NL). -->
   <script src="js/traductions.js"></script>
 
   <script src="js/donnees-spirit.js"></script>

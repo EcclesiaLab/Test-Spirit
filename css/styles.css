@@ -1177,6 +1177,27 @@ body {
 }
 
 /* ===========================================================
+   IPHONE RÉCENTS : ZONE DE LA BARRE D'ACCUEIL
+   Sur les iPhone sans bouton d'accueil, une fine barre en bas de l'écran
+   sert à revenir à l'accueil du téléphone. Quand SPIRIT est installée,
+   le bas de l'app passe sous cette barre. env(safe-area-inset-bottom)
+   donne la hauteur de cette zone (0 sur les autres appareils) : on l'ajoute
+   à la marge du bas des éléments placés en bas de l'écran.
+   =========================================================== */
+.accueil {
+  padding-bottom: calc(var(--espace-md) + env(safe-area-inset-bottom, 0px));
+}
+.entree__pied,
+.critere__pied {
+  padding-bottom: calc(var(--espace-sm) + env(safe-area-inset-bottom, 0px));
+}
+.diagnostic__contenu,
+.historique__contenu,
+.page-info__contenu {
+  padding-bottom: calc(var(--espace-md) + env(safe-area-inset-bottom, 0px));
+}
+
+/* ===========================================================
    VERSION ORDINATEUR (à partir de 960px de large)
    Le téléphone n'est pas concerné : ces règles ne s'appliquent qu'aux
    écrans larges. L'app s'élargit seulement sur certains écrans, repérés

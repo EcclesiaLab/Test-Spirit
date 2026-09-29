@@ -1,18 +1,20 @@
 /*
   ============================================================
-  TRADUCTIONS — textes d'interface (FR / EN)
+  TRADUCTIONS — textes d'interface (FR / EN / NL)
   ============================================================
 
   Ce fichier contient les textes COURTS de l'interface : boutons, titres
-  d'écrans, menus, libellés. Chaque texte a une CLÉ (identifiant) et ses
-  versions { fr, en }.
+  d'écrans, menus, libellés, phrases du diagnostic. Chaque texte a une CLÉ
+  (identifiant) et ses versions { fr, en, nl }.
 
   La fonction t("cle") (définie dans langue.js) renvoie le bon texte selon
-  la langue active.
+  la langue active. Certains textes contiennent des repères entre accolades,
+  comme {nombre} : ils sont remplacés par le programme (fonction tAvec).
+  Ne les traduisez pas et ne les supprimez pas.
 
   Les textes LONGS (pages « Qu'est-ce que SPIRIT ? », « À propos », fenêtre
   de bienvenue) ne sont PAS ici : ils sont gérés directement dans le HTML,
-  en blocs bilingues affichés/masqués selon la langue (plus lisible à éditer).
+  en blocs par langue affichés/masqués selon la langue (plus lisible à éditer).
 
   Pour corriger une traduction : modifiez le texte entre guillemets de la
   bonne langue, sans toucher à la clé ni à la structure.
@@ -98,16 +100,12 @@ const TRADUCTIONS = {
                                 en: "1. Tap the three-dot menu at the top right. 2. Choose Install app (or Add to Home screen). 3. Confirm with Install.",
                                 nl: "1. Tik rechtsboven op het menu met de drie puntjes. 2. Kies App installeren (of Toevoegen aan startscherm). 3. Bevestig met Installeren." },
 
-  // --- Écran de choix de la langue (premier lancement) ---
-  "choix_langue_titre": { fr: "Choisissez votre langue", en: "Choose your language", nl: "Kies je taal" },
-
-  // --- Sélecteur de langue (accueil) ---
-  "selecteur_langue": { fr: "Langue", en: "Language", nl: "Taal" },
-
   // --- Retour (bouton ‹ générique, libellé d'accessibilité) ---
   "retour_accueil": { fr: "Retour à l'accueil", en: "Back to home", nl: "Terug naar start" },
 
   // --- Messages (boîtes de dialogue) ---
+  // Guillemets autour d'un nom de pratique ({texte} = le nom)
+  "guillemets": { fr: "\u00AB {texte} \u00BB", en: "\u201C{texte}\u201D", nl: "\u201C{texte}\u201D" },
   "msg_suppression": { fr: "Supprimer définitivement l'évaluation",
                        en: "Permanently delete the evaluation", nl: "De evaluatie definitief verwijderen" },
   "msg_suppression_fin": { fr: "Cette action est irréversible.",
@@ -116,8 +114,6 @@ const TRADUCTIONS = {
                    en: "An evaluation is in progress", nl: "Er is een evaluatie bezig" },
   "msg_reprise_detail": { fr: "Cliquez sur OK pour la reprendre, ou sur Annuler pour en commencer une nouvelle (l'évaluation en cours sera alors perdue).",
                           en: "Click OK to resume it, or Cancel to start a new one (the evaluation in progress will then be lost).", nl: "Klik op OK om ze te hervatten, of op Annuleren om een nieuwe te beginnen (de lopende evaluatie gaat dan verloren)." },
-  "msg_reprendre": { fr: "Reprendre", en: "Resume", nl: "Hervatten" },
-  "msg_nouvelle":  { fr: "Nouvelle",  en: "New", nl: "Nieuwe" },
   "msg_partage_texte": { fr: "Découvrez SPIRIT, un outil pour évaluer la synodalité d'une pratique chrétienne.",
                          en: "Discover SPIRIT, a tool to evaluate the synodality of a Christian practice.", nl: "Ontdek SPIRIT, een instrument om de synodaliteit van een geloofspraktijk te evalueren." },
   "msg_lien_copie": { fr: "Lien copié : vous pouvez maintenant le coller et l'envoyer.",
@@ -125,7 +121,39 @@ const TRADUCTIONS = {
   "msg_lien_partager": { fr: "Pour partager SPIRIT, copiez ce lien :",
                          en: "To share SPIRIT, copy this link:", nl: "Kopieer deze link om SPIRIT te delen:" },
 
+  // --- Diagnostic : schéma ---
+  "schema_aria":   { fr: "Diagramme radial des trois pierres angulaires de la synodalité",
+                     en: "Radial diagram of the three cornerstones of synodality",
+                     nl: "Radiaal diagram van de drie pijlers van synodaliteit" },
+  "schema_centre": { fr: "synodalité", en: "synodality", nl: "synodaliteit" },
+
+  // --- Diagnostic : phrases de lecture par pierre angulaire ---
+  // {nombre} = nombre de piliers pris en compte ; {piliers} = « pilier » ou
+  // « piliers » (clés lecture_pilier / lecture_piliers) ; {liste} = détail
+  // des réponses (ex. « 3 solidement établis et 1 en chantier »).
+  "lecture_phrase":   { fr: "Sur {nombre} {piliers} pris en compte : {liste}.",
+                        en: "Out of {nombre} {piliers} considered: {liste}.",
+                        nl: "Van de {nombre} in aanmerking genomen {piliers}: {liste}." },
+  "lecture_pilier":   { fr: "pilier",  en: "pillar",  nl: "criterium" },
+  "lecture_piliers":  { fr: "piliers", en: "pillars", nl: "criteria" },
+  "lecture_present":  { fr: "solidement établi",  en: "well established", nl: "stevig verankerd" },
+  "lecture_presents": { fr: "solidement établis", en: "well established", nl: "stevig verankerd" },
+  "lecture_chantier": { fr: "en chantier",    en: "under development", nl: "in opbouw" },
+  "lecture_a_batir":  { fr: "encore à bâtir", en: "still to be built", nl: "nog op te bouwen" },
+  "lecture_et":       { fr: "et", en: "and", nl: "en" },
+  "lecture_aucun":    { fr: "Aucun pilier de cette dimension n'a été jugé applicable à la pratique évaluée.",
+                        en: "No pillar in this dimension was considered applicable to the practice evaluated.",
+                        nl: "Geen enkel criterium van deze pijler werd van toepassing geacht voor de geëvalueerde geloofspraktijk." },
+  "lecture_pleine":   { fr: "Cette dimension est pleinement vécue dans la pratique évaluée.",
+                        en: "This dimension is fully lived out in the practice evaluated.",
+                        nl: "Deze pijler wordt volledig beleefd in de geëvalueerde geloofspraktijk." },
+  "lecture_croissance": { fr: "Cette dimension constitue un axe de croissance important.",
+                          en: "This dimension is an important area for growth.",
+                          nl: "Deze pijler is een belangrijk aandachtspunt voor groei." },
+
   // --- PDF ---
+  // Abréviation du Document final devant les numéros de paragraphe
+  "pdf_prefixe_ref":  { fr: "DF", en: "FD", nl: "SD" },
   "pdf_titre":        { fr: "Évaluer la synodalité des pratiques", en: "Assessing the synodality of practices", nl: "De synodaliteit van geloofspraktijken evalueren" },
   "pdf_ref_titre":    { fr: "Pour aller plus loin", en: "Going deeper", nl: "Verder verdiepen" },
   "pdf_sous_titre":   { fr: "Cadre SPIRIT — d'après le <em>Document final</em> du Synode 2024",

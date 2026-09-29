@@ -14,7 +14,7 @@ L'application est un projet d'**EcclesiaLab**, laboratoire de recherche sur l'in
 - **Visualiser** un diagnostic sous forme de trois jauges (une par pierre angulaire), accompagné d'une lecture textuelle.
 - **Exporter** le résultat en PDF via la fonction d'impression du navigateur.
 - **Conserver** l'historique des évaluations sur l'appareil (consultation, réouverture, suppression).
-- **Choisir la langue** : interface et contenu bilingues français / anglais.
+- **Choisir la langue** : interface et contenu en français, anglais et néerlandais.
 
 L'utilisateur évalue toujours un **objet extérieur** (une pratique, un projet, une instance) — jamais lui-même.
 
@@ -42,7 +42,7 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 │   └── styles.css          Toute la mise en forme
 ├── js/
 │   ├── donnees-spirit.js   ★ CŒUR ÉDITORIAL : piliers, pierres angulaires, textes
-│   ├── traductions.js      Textes d'interface (FR / EN)
+│   ├── traductions.js      Textes d'interface (FR / EN / NL)
 │   ├── langue.js           Gestion du basculement de langue
 │   ├── app.js              Logique applicative (navigation, questionnaire, écrans)
 │   ├── diagnostic.js       Calcul et affichage des trois jauges
@@ -128,7 +128,7 @@ Conséquence : si l'utilisateur change d'appareil ou efface les données de son 
 
 Prototype fonctionnel, en cours de consolidation.
 
-Reste notamment à finaliser : les **pistes d'action** associées à chaque pilier (travail éditorial de l'équipe), les tests sur appareils réels, et la validation du contenu bilingue.
+Reste notamment à finaliser : les **pistes d'action** associées à chaque pilier (travail éditorial de l'équipe), les tests sur appareils réels, et la relecture du néerlandais.
 
 ---
 

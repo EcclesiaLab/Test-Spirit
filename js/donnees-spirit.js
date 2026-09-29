@@ -1,6 +1,6 @@
 /*
   ============================================================
-  DONNÉES SPIRIT — le contenu de l'évaluation (BILINGUE FR/EN)
+  DONNÉES SPIRIT — le contenu de l'évaluation (FR / EN / NL)
   ============================================================
 
   CE FICHIER EST LE CŒUR ÉDITORIAL DE L'APPLICATION.
@@ -12,8 +12,9 @@
     - les types de pratique,
     - (à venir) les pistes d'action.
 
-  BILINGUE : chaque texte affiché existe en deux langues, sous la forme
-  { fr: "texte français", en: "texte anglais" }.
+  TROIS LANGUES : chaque texte affiché existe en français, en anglais et
+  en néerlandais, sous la forme
+  { fr: "texte français", en: "texte anglais", nl: "texte néerlandais" }.
   Pour corriger une traduction, modifiez le texte entre guillemets de la
   bonne langue, sans toucher à la structure (accolades, crochets, virgules).
 
@@ -21,7 +22,8 @@
   code et au stockage des évaluations. Ne pas les modifier.
 
   Source : SUPPORT_SPIRIT_14criteres (FR) et Criteria for SPIRIT May 2026 (EN),
-  d'après le Document final du Synode 2024.
+  d'après le Document final du Synode 2024 ; version néerlandaise : document
+  transmis par l'équipe.
   ============================================================
 */
 
@@ -72,8 +74,8 @@ const PIERRES_ANGULAIRES = [
    - id          : identifiant interne unique (NE PAS traduire ni modifier)
    - numero      : le numéro affiché (1 à 14)
    - pierre      : l'identifiant de la pierre angulaire de rattachement
-   - titre       : libellé court { fr, en }
-   - sousQuestions : tableau de questions d'aide, chacune { fr, en }
+   - titre       : libellé court { fr, en, nl }
+   - sousQuestions : tableau de questions d'aide, chacune { fr, en, nl }
    - pistes      : pistes d'action, À RÉDIGER PAR L'ÉQUIPE SPIRIT (vides pour l'instant)
    =========================================================== */
 const CRITERES = [
@@ -305,7 +307,7 @@ const CRITERES = [
 
 /* ===========================================================
    LES QUATRE MODALITÉS DE RÉPONSE
-   id technique inchangé ; seul le libellé est bilingue.
+   id technique inchangé ; seul le libellé est traduit.
    =========================================================== */
 const MODALITES = [
   { id: "present",        libelle: { fr: "Solidement établi", en: "Well established", nl: "Stevig verankerd" }, couleur: "#1D9E75" },
@@ -341,10 +343,11 @@ const TYPES_OBJET = [
 
 /* ============================================================
    JUSTIFICATIONS DES PILIERS (Document final du Synode, 2024)
-   Affichées sur la dernière feuille du PDF, regroupées par
+   Affichées dans le PDF « Pour aller plus loin », regroupées par
    pierre angulaire. Clé = identifiant du pilier (voir CRITERES).
-   Chaque citation : { num, fr, en }. La référence s'affiche
-   "DF <num>" en français et "FD <num>" en anglais.
+   Chaque citation : { num, fr, en, nl }. La référence s'affiche
+   "DF <num>" en français, "FD <num>" en anglais et "SD <num>" en
+   néerlandais.
    ⚠ Citations issues du Document final du Synode sur la
    synodalité — ne pas modifier le texte sans validation.
    ============================================================ */

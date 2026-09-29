@@ -34,9 +34,7 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   const typeLibelle = type ? tr(type.libelle) : "";
   // Date fournie (archive) ou date du jour (évaluation qui vient de finir).
   const dateSource = dateISO ? new Date(dateISO) : new Date();
-  const lgPdf = getLangue();
-  const locale = (lgPdf === "en") ? "en-GB" : (lgPdf === "nl") ? "nl-BE" : "fr-FR";
-  const date = dateSource.toLocaleDateString(locale, {
+  const date = dateSource.toLocaleDateString(localeDates(), {
     day: "numeric", month: "long", year: "numeric"
   });
 
@@ -147,7 +145,7 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
    =========================================================== */
 function construireDocumentReferences() {
   const conteneur = document.getElementById("document-impression");
-  const prefixeRef = (getLangue() === "en") ? "FD" : (getLangue() === "nl") ? "SD" : "DF";
+  const prefixeRef = t("pdf_prefixe_ref"); // DF, FD ou SD selon la langue
   const langActive = getLangue();
 
   let html = "";
