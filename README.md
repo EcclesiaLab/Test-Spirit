@@ -53,9 +53,11 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 │   ├── icon-512.png        Icône PWA (splash screen)
 │   ├── logo-spirit.png     Logo affiché dans l'application
 │   └── logo-uclouvain.png  Logo institutionnel (page « À propos »)
-└── images/
-    └── installation-{iphone|android}-{fr|en|nl}.png
-                            Visuels de la fenêtre « Installer SPIRIT » (smartphone)
+├── images/
+│   └── installation-{iphone|android}-{fr|en|nl}.png
+│                           Visuels de la fenêtre « Installer SPIRIT » (smartphone)
+└── fonts/                  Polices Spectral et Source Sans 3 (licence SIL OFL),
+                            hébergées avec l'app : rien n'est demandé à Google
 ```
 
 ---

@@ -23,12 +23,9 @@
   <!-- Icône classique de l'onglet -->
   <link rel="icon" type="image/png" href="icons/icon-192.png">
 
-  <!-- Polices Google : Spectral (titres, serif élégant) et Source Sans 3 (corps) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- Notre feuille de style -->
+  <!-- Notre feuille de style. Les polices Spectral (titres) et Source Sans 3
+       (texte) sont hébergées avec l'app (dossier fonts/, déclarées dans
+       styles.css) : aucune donnée n'est envoyée à un service extérieur. -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -151,16 +148,30 @@
          dynamiquement par app.js selon le critère en cours. -->
     <section class="ecran critere" id="ecran-critere">
 
-      <!-- Barre de progression segmentée par pierre angulaire -->
+      <!-- Barre de progression segmentée par pierre angulaire,
+           avec à droite la croix de retour à l'accueil -->
       <div class="progression">
-        <div class="progression__barre" id="progression-barre">
-          <!-- Les 3 segments seront générés par JS -->
+        <div class="progression__corps">
+          <div class="progression__barre" id="progression-barre">
+            <!-- Les 3 segments seront générés par JS -->
+          </div>
+          <div class="progression__infos">
+            <span class="progression__pierre" id="progression-pierre">Communion</span>
+            <span class="progression__compteur" id="progression-compteur">Pilier 1 / 14</span>
+          </div>
         </div>
-        <div class="progression__infos">
-          <span class="progression__pierre" id="progression-pierre">Communion</span>
-          <span class="progression__compteur" id="progression-compteur">Pilier 1 / 14</span>
-        </div>
+        <!-- Retour direct à l'accueil. L'évaluation est enregistrée :
+             « Démarrer une évaluation » proposera de la reprendre. -->
+        <button class="progression__quitter" id="critere-quitter" type="button"
+                aria-label="Revenir à l'accueil (votre évaluation est enregistrée)"
+                data-t-aria="critere_quitter" data-t-title="critere_quitter">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
       </div>
+
+      <!-- Sommaire des 14 piliers : visible seulement sur ordinateur
+           (masqué sur téléphone par la feuille de style). Rempli par app.js. -->
+      <nav class="critere__sommaire" id="critere-sommaire" aria-label="Piliers" data-t-aria="sommaire_aria"></nav>
 
       <!-- Contenu du critère -->
       <div class="critere__contenu">

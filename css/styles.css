@@ -3,6 +3,7 @@
   STYLES — SPIRIT
   ============================================================
   Cette feuille de style est organisée en sections :
+    0. Polices (fichiers hébergés avec l'app)
     1. Variables (couleurs, polices, espacements)
     2. Base (réglages généraux)
     3. Écran d'accueil
@@ -15,6 +16,99 @@
   lisible si l'app est ouverte sur un écran plus large.
   ============================================================
 */
+
+/* ===========================================================
+   0. POLICES
+   Spectral (titres) et Source Sans 3 (texte) sont hébergées avec l'app,
+   dans le dossier fonts/ : aucune demande n'est envoyée à Google, et les
+   polices restent disponibles hors connexion. Licence libre SIL Open Font
+   License (voir les fichiers LICENCE dans fonts/).
+   Chaque police existe en deux morceaux : « latin » (français, anglais,
+   néerlandais : toujours chargé) et « latin-ext » (lettres d'autres langues
+   européennes : chargé seulement si un tel caractère apparaît, par ex. dans
+   le nom d'une pratique). C'est le navigateur qui choisit, grâce à
+   unicode-range.
+   =========================================================== */
+@font-face {
+  font-family: "Spectral";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/spectral-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Spectral";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/spectral-latin-ext-400-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Spectral";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/spectral-latin-500-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Spectral";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/spectral-latin-ext-500-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Spectral";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/spectral-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Spectral";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/spectral-latin-ext-600-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/source-sans-3-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/source-sans-3-latin-ext-400-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/source-sans-3-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/source-sans-3-latin-ext-600-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
 /* ===========================================================
    1. VARIABLES
@@ -618,6 +712,40 @@ body {
   font-weight: 600;
 }
 
+/* La barre de progression et, à droite, la croix de retour à l'accueil */
+.progression {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.progression__corps {
+  flex: 1;
+  min-width: 0;
+}
+.progression__quitter {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--bordure);
+  border-radius: 50%;
+  background-color: var(--blanc);
+  color: var(--marine);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.progression__quitter:hover {
+  border-color: var(--marine);
+  background-color: var(--creme);
+}
+
+/* Sommaire des piliers : réservé à l'ordinateur (voir « VERSION ORDINATEUR ») */
+.critere__sommaire {
+  display: none;
+}
+
 /* --- Contenu du critère --- */
 .critere__contenu {
   flex: 1;
@@ -1204,7 +1332,9 @@ body {
    grâce à l'attribut body[data-ecran] posé par app.js :
      - Diagnostic : deux colonnes, schéma à gauche (il reste visible
        pendant qu'on lit), textes et boutons à droite ;
-     - Mes évaluations : les cartes côte à côte, en grille.
+     - Mes évaluations : les cartes côte à côte, en grille ;
+     - Questionnaire : la liste des 14 piliers à gauche, le pilier en
+       cours à droite.
    Les autres écrans gardent la colonne centrale du téléphone.
    =========================================================== */
 @media (min-width: 960px) {
@@ -1226,6 +1356,88 @@ body {
   }
   #historique-liste .eval-carte {
     margin-bottom: 0;
+  }
+
+  /* --- Questionnaire : liste des piliers à gauche --- */
+  body[data-ecran="ecran-critere"] .app {
+    max-width: 66rem;
+  }
+  #ecran-critere.ecran--actif {
+    display: grid;
+    grid-template-columns: 18rem minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "progression progression"
+      "sommaire    contenu"
+      "sommaire    pied";
+  }
+  #ecran-critere .progression {
+    grid-area: progression;
+    padding: var(--espace-md) var(--espace-lg) var(--espace-sm);
+  }
+  .critere__sommaire {
+    display: block;
+    grid-area: sommaire;
+    overflow-y: auto;
+    padding: 0 var(--espace-sm) var(--espace-md) var(--espace-md);
+    border-right: 1px solid var(--bordure);
+  }
+  #ecran-critere .critere__contenu {
+    grid-area: contenu;
+    padding: var(--espace-sm) var(--espace-lg) var(--espace-md);
+  }
+  #ecran-critere .critere__pied {
+    grid-area: pied;
+    padding: var(--espace-sm) var(--espace-lg);
+  }
+  .sommaire__pierre {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: var(--espace-sm) 0 0.25rem 0.5rem;
+  }
+  .sommaire__pilier {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: var(--arrondi-petit);
+    padding: 0.32rem 0.5rem;
+    font-family: var(--police-corps);
+    font-size: 0.84rem;
+    line-height: 1.3;
+    color: var(--texte);
+    cursor: pointer;
+  }
+  .sommaire__pilier:hover:not(:disabled) {
+    background-color: var(--creme-fonce);
+  }
+  .sommaire__pilier:disabled {
+    color: #A9A398;
+    cursor: default;
+  }
+  .sommaire__pilier--actuel,
+  .sommaire__pilier--actuel:hover:not(:disabled) {
+    background-color: var(--blanc);
+    box-shadow: inset 3px 0 0 var(--marine);
+    color: var(--marine);
+    font-weight: 600;
+  }
+  .sommaire__pastille {
+    flex: 0 0 9px;
+    height: 9px;
+    margin-top: 0.34em;
+    border-radius: 50%;
+    border: 1.5px solid #C9C3B8;
+  }
+  .sommaire__numero {
+    flex: 0 0 1.2rem;
+    color: var(--texte-doux);
+    font-weight: 400;
   }
 
   /* --- Diagnostic : deux colonnes --- */

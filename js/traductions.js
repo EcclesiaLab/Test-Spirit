@@ -100,6 +100,12 @@ const TRADUCTIONS = {
                                 en: "1. Tap the three-dot menu at the top right. 2. Choose Install app (or Add to Home screen). 3. Confirm with Install.",
                                 nl: "1. Tik rechtsboven op het menu met de drie puntjes. 2. Kies App installeren (of Toevoegen aan startscherm). 3. Bevestig met Installeren." },
 
+  // --- Questionnaire : croix de retour à l'accueil, sommaire (ordinateur) ---
+  "critere_quitter": { fr: "Revenir à l'accueil (votre évaluation est enregistrée)",
+                       en: "Back to home (your evaluation is saved)",
+                       nl: "Terug naar start (je evaluatie wordt bewaard)" },
+  "sommaire_aria":   { fr: "Liste des piliers", en: "List of pillars", nl: "Lijst van de criteria" },
+
   // --- Retour (bouton ‹ générique, libellé d'accessibilité) ---
   "retour_accueil": { fr: "Retour à l'accueil", en: "Back to home", nl: "Terug naar start" },
 

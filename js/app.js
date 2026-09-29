@@ -639,6 +639,9 @@ function choisirModalite(critere, modalite, boutonClique) {
   // Une réponse est donnée : on active le bouton "Suivant".
   parId("critere-suivant").disabled = false;
 
+  // Le sommaire (ordinateur) affiche la nouvelle pastille.
+  construireSommaire();
+
   // Sauvegarde automatique (pour pouvoir reprendre plus tard).
   sauvegarderEnCours();
 }
@@ -670,6 +673,9 @@ function afficherCritere(index) {
   // Barre de progression
   majProgression(critere);
 
+  // Sommaire des piliers (visible sur ordinateur)
+  construireSommaire();
+
   // Le bouton "Suivant" est actif seulement si une réponse existe déjà.
   parId("critere-suivant").disabled = !reponses[critere.id];
 
@@ -682,6 +688,71 @@ function afficherCritere(index) {
 
   // On affiche l'écran de critère.
   afficherEcran("ecran-critere");
+}
+
+// --- Sommaire des piliers (ordinateur) ---
+// Liste les 14 piliers par pierre angulaire, avec une pastille de la couleur
+// de la réponse donnée. On peut revenir à un pilier déjà traité, ou aller au
+// prochain pilier sans réponse, mais pas sauter plus loin.
+// Sur téléphone, ce sommaire est masqué par la feuille de style.
+function construireSommaire() {
+  const nav = parId("critere-sommaire");
+  if (!nav) return;
+  nav.innerHTML = "";
+  // Index du premier pilier sans réponse (-1 si tous ont une réponse).
+  const premierSansReponse = CRITERES.findIndex((c) => !reponses[c.id]);
+
+  PIERRES_ANGULAIRES.forEach((pierre) => {
+    const titre = document.createElement("p");
+    titre.className = "sommaire__pierre";
+    titre.style.color = pierre.couleur;
+    titre.textContent = tr(pierre.nom);
+    nav.appendChild(titre);
+
+    CRITERES.forEach((critere, index) => {
+      if (critere.pierre !== pierre.id) return;
+      const bouton = document.createElement("button");
+      bouton.type = "button";
+      bouton.className = "sommaire__pilier";
+
+      // Pastille : couleur de la réponse (pointillés pour « non applicable »)
+      const pastille = document.createElement("span");
+      pastille.className = "sommaire__pastille";
+      const modalite = MODALITES.find((m) => m.id === reponses[critere.id]);
+      if (modalite && modalite.couleur) {
+        pastille.style.backgroundColor = modalite.couleur;
+        pastille.style.borderColor = modalite.couleur;
+      } else if (modalite) {
+        pastille.style.borderStyle = "dashed";
+      }
+
+      const numero = document.createElement("span");
+      numero.className = "sommaire__numero";
+      numero.textContent = critere.numero;
+      const libelle = document.createElement("span");
+      libelle.textContent = tr(critere.titre);
+
+      bouton.appendChild(pastille);
+      bouton.appendChild(numero);
+      bouton.appendChild(libelle);
+
+      if (index === indexCritereActuel) {
+        bouton.classList.add("sommaire__pilier--actuel");
+        bouton.setAttribute("aria-current", "step");
+      }
+      bouton.disabled = !(premierSansReponse === -1 || index <= premierSansReponse);
+      bouton.addEventListener("click", () => afficherCritere(index));
+      nav.appendChild(bouton);
+    });
+  });
+}
+
+// Croix de retour à l'accueil : on enregistre l'évaluation (position
+// comprise), puis on revient à l'accueil. « Démarrer une évaluation »
+// proposera ensuite de la reprendre là où on s'était arrêté.
+function quitterQuestionnaire() {
+  sauvegarderEnCours();
+  afficherEcran("ecran-accueil");
 }
 
 // Déplie / replie la zone des sous-questions.
@@ -997,6 +1068,10 @@ function appliquerTraductions() {
   document.querySelectorAll("[data-t-aria]").forEach((el) => {
     el.setAttribute("aria-label", t(el.getAttribute("data-t-aria")));
   });
+  // Infobulles (texte qui apparaît au survol de la souris, sur ordinateur).
+  document.querySelectorAll("[data-t-title]").forEach((el) => {
+    el.setAttribute("title", t(el.getAttribute("data-t-title")));
+  });
 
   // 2 ter. Textes pouvant contenir une mise en forme (ex. <em>) : on injecte
   // en HTML. Réservé aux textes du dictionnaire (de confiance), jamais à des
@@ -1157,6 +1232,9 @@ function brancherBoutons() {
 
   // Bouton "précédent".
   parId("critere-precedent").addEventListener("click", allerCriterePrecedent);
+
+  // Croix : retour direct à l'accueil (évaluation enregistrée).
+  parId("critere-quitter").addEventListener("click", quitterQuestionnaire);
 
   // --- Écran de diagnostic ---
   // Retour : en consultation d'archive, on revient à l'historique.

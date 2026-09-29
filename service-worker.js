@@ -26,7 +26,7 @@
 */
 
 // ---- Numéro de version du cache (à incrémenter à chaque mise à jour) ----
-const CACHE_VERSION = "spirit-v63";
+const CACHE_VERSION = "spirit-v64";
 
 // ---- Liste des fichiers à mettre en cache dès l'installation ----
 // Ce sont les fichiers minimum pour que l'app s'affiche hors-ligne.
@@ -48,7 +48,13 @@ const FICHIERS_A_CACHER = [
   "./icons/icon-512.png",
   "./icons/logo-spirit.png",
   "./icons/logo-uclouvain.png",
-  "./icons/logo-ecclesialab.png"
+  "./icons/logo-ecclesialab.png",
+  // Polices (sous-ensemble « latin », utilisé pour le FR, l'EN et le NL)
+  "./fonts/spectral-latin-400-normal.woff2",
+  "./fonts/spectral-latin-500-normal.woff2",
+  "./fonts/spectral-latin-600-normal.woff2",
+  "./fonts/source-sans-3-latin-400-normal.woff2",
+  "./fonts/source-sans-3-latin-600-normal.woff2"
 ];
 
 /*
@@ -95,9 +101,9 @@ self.addEventListener("activate", (event) => {
   - On cherche d'abord le fichier dans le cache local.
   - Si on le trouve : on le renvoie tout de suite (rapide, marche hors-ligne).
   - Sinon : on va le chercher sur le réseau, et on en met une copie en cache
-    au passage (utile par exemple pour les polices Google Fonts, qui ne sont
-    pas dans la liste initiale mais seront mises en cache à la première visite
-    en ligne).
+    au passage (utile par exemple pour les images de la fenêtre d'installation
+    ou les polices « latin-ext », qui ne sont pas dans la liste initiale mais
+    seront mises en cache à leur première utilisation en ligne).
 */
 self.addEventListener("fetch", (event) => {
   // On ne gère que les requêtes GET (récupération de fichiers).
