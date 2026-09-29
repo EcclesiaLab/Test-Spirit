@@ -43,6 +43,7 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 ├── js/
 │   ├── donnees-spirit.js   ★ CŒUR ÉDITORIAL : piliers, pierres angulaires, textes
 │   ├── questions-domaines.js  Questions d'aide des 4 domaines (version d'essai)
+│   ├── lexique.js          Lexique : mots de l'Église et de SPIRIT (provisoire)
 │   ├── traductions.js      Textes d'interface (FR / EN / NL)
 │   ├── langue.js           Gestion du basculement de langue
 │   ├── app.js              Logique applicative (navigation, questionnaire, écrans)

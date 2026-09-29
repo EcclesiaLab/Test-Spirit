@@ -1185,6 +1185,69 @@ body {
   margin-bottom: var(--espace-sm);
 }
 
+/* Liens dans le texte des pages d'information (ex. ecclesialab.org) */
+.page-info__contenu p a {
+  color: var(--marine);
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+/* Bouton « Visiter le site d'EcclesiaLab » (un lien présenté comme un bouton) */
+a.bouton {
+  text-align: center;
+  text-decoration: none;
+}
+.page-info__site {
+  margin-top: var(--espace-md);
+}
+
+/* --- Lexique --- */
+.lexique__intro {
+  font-style: italic;
+  color: var(--texte-doux) !important;
+}
+.lexique__entree {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--bordure);
+}
+.lexique__entree:last-child {
+  border-bottom: none;
+}
+.lexique__terme {
+  font-family: var(--police-titre);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--marine);
+  margin-bottom: 0.2rem;
+}
+.lexique__definition {
+  margin: 0;
+}
+.page-info__contenu .lexique__definition p {
+  font-size: 0.93rem;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+.lexique__citation {
+  margin: 0.45rem 0 0;
+  padding: 0.45rem 0.7rem;
+  border-left: 3px solid var(--orange);
+  background-color: var(--creme-fonce);
+  border-radius: 0 var(--arrondi-petit) var(--arrondi-petit) 0;
+  font-size: 0.88rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--texte);
+}
+
+/* --- Questionnaire : courte explication de « Non applicable » --- */
+.critere__na-note {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--texte-doux);
+  margin: 0.5rem 0.2rem 0;
+}
+
 /* La citation / le sigle développé en italique ressort en marine */
 .page-info__contenu em {
   color: var(--marine);
@@ -1315,12 +1378,12 @@ body {
 }
 
 /* ===========================================================
-   ÉCRANS PEU HAUTS (moins de 640px visibles, fréquent sur Android
+   ÉCRANS PEU HAUTS (moins de 700px visibles, fréquent sur smartphone
    quand la barre d'adresse et la barre de navigation sont affichées) :
    l'accueil est resserré pour que le bouton « Démarrer une évaluation »
    et les liens tiennent à l'écran sans avoir à faire défiler.
    =========================================================== */
-@media (max-height: 640px) and (max-width: 959px) {
+@media (max-height: 700px) and (max-width: 959px) {
   .accueil__entete {
     /* laisse la place au sélecteur de langue, en haut à droite */
     padding-top: var(--espace-md);

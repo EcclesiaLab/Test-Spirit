@@ -86,6 +86,10 @@
           <svg class="lien-secondaire__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.4 1 2.5h6c0-1.1.3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>
           <span data-t="accueil_quest_ce_que">Qu'est-ce que SPIRIT ?</span>
         </button>
+        <button class="lien-secondaire" id="lien-lexique">
+          <svg class="lien-secondaire__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.3 5.2 8 4.5 5.5 4.5H3v14h2.5c2.5 0 4.8.7 6.5 2 1.7-1.3 4-2 6.5-2H21v-14h-2.5c-2.5 0-4.8.7-6.5 2z"/><path d="M12 6.5v14"/></svg>
+          <span data-t="accueil_lexique">Lexique</span>
+        </button>
         <button class="lien-secondaire" id="lien-a-propos">
           <svg class="lien-secondaire__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r="0.7" fill="currentColor" stroke="none"/></svg>
           <span data-t="accueil_a_propos">À propos</span>
@@ -193,6 +197,9 @@
         <div class="modalites" id="modalites">
           <!-- Les boutons seront générés par JS -->
         </div>
+
+        <!-- Courte explication de « Non applicable » (détails dans le lexique) -->
+        <p class="critere__na-note" data-t="critere_na_note">« Non applicable » : le pilier ne concerne pas la pratique évaluée ; il n'est pas compté dans le diagnostic.</p>
 
         <!-- Zone d'observation libre (facultative), dépliable -->
         <div class="commentaire">
@@ -355,6 +362,20 @@
       </div>
     </section>
 
+    <!-- ---------- ÉCRAN « LEXIQUE » ---------- -->
+    <!-- Mots de l'Église et de SPIRIT expliqués simplement. La liste est
+         construite par js/lexique.js dans la langue active. -->
+    <section class="ecran page-info" id="ecran-lexique">
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="lexique-retour" aria-label="Retour à l'accueil" data-t-aria="retour_accueil">‹</button>
+        <h2 class="barre-titre__titre" data-t="page_lexique_titre">Lexique</h2>
+      </header>
+      <div class="page-info__contenu">
+        <p class="lexique__intro" data-t="lexique_intro">Quelques mots de l'Église et de SPIRIT, expliqués simplement.</p>
+        <dl class="lexique" id="lexique-liste"></dl>
+      </div>
+    </section>
+
     <!-- ---------- ÉCRAN « À PROPOS » ---------- -->
     <section class="ecran page-info" id="ecran-a-propos">
       <header class="barre-titre">
@@ -369,7 +390,7 @@
           <p>SPIRIT est un projet de l'EcclesiaLab, un laboratoire de théologie au service de la transformation de l'Église catholique en Europe francophone et au Québec. Fondé en 2022 et rattaché à l'Université catholique de Louvain (UCLouvain), l'EcclesiaLab cherche à faire dialoguer la rigueur académique et les réalités vécues sur le terrain pour comprendre, outiller et soutenir les acteurs de la transformation ecclésiale.</p>
 
           <h3 class="page-info__titre">En savoir plus</h3>
-          <p>EcclesiaLab développe d'autres outils au service des communautés chrétiennes, comme le Radar théologique et une cartographie des lieux d'Église innovants et inspirants. Retrouvez l'ensemble de ses travaux et outils sur ecclesialab.org.</p>
+          <p>EcclesiaLab développe d'autres outils au service des communautés chrétiennes, comme le Radar théologique et une cartographie des lieux d'Église innovants et inspirants. Retrouvez l'ensemble de ses travaux et outils sur <a href="https://ecclesialab.org/" target="_blank" rel="noopener">ecclesialab.org</a>.</p>
         </div>
 
         <!-- Version anglaise (traduction officielle de l'équipe) -->
@@ -378,7 +399,7 @@
           <p>SPIRIT is a project of EcclesiaLab, a theology laboratory dedicated to supporting the transformation of the Catholic Church in French-speaking Europe and Québec. Founded in 2022 and affiliated with the Catholic University of Louvain (UCLouvain), EcclesiaLab seeks to bring academic rigor into dialogue with lived realities in the field in order to understand, equip and support those engaged in ecclesial transformation.</p>
 
           <h3 class="page-info__titre">Find out more</h3>
-          <p>EcclesiaLab is developing other tools to support Christian communities, including the Theological Radar and a mapping platform of innovative and inspiring Church initiatives. Discover all of EcclesiaLab's projects, research, and tools on ecclesialab.org.</p>
+          <p>EcclesiaLab is developing other tools to support Christian communities, including the Theological Radar and a mapping platform of innovative and inspiring Church initiatives. Discover all of EcclesiaLab's projects, research, and tools on <a href="https://ecclesialab.org/" target="_blank" rel="noopener">ecclesialab.org</a>.</p>
         </div>
 
         <!-- Version néerlandaise (traduction à valider par l'équipe) -->
@@ -387,7 +408,12 @@
           <p>SPIRIT is een project van EcclesiaLab, een theologisch laboratorium ten dienste van de transformatie van de katholieke Kerk in Franstalig Europa en Québec. EcclesiaLab werd opgericht in 2022 en is verbonden aan de Université catholique de Louvain (UCLouvain). Het laboratorium wil academische nauwgezetheid in dialoog brengen met de geleefde realiteit op het terrein, om de actoren van kerkelijke transformatie te begrijpen, te ondersteunen en van instrumenten te voorzien.</p>
 
           <h3 class="page-info__titre">Meer weten</h3>
-          <p>EcclesiaLab ontwikkelt nog andere instrumenten ten dienste van christelijke gemeenschappen, zoals de Theologische Radar en een kaart van vernieuwende en inspirerende kerkelijke initiatieven. Ontdek al zijn werk en instrumenten op ecclesialab.org.</p>
+          <p>EcclesiaLab ontwikkelt nog andere instrumenten ten dienste van christelijke gemeenschappen, zoals de Theologische Radar en een kaart van vernieuwende en inspirerende kerkelijke initiatieven. Ontdek al zijn werk en instrumenten op <a href="https://ecclesialab.org/" target="_blank" rel="noopener">ecclesialab.org</a>.</p>
+        </div>
+
+        <!-- Lien vers le site d'EcclesiaLab (s'ouvre dans un nouvel onglet) -->
+        <div class="page-info__site">
+          <a class="bouton bouton--contour" href="https://ecclesialab.org/" target="_blank" rel="noopener" data-t="apropos_site">Visiter le site d'EcclesiaLab</a>
         </div>
 
         <!-- Rappel de l'installation : visible seulement sur un smartphone
@@ -551,6 +577,9 @@
 
   <!-- Questions d'aide propres à chaque domaine (version d'essai). -->
   <script src="js/questions-domaines.js"></script>
+
+  <!-- Lexique (écran « Lexique », version provisoire). -->
+  <script src="js/lexique.js"></script>
 
   <!-- Logique du diagnostic (calcul + dessin des jauges). Chargé avant app.js. -->
   <script src="js/diagnostic.js"></script>

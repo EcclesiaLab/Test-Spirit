@@ -26,7 +26,7 @@
 */
 
 // ---- Numéro de version du cache (à incrémenter à chaque mise à jour) ----
-const CACHE_VERSION = "spirit-v67";
+const CACHE_VERSION = "spirit-v68";
 
 // ---- Liste des fichiers à mettre en cache dès l'installation ----
 // Ce sont les fichiers minimum pour que l'app s'affiche hors-ligne.
@@ -40,6 +40,7 @@ const FICHIERS_A_CACHER = [
   "./js/traductions.js",
   "./js/donnees-spirit.js",
   "./js/questions-domaines.js",
+  "./js/lexique.js",
   "./js/diagnostic.js",
   "./js/impression.js",
   "./js/historique.js",

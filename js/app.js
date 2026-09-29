@@ -1130,6 +1130,8 @@ function rafraichirEcranCourant() {
     }
   } else if (id === "ecran-historique") {
     afficherHistorique();
+  } else if (id === "ecran-lexique") {
+    construireLexique();
   } else if (id === "ecran-entree") {
     genererCartesType();
   }
@@ -1182,6 +1184,15 @@ function brancherBoutons() {
 
   // Lien "Mes évaluations" : affiche l'historique.
   parId("lien-mes-evaluations").addEventListener("click", afficherHistorique);
+
+  // Lien "Lexique" : construit la liste dans la langue active, puis l'affiche.
+  parId("lien-lexique").addEventListener("click", () => {
+    construireLexique();
+    afficherEcran("ecran-lexique");
+  });
+  parId("lexique-retour").addEventListener("click", () => {
+    afficherEcran("ecran-accueil");
+  });
 
   // Lien "À propos" : affiche la page d'information dédiée.
   parId("lien-a-propos").addEventListener("click", () => {
