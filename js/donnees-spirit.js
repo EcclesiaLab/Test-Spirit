@@ -9,7 +9,8 @@
     - les 14 piliers et leurs libellés,
     - les sous-questions d'aide à la réflexion,
     - les modalités de réponse,
-    - les types de pratique,
+    - les types de pratique (questions propres à chaque domaine :
+      voir questions-domaines.js),
     - (à venir) les pistes d'action.
 
   TROIS LANGUES : chaque texte affiché existe en français, en anglais et
@@ -319,8 +320,55 @@ const MODALITES = [
 
 /* ===========================================================
    LES TYPES DE PRATIQUE (écran d'entrée)
+   Version d'essai (29 septembre 2026) : 4 domaines, chacun avec ses
+   questions d'aide (voir questions-domaines.js), et un choix « Autre
+   pratique » qui garde les questions de référence.
+   ⚠ Les descriptions des cartes (et les libellés EN/NL) sont des
+   PROPOSITIONS PROVISOIRES à valider par l'équipe.
    =========================================================== */
 const TYPES_OBJET = [
+  {
+    id: "annoncer",
+    libelle: { fr: "Annoncer la foi", en: "Proclaiming the faith", nl: "Het geloof verkondigen" },
+    description: { fr: "Catéchèse, première annonce, parcours de découverte de la foi, etc.",
+                   en: "Catechesis, first proclamation, programmes for discovering the faith, etc.",
+                   nl: "Catechese, eerste verkondiging, trajecten om het geloof te ontdekken, enz." }
+  },
+  {
+    id: "gouverner",
+    libelle: { fr: "Gouverner", en: "Governing", nl: "Besturen" },
+    description: { fr: "Conseil pastoral, équipe d'animation, conseil économique, etc.",
+                   en: "Pastoral council, leadership team, finance council, etc.",
+                   nl: "Pastorale raad, pastorale ploeg, economische raad, enz." }
+  },
+  {
+    id: "servir",
+    libelle: { fr: "Servir", en: "Serving", nl: "Dienen" },
+    description: { fr: "Solidarité, accueil des plus fragiles, visites, engagement social, etc.",
+                   en: "Solidarity, care for the most vulnerable, visiting, social engagement, etc.",
+                   nl: "Solidariteit, zorg voor de meest kwetsbaren, bezoekwerk, maatschappelijk engagement, enz." }
+  },
+  {
+    id: "celebrer",
+    libelle: { fr: "Célébrer la foi", en: "Celebrating the faith", nl: "Het geloof vieren" },
+    description: { fr: "Liturgie, sacrements, prière communautaire, fêtes, etc.",
+                   en: "Liturgy, sacraments, communal prayer, feasts, etc.",
+                   nl: "Liturgie, sacramenten, gemeenschappelijk gebed, feesten, enz." }
+  },
+  {
+    id: "autre",
+    libelle: { fr: "Autre pratique", en: "Other practice", nl: "Andere geloofspraktijk" },
+    description: { fr: "Le questionnaire de référence de SPIRIT, validé par un panel de 50 théologiens et théologiennes, pour toute pratique qui n'entre pas dans les domaines ci-dessus.",
+                   en: "SPIRIT's reference questionnaire, validated by a panel of 50 theologians, for any practice that does not fit the areas above.",
+                   nl: "De referentievragenlijst van SPIRIT, gevalideerd door een panel van 50 theologen en theologes, voor elke geloofspraktijk die niet onder de bovenstaande domeinen valt." }
+  }
+];
+
+/* Anciens types de pratique (jusqu'à la v64). Ils ne sont plus proposés,
+   mais restent connus pour afficher correctement les évaluations déjà
+   enregistrées (historique, reprise, PDF), qui utilisent les questions
+   de référence. */
+const TYPES_OBJET_ANCIENS = [
   {
     id: "action-ponctuelle",
     libelle: { fr: "Activité ponctuelle", en: "One-time activity", nl: "Eenmalige activiteit" },
@@ -340,6 +388,11 @@ const TYPES_OBJET = [
                    en: "Within a permanent team, a council, a service, etc.", nl: "Binnen een vast team, een raad, een dienst, enz." }
   }
 ];
+
+// Retrouve un type de pratique (actuel ou ancien) à partir de son identifiant.
+function trouverTypeObjet(id) {
+  return TYPES_OBJET.find((t) => t.id === id) || TYPES_OBJET_ANCIENS.find((t) => t.id === id) || null;
+}
 
 /* ============================================================
    JUSTIFICATIONS DES PILIERS (Document final du Synode, 2024)

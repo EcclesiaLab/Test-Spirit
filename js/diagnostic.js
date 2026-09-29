@@ -325,7 +325,7 @@ function afficherDiagnostic(evaluation, reponses, dateISO, commentaires) {
   // En-tête : nom de l'objet + type + date
   document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet;
 
-  const type = TYPES_OBJET.find((t) => t.id === evaluation.typeObjet);
+  const type = trouverTypeObjet(evaluation.typeObjet);
   const typeLibelle = type ? tr(type.libelle) : "";
   // Si une date est fournie (évaluation archivée), on l'utilise ;
   // sinon, c'est une évaluation qui vient de se terminer → date du jour.

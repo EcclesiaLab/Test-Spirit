@@ -563,7 +563,8 @@ function majProgression(critere) {
 function genererSousQuestions(critere) {
   const zone = parId("critere-aide-zone");
   const liste = document.createElement("ul");
-  critere.sousQuestions.forEach((q) => {
+  // Questions du domaine choisi (ou questions de référence, voir questions-domaines.js)
+  sousQuestionsPour(critere, evaluationEnCours.typeObjet).forEach((q) => {
     const li = document.createElement("li");
     li.textContent = tr(q);
     liste.appendChild(li);
@@ -914,7 +915,7 @@ function construireCarteEvaluation(evaluation) {
   const carte = document.createElement("div");
   carte.className = "eval-carte";
 
-  const type = TYPES_OBJET.find((t) => t.id === evaluation.typeObjet);
+  const type = trouverTypeObjet(evaluation.typeObjet);
   const typeLibelle = type ? tr(type.libelle) : "";
   const date = new Date(evaluation.dateFin).toLocaleDateString(localeDates(), {
     day: "numeric", month: "long", year: "numeric"

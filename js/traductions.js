@@ -39,7 +39,7 @@ const TRADUCTIONS = {
                            en: "This name will be used to find the evaluation and to title the final document.", nl: "Deze naam dient om de evaluatie terug te vinden en om het eindrapport een titel te geven." },
   "entree_placeholder":  { fr: "Ex. : Conseil pastoral, Retraite des confirmands…",
                            en: "E.g. Pastoral council, Confirmation retreat…", nl: "Bijv.: Pastorale raad, Vormselretraite…" },
-  "entree_question_type":{ fr: "De quelle pratique s'agit-il ?", en: "What kind of practice is it?", nl: "Om welke soort geloofspraktijk gaat het?" },
+  "entree_question_type":{ fr: "Dans quel domaine s'inscrit la pratique ?", en: "Which area does the practice belong to?", nl: "Tot welk domein behoort de geloofspraktijk?" }, // v66 : provisoire
   "entree_commencer":    { fr: "Commencer l'évaluation",      en: "Begin the evaluation", nl: "De evaluatie beginnen" },
 
   // --- Questionnaire (piliers) ---

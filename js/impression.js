@@ -30,7 +30,7 @@
 function construireDocumentImpression(evaluation, reponses, dateISO, commentaires) {
   const conteneur = document.getElementById("document-impression");
 
-  const type = TYPES_OBJET.find((t) => t.id === evaluation.typeObjet);
+  const type = trouverTypeObjet(evaluation.typeObjet);
   const typeLibelle = type ? tr(type.libelle) : "";
   // Date fournie (archive) ou date du jour (évaluation qui vient de finir).
   const dateSource = dateISO ? new Date(dateISO) : new Date();
@@ -92,9 +92,11 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
       html += '<td class="pdf-td-critere"><strong>' + critere.numero + '.</strong> ' + echapper(tr(critere.titre));
       // Questions d'aide du pilier, listées sous son titre (dans la même
       // cellule, pour qu'elles restent sur la même page que le pilier).
-      if (critere.sousQuestions && critere.sousQuestions.length > 0) {
+      // Questions du domaine choisi (ou questions de référence).
+      const questions = sousQuestionsPour(critere, evaluation.typeObjet) || [];
+      if (questions.length > 0) {
         html += '<ul class="pdf-sq">';
-        critere.sousQuestions.forEach((q) => {
+        questions.forEach((q) => {
           html += '<li>' + echapper(tr(q)) + '</li>';
         });
         html += '</ul>';
