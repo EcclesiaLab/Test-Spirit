@@ -25,6 +25,11 @@
   Source : SUPPORT_SPIRIT_14criteres (FR) et Criteria for SPIRIT May 2026 (EN),
   d'après le Document final du Synode 2024 ; version néerlandaise : document
   transmis par l'équipe.
+  Questions de référence : anglais = « 14 criteria according to 3
+  cornerstones — FINAL VERSION » (validé par le Delphi) ; français = colonne
+  « question originelle » du tableau comparatif validé par l'équipe
+  (v70, 1er octobre 2026), reprise mot pour mot (espace manquante avant
+  un point d'interrogation ajoutée en v71).
   ============================================================
 */
 
@@ -150,7 +155,7 @@ const CRITERES = [
     sousQuestions: [
       { fr: "La pratique favorise-t-elle le dialogue avec d'autres Églises et communautés chrétiennes ?",
         en: "Does the practice foster dialogue with other Churches and Christian communities?", nl: "Bevordert deze geloofspraktijk de dialoog met andere Kerken en christelijke gemeenschappen?" },
-      { fr: "Favorise-t-elle le dialogue avec d'autres traditions religieuses, ainsi qu'avec les non-croyants ?",
+      { fr: "Favorise-t-elle le dialogue avec d'autres traditions religieuses, ainsi qu'avec les personnes sans religion ?",
         en: "Does the practice foster dialogue with other religious traditions, and those of no faith?", nl: "Bevordert deze geloofspraktijk de dialoog met andere religieuze tradities en met mensen zonder geloof?" },
       { fr: "La pratique résiste-t-elle à la tentation du repli sur soi ?",
         en: "Does the practice resist the temptation of self-centredness?", nl: "Weerstaat deze geloofspraktijk de verleiding tot egocentrisme?" }
@@ -168,9 +173,9 @@ const CRITERES = [
     sousQuestions: [
       { fr: "La pratique favorise-t-elle la participation à la prise de décision ?",
         en: "Does the practice foster participation in decision-making?", nl: "Moedigt deze geloofspraktijk het deelnemen aan besluitvorming aan?" },
-      { fr: "Est-elle portée par une communauté plutôt que par un seul individu agissant seul ?",
+      { fr: "Est-elle portée par une communauté plutôt que par une personne agissant seule ?",
         en: "Is the practice carried out by a community rather than by a single individual acting alone?", nl: "Wordt deze geloofspraktijk uitgevoerd door een gemeenschap in plaats van door één persoon die op eigen houtje handelt?" },
-      { fr: "Les personnes qui participent se sentent-elles libres de s'exprimer ouvertement et d'exprimer un désaccord ?",
+      { fr: "Les personnes qui participent se sentent-elles libres de parler ouvertement et d'exprimer un désaccord ?",
         en: "Do people who participate feel free to speak openly and express disagreement?", nl: "Voelen de deelnemers zich vrij om openlijk te spreken en hun onenigheid te uiten?" },
       { fr: "Des mesures sont-elles prises pour qu'aucun groupe social ou culturel ne domine le processus de discernement ou de décision ?",
         en: "Are steps taken to ensure that no social or cultural group dominates the discernment or decision-making process?", nl: "Worden er maatregelen genomen om ervoor te zorgen dat geen enkele sociale of culturele groep het onderscheidings- of besluitvormingsproces domineert?" }
@@ -236,7 +241,7 @@ const CRITERES = [
         en: "Does the practice bear witness of the living Christ?", nl: "Legt de geloofspraktijk getuigenis af van de levende Christus?" },
       { fr: "Vise-t-elle à approfondir la relation de chacun avec le Christ ?",
         en: "Does the practice aim to deepen each person's relationship with Christ?", nl: "Is het doel van de geloofspraktijk om de relatie van ieder individu met Christus te verdiepen?" },
-      { fr: "Promeut-elle un mode de vie chrétien qui intègre la foi et la vie quotidienne ?",
+      { fr: "Promeut-elle une manière de vivre qui intègre la foi dans la vie quotidienne ?",
         en: "Does the practice promote a Christian way of life that integrates faith and daily life?", nl: "Bevordert de geloofspraktijk een christelijke levenswijze waarin geloof en dagelijks leven met elkaar worden verbonden?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
@@ -266,7 +271,7 @@ const CRITERES = [
         en: "Are the charisms of each individual recognised for the needs of the community and the mission?", nl: "Worden de charisma’s van elk individu erkend in het licht van de behoeften van de gemeenschap en de zending?" },
       { fr: "La pratique soutient-elle une diversité de services et de ministères en réponse aux besoins pastoraux ?",
         en: "Does the practice support a variety of services and ministries in response to the pastoral needs?", nl: "Maakt de geloofspraktijk verschillende diensttaken en ambten mogelijk om tegemoet te komen aan de pastorale behoeften?" },
-      { fr: "Les femmes ont-elles l'occasion d'assumer des rôles de responsabilité dans la pratique ?",
+      { fr: "Les femmes ont-elles l'occasion d'accéder aux postes de responsabilités ?",
         en: "Do women have opportunities to take on roles of responsibility in the practice?", nl: "Hebben vrouwen mogelijkheden om verantwoordelijke functies binnen de geloofspraktijk te bekleden?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
@@ -278,9 +283,9 @@ const CRITERES = [
     titre: { fr: "Prise en compte des contextes culturels et sociétaux",
              en: "Considering cultural and societal contexts", nl: "Rekening houden met culturele en maatschappelijke contexten" },
     sousQuestions: [
-      { fr: "La pratique manifeste-t-elle une attention aux réalités historiques, contemporaines, sociales, culturelles et numériques ?",
+      { fr: "La pratique manifeste-t-elle une attention aux réalités historiques, contemporaines, sociales, culturelles et digitales ?",
         en: "Does the practice pay attention to historical, contemporary, social, cultural, and digital realities?", nl: "Wordt er in de geloofspraktijk rekening gehouden met historische, hedendaagse, sociale, culturele en digitale omstandigheden?" },
-      { fr: "Prend-elle en compte les réalités de la mobilité culturelle et géographique ?",
+      { fr: "Prend-elle en compte les réalités de mobilité culturelle et géographique ?",
         en: "Does the practice take the realities of cultural and geographic mobility into account?", nl: "Houdt de geloofspraktijk rekening met de realiteit van culturele en geografische mobiliteit?" },
       { fr: "Engage-t-elle un dialogue avec d'autres acteurs de la société, de la culture, de la politique, etc. ?",
         en: "Does the practice engage in dialogue with other actors in society, culture, politics etc.?", nl: "Gaat de geloofspraktijk de dialoog aan met andere actoren uit de samenleving, de cultuur, de politiek enz.?" }
@@ -294,11 +299,11 @@ const CRITERES = [
     titre: { fr: "Conversion synodale par des transformations concrètes",
              en: "Synodal conversion through concrete transformations", nl: "Synodale bekering door concrete transformaties" },
     sousQuestions: [
-      { fr: "La pratique conduit-elle à une conversion personnelle des participants ?",
+      { fr: "La pratique conduit-elle à une conversion personnelle de tous les participants ?",
         en: "Does the practice lead to a personal conversion of the participants?", nl: "Leidt deze geloofspraktijk tot een persoonlijke bekering van de deelnemers?" },
-      { fr: "Permet-elle une transformation communautaire ?",
+      { fr: "La pratique rend-elle possible une transformation communautaire ?",
         en: "Does the practice enable communal transformation?", nl: "Zorgt deze geloofspraktijk voor een gemeenschappelijke transformatie?" },
-      { fr: "Contribue-t-elle à un renouveau spirituel et à une réforme structurelle de l'Église ?",
+      { fr: "La pratique contribue-t-elle à un renouveau spirituel et indirectement à une réforme structurelle de l'Église ?",
         en: "Does the practice contribute to a spiritual renewal and structural reform of the Church?", nl: "Draagt deze geloofspraktijk bij aan een spirituele vernieuwing en structurele hervorming van de Kerk?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }

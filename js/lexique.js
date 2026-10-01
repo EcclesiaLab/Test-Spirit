@@ -13,7 +13,11 @@
   Ce qui est repris de sources validées :
     - la définition de la synodalité : citation officielle du Document
       final (DF 28), reprise telle quelle de donnees-spirit.js ;
-    - les renvois « DF … » : paragraphes déjà cités dans l'app.
+    - « Discernement » et « Reddition de comptes » (v72) : définitions
+      rédigées à partir des citations officielles du DF déjà présentes
+      dans l'app (DF 80, 83, 87 et 97), sans renvoi chiffré.
+  Relecture d'équipe intégrée en v72 : pas de renvoi au DF dans les
+  définitions (sauf la citation DF 28 sous « Synodalité »).
 
   Structure d'une entrée :
     terme      : { fr, en, nl }
@@ -69,11 +73,11 @@ const LEXIQUE = [
     }
   },
   {
-    terme: { fr: "Coresponsabilité", en: "Co-responsibility", nl: "Medeverantwoordelijkheid" },
+    terme: { fr: "Coresponsabilité différenciée", en: "Differentiated co-responsibility", nl: "Gedifferentieerde medeverantwoordelijkheid" },
     definition: {
-      fr: "Responsabilité partagée par tous les baptisés dans la vie et la mission de l'Église. Elle est « différenciée » : chacun y prend part selon sa vocation, son charisme et son ministère, ordonné ou non.",
-      en: "Responsibility shared by all the baptised in the life and mission of the Church. It is “differentiated”: each person takes part according to their vocation, charism and ministry, ordained or not.",
-      nl: "Verantwoordelijkheid die alle gedoopten delen in het leven en de zending van de Kerk. Ze is ‘gedifferentieerd’: ieder neemt deel volgens de eigen roeping, het eigen charisma en het eigen ambt, gewijd of niet."
+      fr: "Responsabilité partagée par tous les baptisés dans la vie et la mission de l'Église. Elle est différenciée : chacun y prend part selon sa vocation, son charisme et son ministère, ordonné ou non.",
+      en: "Responsibility shared by all the baptised in the life and mission of the Church. It is differentiated: each person takes part according to their vocation, charism and ministry, ordained or not.",
+      nl: "Verantwoordelijkheid die alle gedoopten delen in het leven en de zending van de Kerk. Ze is gedifferentieerd: ieder neemt deel volgens de eigen roeping, het eigen charisma en het eigen ambt, gewijd of niet."
     }
   },
   {
@@ -95,9 +99,9 @@ const LEXIQUE = [
   {
     terme: { fr: "Ministères institués", en: "Instituted ministries", nl: "Ingestelde ambten" },
     definition: {
-      fr: "Services confiés de manière stable par l'Église à des laïcs, hommes et femmes, comme ceux de lecteur, d'acolyte ou de catéchiste. Ils sont distincts des ministères ordonnés (voir DF 75).",
-      en: "Services entrusted by the Church on a stable basis to lay men and women, such as reader (lector), acolyte or catechist. They are distinct from the ordained ministries (see FD 75).",
-      nl: "Diensten die de Kerk op een duurzame manier toevertrouwt aan lekengelovigen, mannen en vrouwen, zoals lector, acoliet of catechist. Ze zijn onderscheiden van de gewijde ambten (zie SD 75)."
+      fr: "Services confiés de manière stable par l'Église à des laïcs, hommes et femmes, comme ceux de lecteur, d'acolyte ou de catéchiste. Ils sont distincts des ministères ordonnés.",
+      en: "Services entrusted by the Church on a stable basis to lay men and women, such as reader (lector), acolyte or catechist. They are distinct from the ordained ministries.",
+      nl: "Diensten die de Kerk op een duurzame manier toevertrouwt aan lekengelovigen, mannen en vrouwen, zoals lector, acoliet of catechist. Ze zijn onderscheiden van de gewijde ambten."
     }
   },
   {
@@ -119,8 +123,8 @@ const LEXIQUE = [
   {
     terme: { fr: "Œcuménisme", en: "Ecumenism", nl: "Oecumene" },
     definition: {
-      fr: "Recherche de l'unité entre les Églises et communautés chrétiennes : catholique, orthodoxes, protestantes, anglicane…",
-      en: "The search for unity among the Christian Churches and communities: Catholic, Orthodox, Protestant, Anglican…",
+      fr: "Recherche d'unité entre les Églises et communions chrétiennes : catholique, orthodoxes, protestantes, anglicane…",
+      en: "The search for unity among the Christian Churches and Communions: Catholic, Orthodox, Protestant, Anglican…",
       nl: "Het streven naar eenheid tussen de christelijke Kerken en gemeenschappen: katholiek, orthodox, protestants, anglicaans…"
     }
   },
@@ -135,17 +139,17 @@ const LEXIQUE = [
   {
     terme: { fr: "Conversion synodale", en: "Synodal conversion", nl: "Synodale bekering" },
     definition: {
-      fr: "Changement des mentalités, des relations, des pratiques et des structures, pour que l'Église vive davantage la synodalité. Elle est à la fois personnelle et communautaire (voir DF 28 et 44).",
-      en: "A change in mindsets, relationships, practices and structures so that the Church lives synodality more fully. It is both personal and communal (see FD 28 and 44).",
-      nl: "Een verandering van mentaliteit, relaties, praktijken en structuren, opdat de Kerk de synodaliteit meer zou beleven. Ze is zowel persoonlijk als gemeenschappelijk (zie SD 28 en 44)."
+      fr: "Changement des mentalités, des relations, des pratiques et des structures, pour que l'Église vive davantage la synodalité. Elle est à la fois personnelle et communautaire.",
+      en: "A change in mindsets, relationships, practices and structures so that the Church lives synodality more fully. It is both personal and communal.",
+      nl: "Een verandering van mentaliteit, relaties, praktijken en structuren, opdat de Kerk de synodaliteit meer zou beleven. Ze is zowel persoonlijk als gemeenschappelijk."
     }
   },
   {
     terme: { fr: "Formation intégrale", en: "Integral formation", nl: "Integrale vorming" },
     definition: {
-      fr: "Formation qui concerne toute la personne (l'intelligence, l'affectivité, les relations et la vie spirituelle) et qui se poursuit tout au long de la vie (voir DF 143).",
-      en: "Formation that concerns the whole person (intellect, affectivity, relationships and spiritual life) and continues throughout life (see FD 143).",
-      nl: "Vorming die de hele persoon aanbelangt (verstand, gevoelsleven, relaties en spiritueel leven) en die het hele leven doorgaat (zie SD 143)."
+      fr: "Formation qui concerne toute la personne (l'intelligence, l'affectivité, les relations et la vie spirituelle) et qui se poursuit tout au long de la vie.",
+      en: "Formation that concerns the whole person (intellect, affectivity, relationships and spiritual life) and continues throughout life.",
+      nl: "Vorming die de hele persoon aanbelangt (verstand, gevoelsleven, relaties en spiritueel leven) en die het hele leven doorgaat."
     }
   },
   {
@@ -162,6 +166,30 @@ const LEXIQUE = [
       fr: "Réponse à choisir quand le pilier ne concerne pas la pratique évaluée, compte tenu de sa nature. Le pilier n'est alors pas pris en compte dans le diagnostic. Si le pilier concerne la pratique mais n'est pas encore vécu, choisissez plutôt « À bâtir ».",
       en: "The answer to choose when the pillar does not concern the practice being evaluated, given its nature. The pillar is then not taken into account in the diagnosis. If the pillar does concern the practice but is not yet lived out, choose “To be built” instead.",
       nl: "Het antwoord dat je kiest wanneer het criterium, gezien de aard van de geloofspraktijk, er geen betrekking op heeft. Het criterium wordt dan niet meegeteld in de diagnose. Heeft het criterium wel betrekking op de geloofspraktijk, maar wordt het nog niet beleefd? Kies dan ‘Nog op te bouwen’."
+    }
+  },
+  {
+    terme: { fr: "Pilier", en: "Pillar", nl: "Criterium" },
+    definition: {
+      fr: "Dans SPIRIT, l'un des 14 critères qui servent à évaluer une pratique. Les piliers sont répartis entre les trois pierres angulaires (5 pour la communion, 4 pour la participation, 5 pour la mission). Chacun nomme un aspect concret de la synodalité, comme l'hospitalité, la coresponsabilité ou la transparence, et s'accompagne de questions pour aider à répondre. Les piliers ont été validés par un panel de théologiens et théologiennes selon la méthode Delphi.",
+      en: "In SPIRIT, one of the 14 criteria used to evaluate a practice. The pillars are grouped under the three cornerstones (5 for communion, 4 for participation, 5 for mission). Each one names a concrete aspect of synodality, such as hospitality, co-responsibility or transparency, and comes with questions to help answer it. The pillars were validated by a panel of theologians using the Delphi method.",
+      nl: "In SPIRIT een van de 14 criteria waarmee een geloofspraktijk geëvalueerd wordt. De criteria zijn verdeeld over de drie pijlers (5 voor gemeenschap, 4 voor participatie, 5 voor zending). Elk criterium benoemt een concreet aspect van synodaliteit, zoals gastvrijheid, medeverantwoordelijkheid of transparantie, en gaat vergezeld van vragen die helpen om te antwoorden. De criteria werden gevalideerd door een panel van theologen volgens de Delphi-methode."
+    }
+  },
+  {
+    terme: { fr: "Discernement", en: "Discernment", nl: "Onderscheiding" },
+    definition: {
+      fr: "Démarche spirituelle par laquelle une personne ou une communauté cherche, dans la prière et l'écoute, ce que Dieu l'appelle à choisir ou à faire. Le Document final en fait un élément central de la vie synodale : l'écoute de la Parole de Dieu en est « le point de départ et le critère », et le discernement en commun prépare les décisions prises pour la mission.",
+      en: "A spiritual process by which a person or a community seeks, through prayer and listening, what God is calling them to choose or to do. The Final Document makes it central to synodal life: listening to the Word of God is its “starting point and criterion”, and discernment in common prepares the decisions taken for mission.",
+      nl: "Een spiritueel proces waarbij een persoon of een gemeenschap in gebed en luisteren zoekt wat God haar vraagt te kiezen of te doen. Het Slotdocument maakt er een kern van het synodale leven van: het luisteren naar Gods Woord is er ‘zowel het vertrekpunt als het criterium’ van, en de gezamenlijke onderscheiding bereidt de beslissingen voor die met het oog op de zending worden genomen."
+    }
+  },
+  {
+    terme: { fr: "Reddition de comptes", en: "Accountability", nl: "Verantwoording" },
+    definition: {
+      fr: "Le fait, pour celles et ceux qui exercent une responsabilité, d'expliquer leurs décisions et l'usage des moyens qui leur sont confiés, et d'en répondre devant la communauté. Le Document final parle de « rendre compte » : avec la transparence et l'évaluation, cette pratique nourrit la confiance au sein de l'Église et renforce sa crédibilité.",
+      en: "The practice, for those who hold responsibility, of explaining their decisions and how they use the resources entrusted to them, and of answering for them to the community. As the Final Document stresses, together with transparency and evaluation, it builds trust within the Church and strengthens its credibility.",
+      nl: "Het feit dat wie verantwoordelijkheid draagt, uitleg geeft over de genomen beslissingen en over het gebruik van de toevertrouwde middelen, en zich daarover verantwoordt tegenover de gemeenschap. Zoals het Slotdocument benadrukt, voedt verantwoording samen met transparantie en evaluatie het vertrouwen binnen de Kerk en versterkt ze haar geloofwaardigheid."
     }
   }
 ];
