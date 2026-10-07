@@ -92,13 +92,13 @@ Quelques règles à respecter dans ce fichier :
 À **chaque modification** d'un fichier (HTML, CSS, JS), il faut **incrémenter le numéro de version** du cache dans `service-worker.js` :
 
 ```js
-const CACHE_VERSION = "spirit-v76";   // → passer à "spirit-v77", etc.
+const CACHE_VERSION = "spirit-v77";   // → passer à "spirit-v78", etc.
 ```
 
 Changer en même temps le numéro affiché dans « À propos » et en pied de PDF, en tête de `js/app.js` :
 
 ```js
-const VERSION_SPIRIT = "76";          // → "77", etc.
+const VERSION_SPIRIT = "77";          // → "78", etc.
 ```
 
 Vérifier aussi que **chaque fichier listé dans `FICHIERS_A_CACHER` existe** : un seul fichier absent (un logo renommé, par exemple) fait échouer l'installation de la nouvelle version, et les utilisateurs restent sur l'ancienne sans que rien ne le signale.

@@ -348,6 +348,13 @@ const TYPES_OBJET = [
                    nl: "Catechese, eerste verkondiging, trajecten om het geloof te ontdekken, enz." }
   },
   {
+    id: "celebrer",
+    libelle: { fr: "Célébrer la foi", en: "Celebrating the faith", nl: "Het geloof vieren" },
+    description: { fr: "Liturgie, sacrements, prière communautaire, fêtes, etc.",
+                   en: "Liturgy, sacraments, communal prayer, feasts, etc.",
+                   nl: "Liturgie, sacramenten, gemeenschappelijk gebed, feesten, enz." }
+  },
+  {
     id: "gouverner",
     libelle: { fr: "Gouverner", en: "Governing", nl: "Besturen" },
     description: { fr: "Conseil pastoral, équipe d'animation, conseil économique, etc.",
@@ -360,13 +367,6 @@ const TYPES_OBJET = [
     description: { fr: "Solidarité, accueil des plus fragiles, visites, engagement social, etc.",
                    en: "Solidarity, care for the most vulnerable, visiting, social engagement, etc.",
                    nl: "Solidariteit, zorg voor de meest kwetsbaren, bezoekwerk, maatschappelijk engagement, enz." }
-  },
-  {
-    id: "celebrer",
-    libelle: { fr: "Célébrer la foi", en: "Celebrating the faith", nl: "Het geloof vieren" },
-    description: { fr: "Liturgie, sacrements, prière communautaire, fêtes, etc.",
-                   en: "Liturgy, sacraments, communal prayer, feasts, etc.",
-                   nl: "Liturgie, sacramenten, gemeenschappelijk gebed, feesten, enz." }
   },
   {
     id: "autre",

@@ -3,8 +3,8 @@
   QUESTIONS D'AIDE PAR DOMAINE — VERSION D'ESSAI
   ============================================================
 
-  Pour chacun des 4 domaines (Annoncer la foi, Gouverner, Servir,
-  Célébrer la foi), ce fichier donne les questions d'aide propres à
+  Pour chacun des 4 domaines (Annoncer la foi, Célébrer la foi,
+  Gouverner, Servir), ce fichier donne les questions d'aide propres à
   chacun des 14 piliers. Les piliers, leurs titres, l'échelle de réponse
   et le diagnostic ne changent pas : seules les questions d'aide varient.
 

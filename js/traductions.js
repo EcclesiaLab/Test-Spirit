@@ -24,8 +24,8 @@
 const TRADUCTIONS = {
 
   // --- Accueil ---
-  "accueil_baseline":        { fr: "Évaluer la synodalité d'une pratique chrétienne",
-                               en: "Assessing the synodality of a Christian practice", nl: "De synodaliteit van een geloofspraktijk evalueren" },
+  "accueil_baseline":        { fr: "Évaluer la synodalité d'une pratique ecclésiale",
+                               en: "Assessing the synodality of an ecclesial practice", nl: "De synodaliteit van een geloofspraktijk evalueren" },
   "accueil_demarrer":        { fr: "Démarrer une évaluation", en: "Start an evaluation", nl: "Een evaluatie starten" },
   "accueil_mes_evaluations": { fr: "Mes évaluations",         en: "My evaluations", nl: "Mijn evaluaties" },
   "accueil_quest_ce_que":    { fr: "Qu'est-ce que SPIRIT ?",  en: "What is SPIRIT?", nl: "Wat is SPIRIT?" },
@@ -259,8 +259,8 @@ const TRADUCTIONS = {
                             en: "Evaluations saved on this device are not affected.",
                             nl: "De evaluaties die op dit toestel bewaard zijn, blijven behouden." },
   "resultat_lien_copier": { fr: "Copiez ce lien pour l'envoyer au groupe\u00a0:", en: "Copy this link to send it to the group:", nl: "Kopieer deze link om hem naar de groep te sturen:" },
-  "msg_partage_texte": { fr: "Découvrez SPIRIT, un outil pour évaluer la synodalité d'une pratique chrétienne.",
-                         en: "Discover SPIRIT, a tool to evaluate the synodality of a Christian practice.", nl: "Ontdek SPIRIT, een instrument om de synodaliteit van een geloofspraktijk te evalueren." },
+  "msg_partage_texte": { fr: "Découvrez SPIRIT, un outil pour évaluer la synodalité d'une pratique ecclésiale.",
+                         en: "Discover SPIRIT, a tool to evaluate the synodality of an ecclesial practice.", nl: "Ontdek SPIRIT, een instrument om de synodaliteit van een geloofspraktijk te evalueren." },
   "msg_lien_copie": { fr: "Lien copié\u00a0: vous pouvez maintenant le coller et l'envoyer.",
                       en: "Link copied: you can now paste and send it.", nl: "Link gekopieerd: je kunt hem nu plakken en versturen." },
   "msg_lien_partager": { fr: "Pour partager SPIRIT, copiez ce lien\u00a0:",
