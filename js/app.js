@@ -71,7 +71,7 @@ function appliquerMiseAJourSiPossible() {
 
 // Numéro de version affiché dans « À propos » et en pied de PDF (constat M10).
 // ⚠ À changer en même temps que CACHE_VERSION dans service-worker.js.
-const VERSION_SPIRIT = "77";
+const VERSION_SPIRIT = "78";
 
 // Clé de mémoire locale : la bienvenue a-t-elle déjà été vue ?
 const CLE_BIENVENUE_VUE = "spirit_bienvenue_vue";
