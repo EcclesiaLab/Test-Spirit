@@ -12,6 +12,7 @@ L'application est un projet d'**EcclesiaLab**, laboratoire de recherche sur l'in
 
 - **Évaluer** une pratique ecclésiale en répondant, pilier par pilier, à un questionnaire avec quatre modalités de réponse (*Solidement établi / En chantier / À bâtir / Non applicable*).
 - **Évaluer en groupe** (v73) : en salle, sur un seul appareil, l'animateur note pour chaque pilier combien de personnes choisissent chaque réponse ; le « diagnostic du groupe » montre la répartition des avis, sans moyenne, et signale les piliers aux avis partagés.
+- **Comparer des évaluations** (v74) : chaque personne qui a évalué seule peut transmettre un code de 9 caractères (ou un lien) contenant uniquement le domaine et ses 14 réponses ; l'animateur rassemble ces codes dans l'écran « Comparer des évaluations » (depuis *Mes évaluations*) et obtient le même diagnostic du groupe. Fonctionne en salle comme à distance, sans serveur.
 - **Visualiser** un diagnostic sous forme de trois jauges (une par pierre angulaire), accompagné d'une lecture textuelle.
 - **Exporter** le résultat en PDF via la fonction d'impression du navigateur.
 - **Conserver** l'historique des évaluations sur l'appareil (consultation, réouverture, suppression).
@@ -50,6 +51,7 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 │   ├── app.js              Logique applicative (navigation, questionnaire, écrans)
 │   ├── diagnostic.js       Calcul et affichage des trois jauges
 │   ├── historique.js       Archivage des évaluations terminées
+│   ├── comparaison.js      Codes et liens de comparaison, écran « Comparer »
 │   └── impression.js       Construction du document PDF
 ├── icons/
 │   ├── icon-192.png        Icône PWA (écran d'accueil)
@@ -124,6 +126,8 @@ Pour mettre à jour un fichier sans risque de doublon, **éditer son contenu dir
 ## Confidentialité
 
 Aucune donnée n'est transmise à un serveur. Les évaluations sont stockées **uniquement sur l'appareil** de l'utilisateur, via le `localStorage` du navigateur. Il n'y a ni compte, ni cookie de suivi, ni traceur.
+
+Pour la comparaison (v74), c'est l'utilisateur qui transmet lui-même un code ou un lien, par le moyen de son choix. Le code ne contient aucun nom de personne ni aucune observation ; le lien y ajoute seulement le nom de la pratique évaluée. Dans un lien, tout cela est placé après le signe `#` : cette partie de l'adresse n'est jamais envoyée au serveur qui héberge l'application, et SPIRIT l'efface de la barre d'adresse dès qu'il l'a lue.
 
 Conséquence : si l'utilisateur change d'appareil ou efface les données de son navigateur, ses évaluations sont perdues. *(Une fonction d'export/import est envisagée pour une version ultérieure.)*
 

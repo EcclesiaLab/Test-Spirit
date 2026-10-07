@@ -73,6 +73,9 @@ function parId(id) {
    "ecran-xxx". On passe ici l'identifiant complet (ex. "ecran-entree").
    =========================================================== */
 function afficherEcran(idEcran) {
+  // L'écran demandé était-il déjà affiché ? (cas d'un simple changement de langue)
+  const cibleAvant = parId(idEcran);
+  const nouvelEcran = !(cibleAvant && cibleAvant.classList.contains("ecran--actif"));
   // On retire la classe active de tous les écrans...
   document.querySelectorAll(".ecran").forEach((ecran) => {
     ecran.classList.remove("ecran--actif");
@@ -87,6 +90,13 @@ function afficherEcran(idEcran) {
     // On remonte en haut de l'écran (utile si l'écran précédent était défilé).
     cible.scrollTop = 0;
     window.scrollTo(0, 0);
+    // Le diagnostic défile dans une zone intérieure : quand on en ouvre un
+    // nouveau, on la remonte aussi, sinon il s'affichait à la hauteur où l'on
+    // avait laissé le précédent. (Pas lors d'un changement de langue.)
+    if (nouvelEcran && idEcran === "ecran-diagnostic") {
+      const zone = cible.querySelector(".diagnostic__contenu");
+      if (zone) zone.scrollTop = 0;
+    }
   }
   // Remarque : la fenêtre « Comment ça fonctionne ? » n'est plus déclenchée
   // ici, mais au clic sur « Démarrer une évaluation » (voir brancherBoutons),
@@ -532,6 +542,10 @@ let commentairesConsultation = {};
 let evaluationConsultation = {};
 let dateConsultation = null;
 let comptesConsultation = {};
+
+// Identifiant (dans l'historique) de l'évaluation dont le diagnostic est
+// affiché : sert à fabriquer son code de comparaison (v74).
+let idEvaluationDiagnostic = null;
 
 // Un pilier est « renseigné » quand il a une réponse (mode habituel) ou au
 // moins un avis compté (mode groupe). Sert à activer « Suivant » et le sommaire.
@@ -1060,7 +1074,8 @@ function terminerQuestionnaire() {
   consultationArchive = false;
 
   // Archivage automatique dans l'historique (décidé au cadrage).
-  archiverEvaluation(evaluationEnCours, reponses, commentaires, comptes);
+  idEvaluationDiagnostic = archiverEvaluation(evaluationEnCours, reponses, commentaires, comptes);
+  diagnosticComparaison = null;
 
   // L'évaluation "en cours" est terminée : on l'efface de la reprise.
   effacerEnCours();
@@ -1174,6 +1189,8 @@ function rouvrirEvaluation(id) {
   if (!evaluation) return;
 
   consultationArchive = true;
+  diagnosticComparaison = null;
+  idEvaluationDiagnostic = evaluation.id;
   reponsesConsultation = evaluation.reponses || {};
   commentairesConsultation = evaluation.commentaires || {};
   comptesConsultation = evaluation.comptes || {};
@@ -1314,7 +1331,9 @@ function rafraichirEcranCourant() {
     afficherCritere(indexCritereActuel);
   } else if (id === "ecran-diagnostic") {
     // On régénère le diagnostic dans la bonne langue.
-    if (consultationArchive) {
+    if (diagnosticComparaison) {
+      afficherDiagnostic(diagnosticComparaison.evaluation, {}, undefined, {}, diagnosticComparaison.comptes);
+    } else if (consultationArchive) {
       afficherDiagnostic(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation);
     } else {
       afficherDiagnostic(evaluationEnCours, reponses, undefined, commentaires, comptes);
@@ -1325,6 +1344,10 @@ function rafraichirEcranCourant() {
     construireLexique();
   } else if (id === "ecran-entree") {
     genererCartesType();
+  } else if (id === "ecran-comparer") {
+    construireListeComparaison();
+    construireLocales();
+    afficherMessageComparer(null);
   }
 }
 
@@ -1454,6 +1477,18 @@ function brancherBoutons() {
   // dans l'historique, car l'évaluation est déjà archivée à ce stade.
   // On ramène donc à l'accueil, comme le bouton "Revenir à l'accueil".
   parId("diagnostic-retour").addEventListener("click", () => {
+    // Diagnostic d'une comparaison (v74) : retour à la liste rassemblée,
+    // ou à l'accueil si l'on vient d'un lien « résultat ».
+    if (diagnosticComparaison) {
+      const retour = diagnosticComparaison.retour;
+      diagnosticComparaison = null;
+      if (retour === "comparer") {
+        afficherComparer();
+      } else {
+        afficherEcran("ecran-accueil");
+      }
+      return;
+    }
     if (consultationArchive) {
       afficherHistorique();
     } else {
@@ -1465,7 +1500,9 @@ function brancherBoutons() {
   // Export PDF : on utilise les données de consultation si on consulte une
   // archive, sinon celles de l'évaluation en cours.
   parId("diagnostic-pdf").addEventListener("click", () => {
-    if (consultationArchive) {
+    if (diagnosticComparaison) {
+      lancerImpression(diagnosticComparaison.evaluation, {}, undefined, {}, diagnosticComparaison.comptes);
+    } else if (consultationArchive) {
       lancerImpression(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation);
     } else {
       lancerImpression(evaluationEnCours, reponses, undefined, commentaires, comptes);
@@ -1478,8 +1515,25 @@ function brancherBoutons() {
     lancerImpressionReferences();
   });
 
+  // v74 : partager une évaluation faite seul (code ou lien de comparaison).
+  parId("diagnostic-partager").addEventListener("click", () => {
+    if (consultationArchive) {
+      ouvrirPartage(evaluationConsultation.typeObjet, reponsesConsultation, idEvaluationDiagnostic, evaluationConsultation.nomObjet);
+    } else {
+      ouvrirPartage(evaluationEnCours.typeObjet, reponses, idEvaluationDiagnostic, evaluationEnCours.nomObjet);
+    }
+  });
+  // v74 : renvoyer au groupe le résultat d'une comparaison (lien).
+  parId("diagnostic-envoyer-resultat").addEventListener("click", envoyerResultatGroupe);
+
+  // --- Fenêtre « Partager pour une comparaison » ---
+  parId("partage-envoyer").addEventListener("click", envoyerLienPartage);
+  parId("partage-copier").addEventListener("click", copierCodePartage);
+  parId("partage-fermer").addEventListener("click", fermerPartage);
+
   // Revenir à l'accueil.
   parId("diagnostic-accueil").addEventListener("click", () => {
+    diagnosticComparaison = null;
     consultationArchive = false;
     afficherEcran("ecran-accueil");
   });
@@ -1488,6 +1542,17 @@ function brancherBoutons() {
   parId("historique-retour").addEventListener("click", () => {
     afficherEcran("ecran-accueil");
   });
+  parId("historique-comparer").addEventListener("click", () => afficherComparer());
+
+  // --- Écran « Comparer des évaluations » (v74) ---
+  parId("comparer-retour").addEventListener("click", afficherHistorique);
+  parId("comparer-ajouter").addEventListener("click", ajouterDepuisSaisie);
+  parId("comparer-code").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") ajouterDepuisSaisie();
+  });
+  parId("comparer-nom").addEventListener("input", enregistrerNomComparaison);
+  parId("comparer-vider").addEventListener("click", viderComparaison);
+  parId("comparer-voir").addEventListener("click", voirDiagnosticComparaison);
 }
 
 
@@ -1506,4 +1571,6 @@ document.addEventListener("DOMContentLoaded", () => {
   brancherBoutons();              // on relie tous les boutons
   majLienInstallationAPropos();   // rappel d'installation dans « À propos »
   gererBienvenueAuDemarrage();    // bienvenue au 1er lancement (puis installation)
+  traiterLienEntrant();           // lien de comparaison reçu (v74)
+  window.addEventListener("hashchange", traiterLienEntrant);
 });

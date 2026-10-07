@@ -139,9 +139,9 @@
         </fieldset>
 
         <!-- Choix : manière de faire l'évaluation (v73).
-             « Une réponse par pilier » = fonctionnement habituel (une personne,
+             « Évaluer seul » = fonctionnement habituel (une personne,
              ou un groupe qui s'accorde sur une réponse commune).
-             « Compter les avis du groupe » = en salle, sur un seul appareil,
+             « Évaluer en groupe » = en salle, sur un seul appareil,
              on note pour chaque pilier combien de personnes choisissent
              chaque réponse (aucun nom enregistré). -->
         <fieldset class="entree__modes">
@@ -149,15 +149,15 @@
           <label class="carte-mode">
             <input type="radio" name="mode-evaluation" value="individuel" id="mode-individuel" checked>
             <span class="carte-mode__textes">
-              <span class="carte-mode__titre" data-t="mode_individuel_titre">Une réponse par pilier</span>
-              <span class="carte-mode__description" data-t="mode_individuel_texte">Une personne seule, ou un groupe qui cherche ensemble une réponse commune.</span>
+              <span class="carte-mode__titre" data-t="mode_individuel_titre">Évaluer seul</span>
+              <span class="carte-mode__description" data-t="mode_individuel_texte">Une personne donne une réponse pour chaque pilier. Un groupe qui cherche une réponse commune peut aussi choisir ce mode.</span>
             </span>
           </label>
           <label class="carte-mode">
             <input type="radio" name="mode-evaluation" value="groupe" id="mode-groupe">
             <span class="carte-mode__textes">
-              <span class="carte-mode__titre" data-t="mode_groupe_titre">Compter les avis du groupe</span>
-              <span class="carte-mode__description" data-t="mode_groupe_texte">En salle, sur un seul appareil : pour chaque pilier, l'animateur note combien de personnes choisissent chaque réponse. Aucun nom n'est enregistré.</span>
+              <span class="carte-mode__titre" data-t="mode_groupe_titre">Évaluer en groupe</span>
+              <span class="carte-mode__description" data-t="mode_groupe_texte">Sur un seul appareil : pour chaque pilier, l'animateur note combien de personnes choisissent chaque réponse. Aucun nom n'est enregistré.</span>
             </span>
           </label>
         </fieldset>
@@ -290,6 +290,10 @@
              consultation qu'on parcourt tranquillement. -->
         <div class="diagnostic__actions">
           <button class="bouton" id="diagnostic-pdf" data-t="diagnostic_pdf">Exporter mon diagnostic en PDF</button>
+          <!-- v74 : partager une évaluation faite seul (code ou lien), ou
+               renvoyer au groupe le résultat d'une comparaison -->
+          <button class="bouton bouton--contour cache" id="diagnostic-partager" type="button" data-t="partage_bouton">Partager pour une comparaison</button>
+          <button class="bouton bouton--contour cache" id="diagnostic-envoyer-resultat" type="button" data-t="resultat_envoyer">Envoyer le résultat au groupe</button>
           <button class="bouton bouton--contour" id="diagnostic-references" data-t="diagnostic_references">Pour aller plus loin</button>
           <button class="bouton bouton--lien" id="diagnostic-accueil" data-t="diagnostic_accueil">Revenir à l'accueil</button>
         </div>
@@ -310,6 +314,8 @@
       </header>
 
       <div class="historique__contenu">
+        <!-- Comparer des évaluations (v74) : rassembler des codes ou des liens -->
+        <button class="bouton bouton--contour historique__comparer" id="historique-comparer" type="button" data-t="comparer_titre">Comparer des évaluations</button>
         <!-- Message affiché quand il n'y a aucune évaluation -->
         <p class="historique__vide cache" id="historique-vide" data-t="historique_vide">
           Vous n'avez pas encore d'évaluation enregistrée. Les évaluations terminées apparaîtront ici.
@@ -318,6 +324,47 @@
         <div id="historique-liste"></div>
       </div>
 
+    </section>
+
+    <!-- ---------- ÉCRAN « COMPARER DES ÉVALUATIONS » (v74) ----------
+         On rassemble ici les codes (ou liens) reçus après des évaluations
+         faites chacun de son côté. La liste reste sur l'appareil ; le
+         diagnostic du groupe montre la répartition des avis par pilier. -->
+    <section class="ecran comparer" id="ecran-comparer">
+      <header class="barre-titre">
+        <button class="barre-titre__retour" id="comparer-retour" aria-label="Retour" data-t-aria="retour_accueil">‹</button>
+        <h2 class="barre-titre__titre" data-t="comparer_titre">Comparer des évaluations</h2>
+      </header>
+
+      <div class="comparer__contenu">
+        <p class="comparer__intro" data-t="comparer_intro">Rassemblez les codes ou les liens reçus après chaque évaluation pour voir la répartition des avis du groupe.</p>
+
+        <label class="entree__label" for="comparer-nom" data-t="comparer_nom_label">Pratique évaluée</label>
+        <input type="text" class="entree__champ" id="comparer-nom" maxlength="80" autocomplete="off"
+               placeholder="Ex. : Conseil pastoral, Retraite des confirmands…" data-t-placeholder="entree_placeholder">
+
+        <label class="entree__label comparer__label-code" for="comparer-code" data-t="comparer_code_label">Code ou lien reçu</label>
+        <div class="comparer__ajout">
+          <input type="text" class="entree__champ comparer__champ-code" id="comparer-code" autocomplete="off" autocapitalize="characters" spellcheck="false"
+                 placeholder="Ex. : K7Q-M2X-PA4" data-t-placeholder="comparer_code_placeholder">
+          <button class="bouton comparer__bouton-ajouter" id="comparer-ajouter" type="button" data-t="comparer_ajouter">Ajouter</button>
+        </div>
+        <div class="comparer__message" id="comparer-message" aria-live="polite"></div>
+
+        <details class="comparer__locales">
+          <summary data-t="comparer_mes_evaluations">Ajouter une de mes évaluations</summary>
+          <div id="comparer-locales"></div>
+        </details>
+
+        <h3 class="comparer__liste-titre" id="comparer-liste-titre">Évaluations rassemblées (0)</h3>
+        <div class="comparer__liste" id="comparer-liste"></div>
+        <button class="bouton bouton--lien comparer__vider" id="comparer-vider" type="button" data-t="comparer_vider">Vider la liste</button>
+      </div>
+
+      <footer class="comparer__pied">
+        <p class="comparer__minimum" id="comparer-minimum" data-t="comparer_minimum">Ajoutez au moins deux évaluations pour les comparer.</p>
+        <button class="bouton" id="comparer-voir" type="button" data-t="comparer_voir" disabled>Voir le diagnostic du groupe</button>
+      </footer>
     </section>
 
     <!-- ---------- ÉCRAN « QU'EST-CE QUE SPIRIT ? » ---------- -->
@@ -582,6 +629,32 @@
   </div>
 
   <!-- ============================================================
+       FENÊTRE « PARTAGER POUR UNE COMPARAISON » (v74)
+       Affiche le code de l'évaluation (9 caractères) et propose de
+       l'envoyer sous forme de lien ou de le copier. Le code ne contient
+       que le domaine et les 14 réponses : ni nom, ni observation.
+       ============================================================ -->
+  <div class="bienvenue-voile cache" id="partage-voile">
+    <section class="bienvenue partage" role="dialog" aria-modal="true" aria-labelledby="partage-titre">
+      <h2 class="bienvenue__titre" id="partage-titre" data-t="partage_bouton">Partager pour une comparaison</h2>
+      <p class="partage__texte" data-t="partage_texte">Ce code contient seulement le domaine et les réponses aux 14 piliers : ni nom, ni observation.</p>
+      <div class="partage__code-bloc">
+        <span class="partage__code-label" data-t="partage_code_label">Code de comparaison</span>
+        <span class="partage__code" id="partage-code">—</span>
+      </div>
+      <div class="partage__actions">
+        <button class="bouton" id="partage-envoyer" type="button" data-t="partage_envoyer">Envoyer le lien</button>
+        <button class="bouton bouton--contour" id="partage-copier" type="button" data-t="partage_copier">Copier le code</button>
+      </div>
+      <p class="partage__statut" id="partage-statut" aria-live="polite"></p>
+      <p class="partage__note" data-t="partage_note">Le code ou le lien passe par le moyen que vous choisissez (message, courriel, de vive voix). SPIRIT ne transmet rien lui-même.</p>
+      <div class="bienvenue__bouton-zone">
+        <button class="bouton bouton--lien" id="partage-fermer" type="button" data-t="partage_fermer">Fermer</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================================
        DOCUMENT IMPRIMABLE (PDF)
        Cette section reste INVISIBLE à l'écran (voir styles .impression).
        Elle n'apparaît qu'au moment de l'impression / export PDF, grâce à
@@ -614,6 +687,9 @@
 
   <!-- Gestion de l'historique des évaluations. Chargé avant app.js. -->
   <script src="js/historique.js"></script>
+
+  <!-- Évaluer à plusieurs : code, lien et comparaison (v74) -->
+  <script src="js/comparaison.js"></script>
 
   <!-- Notre logique applicative -->
   <script src="js/app.js"></script>

@@ -331,6 +331,9 @@ function afficherDiagnostic(evaluation, reponses, dateISO, commentaires, comptes
   document.getElementById("ecran-diagnostic").classList.remove("diagnostic--groupe");
   document.getElementById("diagnostic-titre").textContent = t("diagnostic_titre");
   document.getElementById("diagnostic-pdf").textContent = t("diagnostic_pdf");
+  // v74 : une évaluation faite seul peut être partagée pour une comparaison.
+  document.getElementById("diagnostic-partager").classList.remove("cache");
+  document.getElementById("diagnostic-envoyer-resultat").classList.add("cache");
 
   // En-tête : nom de l'objet + type + date
   document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet;
@@ -394,6 +397,18 @@ function texteNombreAvis(comptes) {
   const max = Math.max.apply(null, totaux);
   if (min !== max) return tAvec("groupe_avis_plage", { min: min, max: max });
   return max === 1 ? t("groupe_avis_un") : tAvec("groupe_avis", { nombre: max });
+}
+
+// Ligne de présentation d'un diagnostic de groupe (écran et PDF) :
+// « Gouverner · En groupe (6 avis) », ou pour une comparaison de codes
+// « Gouverner · 6 évaluations comparées » (« Plusieurs domaines » si besoin).
+function descriptionGroupe(evaluation, comptes) {
+  const type = trouverTypeObjet(evaluation.typeObjet);
+  const domaine = evaluation.domainesMultiples ? t("groupe_domaines_multiples") : (type ? tr(type.libelle) : "");
+  const mention = evaluation.origine === "comparaison"
+    ? tAvec("groupe_evaluations_comparees", { nombre: evaluation.nbEvaluations })
+    : t("groupe_mode") + " (" + texteNombreAvis(comptes) + ")";
+  return (domaine ? domaine + " · " : "") + mention;
 }
 
 // Numéros des piliers aux avis partagés (ex. [1, 2, 6]).
@@ -483,13 +498,15 @@ function afficherDiagnosticGroupe(evaluation, comptes, dateISO, commentaires) {
   document.getElementById("diagnostic-titre").textContent = t("diagnostic_groupe_titre");
   document.getElementById("diagnostic-pdf").textContent = t("diagnostic_pdf_groupe");
 
-  document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet;
-  const type = trouverTypeObjet(evaluation.typeObjet);
-  const typeLibelle = type ? tr(type.libelle) : "";
+  // Boutons : pas de code à partager pour un groupe ; « Envoyer le résultat
+  // au groupe » seulement pour une comparaison de codes (v74).
+  document.getElementById("diagnostic-partager").classList.add("cache");
+  document.getElementById("diagnostic-envoyer-resultat").classList.toggle("cache", evaluation.origine !== "comparaison");
+
+  document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet || t("comparer_sans_nom");
   const dateSource = dateISO ? new Date(dateISO) : new Date();
   const date = dateSource.toLocaleDateString(localeDates(), { day: "numeric", month: "long", year: "numeric" });
-  document.getElementById("diagnostic-meta").textContent =
-    typeLibelle + " · " + t("groupe_mode") + " (" + texteNombreAvis(comptes) + ") · " + date;
+  document.getElementById("diagnostic-meta").textContent = descriptionGroupe(evaluation, comptes) + " · " + date;
 
   document.getElementById("diagnostic-schema").innerHTML = construireSyntheseGroupe(comptes);
   document.getElementById("diagnostic-legende").innerHTML = construireLegende();

@@ -2242,3 +2242,230 @@ a.bouton {
   padding: 0 5px;
   white-space: nowrap;
 }
+
+
+/* ===========================================================
+   ÉVALUER À PLUSIEURS — CODE, LIEN ET COMPARAISON (v74)
+   =========================================================== */
+
+/* --- « Mes évaluations » : bouton « Comparer des évaluations » --- */
+.historique__comparer {
+  margin-bottom: var(--espace-md);
+}
+
+/* --- Écran « Comparer des évaluations » --- */
+.comparer__contenu {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--espace-md);
+}
+.comparer__intro {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--texte-doux);
+  margin: 0 0 var(--espace-md);
+}
+.comparer__label-code {
+  margin-top: var(--espace-md);
+}
+.comparer__ajout {
+  display: flex;
+  gap: 0.6rem;
+}
+.comparer__champ-code {
+  flex: 1;
+  min-width: 0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+/* L'exemple grisé (« Ex. : … ») reste écrit normalement */
+.comparer__champ-code::placeholder {
+  text-transform: none;
+  letter-spacing: normal;
+}
+/* Le bouton « Ajouter » garde sa largeur naturelle à côté du champ */
+.comparer__bouton-ajouter {
+  width: auto;
+  flex-shrink: 0;
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+}
+/* Petits téléphones : le bouton « Ajouter » passe sous le champ, pour que
+   le code reste lisible en entier. */
+@media (max-width: 374px) {
+  .comparer__ajout { flex-direction: column; }
+  .comparer__bouton-ajouter { width: 100%; }
+}
+.comparer__message {
+  font-size: 0.9rem;
+  color: #136E52;
+  margin-top: 0.5rem;
+  min-height: 1.2rem;
+}
+.comparer__message p {
+  margin: 0 0 0.3rem;
+}
+.comparer__message--erreur {
+  color: #A3341C;
+}
+.comparer__quand-meme {
+  border: none;
+  background: transparent;
+  padding: 0.3rem 0;
+  font-family: var(--police-corps);
+  font-size: 0.9rem;
+  color: var(--marine);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.comparer__locales {
+  margin-top: var(--espace-sm);
+}
+.comparer__locales summary {
+  cursor: pointer;
+  color: var(--marine);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.5rem 0;
+}
+.comparer__locale {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1.5px solid var(--bordure);
+  background-color: var(--blanc);
+  border-radius: var(--arrondi-petit);
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 0.4rem;
+  font-family: var(--police-corps);
+  font-size: 0.95rem;
+  color: var(--texte);
+  cursor: pointer;
+}
+.comparer__locale:hover {
+  border-color: var(--marine-clair);
+}
+.comparer__liste-titre {
+  font-family: var(--police-titre);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--marine);
+  margin: var(--espace-md) 0 var(--espace-xs);
+}
+.comparer__liste {
+  background-color: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--arrondi);
+}
+.comparer__ligne {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.3rem 0.25rem 1rem;
+  border-bottom: 1px solid var(--creme-fonce);
+}
+.comparer__ligne:last-child {
+  border-bottom: none;
+}
+.comparer__ligne-textes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem 0;
+}
+.comparer__ligne-nom {
+  font-size: 1rem;
+}
+.comparer__ligne-detail {
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+}
+.comparer__retirer {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--texte-doux);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.comparer__retirer:hover {
+  color: var(--marine);
+  background-color: var(--creme);
+}
+.comparer__vide {
+  font-size: 0.9rem;
+  color: var(--texte-doux);
+  margin: 0;
+  padding: 0.8rem 1rem;
+}
+.comparer__vider {
+  margin-top: var(--espace-xs);
+}
+.comparer__pied {
+  padding: var(--espace-sm) var(--espace-md);
+  padding-bottom: calc(var(--espace-sm) + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--bordure);
+  background-color: var(--creme);
+}
+.comparer__minimum {
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+  margin: 0 0 0.5rem;
+  text-align: center;
+}
+
+/* --- Fenêtre « Partager pour une comparaison » --- */
+.partage__texte {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 var(--espace-sm);
+}
+.partage__code-bloc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  background-color: var(--creme);
+  border-radius: var(--arrondi);
+  padding: var(--espace-sm);
+  margin-bottom: var(--espace-sm);
+}
+.partage__code-label {
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+}
+.partage__code {
+  font-family: var(--police-corps);
+  font-weight: 600;
+  /* Taille qui s'adapte à la largeur de l'écran (plus petite sur un iPhone SE),
+     et jamais de retour à la ligne au milieu du code. */
+  font-size: clamp(1.3rem, 7vw, 1.9rem);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  color: var(--marine);
+  user-select: all;
+}
+.partage__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.partage__statut {
+  font-size: 0.9rem;
+  color: #136E52;
+  min-height: 1.2rem;
+  margin: 0.5rem 0 0;
+  word-break: break-all;
+}
+.partage__note {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--texte-doux);
+  margin: 0.3rem 0 0;
+}

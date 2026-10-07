@@ -158,8 +158,6 @@ function sectionPistesEtLogos() {
    =========================================================== */
 function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commentaires) {
   const conteneur = document.getElementById("document-impression");
-  const type = trouverTypeObjet(evaluation.typeObjet);
-  const typeLibelle = type ? tr(type.libelle) : "";
   const dateSource = dateISO ? new Date(dateISO) : new Date();
   const date = dateSource.toLocaleDateString(localeDates(), { day: "numeric", month: "long", year: "numeric" });
 
@@ -177,8 +175,8 @@ function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commen
   /* --- Pratique évaluée --- */
   html += '<div class="pdf-objet-bloc">';
   html += '<p class="pdf-objet-label">' + t("pdf_objet_label") + '</p>';
-  html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet) + '</p>';
-  html += '<p class="pdf-objet-meta">' + typeLibelle + ' · ' + t("groupe_mode") + ' (' + texteNombreAvis(comptes) + ') · ' +
+  html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet || t("comparer_sans_nom")) + '</p>';
+  html += '<p class="pdf-objet-meta">' + descriptionGroupe(evaluation, comptes) + ' · ' +
           t("pdf_evaluation_du") + ' ' + date + '</p>';
   html += '</div>';
 
