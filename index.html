@@ -138,6 +138,30 @@
           </div>
         </fieldset>
 
+        <!-- Choix : manière de faire l'évaluation (v73).
+             « Une réponse par pilier » = fonctionnement habituel (une personne,
+             ou un groupe qui s'accorde sur une réponse commune).
+             « Compter les avis du groupe » = en salle, sur un seul appareil,
+             on note pour chaque pilier combien de personnes choisissent
+             chaque réponse (aucun nom enregistré). -->
+        <fieldset class="entree__modes">
+          <legend class="entree__label" data-t="entree_question_mode">Comment se fait l'évaluation ?</legend>
+          <label class="carte-mode">
+            <input type="radio" name="mode-evaluation" value="individuel" id="mode-individuel" checked>
+            <span class="carte-mode__textes">
+              <span class="carte-mode__titre" data-t="mode_individuel_titre">Une réponse par pilier</span>
+              <span class="carte-mode__description" data-t="mode_individuel_texte">Une personne seule, ou un groupe qui cherche ensemble une réponse commune.</span>
+            </span>
+          </label>
+          <label class="carte-mode">
+            <input type="radio" name="mode-evaluation" value="groupe" id="mode-groupe">
+            <span class="carte-mode__textes">
+              <span class="carte-mode__titre" data-t="mode_groupe_titre">Compter les avis du groupe</span>
+              <span class="carte-mode__description" data-t="mode_groupe_texte">En salle, sur un seul appareil : pour chaque pilier, l'animateur note combien de personnes choisissent chaque réponse. Aucun nom n'est enregistré.</span>
+            </span>
+          </label>
+        </fieldset>
+
       </div>
 
       <!-- Bouton de validation, fixé en bas -->
@@ -226,7 +250,7 @@
 
       <header class="barre-titre">
         <button class="barre-titre__retour" id="diagnostic-retour" aria-label="Retour" data-t-aria="retour_accueil">‹</button>
-        <h2 class="barre-titre__titre" data-t="diagnostic_titre">Diagnostic</h2>
+        <h2 class="barre-titre__titre" id="diagnostic-titre" data-t="diagnostic_titre">Diagnostic</h2>
       </header>
 
       <div class="diagnostic__contenu">

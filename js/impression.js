@@ -27,7 +27,12 @@
    CONSTRUCTION DU DOCUMENT IMPRIMABLE
    Remplit #document-impression à partir de l'évaluation et des réponses.
    =========================================================== */
-function construireDocumentImpression(evaluation, reponses, dateISO, commentaires) {
+function construireDocumentImpression(evaluation, reponses, dateISO, commentaires, comptes) {
+  // Évaluation en groupe (v73) : document propre au groupe (voir plus bas).
+  if (estModeGroupe(evaluation)) {
+    construireDocumentImpressionGroupe(evaluation, comptes || {}, dateISO, commentaires);
+    return;
+  }
   const conteneur = document.getElementById("document-impression");
 
   const type = trouverTypeObjet(evaluation.typeObjet);
@@ -113,25 +118,111 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   });
   html += '</div>';
 
-  /* --- 5. Pistes de progression (emplacement réservé) --- */
-  html += '<div class="pdf-section">';
+  /* --- 5. Pistes de progression (emplacement réservé) + logos --- */
+  html += sectionPistesEtLogos();
+
+  /* Les citations du Document final ne sont plus dans ce PDF : elles sont
+     désormais générées séparément par le bouton « Pour aller plus loin »
+     (voir construireDocumentReferences ci-dessous). */
+
+  conteneur.innerHTML = html;
+}
+
+
+/* Section « Pistes de progression » (emplacement réservé tant qu'elles ne
+   sont pas rédigées), suivie des logos institutionnels. Commune au document
+   habituel et au document du groupe. Les logos sont placés ici, en bas de
+   cette section, pour éviter qu'ils se retrouvent seuls sur une page. */
+function sectionPistesEtLogos() {
+  let html = '<div class="pdf-section">';
   html += '<h2 class="pdf-section-titre">' + t("pdf_pistes") + '</h2>';
   html += '<p class="pdf-pistes-destinataire">' + t("pdf_pistes_destinataire") + '</p>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_attente") + '</p>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_validation") + '</p>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_groupe") + '</p>';
-  /* Logos institutionnels placés ici, en bas de la section "Pistes de
-     progression" (avant le saut de page vers les références), pour éviter
-     qu'ils se retrouvent seuls sur une page. */
   html += '<div class="pdf-logos">';
   html += '<img class="pdf-logo-fin" src="icons/logo-ecclesialab.png" alt="EcclesiaLab">';
   html += '<img class="pdf-logo-fin" src="icons/logo-uclouvain.png" alt="UCLouvain">';
   html += '</div>';
   html += '</div>';
+  return html;
+}
 
-  /* Les citations du Document final ne sont plus dans ce PDF : elles sont
-     désormais générées séparément par le bouton « Pour aller plus loin »
-     (voir construireDocumentReferences ci-dessous). */
+
+/* ===========================================================
+   DOCUMENT DU GROUPE (v73)
+   Même structure que le document habituel, mais sans schéma ni lecture
+   par pierre : une synthèse des avis partagés, puis, pour chaque pilier,
+   la répartition des avis (barre + nombres), les questions d'aide et
+   l'observation éventuelle.
+   =========================================================== */
+function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commentaires) {
+  const conteneur = document.getElementById("document-impression");
+  const type = trouverTypeObjet(evaluation.typeObjet);
+  const typeLibelle = type ? tr(type.libelle) : "";
+  const dateSource = dateISO ? new Date(dateISO) : new Date();
+  const date = dateSource.toLocaleDateString(localeDates(), { day: "numeric", month: "long", year: "numeric" });
+
+  let html = "";
+
+  /* --- En-tête --- */
+  html += '<div class="pdf-entete">';
+  html += '<img class="pdf-logo" src="icons/logo-spirit.png" alt="SPIRIT">';
+  html += '<div class="pdf-entete-texte">';
+  html += '<h1 class="pdf-titre">' + t("pdf_titre") + '</h1>';
+  html += '<p class="pdf-sous-titre">' + t("pdf_sous_titre") + '</p>';
+  html += '</div>';
+  html += '</div>';
+
+  /* --- Pratique évaluée --- */
+  html += '<div class="pdf-objet-bloc">';
+  html += '<p class="pdf-objet-label">' + t("pdf_objet_label") + '</p>';
+  html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet) + '</p>';
+  html += '<p class="pdf-objet-meta">' + typeLibelle + ' · ' + t("groupe_mode") + ' (' + texteNombreAvis(comptes) + ') · ' +
+          t("pdf_evaluation_du") + ' ' + date + '</p>';
+  html += '</div>';
+
+  /* --- Synthèse + légende --- */
+  html += '<div class="pdf-section">';
+  html += '<h2 class="pdf-section-titre">' + t("diagnostic_groupe_titre") + '</h2>';
+  html += construireSyntheseGroupe(comptes);
+  html += '<div class="pdf-legende">' + construireLegendeTexte() + '</div>';
+  html += '</div>';
+
+  /* --- Répartition des avis, pilier par pilier --- */
+  html += '<div class="pdf-section">';
+  html += '<h2 class="pdf-section-titre">' + t("groupe_repartition_titre") + '</h2>';
+  PIERRES_ANGULAIRES.forEach((pierre) => {
+    html += '<h3 class="pdf-pierre-titre" style="color:' + pierre.couleur + '">' + tr(pierre.nom) + '</h3>';
+    html += '<table class="pdf-table">';
+    CRITERES.filter((c) => c.pierre === pierre.id).forEach((critere) => {
+      const compte = comptes[critere.id] || {};
+      html += '<tr>';
+      html += '<td class="pdf-td-critere"><strong>' + critere.numero + '.</strong> ' + echapper(tr(critere.titre));
+      if (estAvisPartage(compte)) {
+        html += ' <span class="pdf-groupe-badge">' + t("groupe_badge") + '</span>';
+      }
+      const questions = sousQuestionsPour(critere, evaluation.typeObjet) || [];
+      if (questions.length > 0) {
+        html += '<ul class="pdf-sq">';
+        questions.forEach((q) => { html += '<li>' + echapper(tr(q)) + '</li>'; });
+        html += '</ul>';
+      }
+      html += '</td>';
+      html += '<td class="pdf-td-reponse">' + construireBarreGroupe(compte, "pdf-groupe-barre", "pdf-groupe-seg") +
+              '<span class="pdf-groupe-chiffres">' + MODALITES.map((m) => compte[m.id] || 0).join(" · ") + '</span></td>';
+      html += '</tr>';
+      const obs = (commentaires && commentaires[critere.id]) ? commentaires[critere.id].trim() : "";
+      if (obs !== "") {
+        html += '<tr><td class="pdf-obs" colspan="2"><span class="pdf-obs-label">' + t("pdf_observation") + ' : </span>' + echapper(obs) + '</td></tr>';
+      }
+    });
+    html += '</table>';
+  });
+  html += '</div>';
+
+  /* --- Pistes de progression + logos --- */
+  html += sectionPistesEtLogos();
 
   conteneur.innerHTML = html;
 }
@@ -222,8 +313,8 @@ function echapper(texte) {
    On construit le document, puis on ouvre la boîte d'impression du
    navigateur (qui propose "Enregistrer au format PDF").
    =========================================================== */
-function lancerImpression(evaluation, reponses, dateISO, commentaires) {
-  construireDocumentImpression(evaluation, reponses, dateISO, commentaires);
+function lancerImpression(evaluation, reponses, dateISO, commentaires, comptes) {
+  construireDocumentImpression(evaluation, reponses, dateISO, commentaires, comptes);
 
   // L'en-tête d'impression du navigateur (celui qui affiche la date et l'heure)
   // reprend le titre du document. On le règle temporairement sur le titre

@@ -307,7 +307,7 @@ function construireLectures(reponses) {
    =========================================================== */
 // Construit la liste des observations libres (celles qui sont non vides),
 // pour l'écran de diagnostic. Renvoie "" s'il n'y en a aucune.
-function construireObservations(commentaires) {
+function construireObservations(commentaires, cleTitre) {
   commentaires = commentaires || {};
   const items = CRITERES
     .filter((c) => (commentaires[c.id] || "").trim() !== "")
@@ -318,10 +318,20 @@ function construireObservations(commentaires) {
       '</div>'
     );
   if (items.length === 0) return "";
-  return '<h3 class="diagnostic__obs-titre">' + t("diagnostic_observations_titre") + '</h3>' + items.join("");
+  return '<h3 class="diagnostic__obs-titre">' + t(cleTitre || "diagnostic_observations_titre") + '</h3>' + items.join("");
 }
 
-function afficherDiagnostic(evaluation, reponses, dateISO, commentaires) {
+function afficherDiagnostic(evaluation, reponses, dateISO, commentaires, comptes) {
+  // Évaluation en groupe (v73) : affichage propre au groupe (voir plus bas).
+  if (estModeGroupe(evaluation)) {
+    afficherDiagnosticGroupe(evaluation, comptes || {}, dateISO, commentaires);
+    return;
+  }
+  // Titre et bouton du mode habituel (l'écran a pu servir à un groupe juste avant).
+  document.getElementById("ecran-diagnostic").classList.remove("diagnostic--groupe");
+  document.getElementById("diagnostic-titre").textContent = t("diagnostic_titre");
+  document.getElementById("diagnostic-pdf").textContent = t("diagnostic_pdf");
+
   // En-tête : nom de l'objet + type + date
   document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet;
 
@@ -346,5 +356,145 @@ function afficherDiagnostic(evaluation, reponses, dateISO, commentaires) {
   document.getElementById("diagnostic-observations").innerHTML = construireObservations(commentaires);
 
   // On affiche l'écran
+  afficherEcran("ecran-diagnostic");
+}
+
+
+/* ===========================================================
+   8. DIAGNOSTIC DU GROUPE (v73)
+   Quand l'évaluation se fait en comptant les avis d'un groupe, on ne
+   calcule ni note ni moyenne : on montre, pilier par pilier, combien de
+   personnes ont choisi chaque réponse, et on signale les piliers où les
+   avis divergent fortement (« avis partagés »), comme matière à discernement.
+   =========================================================== */
+
+// Règle provisoire (à valider par l'équipe) : un pilier a des « avis
+// partagés » quand au moins une personne répond « Solidement établi » et
+// au moins une autre « À bâtir ».
+function estAvisPartage(compte) {
+  return !!compte && (compte["present"] || 0) > 0 && (compte["non-present"] || 0) > 0;
+}
+
+// Composition d'une pierre angulaire en mode groupe : somme des avis de ses
+// piliers (sert aux mini-jauges de « Mes évaluations »).
+function calculerCompositionGroupe(idPierre, comptes) {
+  const compte = { "present": 0, "a-developper": 0, "non-present": 0, "non-applicable": 0 };
+  CRITERES.filter((c) => c.pierre === idPierre).forEach((c) => {
+    const cpt = comptes[c.id] || {};
+    Object.keys(compte).forEach((m) => { compte[m] += cpt[m] || 0; });
+  });
+  const total = compte["present"] + compte["a-developper"] + compte["non-present"] + compte["non-applicable"];
+  return { compte: compte, total: total, applicables: total - compte["non-applicable"] };
+}
+
+// « 6 avis », « 1 avis », ou « 5 à 6 avis par pilier » si le nombre varie.
+function texteNombreAvis(comptes) {
+  const totaux = CRITERES.map((c) => totalAvis((comptes || {})[c.id]));
+  const min = Math.min.apply(null, totaux);
+  const max = Math.max.apply(null, totaux);
+  if (min !== max) return tAvec("groupe_avis_plage", { min: min, max: max });
+  return max === 1 ? t("groupe_avis_un") : tAvec("groupe_avis", { nombre: max });
+}
+
+// Numéros des piliers aux avis partagés (ex. [1, 2, 6]).
+function piliersPartages(comptes) {
+  return CRITERES.filter((c) => estAvisPartage(comptes[c.id])).map((c) => c.numero);
+}
+
+// Encadré de synthèse : nombre de piliers aux avis partagés, explication,
+// et liste des piliers concernés.
+function construireSyntheseGroupe(comptes) {
+  const partages = piliersPartages(comptes);
+  const n = partages.length;
+  const titre = n === 0 ? t("groupe_partages_zero")
+              : n === 1 ? t("groupe_partages_un")
+              : tAvec("groupe_partages", { nombre: n });
+  let html = '<div class="groupe-synthese">';
+  html += '<p class="groupe-synthese__titre">' + titre + '</p>';
+  html += '<p class="groupe-synthese__texte">' + (n === 0 ? t("groupe_partages_aucun") : t("groupe_partages_texte")) + '</p>';
+  if (n > 0) {
+    html += '<p class="groupe-synthese__concernes">' +
+            tAvec("groupe_piliers_concernes", { liste: assemblerListe(partages.map(String)) }) + '</p>';
+  }
+  html += '</div>';
+  return html;
+}
+
+// Barre de répartition d'un pilier : un segment par réponse, de largeur
+// proportionnelle au nombre d'avis (« Non applicable » en hachures).
+function construireBarreGroupe(compte, classeBarre, classeSegment) {
+  const total = totalAvis(compte);
+  let html = '<span class="' + classeBarre + '">';
+  if (total > 0) {
+    MODALITES.forEach((m) => {
+      const n = compte[m.id] || 0;
+      if (n === 0) return;
+      const largeur = (n / total * 100).toFixed(2);
+      if (m.couleur) {
+        html += '<span class="' + classeSegment + '" style="width:' + largeur + '%;background:' + m.couleur + '"></span>';
+      } else {
+        html += '<span class="' + classeSegment + ' ' + classeSegment + '--na" style="width:' + largeur + '%"></span>';
+      }
+    });
+  }
+  html += '</span>';
+  return html;
+}
+
+// Texte lisible de la répartition (pour les lecteurs d'écran) :
+// « 3 Solidement établi, 2 En chantier, 1 À bâtir, 0 Non applicable ».
+function decrireRepartition(compte) {
+  return MODALITES.map((m) => ((compte || {})[m.id] || 0) + " " + tr(m.libelle)).join(", ");
+}
+
+// Répartition des avis, pilier par pilier, regroupés par pierre angulaire.
+function construireRepartitionGroupe(comptes) {
+  let html = '<h3 class="groupe-repartition__titre">' + t("groupe_repartition_titre") + '</h3>';
+  PIERRES_ANGULAIRES.forEach((pierre) => {
+    html += '<div class="groupe-pierre">';
+    html += '<h4 class="groupe-pierre__titre" style="color:' + pierre.couleur + '">' + tr(pierre.nom) + '</h4>';
+    CRITERES.filter((c) => c.pierre === pierre.id).forEach((c) => {
+      const compte = comptes[c.id] || {};
+      html += '<div class="groupe-pilier">';
+      html += '<div class="groupe-pilier__haut">';
+      html += '<span class="groupe-pilier__titre"><span class="groupe-pilier__numero">' + c.numero + '.</span> ' + echapper(tr(c.titre)) + '</span>';
+      if (estAvisPartage(compte)) {
+        html += '<span class="groupe-badge">' + t("groupe_badge") + '</span>';
+      }
+      html += '</div>';
+      html += '<div class="groupe-pilier__bas" role="img" aria-label="' + echapper(decrireRepartition(compte)) + '">';
+      html += construireBarreGroupe(compte, "groupe-barre", "groupe-barre__seg");
+      html += '<span class="groupe-chiffres" aria-hidden="true">' +
+              MODALITES.map((m) => compte[m.id] || 0).join(" · ") + '</span>';
+      html += '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  return html;
+}
+
+// Remplit l'écran de diagnostic pour une évaluation en groupe.
+// On réutilise le même écran que le mode habituel (et sa mise en page en
+// deux colonnes sur ordinateur) : à gauche la synthèse et la légende, à
+// droite la répartition par pilier et les observations.
+function afficherDiagnosticGroupe(evaluation, comptes, dateISO, commentaires) {
+  document.getElementById("ecran-diagnostic").classList.add("diagnostic--groupe");
+  document.getElementById("diagnostic-titre").textContent = t("diagnostic_groupe_titre");
+  document.getElementById("diagnostic-pdf").textContent = t("diagnostic_pdf_groupe");
+
+  document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet;
+  const type = trouverTypeObjet(evaluation.typeObjet);
+  const typeLibelle = type ? tr(type.libelle) : "";
+  const dateSource = dateISO ? new Date(dateISO) : new Date();
+  const date = dateSource.toLocaleDateString(localeDates(), { day: "numeric", month: "long", year: "numeric" });
+  document.getElementById("diagnostic-meta").textContent =
+    typeLibelle + " · " + t("groupe_mode") + " (" + texteNombreAvis(comptes) + ") · " + date;
+
+  document.getElementById("diagnostic-schema").innerHTML = construireSyntheseGroupe(comptes);
+  document.getElementById("diagnostic-legende").innerHTML = construireLegende();
+  document.getElementById("diagnostic-lectures").innerHTML = construireRepartitionGroupe(comptes);
+  document.getElementById("diagnostic-observations").innerHTML = construireObservations(commentaires, "groupe_observations_titre");
+
   afficherEcran("ecran-diagnostic");
 }

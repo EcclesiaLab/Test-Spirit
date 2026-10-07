@@ -1982,3 +1982,263 @@ a.bouton {
   font-weight: 600;
   color: #333333;
 }
+
+
+/* ===========================================================
+   ÉVALUER À PLUSIEURS — MODE « COMPTER LES AVIS DU GROUPE » (v73)
+   =========================================================== */
+
+/* --- Écran d'entrée : choix du mode --- */
+.entree__modes {
+  border: none;
+  margin-top: var(--espace-md);
+  padding: 0;
+}
+
+/* Une carte de mode : un bouton radio et deux lignes de texte.
+   La carte choisie prend la bordure marine (comme les cartes de domaine). */
+.carte-mode {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border: 1.5px solid var(--bordure);
+  background-color: var(--blanc);
+  border-radius: var(--arrondi);
+  padding: 0.85rem 1rem;
+  margin-bottom: var(--espace-sm);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.carte-mode:hover {
+  border-color: var(--marine-clair);
+}
+.carte-mode:has(input:checked) {
+  border: 2px solid var(--marine);
+  padding: calc(0.85rem - 0.5px) calc(1rem - 0.5px);
+  box-shadow: 0 2px 6px rgba(22, 52, 88, 0.10);
+}
+.carte-mode input {
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  flex-shrink: 0;
+  accent-color: var(--marine);
+}
+.carte-mode__textes {
+  display: flex;
+  flex-direction: column;
+}
+.carte-mode__titre {
+  font-weight: 600;
+  color: var(--texte);
+  font-size: 1rem;
+}
+.carte-mode:has(input:checked) .carte-mode__titre {
+  color: var(--marine);
+}
+.carte-mode__description {
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+  margin-top: 2px;
+}
+
+/* --- Écran d'un pilier : compteurs d'avis --- */
+.compteurs__consigne {
+  font-weight: 600;
+  font-size: 0.98rem;
+  margin: 0 0 0.5rem;
+}
+.compteur {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1.5px solid var(--bordure);
+  background-color: var(--blanc);
+  border-radius: var(--arrondi);
+  padding: 0.3rem 0.35rem 0.3rem 0.9rem;
+  margin-bottom: 0.45rem;
+}
+.compteur__libelle {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.98rem;
+  margin-left: 0.25rem;
+}
+.compteur__bouton {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--bordure);
+  background-color: var(--creme);
+  color: var(--marine);
+  font-family: var(--police-corps);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.compteur__bouton--plus {
+  background-color: var(--marine);
+  border-color: var(--marine);
+  color: var(--blanc);
+}
+.compteur__nombre {
+  width: 3rem;
+  height: 44px;
+  flex-shrink: 0;
+  text-align: center;
+  font-family: var(--police-titre);
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--marine);
+  border: 1.5px solid transparent;
+  border-radius: var(--arrondi-petit);
+  background: transparent;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.compteur__nombre::-webkit-outer-spin-button,
+.compteur__nombre::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.compteur__nombre:focus {
+  outline: none;
+  border-color: var(--marine);
+  background-color: var(--blanc);
+}
+.compteurs__total {
+  font-size: 0.88rem;
+  color: var(--texte-doux);
+  margin: 0.2rem 0 0;
+}
+
+/* --- Diagnostic du groupe --- */
+/* L'encadré de synthèse prend la place du schéma radial. */
+.groupe-synthese {
+  background-color: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--arrondi);
+  padding: var(--espace-sm) var(--espace-md);
+  text-align: left;
+}
+.groupe-synthese__titre {
+  font-family: var(--police-titre);
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--marine);
+  margin: 0 0 4px;
+}
+.groupe-synthese__texte {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--texte);
+  margin: 0;
+}
+.groupe-synthese__concernes {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--texte);
+  margin: 6px 0 0;
+}
+.diagnostic--groupe .diagnostic__legende {
+  margin-bottom: var(--espace-md);
+}
+.groupe-repartition__titre {
+  font-family: var(--police-titre);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--marine);
+  margin: 0;
+}
+.groupe-pierre__titre {
+  font-weight: 600;
+  font-size: 1rem;
+  margin: var(--espace-sm) 0 0;
+}
+.groupe-pilier {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--bordure);
+}
+.groupe-pilier__haut {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.groupe-pilier__titre {
+  font-size: 0.93rem;
+  line-height: 1.35;
+}
+.groupe-pilier__numero {
+  color: var(--texte-doux);
+}
+/* Badge « Avis partagés » : orange foncé sur fond orangé très clair
+   (contraste suffisant pour la lecture). */
+.groupe-badge {
+  flex-shrink: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #8A4A05;
+  background-color: #FFF4E8;
+  border: 1px solid var(--orange-fonce);
+  border-radius: 10px;
+  padding: 1px 8px;
+  white-space: nowrap;
+}
+.groupe-pilier__bas {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 6px;
+}
+.groupe-barre {
+  flex: 1;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  background-color: var(--creme-fonce);
+}
+.groupe-barre__seg {
+  height: 100%;
+}
+/* « Non applicable » : hachures discrètes (pas de couleur de réponse) */
+.groupe-barre__seg--na,
+.pdf-groupe-seg--na {
+  background: repeating-linear-gradient(135deg, #D9D3C7 0 4px, #ECE7DD 4px 8px);
+}
+.groupe-chiffres {
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* --- Document du groupe (PDF) --- */
+.pdf-groupe-barre {
+  display: inline-flex;
+  width: 90px;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #ECE7DD;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.pdf-groupe-seg {
+  height: 8px;
+}
+.pdf-groupe-chiffres {
+  font-size: 9pt;
+  color: #5A6A7A;
+}
+.pdf-groupe-badge {
+  font-size: 8pt;
+  font-weight: 600;
+  color: #8A4A05;
+  border: 1px solid #D96E0A;
+  border-radius: 8px;
+  padding: 0 5px;
+  white-space: nowrap;
+}

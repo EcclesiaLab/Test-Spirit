@@ -26,7 +26,7 @@
 */
 
 // ---- Numéro de version du cache (à incrémenter à chaque mise à jour) ----
-const CACHE_VERSION = "spirit-v72";
+const CACHE_VERSION = "spirit-v73";
 
 // ---- Liste des fichiers à mettre en cache dès l'installation ----
 // Ce sont les fichiers minimum pour que l'app s'affiche hors-ligne.
@@ -67,7 +67,11 @@ const FICHIERS_A_CACHER = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_VERSION).then((cache) => {
-      return cache.addAll(FICHIERS_A_CACHER);
+      // { cache: "reload" } : on va chercher chaque fichier sur le serveur, sans
+      // passer par le cache ordinaire du navigateur. Sinon (GitHub Pages garde
+      // les fichiers 10 minutes), le nouveau cache pouvait se remplir avec les
+      // ANCIENS fichiers juste après une mise à jour (constat E3 de l'audit v72).
+      return cache.addAll(FICHIERS_A_CACHER.map((url) => new Request(url, { cache: "reload" })));
     })
   );
   // Demande au nouveau service worker de s'activer immédiatement,
