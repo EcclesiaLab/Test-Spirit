@@ -322,6 +322,14 @@ const MODALITES = [
   { id: "non-applicable", libelle: { fr: "Non applicable",  en: "Not applicable", nl: "Niet van toepassing" }, couleur: null }
 ];
 
+// Couleur d'une réponse. Les couleurs ne sont définies qu'ici (dans
+// MODALITES) : les jauges, les mini-jauges de l'historique et le PDF les
+// lisent par cette fonction (constat F7 de l'audit v72).
+function couleurModalite(id) {
+  const modalite = MODALITES.find((m) => m.id === id);
+  return modalite ? modalite.couleur : null;
+}
+
 
 /* ===========================================================
    LES TYPES DE PRATIQUE (écran d'entrée)
@@ -363,9 +371,9 @@ const TYPES_OBJET = [
   {
     id: "autre",
     libelle: { fr: "Autre pratique", en: "Other practice", nl: "Andere geloofspraktijk" },
-    description: { fr: "Le questionnaire de référence de SPIRIT, validé par un panel de 50 théologiens et théologiennes, pour toute pratique qui n'entre pas dans les domaines ci-dessus.",
-                   en: "SPIRIT's reference questionnaire, validated by a panel of 50 theologians, for any practice that does not fit the areas above.",
-                   nl: "De referentievragenlijst van SPIRIT, gevalideerd door een panel van 50 theologen en theologes, voor elke geloofspraktijk die niet onder de bovenstaande domeinen valt." }
+    description: avecPanel({ fr: "Le questionnaire de référence de SPIRIT, validé par un panel de {panel}, pour toute pratique qui n'entre pas dans les domaines ci-dessus.",
+                   en: "SPIRIT's reference questionnaire, validated by a panel of {panel}, for any practice that does not fit the areas above.",
+                   nl: "De referentievragenlijst van SPIRIT, gevalideerd door een panel van {panel}, voor elke geloofspraktijk die niet onder de bovenstaande domeinen valt." })
   }
 ];
 

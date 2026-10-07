@@ -104,7 +104,50 @@ function getLangue() {
 function tr(objet) {
   if (objet === null || objet === undefined) return "";
   if (typeof objet === "string") return objet;
-  return objet[langueActive] !== undefined ? objet[langueActive] : (objet.fr || "");
+  return espacesInsecables(objet[langueActive] !== undefined ? objet[langueActive] : (objet.fr || ""));
+}
+
+
+/* ===========================================================
+   TYPOGRAPHIE FRANÇAISE (constat F2 de l'audit v72)
+   En français, on met une espace avant « : ; ? ! » et à l'intérieur des
+   guillemets. Pour qu'un retour à la ligne ne laisse jamais ces signes
+   seuls en début de ligne, cette espace devient une espace insécable
+   (\u00a0) au moment de l'affichage. t() et tr() le font pour tous les
+   textes ; les textes français écrits dans index.html sont traités une
+   fois au démarrage (app.js). Les fichiers restent donc écrits normalement.
+   =========================================================== */
+function espacesInsecablesFr(texte) {
+  return texte.replace(/ ([:;?!»])/g, "\u00a0$1").replace(/« /g, "«\u00a0");
+}
+// Deux-points après une étiquette : « Observation : » en français,
+// « Observation: » en anglais et en néerlandais.
+function deuxPoints() {
+  return langueActive === "fr" ? "\u00a0: " : ": ";
+}
+function espacesInsecables(texte) {
+  if (langueActive !== "fr" || typeof texte !== "string") return texte;
+  return espacesInsecablesFr(texte);
+}
+
+/* ===========================================================
+   NOMBRE DE THÉOLOGIENS DU PANEL DELPHI (constat M5 de l'audit v72)
+   Une seule formulation, reprise partout (pages d'information, carte
+   « Autre pratique », note du diagnostic, PDF). Pour la changer, il suffit
+   de modifier ces trois lignes. Dans les textes, le repère {panel} est
+   remplacé par cette formulation grâce à avecPanel().
+   =========================================================== */
+const PANEL_THEOLOGIENS = {
+  fr: "près de 50 théologiens et théologiennes",
+  en: "nearly 50 theologians",
+  nl: "bijna 50 theologen en theologes"
+};
+function avecPanel(objet) {
+  const resultat = {};
+  Object.keys(objet).forEach((langue) => {
+    resultat[langue] = objet[langue].split("{panel}").join(PANEL_THEOLOGIENS[langue] || PANEL_THEOLOGIENS.fr);
+  });
+  return resultat;
 }
 
 
@@ -114,7 +157,7 @@ function t(cle) {
   if (typeof TRADUCTIONS === "undefined") return cle;
   const entree = TRADUCTIONS[cle];
   if (!entree) return cle;
-  return entree[langueActive] !== undefined ? entree[langueActive] : (entree.fr || cle);
+  return espacesInsecables(entree[langueActive] !== undefined ? entree[langueActive] : (entree.fr || cle));
 }
 
 
@@ -135,4 +178,19 @@ const LOCALES_DATES = { fr: "fr-FR", en: "en-GB", nl: "nl-BE" };
 
 function localeDates() {
   return LOCALES_DATES[langueActive] || "fr-FR";
+}
+
+// Date longue dans la langue active (« 7 octobre 2026 »). Renvoie un texte
+// vide si la date manque ou est illisible : on n'affiche plus jamais
+// « Invalid Date » (constat F6 de l'audit v72).
+function formaterDateLongue(valeur) {
+  if (valeur === undefined || valeur === null || valeur === "") return "";
+  const d = valeur instanceof Date ? valeur : new Date(valeur);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString(localeDates(), { day: "numeric", month: "long", year: "numeric" });
+}
+
+// Assemble des morceaux de texte avec « · » en sautant les morceaux vides.
+function joindrePoints(morceaux) {
+  return morceaux.filter((m) => m).join(" · ");
 }

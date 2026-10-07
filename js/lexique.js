@@ -195,18 +195,8 @@ const LEXIQUE = [
 ];
 
 
-/* ===========================================================
-   TYPOGRAPHIE FRANÇAISE
-   En français, on met une espace avant « : ; ? ! » et à l'intérieur
-   des guillemets. Pour qu'un retour à la ligne ne laisse jamais ces
-   signes seuls en début de ligne, on remplace cette espace par une
-   espace insécable (\u00a0) au moment de l'affichage. Les textes du
-   fichier restent donc écrits normalement, avec des espaces ordinaires.
-   =========================================================== */
-function espacesInsecables(texte) {
-  if (getLangue() !== "fr") return texte;
-  return texte.replace(/ ([:;?!»])/g, "\u00a0$1").replace(/« /g, "«\u00a0");
-}
+/* La fonction espacesInsecables() (typographie française) est dans langue.js
+   depuis la v75 : elle sert désormais à tous les textes de l'application. */
 
 
 /* ===========================================================

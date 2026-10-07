@@ -338,6 +338,18 @@ body {
   text-decoration: underline;
 }
 
+/* Variante "danger" (v75) : action qui supprime quelque chose, dans les
+   fenêtres de question. Rouge foncé : contraste 6:1 avec le texte blanc. */
+.bouton--danger {
+  background-color: #B3362D;
+  color: var(--blanc);
+  box-shadow: none;
+}
+
+.bouton--danger:hover {
+  background-color: #962B23;
+}
+
 /* Espace entre deux boutons empilés */
 .bouton + .bouton {
   margin-top: var(--espace-sm);
@@ -1300,6 +1312,14 @@ a.bouton {
   text-align: center;
 }
 
+/* Numéro de version, sous le logo (v75) */
+.page-info__version {
+  margin-top: var(--espace-sm);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--texte-doux);
+}
+
 .page-info__logo-uclouvain {
   max-width: 180px;
   width: 55%;
@@ -1689,6 +1709,21 @@ a.bouton {
     font-size: 9pt;
     color: #5A6A7A;
     margin: 0;
+  }
+
+  /* Origine des questions d'aide (v75, constat M6) */
+  .pdf-objet-questions {
+    font-size: 8.5pt;
+    color: #5A6A7A;
+    margin: 3px 0 0;
+  }
+
+  /* Numéro de version en fin de document (v75, constat M10) */
+  .pdf-version {
+    text-align: center;
+    font-size: 7.5pt;
+    color: #5A6A7A;
+    margin-top: 10px;
   }
 
   /* --- Sections --- */
@@ -2468,4 +2503,154 @@ a.bouton {
   line-height: 1.45;
   color: var(--texte-doux);
   margin: 0.3rem 0 0;
+}
+
+
+/* ===========================================================
+   v75 — FENÊTRES (questions, focus)
+   =========================================================== */
+
+/* Une fenêtre reçoit le focus à son ouverture (pour les lecteurs d'écran) :
+   inutile d'encadrer toute la fenêtre. Les boutons gardent leur cadre de focus. */
+.bienvenue:focus {
+  outline: none;
+}
+
+/* Fenêtre de question : remplace les fenêtres « OK / Annuler » du téléphone */
+.question {
+  max-width: 26rem;
+}
+.question__texte {
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: var(--texte);
+  margin-bottom: var(--espace-sm);
+  text-align: center;
+}
+/* Un lien à recopier (quand le partage automatique n'est pas possible) */
+.question__detail {
+  font-size: 0.85rem;
+  color: var(--marine);
+  background-color: var(--creme);
+  border-radius: var(--arrondi-petit);
+  padding: 0.6rem 0.8rem;
+  margin-bottom: var(--espace-sm);
+  word-break: break-all;
+  user-select: all;
+  -webkit-user-select: all;
+}
+.question__boutons {
+  margin-top: var(--espace-sm);
+}
+
+/* ===========================================================
+   v75 — « GARDER UNE COPIE » (Mes évaluations)
+   =========================================================== */
+.historique__sauvegarde {
+  margin-top: var(--espace-lg);
+  padding-top: var(--espace-md);
+  border-top: 1px solid var(--bordure);
+}
+.historique__sauvegarde-titre {
+  font-family: var(--police-titre);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--marine);
+  margin-bottom: 0.4rem;
+}
+.historique__sauvegarde-texte {
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--texte-doux);
+  margin-bottom: var(--espace-sm);
+}
+
+/* ===========================================================
+   v75 — ACCESSIBILITÉ (constat M9 de l'audit v72)
+   =========================================================== */
+
+/* Explication de « Non applicable », dans le bouton, au pilier 1 (F11) */
+.modalite__explication {
+  display: inline-block;
+  margin-top: 0.15rem;
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--texte-doux);
+}
+
+/* Réponse choisie : libellé en bleu marine (contraste suffisant), la couleur
+   de la réponse restant sur la pastille, le cadre et le fond teinté. */
+.modalite--active .modalite__libelle {
+  color: var(--marine);
+}
+
+/* Zones tactiles agrandies SANS changer la mise en page : une zone
+   invisible (::after) déborde autour des petits boutons, pour atteindre
+   environ 44 px de haut (recommandation d'Apple ; minimum WCAG : 24 px). */
+.critere__aide-bouton,
+.commentaire__bouton,
+.selecteur-langue__option {
+  position: relative;
+}
+.critere__aide-bouton::after,
+.commentaire__bouton::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  top: -10px;
+  bottom: -12px;
+}
+.selecteur-langue__option::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -7px;
+  bottom: -7px;
+}
+/* Barre de progression : segments de 5 px de haut, cliquables pour revenir
+   en arrière. Leur zone tactile passe à environ 29 px. */
+.progression__segment {
+  position: relative;
+  overflow: visible;
+}
+.progression__segment::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -12px;
+  bottom: -12px;
+}
+/* Bouton « Non applicable » avec explication (pilier 1) : la pastille
+   s'aligne sur le libellé, et non au milieu des deux lignes. */
+.modalite:has(.modalite__explication) .modalite__pastille {
+  align-self: flex-start;
+  margin-top: 0.3rem;
+}
+
+/* ===========================================================
+   v76 — « NON APPLICABLE » MIS À PART
+   Les trois premières réponses forment une échelle (Solidement établi,
+   En chantier, À bâtir) ; « Non applicable » est d'une autre nature :
+   il sort le pilier du diagnostic. Une fine ligne le sépare des trois
+   autres, dans le questionnaire (évaluer seul) comme dans les compteurs
+   (évaluer en groupe).
+   =========================================================== */
+.modalite[data-id-modalite="non-applicable"],
+.compteur[data-id-modalite="non-applicable"] {
+  position: relative;
+  margin-top: 1.4rem;
+}
+.modalite[data-id-modalite="non-applicable"]::before,
+.compteur[data-id-modalite="non-applicable"]::before {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: calc(-0.7rem - 1px);
+  border-top: 1px solid var(--bordure);
+  pointer-events: none;
 }

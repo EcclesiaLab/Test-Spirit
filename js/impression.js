@@ -38,10 +38,7 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   const type = trouverTypeObjet(evaluation.typeObjet);
   const typeLibelle = type ? tr(type.libelle) : "";
   // Date fournie (archive) ou date du jour (évaluation qui vient de finir).
-  const dateSource = dateISO ? new Date(dateISO) : new Date();
-  const date = dateSource.toLocaleDateString(localeDates(), {
-    day: "numeric", month: "long", year: "numeric"
-  });
+  const date = formaterDateLongue(dateISO || new Date());
 
   let html = "";
 
@@ -58,7 +55,8 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   html += '<div class="pdf-objet-bloc">';
   html += '<p class="pdf-objet-label">' + t("pdf_objet_label") + '</p>';
   html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet) + '</p>';
-  html += '<p class="pdf-objet-meta">' + typeLibelle + ' · ' + t("pdf_evaluation_du") + ' ' + date + '</p>';
+  html += '<p class="pdf-objet-meta">' + joindrePoints([typeLibelle, date ? tAvec("pdf_evaluation_date", { date: date }) : ""]) + '</p>';
+  html += ligneOrigineQuestions(evaluation);
   html += '</div>';
 
   /* --- 2. Schéma radial + légende --- */
@@ -111,7 +109,7 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
       html += '</tr>';
       const obs = (commentaires && commentaires[critere.id]) ? commentaires[critere.id].trim() : "";
       if (obs !== "") {
-        html += '<tr><td class="pdf-obs" colspan="2"><span class="pdf-obs-label">' + t("pdf_observation") + ' : </span>' + echapper(obs) + '</td></tr>';
+        html += '<tr><td class="pdf-obs" colspan="2"><span class="pdf-obs-label">' + t("pdf_observation") + deuxPoints() + '</span>' + echapper(obs) + '</td></tr>';
       }
     });
     html += '</table>';
@@ -136,7 +134,6 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
 function sectionPistesEtLogos() {
   let html = '<div class="pdf-section">';
   html += '<h2 class="pdf-section-titre">' + t("pdf_pistes") + '</h2>';
-  html += '<p class="pdf-pistes-destinataire">' + t("pdf_pistes_destinataire") + '</p>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_attente") + '</p>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_validation") + '</p>';
   html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_groupe") + '</p>';
@@ -144,8 +141,26 @@ function sectionPistesEtLogos() {
   html += '<img class="pdf-logo-fin" src="icons/logo-ecclesialab.png" alt="EcclesiaLab">';
   html += '<img class="pdf-logo-fin" src="icons/logo-uclouvain.png" alt="UCLouvain">';
   html += '</div>';
+  html += piedVersion();
   html += '</div>';
   return html;
+}
+
+// Pied de page : numéro de version de SPIRIT (constat M10 de l'audit v72).
+function piedVersion() {
+  return '<p class="pdf-version">' + tAvec("version_libelle", { version: VERSION_SPIRIT }) + '</p>';
+}
+
+// Ligne qui dit d'où viennent les questions d'aide imprimées (constat M6) :
+// questionnaire de référence validé par le Delphi, ou questions adaptées à
+// un domaine (sans les attribuer au Delphi, qui ne les a pas validées).
+function ligneOrigineQuestions(evaluation) {
+  const type = evaluation.domainesMultiples ? null : trouverTypeObjet(evaluation.typeObjet);
+  const questionsDomaine = !!(type && QUESTIONS_PAR_DOMAINE[type.id]);
+  const texte = questionsDomaine
+    ? tAvec("pdf_questions_domaine", { domaine: tr(type.libelle) })
+    : t("pdf_questions_reference");
+  return '<p class="pdf-objet-questions">' + texte + '</p>';
 }
 
 
@@ -158,8 +173,7 @@ function sectionPistesEtLogos() {
    =========================================================== */
 function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commentaires) {
   const conteneur = document.getElementById("document-impression");
-  const dateSource = dateISO ? new Date(dateISO) : new Date();
-  const date = dateSource.toLocaleDateString(localeDates(), { day: "numeric", month: "long", year: "numeric" });
+  const date = formaterDateLongue(dateISO || new Date());
 
   let html = "";
 
@@ -176,8 +190,8 @@ function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commen
   html += '<div class="pdf-objet-bloc">';
   html += '<p class="pdf-objet-label">' + t("pdf_objet_label") + '</p>';
   html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet || t("comparer_sans_nom")) + '</p>';
-  html += '<p class="pdf-objet-meta">' + descriptionGroupe(evaluation, comptes) + ' · ' +
-          t("pdf_evaluation_du") + ' ' + date + '</p>';
+  html += '<p class="pdf-objet-meta">' + joindrePoints([descriptionGroupe(evaluation, comptes), date ? tAvec("pdf_evaluation_date", { date: date }) : ""]) + '</p>';
+  html += ligneOrigineQuestions(evaluation);
   html += '</div>';
 
   /* --- Synthèse + légende --- */
@@ -212,7 +226,7 @@ function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commen
       html += '</tr>';
       const obs = (commentaires && commentaires[critere.id]) ? commentaires[critere.id].trim() : "";
       if (obs !== "") {
-        html += '<tr><td class="pdf-obs" colspan="2"><span class="pdf-obs-label">' + t("pdf_observation") + ' : </span>' + echapper(obs) + '</td></tr>';
+        html += '<tr><td class="pdf-obs" colspan="2"><span class="pdf-obs-label">' + t("pdf_observation") + deuxPoints() + '</span>' + echapper(obs) + '</td></tr>';
       }
     });
     html += '</table>';
@@ -278,6 +292,7 @@ function construireDocumentReferences() {
   html += '<img class="pdf-logo-fin" src="icons/logo-ecclesialab.png" alt="EcclesiaLab">';
   html += '<img class="pdf-logo-fin" src="icons/logo-uclouvain.png" alt="UCLouvain">';
   html += '</div>';
+  html += piedVersion();
 
   html += '</div>';
 

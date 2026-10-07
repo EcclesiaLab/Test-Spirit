@@ -29,33 +29,49 @@ if ("serviceWorker" in navigator) {
       .then(() => console.log("SPIRIT : service worker enregistré (mode hors-ligne actif)."))
       .catch((erreur) => console.log("SPIRIT : service worker non enregistré.", erreur));
 
-    // --- Rechargement automatique lors d'une mise à jour ---
-    // Problème résolu ici : avec une stratégie "cache d'abord", après une mise
-    // à jour l'utilisateur voit encore l'ancienne version au premier lancement,
-    // et devait fermer puis rouvrir l'app pour voir la nouvelle.
-    //
-    // Solution : si une version est DÉJÀ installée (utilisateur de retour), on
-    // écoute l'événement "controllerchange", déclenché quand le nouveau service
-    // worker prend le relais. À ce moment-là, on recharge la page UNE seule fois
-    // pour afficher la nouvelle version, sans intervention de l'utilisateur.
+    // --- Rechargement lors d'une mise à jour ---
+    // Avec une stratégie "cache d'abord", après une mise à jour l'utilisateur
+    // verrait encore l'ancienne version. Quand le nouveau service worker prend
+    // le relais (événement "controllerchange"), il faut donc recharger la page.
     //
     // On ne le fait que si un service worker contrôle déjà la page : sinon
     // (toute première visite), il n'y a aucune ancienne version à remplacer.
     if (navigator.serviceWorker.controller) {
-      let dejaRecharge = false;
-      navigator.serviceWorker.addEventListener("controllerchange", () => {
-        if (dejaRecharge) return; // garde-fou : on ne recharge qu'une fois
-        dejaRecharge = true;
-        window.location.reload();
-      });
+      navigator.serviceWorker.addEventListener("controllerchange", surNouvelleVersion);
     }
   });
+}
+
+/* Depuis la v75 (constat M1 de l'audit v72), on ne recharge plus en plein
+   questionnaire, diagnostic ou comparaison : la nouvelle version attend que
+   l'utilisateur soit sur l'écran d'accueil, sans fenêtre ouverte. Elle
+   s'applique alors d'elle-même. */
+let miseAJourEnAttente = false;
+let dejaRecharge = false;
+
+function surNouvelleVersion() {
+  miseAJourEnAttente = true;
+  appliquerMiseAJourSiPossible();
+}
+
+function appliquerMiseAJourSiPossible() {
+  if (!miseAJourEnAttente || dejaRecharge) return;
+  const actif = document.querySelector(".ecran--actif");
+  const surAccueil = actif && actif.id === "ecran-accueil";
+  if (surAccueil && pileFenetres.length === 0) {
+    dejaRecharge = true; // garde-fou : on ne recharge qu'une fois
+    window.location.reload();
+  }
 }
 
 
 /* ===========================================================
    2. OUTILS ET CONSTANTES
    =========================================================== */
+
+// Numéro de version affiché dans « À propos » et en pied de PDF (constat M10).
+// ⚠ À changer en même temps que CACHE_VERSION dans service-worker.js.
+const VERSION_SPIRIT = "76";
 
 // Clé de mémoire locale : la bienvenue a-t-elle déjà été vue ?
 const CLE_BIENVENUE_VUE = "spirit_bienvenue_vue";
@@ -98,6 +114,9 @@ function afficherEcran(idEcran) {
       if (zone) zone.scrollTop = 0;
     }
   }
+  // Mise à jour en attente : elle s'applique au retour à l'accueil (M1).
+  if (idEcran === "ecran-accueil") appliquerMiseAJourSiPossible();
+
   // Remarque : la fenêtre « Comment ça fonctionne ? » n'est plus déclenchée
   // ici, mais au clic sur « Démarrer une évaluation » (voir brancherBoutons),
   // pour ne pas réapparaître quand on revient en arrière depuis le 1er pilier.
@@ -108,11 +127,11 @@ function afficherEcran(idEcran) {
    4. FENÊTRE DE BIENVENUE (premier lancement)
    =========================================================== */
 function afficherBienvenue() {
-  parId("bienvenue-voile").classList.remove("cache");
+  ouvrirFenetre("bienvenue-voile", { surEchap: fermerBienvenue });
 }
 
 function fermerBienvenue() {
-  parId("bienvenue-voile").classList.add("cache");
+  fermerFenetre("bienvenue-voile");
   try {
     localStorage.setItem(CLE_BIENVENUE_VUE, "oui");
   } catch (e) {
@@ -150,7 +169,7 @@ function lireCompteFonctionnement() {
 function montrerFonctionnementSiBesoin() {
   const compte = lireCompteFonctionnement();
   if (compte >= NB_AFFICHAGES_FONCTIONNEMENT) return;
-  parId("fonctionnement-voile").classList.remove("cache");
+  ouvrirFenetre("fonctionnement-voile", { surEchap: fermerFonctionnement });
   try {
     localStorage.setItem(CLE_FONCTIONNEMENT_COMPTE, String(compte + 1));
   } catch (e) {
@@ -159,7 +178,7 @@ function montrerFonctionnementSiBesoin() {
 }
 
 function fermerFonctionnement() {
-  parId("fonctionnement-voile").classList.add("cache");
+  fermerFenetre("fonctionnement-voile");
 }
 
 function gererBienvenueAuDemarrage() {
@@ -187,13 +206,14 @@ function gererBienvenueAuDemarrage() {
 
 // Affiche l'écran de choix de la langue (premier lancement).
 function afficherChoixLangue() {
-  parId("choix-langue-voile").classList.remove("cache");
+  // Pas de touche Échap ici : il faut choisir une langue.
+  ouvrirFenetre("choix-langue-voile");
 }
 
 // Appelé quand l'utilisateur choisit sa langue au premier lancement.
 function choisirLangueInitiale(code) {
   changerLangue(code);                       // applique et mémorise la langue
-  parId("choix-langue-voile").classList.add("cache");
+  fermerFenetre("choix-langue-voile");
   // On enchaîne sur la bienvenue (premier lancement = jamais vue).
   afficherBienvenue();
 }
@@ -273,11 +293,11 @@ function proposerInstallationSiPremiereFois() {
 
 function afficherInstallation() {
   majContenuInstallation();
-  parId("installation-voile").classList.remove("cache");
+  ouvrirFenetre("installation-voile", { surEchap: fermerInstallation });
 }
 
 function fermerInstallation() {
-  parId("installation-voile").classList.add("cache");
+  fermerFenetre("installation-voile");
   try {
     localStorage.setItem(CLE_INSTALLATION_PROPOSEE, "oui");
   } catch (e) {
@@ -373,6 +393,7 @@ function genererCartesType() {
     if (evaluationEnCours.typeObjet === type.id) {
       carte.classList.add("carte-type--active");
     }
+    carte.setAttribute("aria-pressed", evaluationEnCours.typeObjet === type.id ? "true" : "false");
 
     // Au clic : on sélectionne cette carte.
     carte.addEventListener("click", () => choisirType(type.id));
@@ -393,6 +414,7 @@ function choisirType(idType) {
     } else {
       carte.classList.remove("carte-type--active");
     }
+    carte.setAttribute("aria-pressed", carte.dataset.idType === idType ? "true" : "false");
   });
 
   rafraichirBoutonCommencer();
@@ -663,7 +685,23 @@ function genererModalites(critere) {
     }
 
     const texte = document.createElement("span");
+    texte.className = "modalite__libelle";
     texte.textContent = tr(modalite.libelle);
+
+    // Pilier 1 : l'explication de « Non applicable » est écrite dans le
+    // bouton lui-même, sous son libellé. On la voit donc dès qu'on voit ce
+    // choix (avant, elle venait après les quatre réponses, souvent hors de
+    // l'écran sur un petit téléphone : constat F11 de l'audit v72).
+    if (modalite.id === "non-applicable" && CRITERES.indexOf(critere) === 0) {
+      const explication = document.createElement("span");
+      explication.className = "modalite__explication";
+      explication.textContent = t("critere_na_explication");
+      texte.appendChild(document.createElement("br"));
+      texte.appendChild(explication);
+    }
+
+    // Pour les lecteurs d'écran : ce bouton est-il la réponse choisie ? (M9)
+    bouton.setAttribute("aria-pressed", "false");
 
     bouton.appendChild(pastille);
     bouton.appendChild(texte);
@@ -694,6 +732,7 @@ function genererCompteurs(critere) {
   MODALITES.forEach((modalite) => {
     const ligne = document.createElement("div");
     ligne.className = "compteur";
+    ligne.dataset.idModalite = modalite.id;   // repère pour la feuille de style (séparation avant « Non applicable »)
 
     const pastille = document.createElement("span");
     pastille.className = "modalite__pastille";
@@ -791,12 +830,13 @@ function majTotalAvis(critere) {
 // Applique le style "actif" à un bouton de modalité (couleur de la modalité).
 function activerModalite(bouton, modalite) {
   bouton.classList.add("modalite--active");
+  bouton.setAttribute("aria-pressed", "true");
   const couleur = modalite.couleur || "#163458"; // marine si "Non applicable"
   bouton.style.borderColor = couleur;
   // Fond légèrement teinté : on utilise la couleur avec une transparence.
   bouton.style.backgroundColor = couleur + "14"; // "14" = ~8% d'opacité en hexa
-  const texte = bouton.querySelector("span:last-child");
-  if (texte) texte.style.color = couleur;
+  // Le libellé reste en bleu marine (gras) : écrit dans la couleur de la
+  // réponse, « En chantier » (ambre) n'était presque pas lisible (M9).
 }
 
 // Enregistre la modalité choisie pour le critère et met à jour l'affichage.
@@ -806,10 +846,9 @@ function choisirModalite(critere, modalite, boutonClique) {
   // On réinitialise tous les boutons, puis on active celui choisi.
   document.querySelectorAll("#modalites .modalite").forEach((b) => {
     b.classList.remove("modalite--active");
+    b.setAttribute("aria-pressed", "false");
     b.style.borderColor = "";
     b.style.backgroundColor = "";
-    const libelle = b.querySelector("span:last-child");
-    if (libelle) libelle.style.color = "";
   });
   activerModalite(boutonClique, modalite);
 
@@ -851,7 +890,9 @@ function afficherCritere(index) {
 
   // Explication de « Non applicable » : sous le premier pilier seulement,
   // pour ne pas la répéter (elle est détaillée dans le lexique).
-  parId("critere-na-note").classList.toggle("cache", index !== 0);
+  // Note « Non applicable » sous les compteurs, au pilier 1, en mode groupe
+  // seulement (en mode seul, elle est dans le bouton : voir genererModalites).
+  parId("critere-na-note").classList.toggle("cache", index !== 0 || !estModeGroupe(evaluationEnCours));
 
   // Observation libre
   preparerCommentaire(critere);
@@ -1100,6 +1141,7 @@ function afficherHistorique() {
       conteneur.appendChild(construireCarteEvaluation(evaluation));
     });
   }
+  majBoutonsSauvegarde();   // « Exporter » seulement s'il y a des évaluations
 
   afficherEcran("ecran-historique");
 }
@@ -1111,16 +1153,14 @@ function construireCarteEvaluation(evaluation) {
 
   const type = trouverTypeObjet(evaluation.typeObjet);
   const typeLibelle = type ? tr(type.libelle) : "";
-  const date = new Date(evaluation.dateFin).toLocaleDateString(localeDates(), {
-    day: "numeric", month: "long", year: "numeric"
-  });
+  const date = formaterDateLongue(evaluation.dateFin);
 
   // Évaluation en groupe (v73) : on l'indique, avec le nombre d'avis.
   const groupe = estModeGroupe(evaluation);
-  const mentionGroupe = groupe ? t("groupe_mode") + " (" + texteNombreAvis(evaluation.comptes) + ") · " : "";
+  const mentionGroupe = groupe ? t("groupe_mode") + " (" + texteNombreAvis(evaluation.comptes) + ")" : "";
 
   let html = '<div class="eval-carte__nom"></div>';
-  html += '<div class="eval-carte__meta">' + typeLibelle + ' · ' + mentionGroupe + date + '</div>';
+  html += '<div class="eval-carte__meta">' + echapper(joindrePoints([typeLibelle, mentionGroupe, date])) + '</div>';
 
   html += '<div class="eval-carte__apercu">';
   PIERRES_ANGULAIRES.forEach((pierre) => {
@@ -1165,11 +1205,7 @@ function construireMiniJaugeDepuis(compo) {
     return segments;
   }
 
-  const ordre = [
-    { mod: "present",      couleur: "#1D9E75" },
-    { mod: "a-developper", couleur: "#EF9F27" },
-    { mod: "non-present",  couleur: "#444441" }
-  ];
+  const ordre = ["present", "a-developper", "non-present"].map((id) => ({ mod: id, couleur: couleurModalite(id) }));
 
   ordre.forEach((seg) => {
     const n = compo.compte[seg.mod];
@@ -1207,15 +1243,59 @@ function entreGuillemets(texte) {
 }
 
 // Demande confirmation avant de supprimer une évaluation, puis rafraîchit.
+// (Fenêtre SPIRIT et non plus celle du téléphone : constat E2 de l'audit v72.)
 function demanderSuppression(evaluation) {
-  const ok = confirm(
-    t("msg_suppression") + " " + entreGuillemets(evaluation.nomObjet) + " ?\n\n" +
-    t("msg_suppression_fin")
-  );
-  if (ok) {
-    supprimerEvaluation(evaluation.id);
-    afficherHistorique();
-  }
+  poserQuestion({
+    titre: t("msg_suppression_titre"),
+    texte: tAvec("msg_suppression_texte", {
+      nom: entreGuillemets(evaluation.nomObjet),
+      date: formaterDateLongue(evaluation.dateFin) || "—"
+    }),
+    boutons: [
+      { libelle: t("historique_supprimer"), style: "danger", action: () => {
+          supprimerEvaluation(evaluation.id);
+          afficherHistorique();
+        } },
+      { libelle: t("msg_annuler"), style: "contour" }
+    ]
+  });
+}
+
+
+/* ===========================================================
+   REPRISE D'UNE ÉVALUATION EN COURS (v75, constat E2)
+   « Démarrer une évaluation » alors qu'une évaluation n'est pas terminée :
+   deux boutons explicites. Commencer une nouvelle évaluation supprime
+   l'ancienne, d'où une seconde question de confirmation ; « Revenir »
+   ramène à la première question. La touche Échap ne supprime jamais rien.
+   =========================================================== */
+function proposerReprise(enCours) {
+  const nom = entreGuillemets(enCours.nomObjet);
+  poserQuestion({
+    titre: t("msg_reprise"),
+    texte: tAvec("msg_reprise_texte", { nom: nom }),
+    boutons: [
+      { libelle: t("msg_reprise_reprendre"), action: () => reprendreEvaluation(enCours) },
+      { libelle: t("msg_reprise_nouvelle"), style: "contour", action: () => confirmerNouvelle(enCours) }
+    ]
+  });
+}
+
+function confirmerNouvelle(enCours) {
+  poserQuestion({
+    titre: t("msg_nouvelle_titre"),
+    texte: tAvec("msg_nouvelle_texte", { nom: entreGuillemets(enCours.nomObjet) }) + " " + t("msg_suppression_fin"),
+    boutons: [
+      { libelle: t("msg_nouvelle_confirmer"), style: "danger", action: () => {
+          effacerEnCours();
+          reinitialiserEntree();
+          afficherEcran("ecran-entree");
+          montrerFonctionnementSiBesoin();
+        } },
+      { libelle: t("msg_revenir"), style: "contour", action: () => proposerReprise(enCours) }
+    ],
+    surAnnulation: () => proposerReprise(enCours)
+  });
 }
 
 
@@ -1244,13 +1324,13 @@ function partagerApplication() {
   // 2e option (repli) : copier le lien dans le presse-papier.
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(lien)
-      .then(() => alert(t("msg_lien_copie") + "\n\n" + lien))
-      .catch(() => alert(t("msg_lien_partager") + "\n\n" + lien));
+      .then(() => afficherMessage(t("accueil_partager"), t("msg_lien_copie"), lien))
+      .catch(() => afficherMessage(t("accueil_partager"), t("msg_lien_partager"), lien));
     return;
   }
 
   // 3e option (dernier repli) : on affiche simplement le lien à recopier.
-  alert(t("msg_lien_partager") + "\n\n" + lien);
+  afficherMessage(t("accueil_partager"), t("msg_lien_partager"), lien);
 }
 
 
@@ -1297,6 +1377,24 @@ function appliquerTraductions() {
 
   // 4. Cas particuliers réécrits dynamiquement : on rafraîchit le sélecteur
   majSelecteurLangue();
+
+  // 5. Titre de la page (onglet, sélecteur d'applications) et numéro de version.
+  document.title = t("titre_page");
+  const version = parId("a-propos-version");
+  if (version) version.textContent = tAvec("version_libelle", { version: VERSION_SPIRIT });
+}
+
+// Textes français écrits directement dans index.html (bienvenue, pages
+// d'information) : espaces insécables devant « : ; ? ! » (constat F2).
+// Les autres textes passent par t() et tr(), qui s'en chargent déjà.
+function typographieTextesFixes() {
+  document.querySelectorAll('[data-lang="fr"]').forEach((bloc) => {
+    const parcours = document.createTreeWalker(bloc, NodeFilter.SHOW_TEXT);
+    let noeud;
+    while ((noeud = parcours.nextNode())) {
+      noeud.nodeValue = espacesInsecablesFr(noeud.nodeValue);
+    }
+  });
 }
 
 // Met à jour le sélecteur de langue : les trois codes (FR, EN, NL) sont
@@ -1309,6 +1407,7 @@ function majSelecteurLangue() {
   sel.querySelectorAll("[data-langue-code]").forEach((b) => {
     const code = b.getAttribute("data-langue-code");
     b.classList.toggle("selecteur-langue__option--actif", code === active);
+    b.setAttribute("aria-pressed", code === active ? "true" : "false");
   });
 }
 
@@ -1376,24 +1475,20 @@ function brancherBoutons() {
 
     if (enCours && enCours.nomObjet) {
       // Une évaluation est en cours : on demande quoi faire.
-      const reprendre = confirm(
-        t("msg_reprise") + " : " + entreGuillemets(enCours.nomObjet) + ".\n\n" +
-        t("msg_reprise_detail")
-      );
-      if (reprendre) {
-        reprendreEvaluation(enCours);
-      } else {
-        effacerEnCours();
-        reinitialiserEntree();
-        afficherEcran("ecran-entree");
-        montrerFonctionnementSiBesoin();
-      }
+      proposerReprise(enCours);
     } else {
       // Aucune évaluation en cours : nouvelle entrée.
       reinitialiserEntree();
       afficherEcran("ecran-entree");
       montrerFonctionnementSiBesoin();
     }
+  });
+
+  // « Garder une copie » (v75) : export et import d'un fichier.
+  parId("sauvegarde-exporter").addEventListener("click", exporterEvaluations);
+  parId("sauvegarde-importer").addEventListener("click", choisirFichierImport);
+  parId("sauvegarde-fichier").addEventListener("change", (e) => {
+    importerFichier(e.target.files && e.target.files[0]);
   });
 
   // Lien "Mes évaluations" : affiche l'historique.
@@ -1565,6 +1660,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // l'écran de choix doit pouvoir s'afficher au premier lancement.
   fixerLangueSansMemoriser(determinerLangueInitiale());
   appliquerTraductions();         // applique les textes d'interface à la page
+  typographieTextesFixes();       // espaces insécables des textes français fixes
 
   genererCartesType();            // cartes de type d'objet
   construireBarreProgression();   // segments de la barre de progression

@@ -16,6 +16,7 @@ L'application est un projet d'**EcclesiaLab**, laboratoire de recherche sur l'in
 - **Visualiser** un diagnostic sous forme de trois jauges (une par pierre angulaire), accompagné d'une lecture textuelle.
 - **Exporter** le résultat en PDF via la fonction d'impression du navigateur.
 - **Conserver** l'historique des évaluations sur l'appareil (consultation, réouverture, suppression).
+- **Garder une copie** (v75) : dans *Mes évaluations*, « Exporter les évaluations » crée un fichier `.json` (toutes les évaluations terminées) ; « Importer un fichier » les ajoute sur un autre appareil, sans doublon. Le fichier va où l'utilisateur le décide.
 - **Choisir la langue** : interface et contenu en français, anglais et néerlandais.
 
 L'utilisateur évalue toujours un **objet extérieur** (une pratique, un projet, une instance) — jamais lui-même.
@@ -51,11 +52,14 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 │   ├── app.js              Logique applicative (navigation, questionnaire, écrans)
 │   ├── diagnostic.js       Calcul et affichage des trois jauges
 │   ├── historique.js       Archivage des évaluations terminées
+│   ├── sauvegarde.js       Export / import des évaluations dans un fichier (v75)
+│   ├── fenetres.js         Fenêtres : ouverture, fermeture, accessibilité, questions (v75)
 │   ├── comparaison.js      Codes et liens de comparaison, écran « Comparer »
 │   └── impression.js       Construction du document PDF
 ├── icons/
 │   ├── icon-192.png        Icône PWA (écran d'accueil)
 │   ├── icon-512.png        Icône PWA (splash screen)
+│   ├── icon-maskable-*.png Icônes « adaptatives » (Android) : marge de sécurité plus large
 │   ├── logo-spirit.png     Logo affiché dans l'application
 │   └── logo-uclouvain.png  Logo institutionnel (page « À propos »)
 ├── images/
@@ -75,7 +79,9 @@ C'est là, et seulement là, qu'on modifie les textes. La mécanique de l'applic
 
 Quelques règles à respecter dans ce fichier :
 
-- Chaque texte affiché existe en deux langues, sous la forme `{ fr: "texte français", en: "texte anglais" }`. Pour corriger une traduction, on modifie uniquement le texte entre guillemets de la bonne langue.
+- Chaque texte affiché existe en trois langues, sous la forme `{ fr: "texte français", en: "texte anglais", nl: "texte néerlandais" }`. Pour corriger une traduction, on modifie uniquement le texte entre guillemets de la bonne langue.
+- En français, on écrit les espaces ordinaires devant `: ; ? !` : l'application les remplace d'elle-même par des espaces insécables à l'affichage.
+- Le nombre de théologiens du panel Delphi ne s'écrit qu'à un seul endroit : `PANEL_THEOLOGIENS`, en tête de `js/langue.js`. Dans les textes, le repère `{panel}` le remplace.
 - **Ne jamais modifier les identifiants techniques** (`id`) : ils servent au code et au stockage des évaluations déjà enregistrées.
 - Ne pas toucher à la ponctuation de structure (accolades, crochets, virgules) au risque de casser le fichier.
 
@@ -86,8 +92,16 @@ Quelques règles à respecter dans ce fichier :
 À **chaque modification** d'un fichier (HTML, CSS, JS), il faut **incrémenter le numéro de version** du cache dans `service-worker.js` :
 
 ```js
-const CACHE_VERSION = "spirit-v21";   // → passer à "spirit-v22", etc.
+const CACHE_VERSION = "spirit-v76";   // → passer à "spirit-v77", etc.
 ```
+
+Changer en même temps le numéro affiché dans « À propos » et en pied de PDF, en tête de `js/app.js` :
+
+```js
+const VERSION_SPIRIT = "76";          // → "77", etc.
+```
+
+Vérifier aussi que **chaque fichier listé dans `FICHIERS_A_CACHER` existe** : un seul fichier absent (un logo renommé, par exemple) fait échouer l'installation de la nouvelle version, et les utilisateurs restent sur l'ancienne sans que rien ne le signale.
 
 Sans cette incrémentation, les navigateurs continuent de servir l'ancienne version en cache et la modification ne s'affiche pas. Après mise en ligne, toujours **tester en navigation privée** pour vérifier la nouvelle version.
 
@@ -129,7 +143,7 @@ Aucune donnée n'est transmise à un serveur. Les évaluations sont stockées **
 
 Pour la comparaison (v74), c'est l'utilisateur qui transmet lui-même un code ou un lien, par le moyen de son choix. Le code ne contient aucun nom de personne ni aucune observation ; le lien y ajoute seulement le nom de la pratique évaluée. Dans un lien, tout cela est placé après le signe `#` : cette partie de l'adresse n'est jamais envoyée au serveur qui héberge l'application, et SPIRIT l'efface de la barre d'adresse dès qu'il l'a lue.
 
-Conséquence : si l'utilisateur change d'appareil ou efface les données de son navigateur, ses évaluations sont perdues. *(Une fonction d'export/import est envisagée pour une version ultérieure.)*
+Conséquence : si l'utilisateur change d'appareil ou efface les données de son navigateur, ses évaluations sont perdues, sauf s'il en a gardé une copie avec « Exporter les évaluations » (v75). Ce fichier ne quitte l'appareil que par le moyen que l'utilisateur choisit (enregistrement, courriel à soi-même…). Depuis la v75, SPIRIT demande aussi au navigateur de ne pas effacer ses données de lui-même (`navigator.storage.persist()`).
 
 ---
 

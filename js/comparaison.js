@@ -295,8 +295,7 @@ function construireLocales() {
     const bouton = document.createElement("button");
     bouton.type = "button";
     bouton.className = "comparer__locale";
-    const date = new Date(evaluation.dateFin).toLocaleDateString(localeDates(), { day: "numeric", month: "long", year: "numeric" });
-    bouton.textContent = evaluation.nomObjet + " · " + date;
+    bouton.textContent = joindrePoints([evaluation.nomObjet, formaterDateLongue(evaluation.dateFin)]);
     bouton.addEventListener("click", () => {
       const code = encoderCode(evaluation.typeObjet, evaluation.reponses, selDepuisId(evaluation.id));
       const resultat = ajouterCodes([code], "appareil", false);
@@ -373,10 +372,18 @@ function enregistrerNomComparaison() {
 }
 
 function viderComparaison() {
-  if (!confirm(t("comparer_vider_confirmer"))) return;
-  ecrireComparaison({ nom: parId("comparer-nom").value.trim(), elements: [] });
-  construireListeComparaison();
-  afficherMessageComparer(null);
+  poserQuestion({
+    titre: t("comparer_vider_confirmer"),
+    texte: t("comparer_vider_texte"),
+    boutons: [
+      { libelle: t("comparer_vider"), style: "danger", action: () => {
+          ecrireComparaison({ nom: parId("comparer-nom").value.trim(), elements: [] });
+          construireListeComparaison();
+          afficherMessageComparer(null);
+        } },
+      { libelle: t("msg_annuler"), style: "contour" }
+    ]
+  });
 }
 
 
@@ -429,13 +436,11 @@ function ouvrirPartage(typeObjet, reponses, idEvaluation, nom) {
   partageEnCours = { code: code, nom: nom };
   parId("partage-code").textContent = formaterCode(code);
   parId("partage-statut").textContent = "";
-  parId("partage-voile").classList.remove("cache");
-  parId("partage-envoyer").focus();
+  ouvrirFenetre("partage-voile", { surEchap: fermerPartage });
 }
 
 function fermerPartage() {
-  parId("partage-voile").classList.add("cache");
-  parId("diagnostic-partager").focus();
+  fermerFenetre("partage-voile");   // le focus revient sur « Partager… »
 }
 
 // Copie un texte dans le presse-papier. Renvoie une promesse : vrai si réussi.
@@ -478,7 +483,7 @@ function envoyerResultatGroupe() {
   if (!diagnosticComparaison) return;
   const url = lienResultat(diagnosticComparaison.codes, diagnosticComparaison.evaluation.nomObjet);
   envoyerLien(url, t("resultat_message"), (ok) => {
-    alert((ok ? t("partage_lien_copie") : t("msg_lien_partager")) + "\n\n" + url);
+    afficherMessage(t("resultat_envoyer"), ok ? t("partage_lien_copie") : t("resultat_lien_copier"), url);
   });
 }
 

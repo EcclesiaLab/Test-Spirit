@@ -83,6 +83,8 @@ function archiverEvaluation(evaluation, reponses, commentaires, comptes) {
   // On ajoute la nouvelle évaluation en tête (la plus récente en premier).
   liste.unshift(entree);
   ecrireHistorique(liste);
+  // On demande au navigateur de ne pas effacer ces données (sauvegarde.js).
+  protegerDonnees();
 
   return entree.id;
 }

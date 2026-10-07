@@ -67,11 +67,7 @@ function dessinerJauge(idPierre, composition, cx, cy, rayon) {
   const longueurParCritere = circonference / composition.total;
 
   // Ordre d'affichage des segments + couleur de chaque modalité
-  const segments = [
-    { modalite: "present",      couleur: "#1D9E75" },
-    { modalite: "a-developper", couleur: "#EF9F27" },
-    { modalite: "non-present",  couleur: "#444441" }
-  ];
+  const segments = ["present", "a-developper", "non-present"].map((id) => ({ modalite: id, couleur: couleurModalite(id) }));
 
   // Cercle de fond (gris clair) : repère visuel de l'anneau complet
   let svg = '<circle cx="' + cx + '" cy="' + cy + '" r="' + (rayon + 6) +
@@ -123,22 +119,46 @@ function dessinerJauge(idPierre, composition, cx, cy, rayon) {
   return svg;
 }
 
-// Place le nom d'une pierre au centre d'un anneau. Si le mot est long,
-// on le coupe en deux lignes pour qu'il tienne dans la pastille.
+// Place le nom d'une pierre au centre d'un anneau. On ne le coupe en deux
+// lignes que s'il ne tient pas sur une seule (constat F4 de l'audit v72),
+// et alors au bon endroit dans chaque langue : les points de coupure sont
+// fixés à la main ci-dessous (avant, on coupait au milieu du mot, ce qui
+// donnait par exemple « Partic- / ipatie » en néerlandais).
+const COUPURES_NOMS_PIERRES = {
+  "Communion":     ["Commu", "nion"],      // FR et EN
+  "Participation": ["Partici", "pation"],  // FR et EN
+  "Mission":       ["Mis", "sion"],        // FR et EN
+  "Gemeenschap":   ["Gemeen", "schap"],    // NL
+  "Participatie":  ["Partici", "patie"],   // NL
+  "Zending":       ["Zen", "ding"]         // NL
+};
+// Largeur disponible pour une ligne dans la pastille blanche (rayon 20),
+// en unités du schéma, avec une petite marge.
+const LARGEUR_UTILE_PASTILLE = 36;
+
+// Mesure la largeur d'un texte écrit comme dans la pastille.
+let contexteMesure = null;
+function largeurNomPierre(texte) {
+  try {
+    if (!contexteMesure) contexteMesure = document.createElement("canvas").getContext("2d");
+    contexteMesure.font = "600 10px 'Source Sans 3', sans-serif";
+    return contexteMesure.measureText(texte).width;
+  } catch (e) {
+    return texte.length * 5.5; // estimation si la mesure est impossible
+  }
+}
+
 function texteCentreSurDeuxLignes(nom, cx, cy) {
   const style = 'text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" font-weight="600" fill="#163458"';
+  const coupure = COUPURES_NOMS_PIERRES[nom];
 
-  if (nom.length <= 8) {
-    // Tient sur une ligne
+  if (!coupure || largeurNomPierre(nom) <= LARGEUR_UTILE_PASTILLE) {
+    // Tient sur une ligne (ou nom inconnu de la table : on ne le coupe pas)
     return '<text x="' + cx + '" y="' + (cy + 3.5) + '" ' + style + '>' + nom + '</text>';
   }
 
-  // Coupe en deux : on essaie de couper proprement (ici simple : moitié/moitié)
-  const milieu = Math.ceil(nom.length / 2);
-  const ligne1 = nom.slice(0, milieu) + "-";
-  const ligne2 = nom.slice(milieu);
-  return '<text x="' + cx + '" y="' + (cy - 1) + '" ' + style + '>' + ligne1 + '</text>' +
-         '<text x="' + cx + '" y="' + (cy + 10) + '" ' + style + '>' + ligne2 + '</text>';
+  return '<text x="' + cx + '" y="' + (cy - 1) + '" ' + style + '>' + coupure[0] + '-</text>' +
+         '<text x="' + cx + '" y="' + (cy + 10) + '" ' + style + '>' + coupure[1] + '</text>';
 }
 
 
@@ -231,11 +251,23 @@ function construireLegende() {
 // « lecture_… ») : on peut les corriger sans toucher à ce fichier.
 function redigerLecture(idPierre, composition) {
   const c = composition.compte;
-  const applicables = composition.applicables;
+  // Piliers réellement pris en compte : ceux qui ont reçu une réponse autre
+  // que « Non applicable ». (Un pilier sans réponse, qui ne peut exister que
+  // dans une évaluation incomplète, n'est pas compté : constat F6.)
+  const applicables = c["present"] + c["a-developper"] + c["non-present"];
 
-  // Cas particulier : aucune dimension applicable
+  // Cas particuliers : aucune réponse, ou aucun pilier applicable
   if (applicables === 0) {
-    return t("lecture_aucun");
+    return c["non-applicable"] > 0 ? t("lecture_aucun") : t("lecture_sans_reponse");
+  }
+
+  // Constat M7 (audit v72) : quand tous les piliers pris en compte sont
+  // « Solidement établi », on le dit tel quel, avec leur nombre, au lieu
+  // d'affirmer que la dimension est « pleinement vécue » (ce qui pouvait
+  // s'afficher sur la base d'un seul pilier).
+  if (c["present"] === applicables) {
+    const phrase = applicables === 1 ? t("lecture_pleine_un") : tAvec("lecture_pleine", { nombre: applicables });
+    return phrase + avertissementNonApplicables(composition);
   }
 
   // Détail des réponses, en nombre de piliers (singulier ou pluriel).
@@ -257,14 +289,21 @@ function redigerLecture(idPierre, composition) {
     liste: assemblerListe(parties)
   });
 
-  // Une nuance d'encouragement selon la dominante
-  if (c["present"] === applicables) {
-    texte += " " + t("lecture_pleine");
-  } else if (c["non-present"] > c["present"] + c["a-developper"]) {
+  // Une nuance d'encouragement quand « À bâtir » domine
+  if (c["non-present"] > c["present"] + c["a-developper"]) {
     texte += " " + t("lecture_croissance");
   }
 
-  return texte;
+  return texte + avertissementNonApplicables(composition);
+}
+
+// Constat M7 : si au moins la moitié des piliers d'une pierre angulaire a
+// été jugée « Non applicable », on le signale : la lecture ne porte alors
+// que sur une partie de la dimension.
+function avertissementNonApplicables(composition) {
+  const na = composition.compte["non-applicable"];
+  if (na === 0 || na * 2 < composition.total) return "";
+  return " " + tAvec("lecture_na_partiel", { na: na, total: composition.total });
 }
 
 // Met un nombre + le bon singulier/pluriel.
@@ -342,9 +381,9 @@ function afficherDiagnostic(evaluation, reponses, dateISO, commentaires, comptes
   const typeLibelle = type ? tr(type.libelle) : "";
   // Si une date est fournie (évaluation archivée), on l'utilise ;
   // sinon, c'est une évaluation qui vient de se terminer → date du jour.
-  const dateSource = dateISO ? new Date(dateISO) : new Date();
-  const date = dateSource.toLocaleDateString(localeDates(), { day: "numeric", month: "long", year: "numeric" });
-  document.getElementById("diagnostic-meta").textContent = typeLibelle + " · " + date;
+  // Date de l'évaluation archivée, ou date du jour si elle vient de se terminer.
+  const date = formaterDateLongue(dateISO || new Date());
+  document.getElementById("diagnostic-meta").textContent = joindrePoints([typeLibelle, date]);
 
   // Schéma radial
   document.getElementById("diagnostic-schema").innerHTML = construireSchemaRadial(reponses);
@@ -504,9 +543,8 @@ function afficherDiagnosticGroupe(evaluation, comptes, dateISO, commentaires) {
   document.getElementById("diagnostic-envoyer-resultat").classList.toggle("cache", evaluation.origine !== "comparaison");
 
   document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet || t("comparer_sans_nom");
-  const dateSource = dateISO ? new Date(dateISO) : new Date();
-  const date = dateSource.toLocaleDateString(localeDates(), { day: "numeric", month: "long", year: "numeric" });
-  document.getElementById("diagnostic-meta").textContent = descriptionGroupe(evaluation, comptes) + " · " + date;
+  const date = formaterDateLongue(dateISO || new Date());
+  document.getElementById("diagnostic-meta").textContent = joindrePoints([descriptionGroupe(evaluation, comptes), date]);
 
   document.getElementById("diagnostic-schema").innerHTML = construireSyntheseGroupe(comptes);
   document.getElementById("diagnostic-legende").innerHTML = construireLegende();
