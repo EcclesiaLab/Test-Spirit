@@ -1,13 +1,14 @@
 /*
   ============================================================
-  ÉVALUER À PLUSIEURS — CODE, LIEN ET COMPARAISON (v74)
+  ÉVALUER À PLUSIEURS — CODE, LIEN ET RASSEMBLEMENT (v74, code v2 en v80)
   ============================================================
 
   Chacun fait son évaluation sur son propre appareil (en salle ou à
   distance). À la fin, SPIRIT lui donne un CODE de 9 caractères (ou un
   LIEN qui contient ce code). Une personne rassemble ces codes dans
-  l'écran « Comparer des évaluations » et obtient le diagnostic du groupe
-  (le même que pour une évaluation en groupe sur un seul appareil).
+  l'écran « Rassembler des évaluations » et obtient le diagnostic du groupe.
+  Depuis la v81, c'est la seule manière d'évaluer à plusieurs (le mode
+  « Évaluer en groupe » sur un seul appareil a été retiré).
 
   CONFIDENTIALITÉ : SPIRIT n'envoie rien. Le code ne contient que le
   domaine et les 14 réponses (ni nom, ni observation). Il passe par le
@@ -15,16 +16,23 @@
   un lien, le code est placé après le signe « # » : cette partie d'une
   adresse n'est jamais envoyée au site qui héberge l'app.
 
-  CE QUE CONTIENT UN CODE (45 bits = 9 caractères de 5 bits) :
-    -  2 bits : version du format (1)
+  CE QUE CONTIENT UN CODE (45 bits = 9 caractères de 5 bits)
+  Format 2 (v80, avec le niveau « À consolider ») :
+    -  2 bits : version du format (2)
     -  3 bits : domaine (voir CODE_DOMAINES)
-    - 28 bits : les 14 réponses, 2 bits chacune, dans l'ordre des piliers
-                (0 Solidement établi, 1 En chantier, 2 À bâtir, 3 Non applicable)
-    -  5 bits : « sel » tiré de l'identifiant de l'évaluation : deux
-                personnes aux réponses identiques auront presque toujours
-                des codes différents, et la même évaluation partagée deux
-                fois donne le même code (doublon détecté)
+    - 33 bits : les 14 réponses, lues comme un nombre écrit en base 5
+                (un chiffre de 0 à 4 par pilier, dans l'ordre des piliers ;
+                voir ORDRE_CODE_V2). 5 réponses possibles ne tiennent pas
+                dans 2 bits par pilier ; en base 5, les 14 réponses tiennent
+                dans 33 bits.
     -  7 bits : somme de contrôle, pour repérer une faute de frappe
+  Format 1 (v74 à v79), toujours LU pour les codes déjà donnés :
+    -  2 bits version (1), 3 bits domaine, 28 bits de réponses (2 bits par
+       pilier, voir ORDRE_CODE_V1), 5 bits de « sel », 7 bits de contrôle.
+  Le « sel » a disparu en v80 pour faire place au 5e choix de réponse, sans
+  allonger le code : deux personnes aux réponses strictement identiques ont
+  donc le même code. L'écran de rassemblement le signale et propose
+  « L'ajouter quand même ».
   Alphabet : base 32 « de Crockford », sans I, L, O ni U (évite les
   confusions) ; à la saisie, O est lu 0, I et L sont lus 1.
   ============================================================
@@ -35,16 +43,23 @@
    1. LE CODE DE COMPARAISON
    =========================================================== */
 const CODE_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-const CODE_VERSION = 1;
+const CODE_VERSION = 2;          // format écrit par cette version
 // Ordre FIXE : ne jamais le modifier (les codes déjà donnés en dépendent).
 // On peut seulement AJOUTER un domaine à la fin (8 places au maximum).
 const CODE_DOMAINES = ["annoncer", "gouverner", "servir", "celebrer", "autre",
                        "action-ponctuelle", "projet-parcours", "groupe-instance"];
+// Ordres FIXES des réponses dans chaque format (indépendants de MODALITES,
+// qui peut changer d'ordre à l'écran) : ne jamais les modifier.
+const ORDRE_CODE_V1 = ["present", "a-developper", "non-present", "non-applicable"];
+const ORDRE_CODE_V2 = ["present", "a-consolider", "a-developper", "non-present", "non-applicable"];
+const BASE_V2 = ORDRE_CODE_V2.length;   // 5
 
 // Écrit un nombre sur « taille » bits (liste de 0 et de 1, du plus fort au plus faible).
+// On divise au lieu d'utiliser « >> » : les réponses du format 2 forment un
+// nombre de 33 bits, trop grand pour les opérations bit à bit de JavaScript.
 function bitsDepuisNombre(n, taille) {
   const bits = [];
-  for (let i = taille - 1; i >= 0; i--) bits.push((n >> i) & 1);
+  for (let i = taille - 1; i >= 0; i--) bits.push(Math.floor(n / Math.pow(2, i)) % 2);
   return bits;
 }
 
@@ -58,29 +73,23 @@ function nombreDepuisBits(bits) {
 // rester dans les nombres exacts de JavaScript).
 // Pourquoi 127 ? C'est un nombre premier : changer UN caractère du code, ou
 // en intervertir deux voisins, change toujours ce reste. Ces deux fautes de
-// frappe sont donc toujours détectées (vérifié sur 860 000 essais).
+// frappe sont donc toujours détectées (vérifié à nouveau pour le format 2).
 function sommeControle(bits) {
   return bits.reduce((reste, b) => (reste * 2 + b) % 127, 0);
 }
 
-// « Sel » (0 à 31) tiré de l'identifiant d'une évaluation archivée.
-function selDepuisId(id) {
-  if (!id) return Math.floor(Math.random() * 32);
-  let h = 0;
-  String(id).split("").forEach((car) => { h = (h * 31 + car.charCodeAt(0)) % 1000003; });
-  return h % 32;
-}
-
 // Fabrique le code (9 caractères, sans tirets) d'une évaluation faite seul.
-function encoderCode(typeObjet, reponses, sel) {
+function encoderCode(typeObjet, reponses) {
   let bits = bitsDepuisNombre(CODE_VERSION, 2);
   const iDomaine = CODE_DOMAINES.indexOf(typeObjet);
   bits = bits.concat(bitsDepuisNombre(iDomaine >= 0 ? iDomaine : 4, 3)); // inconnu → « autre »
+  // Les 14 réponses forment un nombre en base 5 (pilier 1 = chiffre le plus fort).
+  let nombre = 0;
   CRITERES.forEach((c) => {
-    const i = MODALITES.findIndex((m) => m.id === reponses[c.id]);
-    bits = bits.concat(bitsDepuisNombre(i >= 0 ? i : 3, 2));
+    const i = ORDRE_CODE_V2.indexOf(reponses[c.id]);
+    nombre = nombre * BASE_V2 + (i >= 0 ? i : BASE_V2 - 1);   // sans réponse → « Non applicable »
   });
-  bits = bits.concat(bitsDepuisNombre(sel & 31, 5));
+  bits = bits.concat(bitsDepuisNombre(nombre, 33));
   bits = bits.concat(bitsDepuisNombre(sommeControle(bits), 7));
   let code = "";
   for (let i = 0; i < bits.length; i += 5) code += CODE_ALPHABET[nombreDepuisBits(bits.slice(i, i + 5))];
@@ -106,11 +115,25 @@ function decoderCode(texte) {
   }
   const donnees = bits.slice(0, 38);
   if (sommeControle(donnees) !== nombreDepuisBits(bits.slice(38))) return null;
-  if (nombreDepuisBits(donnees.slice(0, 2)) !== CODE_VERSION) return null;
+  const version = nombreDepuisBits(donnees.slice(0, 2));
   const reponses = {};
-  CRITERES.forEach((c, i) => {
-    reponses[c.id] = MODALITES[nombreDepuisBits(donnees.slice(5 + 2 * i, 7 + 2 * i))].id;
-  });
+  if (version === 1) {
+    // Format 1 (codes donnés avant la v80) : 2 bits par pilier.
+    CRITERES.forEach((c, i) => {
+      reponses[c.id] = ORDRE_CODE_V1[nombreDepuisBits(donnees.slice(5 + 2 * i, 7 + 2 * i))];
+    });
+  } else if (version === 2) {
+    // Format 2 : un nombre en base 5 ; on retrouve les chiffres en
+    // commençant par le dernier pilier.
+    let nombre = nombreDepuisBits(donnees.slice(5, 38));
+    if (nombre >= Math.pow(BASE_V2, CRITERES.length)) return null;
+    for (let i = CRITERES.length - 1; i >= 0; i--) {
+      reponses[CRITERES[i].id] = ORDRE_CODE_V2[nombre % BASE_V2];
+      nombre = Math.floor(nombre / BASE_V2);
+    }
+  } else {
+    return null;
+  }
   return { code: code, domaine: CODE_DOMAINES[nombreDepuisBits(donnees.slice(2, 5))], reponses: reponses };
 }
 
@@ -206,9 +229,20 @@ function ajouterCodes(codes, source, forcer) {
 
 
 /* ===========================================================
-   4. L'ÉCRAN « COMPARER DES ÉVALUATIONS »
+   4. L'ÉCRAN « RASSEMBLER DES ÉVALUATIONS » (appelé « Comparer » jusqu'à la v78)
    =========================================================== */
-function afficherComparer(resultatAjout) {
+
+// D'où vient-on ? Le bouton « ‹ » y ramène (v79) :
+//   "accueil"    → bouton de l'accueil, ou lien reçu par message ;
+//   "historique" → bouton de « Mes évaluations ».
+let retourComparer = "accueil";
+
+function afficherComparer(resultatAjout, origine) {
+  // Sans origine (retour depuis le diagnostic du groupe), on garde la précédente.
+  if (origine) retourComparer = origine;
+  const boutonRetour = parId("comparer-retour");
+  boutonRetour.dataset.tAria = retourComparer === "historique" ? "retour_historique" : "retour_accueil";
+  boutonRetour.setAttribute("aria-label", t(boutonRetour.dataset.tAria));
   const donnees = lireComparaison();
   parId("comparer-nom").value = donnees.nom || "";
   parId("comparer-code").value = "";
@@ -297,7 +331,7 @@ function construireLocales() {
     bouton.className = "comparer__locale";
     bouton.textContent = joindrePoints([evaluation.nomObjet, formaterDateLongue(evaluation.dateFin)]);
     bouton.addEventListener("click", () => {
-      const code = encoderCode(evaluation.typeObjet, evaluation.reponses, selDepuisId(evaluation.id));
+      const code = encoderCode(evaluation.typeObjet, evaluation.reponses);
       const resultat = ajouterCodes([code], "appareil", false);
       resultat.source = "appareil";
       construireListeComparaison();
@@ -390,8 +424,8 @@ function viderComparaison() {
 /* ===========================================================
    5. LE DIAGNOSTIC DU GROUPE À PARTIR DES CODES
    On additionne les réponses de chaque évaluation, pilier par pilier :
-   on obtient le même « compte » que dans une évaluation en groupe sur
-   un seul appareil, et on réutilise le même affichage.
+   on obtient un « compte » (nombre d'avis par réponse), que le diagnostic
+   du groupe sait afficher (afficherDiagnosticGroupe, dans diagnostic.js).
    =========================================================== */
 // Diagnostic de comparaison affiché (null sinon) : sert au bouton retour,
 // au PDF, à l'envoi du résultat et au changement de langue.
@@ -406,7 +440,7 @@ function afficherDiagnosticComparaison(nom, codes, retour) {
   });
   const domaines = lus.map((lu) => lu.domaine).filter((d, i, liste) => liste.indexOf(d) === i);
   const evaluation = {
-    nomObjet: nom || "",            // vide si l'animateur n'a pas nommé la pratique
+    nomObjet: nom || "",            // vide si la personne qui rassemble n'a pas nommé la pratique
     typeObjet: domaines.length === 1 ? domaines[0] : null,
     mode: "groupe",
     origine: "comparaison",
@@ -432,7 +466,7 @@ function voirDiagnosticComparaison() {
 let partageEnCours = null; // { code, nom }
 
 function ouvrirPartage(typeObjet, reponses, idEvaluation, nom) {
-  const code = encoderCode(typeObjet, reponses, selDepuisId(idEvaluation));
+  const code = encoderCode(typeObjet, reponses);
   partageEnCours = { code: code, nom: nom };
   parId("partage-code").textContent = formaterCode(code);
   parId("partage-statut").textContent = "";
@@ -506,7 +540,7 @@ function traiterLienEntrant() {
     const resultat = ajouterCodes(params.c.split("."), "lien", false);
     resultat.source = "lien";
     effacerFragment();
-    afficherComparer(resultat);
+    afficherComparer(resultat, "accueil");
   } else if (params.r) {
     effacerFragment();
     afficherDiagnosticComparaison(params.n || "", params.r.split("."), "accueil");

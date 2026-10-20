@@ -27,12 +27,8 @@
 function calculerComposition(idPierre, reponses) {
   const criteresDeLaPierre = CRITERES.filter((c) => c.pierre === idPierre);
 
-  const compte = {
-    "present": 0,
-    "a-developper": 0,
-    "non-present": 0,
-    "non-applicable": 0
-  };
+  // Un compteur par réponse possible (decompteVide, dans donnees-spirit.js).
+  const compte = decompteVide();
 
   criteresDeLaPierre.forEach((c) => {
     const rep = reponses[c.id];
@@ -52,13 +48,16 @@ function calculerComposition(idPierre, reponses) {
    2. DESSIN D'UNE JAUGE (anneau d'une pierre)
    Construit le code SVG d'un anneau pour une pierre donnée, positionné
    au centre (cx, cy). Chaque critère occupe une part égale du cercle ;
-   les segments colorés s'enchaînent, "Non applicable" laisse un vide.
+   les segments colorés s'enchaînent, puis « Non applicable » en hachures
+   grises (v80 ; avant, un vide qu'on pouvait prendre pour une réponse
+   manquante). Ce sont les mêmes hachures que dans les barres du groupe.
 
    On utilise la technique du "stroke-dasharray" sur des cercles :
    - la circonférence du cercle = 2 × π × rayon,
    - chaque segment est un tronçon de trait de longueur proportionnelle,
    - on décale chaque segment avec "stroke-dashoffset".
    =========================================================== */
+let compteurHachures = 0;
 function dessinerJauge(idPierre, composition, cx, cy, rayon) {
   const circonference = 2 * Math.PI * rayon;
   const epaisseur = 9;
@@ -66,11 +65,21 @@ function dessinerJauge(idPierre, composition, cx, cy, rayon) {
   // Longueur d'arc correspondant à UN critère (part égale du cercle entier)
   const longueurParCritere = circonference / composition.total;
 
+  // Motif de hachures pour « Non applicable ». Chaque anneau reçoit son propre
+  // identifiant : le même schéma peut figurer deux fois dans la page (écran
+  // et PDF), et un motif caché ne s'afficherait pas ailleurs.
+  compteurHachures++;
+  const idHachures = "hachures-na-" + compteurHachures;
+
   // Ordre d'affichage des segments + couleur de chaque modalité
-  const segments = ["present", "a-developper", "non-present"].map((id) => ({ modalite: id, couleur: couleurModalite(id) }));
+  const segments = REPONSES_APPLICABLES.map((id) => ({ modalite: id, couleur: couleurModalite(id) }));
+  segments.push({ modalite: "non-applicable", couleur: "url(#" + idHachures + ")" });
+
+  let svg = '<defs><pattern id="' + idHachures + '" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">' +
+            '<rect width="5" height="5" fill="#ECE7DD"></rect><rect width="2.5" height="5" fill="#C9C2B4"></rect></pattern></defs>';
 
   // Cercle de fond (gris clair) : repère visuel de l'anneau complet
-  let svg = '<circle cx="' + cx + '" cy="' + cy + '" r="' + (rayon + 6) +
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (rayon + 6) +
             '" fill="none" stroke="#E5E0D6" stroke-width="3"></circle>';
 
   // Groupe tourné de -90° pour que les arcs démarrent en haut du cercle
@@ -230,7 +239,7 @@ function construireSchemaRadial(reponses) {
 function construireLegende() {
   let html = "";
   MODALITES.forEach((m) => {
-    const classeVide = (m.couleur === null) ? " diagnostic__legende-pastille--vide" : "";
+    const classeVide = (m.couleur === null) ? " diagnostic__legende-pastille--na" : "";
     const styleCouleur = (m.couleur === null) ? "" : ' style="background-color:' + m.couleur + '"';
     html += '<span class="diagnostic__legende-item">' +
               '<span class="diagnostic__legende-pastille' + classeVide + '"' + styleCouleur + '></span>' +
@@ -254,7 +263,7 @@ function redigerLecture(idPierre, composition) {
   // Piliers réellement pris en compte : ceux qui ont reçu une réponse autre
   // que « Non applicable ». (Un pilier sans réponse, qui ne peut exister que
   // dans une évaluation incomplète, n'est pas compté : constat F6.)
-  const applicables = c["present"] + c["a-developper"] + c["non-present"];
+  const applicables = REPONSES_APPLICABLES.reduce((somme, id) => somme + c[id], 0);
 
   // Cas particuliers : aucune réponse, ou aucun pilier applicable
   if (applicables === 0) {
@@ -275,6 +284,9 @@ function redigerLecture(idPierre, composition) {
   if (c["present"] > 0) {
     parties.push(formuler(c["present"], t("lecture_present"), t("lecture_presents")));
   }
+  if (c["a-consolider"] > 0) {
+    parties.push(formuler(c["a-consolider"], t("lecture_consolider"), t("lecture_consolider")));
+  }
   if (c["a-developper"] > 0) {
     parties.push(formuler(c["a-developper"], t("lecture_chantier"), t("lecture_chantier")));
   }
@@ -290,7 +302,8 @@ function redigerLecture(idPierre, composition) {
   });
 
   // Une nuance d'encouragement quand « À bâtir » domine
-  if (c["non-present"] > c["present"] + c["a-developper"]) {
+  // (v80 : « À consolider » compte du côté de ce qui est déjà construit)
+  if (c["non-present"] > c["present"] + c["a-consolider"] + c["a-developper"]) {
     texte += " " + t("lecture_croissance");
   }
 
@@ -407,7 +420,7 @@ function afficherDiagnostic(evaluation, reponses, dateISO, commentaires, comptes
    Quand l'évaluation se fait en comptant les avis d'un groupe, on ne
    calcule ni note ni moyenne : on montre, pilier par pilier, combien de
    personnes ont choisi chaque réponse, et on signale les piliers où les
-   avis divergent fortement (« avis partagés »), comme matière à discernement.
+   avis divergent fortement (« avis divergents », appelés « avis partagés » jusqu'à la v82), comme matière à discernement.
    =========================================================== */
 
 // Règle provisoire (à valider par l'équipe) : un pilier a des « avis
@@ -417,15 +430,15 @@ function estAvisPartage(compte) {
   return !!compte && (compte["present"] || 0) > 0 && (compte["non-present"] || 0) > 0;
 }
 
-// Composition d'une pierre angulaire en mode groupe : somme des avis de ses
+// Composition d'une pierre angulaire pour un groupe : somme des avis de ses
 // piliers (sert aux mini-jauges de « Mes évaluations »).
 function calculerCompositionGroupe(idPierre, comptes) {
-  const compte = { "present": 0, "a-developper": 0, "non-present": 0, "non-applicable": 0 };
+  const compte = decompteVide();
   CRITERES.filter((c) => c.pierre === idPierre).forEach((c) => {
     const cpt = comptes[c.id] || {};
     Object.keys(compte).forEach((m) => { compte[m] += cpt[m] || 0; });
   });
-  const total = compte["present"] + compte["a-developper"] + compte["non-present"] + compte["non-applicable"];
+  const total = Object.keys(compte).reduce((somme, m) => somme + compte[m], 0);
   return { compte: compte, total: total, applicables: total - compte["non-applicable"] };
 }
 
@@ -450,12 +463,12 @@ function descriptionGroupe(evaluation, comptes) {
   return (domaine ? domaine + " · " : "") + mention;
 }
 
-// Numéros des piliers aux avis partagés (ex. [1, 2, 6]).
+// Numéros des piliers aux avis divergents (ex. [1, 2, 6]).
 function piliersPartages(comptes) {
   return CRITERES.filter((c) => estAvisPartage(comptes[c.id])).map((c) => c.numero);
 }
 
-// Encadré de synthèse : nombre de piliers aux avis partagés, explication,
+// Encadré de synthèse : nombre de piliers aux avis divergents, explication,
 // et liste des piliers concernés.
 function construireSyntheseGroupe(comptes) {
   const partages = piliersPartages(comptes);

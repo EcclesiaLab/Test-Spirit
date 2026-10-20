@@ -14,8 +14,11 @@
     - typeObjet   : l'identifiant du type d'objet
     - reponses    : les réponses aux 14 critères
     - commentaires: les observations éventuelles, par critère
-    - mode        : "individuel" ou "groupe" (v73 ; absent = individuel)
-    - comptes     : en mode groupe, le nombre d'avis par réponse et par critère
+    - mode        : "individuel" (absent = individuel)
+    - comptes     : seulement dans les évaluations « en groupe » faites avec
+                    les versions 73 à 80 (nombre d'avis par réponse et par
+                    critère). v81 : ce mode a été retiré ; ces anciennes
+                    évaluations restent lisibles, mais on n'en crée plus.
     - dateFin     : date à laquelle l'évaluation a été terminée (ISO)
 
   Décisions (validées au cadrage) :
@@ -62,23 +65,18 @@ function ecrireHistorique(liste) {
 
 // Archive une évaluation terminée : l'ajoute en tête de la liste.
 // Renvoie l'identifiant attribué.
-function archiverEvaluation(evaluation, reponses, commentaires, comptes) {
+function archiverEvaluation(evaluation, reponses, commentaires) {
   const liste = lireHistorique();
-  const groupe = evaluation.mode === "groupe";
 
   const entree = {
     id: genererIdEvaluation(),
     nomObjet: evaluation.nomObjet,
     typeObjet: evaluation.typeObjet,
-    mode: groupe ? "groupe" : "individuel",
-    // En mode groupe, seules les données du groupe comptent (copie profonde).
-    reponses: groupe ? {} : Object.assign({}, reponses), // copie, pour ne pas lier les références
+    mode: "individuel",
+    reponses: Object.assign({}, reponses), // copie, pour ne pas lier les références
     commentaires: Object.assign({}, commentaires || {}),
     dateFin: new Date().toISOString()
   };
-  if (groupe) {
-    entree.comptes = JSON.parse(JSON.stringify(comptes || {}));
-  }
 
   // On ajoute la nouvelle évaluation en tête (la plus récente en premier).
   liste.unshift(entree);

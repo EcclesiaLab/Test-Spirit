@@ -249,6 +249,10 @@ body {
 .accueil__action {
   padding: var(--espace-lg) 0;
 }
+/* v79 : second bouton (« Rassembler des évaluations »), en contour */
+.accueil__rassembler {
+  margin-top: 0.75rem;
+}
 
 /* Bloc du bas : liens secondaires */
 .accueil__liens {
@@ -870,7 +874,18 @@ body {
   border-color: var(--marine-clair);
 }
 
-/* La pastille de couleur devant chaque modalité */
+/* v80 : pictogramme devant chaque réponse (pictogrammes.js) */
+.modalite__picto {
+  display: inline-flex;
+  flex-shrink: 0;
+  line-height: 0;
+}
+.picto {
+  display: inline-flex;
+  line-height: 0;
+}
+
+/* La pastille de couleur (encore utilisée par le sommaire sur ordinateur) */
 .modalite__pastille {
   width: 14px;
   height: 14px;
@@ -998,6 +1013,10 @@ body {
 .diagnostic__legende-pastille--vide {
   background-color: transparent !important;
   border: 1.5px dashed #B4B2A9;
+}
+/* v80 : « Non applicable » en hachures, comme dans les anneaux et les barres */
+.diagnostic__legende-pastille--na {
+  background: repeating-linear-gradient(135deg, #C9C2B4 0 2.5px, #ECE7DD 2.5px 5px);
 }
 
 /* Textes de lecture par pierre */
@@ -1252,14 +1271,6 @@ a.bouton {
   color: var(--texte);
 }
 
-/* --- Questionnaire : courte explication de « Non applicable » --- */
-.critere__na-note {
-  font-size: 0.8rem;
-  line-height: 1.4;
-  color: var(--texte-doux);
-  margin: 0.5rem 0.2rem 0;
-}
-
 /* La citation / le sigle développé en italique ressort en marine */
 .page-info__contenu em {
   color: var(--marine);
@@ -1413,7 +1424,12 @@ a.bouton {
     margin-bottom: var(--espace-xs);
   }
   .accueil__action {
-    padding: var(--espace-sm) 0;
+    /* v79 : un peu moins d'espace, pour que les deux boutons et les
+       liens du bas tiennent sur les plus petits écrans (iPhone SE) */
+    padding: 0.75rem 0;
+  }
+  .accueil__rassembler {
+    margin-top: var(--espace-xs);
   }
   .lien-secondaire {
     padding-top: 0.35rem;
@@ -1684,6 +1700,12 @@ a.bouton {
     color: #5A6A7A;
     margin: 2px 0 0;
   }
+  /* Mention du panel de théologiens, sous le sous-titre (v84) */
+  .pdf-validation-panel {
+    font-size: 8pt;
+    color: #5A6A7A;
+    margin: 1px 0 0;
+  }
 
   /* --- Bloc objet évalué --- */
   .pdf-objet-bloc {
@@ -1709,6 +1731,20 @@ a.bouton {
     font-size: 9pt;
     color: #5A6A7A;
     margin: 0;
+  }
+
+  /* Code de comparaison en première page (v82) : même graphie que dans la
+     fenêtre « Partager pour le groupe » (gras, lettres espacées, marine). */
+  .pdf-objet-code {
+    font-size: 9pt;
+    color: #5A6A7A;
+    margin: 3px 0 0;
+  }
+  .pdf-objet-code strong {
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #163458;
+    white-space: nowrap;
   }
 
   /* Origine des questions d'aide (v75, constat M6) */
@@ -1835,29 +1871,45 @@ a.bouton {
     margin: 1px 0;
   }
 
-  /* Pastille de couleur (réponse) */
+  /* Pastille de couleur (légende) */
   .pdf-pastille {
     display: inline-block;
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    margin-right: 5px;
+    margin-right: 4px;
     vertical-align: middle;
   }
+  .pdf-pastille--na {
+    background: repeating-linear-gradient(135deg, #C9C2B4 0 2px, #ECE7DD 2px 4px);
+  }
+  /* v80 : pictogramme de la réponse (tableau et légende) */
+  .pdf-td-reponse .picto,
+  .pdf-legende-item .picto {
+    vertical-align: middle;
+    margin-right: 5px;
+  }
 
-  /* --- Pistes d'action (attente) --- */
-  .pdf-pistes-attente {
+  /* --- Évaluer à plusieurs, le temps d'une soirée (v82) ---
+     Remplace l'ancienne section « Pistes de progression ». */
+  .pdf-soiree-intro {
     font-size: 10pt;
-    font-style: italic;
-    color: #5A6A7A;
+    line-height: 1.55;
+    margin: 0 0 10px;
+  }
+  .pdf-soiree-etapes {
+    font-size: 10pt;
     line-height: 1.55;
     margin: 0 0 14px;
+    padding-left: 1.4em;
   }
-  .pdf-pistes-destinataire {
-    font-size: 9pt;
-    font-style: italic;
-    color: #8A96A4;
-    margin: 0 0 12px;
+  .pdf-soiree-etapes li {
+    margin-bottom: 7px;
+    break-inside: avoid;          /* une étape n'est jamais coupée entre deux pages */
+    page-break-inside: avoid;
+  }
+  .pdf-soiree-etapes strong {
+    color: #163458;
   }
   .pdf-fondements-intro {
     font-size: 9.5pt;
@@ -2020,133 +2072,10 @@ a.bouton {
 
 
 /* ===========================================================
-   ÉVALUER À PLUSIEURS — MODE « COMPTER LES AVIS DU GROUPE » (v73)
+   DIAGNOSTIC D'UN GROUPE (v73)
+   Utilisé par « Rassembler des évaluations ». v81 : les styles du mode
+   « Évaluer en groupe » (cartes de mode, compteurs d'avis) ont été retirés.
    =========================================================== */
-
-/* --- Écran d'entrée : choix du mode --- */
-.entree__modes {
-  border: none;
-  margin-top: var(--espace-md);
-  padding: 0;
-}
-
-/* Une carte de mode : un bouton radio et deux lignes de texte.
-   La carte choisie prend la bordure marine (comme les cartes de domaine). */
-.carte-mode {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  border: 1.5px solid var(--bordure);
-  background-color: var(--blanc);
-  border-radius: var(--arrondi);
-  padding: 0.85rem 1rem;
-  margin-bottom: var(--espace-sm);
-  cursor: pointer;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-.carte-mode:hover {
-  border-color: var(--marine-clair);
-}
-.carte-mode:has(input:checked) {
-  border: 2px solid var(--marine);
-  padding: calc(0.85rem - 0.5px) calc(1rem - 0.5px);
-  box-shadow: 0 2px 6px rgba(22, 52, 88, 0.10);
-}
-.carte-mode input {
-  width: 20px;
-  height: 20px;
-  margin: 2px 0 0;
-  flex-shrink: 0;
-  accent-color: var(--marine);
-}
-.carte-mode__textes {
-  display: flex;
-  flex-direction: column;
-}
-.carte-mode__titre {
-  font-weight: 600;
-  color: var(--texte);
-  font-size: 1rem;
-}
-.carte-mode:has(input:checked) .carte-mode__titre {
-  color: var(--marine);
-}
-.carte-mode__description {
-  font-size: 0.85rem;
-  color: var(--texte-doux);
-  margin-top: 2px;
-}
-
-/* --- Écran d'un pilier : compteurs d'avis --- */
-.compteurs__consigne {
-  font-weight: 600;
-  font-size: 0.98rem;
-  margin: 0 0 0.5rem;
-}
-.compteur {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  border: 1.5px solid var(--bordure);
-  background-color: var(--blanc);
-  border-radius: var(--arrondi);
-  padding: 0.3rem 0.35rem 0.3rem 0.9rem;
-  margin-bottom: 0.45rem;
-}
-.compteur__libelle {
-  flex: 1;
-  min-width: 0;
-  font-size: 0.98rem;
-  margin-left: 0.25rem;
-}
-.compteur__bouton {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  border: 1.5px solid var(--bordure);
-  background-color: var(--creme);
-  color: var(--marine);
-  font-family: var(--police-corps);
-  font-size: 1.4rem;
-  line-height: 1;
-  cursor: pointer;
-}
-.compteur__bouton--plus {
-  background-color: var(--marine);
-  border-color: var(--marine);
-  color: var(--blanc);
-}
-.compteur__nombre {
-  width: 3rem;
-  height: 44px;
-  flex-shrink: 0;
-  text-align: center;
-  font-family: var(--police-titre);
-  font-weight: 600;
-  font-size: 1.3rem;
-  color: var(--marine);
-  border: 1.5px solid transparent;
-  border-radius: var(--arrondi-petit);
-  background: transparent;
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-.compteur__nombre::-webkit-outer-spin-button,
-.compteur__nombre::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.compteur__nombre:focus {
-  outline: none;
-  border-color: var(--marine);
-  background-color: var(--blanc);
-}
-.compteurs__total {
-  font-size: 0.88rem;
-  color: var(--texte-doux);
-  margin: 0.2rem 0 0;
-}
 
 /* --- Diagnostic du groupe --- */
 /* L'encadré de synthèse prend la place du schéma radial. */
@@ -2208,7 +2137,7 @@ a.bouton {
 .groupe-pilier__numero {
   color: var(--texte-doux);
 }
-/* Badge « Avis partagés » : orange foncé sur fond orangé très clair
+/* Badge « Avis divergents » (« Avis partagés » jusqu'à la v82) : orange foncé sur fond orangé très clair
    (contraste suffisant pour la lecture). */
 .groupe-badge {
   flex-shrink: 0;
@@ -2624,28 +2553,25 @@ a.bouton {
   top: -12px;
   bottom: -12px;
 }
-/* Bouton « Non applicable » avec explication (pilier 1) : la pastille
+/* Bouton « Non applicable » avec explication (pilier 1) : le pictogramme
    s'aligne sur le libellé, et non au milieu des deux lignes. */
-.modalite:has(.modalite__explication) .modalite__pastille {
+.modalite:has(.modalite__explication) .modalite__picto {
   align-self: flex-start;
   margin-top: 0.3rem;
 }
 
 /* ===========================================================
    v76 — « NON APPLICABLE » MIS À PART
-   Les trois premières réponses forment une échelle (Solidement établi,
-   En chantier, À bâtir) ; « Non applicable » est d'une autre nature :
-   il sort le pilier du diagnostic. Une fine ligne le sépare des trois
-   autres, dans le questionnaire (évaluer seul) comme dans les compteurs
-   (évaluer en groupe).
+   Les quatre premières réponses forment une échelle (Solidement établi,
+   À consolider, En chantier, À bâtir) ; « Non applicable » est d'une autre nature :
+   il sort le pilier du diagnostic. Une fine ligne le sépare des autres
+   réponses dans le questionnaire.
    =========================================================== */
-.modalite[data-id-modalite="non-applicable"],
-.compteur[data-id-modalite="non-applicable"] {
+.modalite[data-id-modalite="non-applicable"] {
   position: relative;
   margin-top: 1.4rem;
 }
-.modalite[data-id-modalite="non-applicable"]::before,
-.compteur[data-id-modalite="non-applicable"]::before {
+.modalite[data-id-modalite="non-applicable"]::before {
   content: "";
   position: absolute;
   left: 12%;

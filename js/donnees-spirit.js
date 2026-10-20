@@ -11,7 +11,7 @@
     - les modalités de réponse,
     - les types de pratique (questions propres à chaque domaine :
       voir questions-domaines.js),
-    - (à venir) les pistes d'action.
+    - (champ « pistes » : non utilisé, voir plus bas).
 
   TROIS LANGUES : chaque texte affiché existe en français, en anglais et
   en néerlandais, sous la forme
@@ -50,7 +50,9 @@ const PIERRES_ANGULAIRES = [
       fr: "Qualité des relations ecclésiales, racines spirituelles et ouverture aux autres",
       en: "Quality of ecclesial relationships, their spiritual roots, and openness to others", nl: "Kwaliteit van de kerkelijke relaties, hun spirituele wortels en openheid naar anderen"
     },
-    couleur: "#1D9E75"
+    // v80 : olive (avant : #1D9E75, le même vert que « Solidement établi »,
+    // ce qui pouvait faire croire que le vert du diagnostic désignait Communion).
+    couleur: "#626A00"
   },
   {
     id: "participation",
@@ -82,7 +84,9 @@ const PIERRES_ANGULAIRES = [
    - pierre      : l'identifiant de la pierre angulaire de rattachement
    - titre       : libellé court { fr, en, nl }
    - sousQuestions : tableau de questions d'aide, chacune { fr, en, nl }
-   - pistes      : pistes d'action, À RÉDIGER PAR L'ÉQUIPE SPIRIT (vides pour l'instant)
+   - pistes      : pistes d'action, vides et NON UTILISÉES. v82 : l'équipe a
+                   renoncé pour le moment aux pistes de progression ; le champ
+                   est gardé pour pouvoir y revenir.
    =========================================================== */
 const CRITERES = [
 
@@ -312,11 +316,17 @@ const CRITERES = [
 
 
 /* ===========================================================
-   LES QUATRE MODALITÉS DE RÉPONSE
+   LES MODALITÉS DE RÉPONSE (4 niveaux + « Non applicable », v80)
    id technique inchangé ; seul le libellé est traduit.
+   v80 : nouveau niveau « À consolider », entre « Solidement établi » et
+   « En chantier » (décision de l'équipe, 14 octobre 2026). Les évaluations
+   enregistrées avant la v80 restent valables : elles n'utilisent
+   simplement pas ce niveau.
+   ⚠ Traductions EN/NL de « À consolider » : propositions à valider.
    =========================================================== */
 const MODALITES = [
   { id: "present",        libelle: { fr: "Solidement établi", en: "Well established", nl: "Stevig verankerd" }, couleur: "#1D9E75" },
+  { id: "a-consolider",   libelle: { fr: "À consolider", en: "To be consolidated", nl: "Te consolideren" }, couleur: "#3E6C9B" },
   { id: "a-developper",   libelle: { fr: "En chantier", en: "Under development", nl: "In opbouw" }, couleur: "#EF9F27" },
   { id: "non-present",    libelle: { fr: "À bâtir",         en: "To be built", nl: "Nog op te bouwen" },    couleur: "#444441" },
   { id: "non-applicable", libelle: { fr: "Non applicable",  en: "Not applicable", nl: "Niet van toepassing" }, couleur: null }
@@ -328,6 +338,18 @@ const MODALITES = [
 function couleurModalite(id) {
   const modalite = MODALITES.find((m) => m.id === id);
   return modalite ? modalite.couleur : null;
+}
+
+// Les réponses qui comptent dans le diagnostic (tout sauf « Non applicable »),
+// de la plus construite à la moins construite. C'est l'ordre des segments
+// dans les anneaux et les mini-jauges.
+const REPONSES_APPLICABLES = ["present", "a-consolider", "a-developper", "non-present"];
+
+// Un décompte vide : { "present": 0, "a-consolider": 0, …, "non-applicable": 0 }.
+function decompteVide() {
+  const vide = {};
+  MODALITES.forEach((m) => { vide[m.id] = 0; });
+  return vide;
 }
 
 

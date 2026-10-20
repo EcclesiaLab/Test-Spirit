@@ -12,12 +12,14 @@
   "Enregistrer au format PDF". Aucune bibliothèque externe n'est utilisée.
 
   Contenu du document (scénario B, complet) :
-    1. En-tête : logo, titre, nom de l'objet, type, date
+    1. En-tête : logo, titre, nom de l'objet, type, date, code de
+       comparaison (v82)
     2. Le schéma radial + légende
     3. Les textes de lecture par pierre
     4. Le détail des 14 critères avec la modalité choisie, les questions
        d'aide de chaque pilier et l'observation éventuelle
-    5. Les pistes d'action (emplacement réservé tant que non rédigées)
+    5. « Évaluer à plusieurs, le temps d'une soirée » (v82, à la place des
+       pistes de progression)
     6. Pied de page
   ============================================================
 */
@@ -48,6 +50,7 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   html += '<div class="pdf-entete-texte">';
   html += '<h1 class="pdf-titre">' + t("pdf_titre") + '</h1>';
   html += '<p class="pdf-sous-titre">' + t("pdf_sous_titre") + '</p>';
+  html += '<p class="pdf-validation-panel">' + t("pdf_validation_panel") + '</p>';   // v84
   html += '</div>';
   html += '</div>';
 
@@ -57,6 +60,13 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet) + '</p>';
   html += '<p class="pdf-objet-meta">' + joindrePoints([typeLibelle, date ? tAvec("pdf_evaluation_date", { date: date }) : ""]) + '</p>';
   html += ligneOrigineQuestions(evaluation);
+  // v82 : le code de comparaison (le même que « Partager pour le groupe »).
+  // La personne qui rassemble les évaluations peut le recopier depuis le PDF.
+  // Il ne contient que le domaine et les 14 réponses, déjà dans ce PDF.
+  // Mêmes réponses = même code : on peut donc le recalculer pour une
+  // évaluation rouverte depuis « Mes évaluations ».
+  html += '<p class="pdf-objet-code">' + t("partage_code_label") + deuxPoints() +
+          '<strong>' + formaterCode(encoderCode(evaluation.typeObjet, reponses)) + '</strong></p>';
   html += '</div>';
 
   /* --- 2. Schéma radial + légende --- */
@@ -90,7 +100,6 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
       const idRep = reponses[critere.id];
       const modalite = MODALITES.find((m) => m.id === idRep);
       const libelleRep = modalite ? tr(modalite.libelle) : "—";
-      const couleurRep = (modalite && modalite.couleur) ? modalite.couleur : "#999999";
       html += '<tr>';
       html += '<td class="pdf-td-critere"><strong>' + critere.numero + '.</strong> ' + echapper(tr(critere.titre));
       // Questions d'aide du pilier, listées sous son titre (dans la même
@@ -105,7 +114,9 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
         html += '</ul>';
       }
       html += '</td>';
-      html += '<td class="pdf-td-reponse"><span class="pdf-pastille" style="background:' + couleurRep + '"></span>' + libelleRep + '</td>';
+      // v80 : pictogramme plutôt qu'une pastille de couleur : il reste
+      // lisible quand le PDF est imprimé en noir et blanc.
+      html += '<td class="pdf-td-reponse">' + (modalite ? pictogramme(modalite.id, 16) : "") + libelleRep + '</td>';
       html += '</tr>';
       const obs = (commentaires && commentaires[critere.id]) ? commentaires[critere.id].trim() : "";
       if (obs !== "") {
@@ -116,8 +127,8 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   });
   html += '</div>';
 
-  /* --- 5. Pistes de progression (emplacement réservé) + logos --- */
-  html += sectionPistesEtLogos();
+  /* --- 5. Évaluer à plusieurs, le temps d'une soirée (v82) + logos --- */
+  html += sectionSoireeEtLogos();
 
   /* Les citations du Document final ne sont plus dans ce PDF : elles sont
      désormais générées séparément par le bouton « Pour aller plus loin »
@@ -127,16 +138,22 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
 }
 
 
-/* Section « Pistes de progression » (emplacement réservé tant qu'elles ne
-   sont pas rédigées), suivie des logos institutionnels. Commune au document
-   habituel et au document du groupe. Les logos sont placés ici, en bas de
-   cette section, pour éviter qu'ils se retrouvent seuls sur une page. */
-function sectionPistesEtLogos() {
+/* Section « Évaluer à plusieurs, le temps d'une soirée » (v82), suivie des
+   logos institutionnels. Elle remplace la section « Pistes de progression »,
+   abandonnée pour le moment. Commune au document habituel et au document du
+   groupe : elle dit « son PDF » (et non « ce document ») pour rester juste
+   dans les deux. Les logos sont placés ici, en bas de cette section, pour
+   éviter qu'ils se retrouvent seuls sur une page.
+   Le texte de chaque étape est dans traductions.js (pdf_soiree_…). */
+function sectionSoireeEtLogos() {
   let html = '<div class="pdf-section">';
-  html += '<h2 class="pdf-section-titre">' + t("pdf_pistes") + '</h2>';
-  html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_attente") + '</p>';
-  html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_validation") + '</p>';
-  html += '<p class="pdf-pistes-attente">' + t("pdf_pistes_groupe") + '</p>';
+  html += '<h2 class="pdf-section-titre">' + t("pdf_soiree_titre") + '</h2>';
+  html += '<p class="pdf-soiree-intro">' + t("pdf_soiree_intro") + '</p>';
+  html += '<ol class="pdf-soiree-etapes">';
+  [1, 2, 3, 4].forEach((n) => {
+    html += '<li><strong>' + t("pdf_soiree_etape" + n + "_titre") + '</strong> ' + t("pdf_soiree_etape" + n + "_texte") + '</li>';
+  });
+  html += '</ol>';
   html += '<div class="pdf-logos">';
   html += '<img class="pdf-logo-fin" src="icons/logo-ecclesialab.png" alt="EcclesiaLab">';
   html += '<img class="pdf-logo-fin" src="icons/logo-uclouvain.png" alt="UCLouvain">';
@@ -167,7 +184,7 @@ function ligneOrigineQuestions(evaluation) {
 /* ===========================================================
    DOCUMENT DU GROUPE (v73)
    Même structure que le document habituel, mais sans schéma ni lecture
-   par pierre : une synthèse des avis partagés, puis, pour chaque pilier,
+   par pierre : une synthèse des avis divergents, puis, pour chaque pilier,
    la répartition des avis (barre + nombres), les questions d'aide et
    l'observation éventuelle.
    =========================================================== */
@@ -183,6 +200,7 @@ function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commen
   html += '<div class="pdf-entete-texte">';
   html += '<h1 class="pdf-titre">' + t("pdf_titre") + '</h1>';
   html += '<p class="pdf-sous-titre">' + t("pdf_sous_titre") + '</p>';
+  html += '<p class="pdf-validation-panel">' + t("pdf_validation_panel") + '</p>';   // v84
   html += '</div>';
   html += '</div>';
 
@@ -233,8 +251,8 @@ function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commen
   });
   html += '</div>';
 
-  /* --- Pistes de progression + logos --- */
-  html += sectionPistesEtLogos();
+  /* --- Évaluer à plusieurs, le temps d'une soirée (v82) + logos --- */
+  html += sectionSoireeEtLogos();
 
   conteneur.innerHTML = html;
 }
@@ -299,14 +317,17 @@ function construireDocumentReferences() {
   conteneur.innerHTML = html;
 }
 
-// Légende sous forme de texte simple (pour le PDF)
+// Légende du PDF (v80) : pour chaque réponse, sa couleur (celle des
+// anneaux et des barres, « Non applicable » en hachures) ET son
+// pictogramme, qui reste lisible en noir et blanc.
 function construireLegendeTexte() {
   let html = "";
   MODALITES.forEach((m) => {
-    const couleur = (m.couleur === null) ? "transparent" : m.couleur;
-    const bordure = (m.couleur === null) ? "border:1.5px dashed #999;" : "";
+    const fond = (m.couleur === null) ? "" : ' style="background:' + m.couleur + '"';
+    const classeNa = (m.couleur === null) ? " pdf-pastille--na" : "";
     html += '<span class="pdf-legende-item">';
-    html += '<span class="pdf-pastille" style="background:' + couleur + ';' + bordure + '"></span>';
+    html += '<span class="pdf-pastille' + classeNa + '"' + fond + '></span>';
+    html += pictogramme(m.id, 15);
     html += tr(m.libelle) + '</span>';
   });
   return html;
@@ -342,9 +363,32 @@ function lancerImpression(evaluation, reponses, dateISO, commentaires, comptes) 
 
   // Petit délai pour laisser le temps au navigateur d'afficher le contenu
   // (notamment le chargement du logo) avant d'ouvrir la boîte d'impression.
-  setTimeout(function () {
+  // v84 : on attend aussi les polices du PDF (voir ouvrirImpression).
+  ouvrirImpression();
+}
+
+
+/* v84 — Ouvre la boîte d'impression une fois les polices du PDF chargées.
+   Pourquoi : le document d'impression est caché à l'écran. Le navigateur ne
+   charge donc certaines polices (par exemple Spectral normale, celle du nom
+   de la pratique) qu'au moment d'imprimer, trop tard : le nom s'imprimait
+   alors dans une police de remplacement (Times). On les charge d'abord.
+   - attente minimale : 200 ms (comme avant, pour le logo) ;
+   - attente maximale : 1 seconde (si une police ne vient pas, on imprime
+     quand même, avec la police de remplacement). */
+function ouvrirImpression() {
+  const polices = ['400 16px "Spectral"', '500 16px "Spectral"', '600 16px "Spectral"',
+                   '400 16px "Source Sans 3"', '600 16px "Source Sans 3"'];
+  // Le texte d'exemple fait charger les deux jeux de caractères : latin
+  // (é, ’) et latin étendu (ą, ő), pour les noms écrits dans d'autres langues.
+  const chargement = (document.fonts && document.fonts.load)
+    ? Promise.all(polices.map((p) => document.fonts.load(p, "Aé’ąő").catch(() => null)))
+    : Promise.resolve();
+  const auPlusTard = new Promise((ok) => setTimeout(ok, 1000));
+  const auMoins = new Promise((ok) => setTimeout(ok, 200));
+  Promise.all([Promise.race([chargement, auPlusTard]), auMoins]).then(function () {
     window.print();
-  }, 200);
+  });
 }
 
 
@@ -364,7 +408,5 @@ function lancerImpressionReferences() {
   }
   window.addEventListener("afterprint", restaurerTitre);
 
-  setTimeout(function () {
-    window.print();
-  }, 200);
+  ouvrirImpression();   // v84 : après le chargement des polices
 }

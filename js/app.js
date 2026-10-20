@@ -71,7 +71,7 @@ function appliquerMiseAJourSiPossible() {
 
 // Numéro de version affiché dans « À propos » et en pied de PDF (constat M10).
 // ⚠ À changer en même temps que CACHE_VERSION dans service-worker.js.
-const VERSION_SPIRIT = "78";
+const VERSION_SPIRIT = "84";
 
 // Clé de mémoire locale : la bienvenue a-t-elle déjà été vue ?
 const CLE_BIENVENUE_VUE = "spirit_bienvenue_vue";
@@ -359,10 +359,13 @@ function majLienInstallationAPropos() {
 let evaluationEnCours = {
   nomObjet: "",
   typeObjet: null,  // recevra l'id du type choisi (ex. "gouverner")
-  mode: "individuel" // "individuel" (une réponse par pilier) ou "groupe" (v73 : on compte les avis)
+  mode: "individuel" // v81 : toujours « individuel » (une réponse par pilier)
 };
 
-// Vrai si l'évaluation se fait en comptant les avis d'un groupe (v73).
+// Vrai pour un diagnostic de groupe : le résultat de « Rassembler des
+// évaluations », ou une évaluation « en groupe » enregistrée avant la v81
+// (ce mode, où l'on comptait les avis sur un seul appareil, a été retiré en
+// v81 ; les évaluations déjà enregistrées restent consultables).
 function estModeGroupe(evaluation) {
   return !!evaluation && evaluation.mode === "groupe";
 }
@@ -439,9 +442,7 @@ function reinitialiserEntree() {
   // réponses quand on revenait du premier pilier à l'écran d'entrée.)
   reponses = {};
   commentaires = {};
-  comptes = {};
   parId("champ-nom-objet").value = "";
-  parId("mode-individuel").checked = true;
   // On régénère les cartes de type pour qu'elles soient toujours dans la
   // langue courante (l'utilisateur a pu changer de langue depuis un autre
   // écran avant d'arriver ici).
@@ -449,13 +450,12 @@ function reinitialiserEntree() {
   rafraichirBoutonCommencer();
 }
 
-// Remplit l'écran d'entrée avec l'évaluation en cours (nom, domaine, mode).
+// Remplit l'écran d'entrée avec l'évaluation en cours (nom, domaine).
 // Utilisé quand on revient du premier pilier, y compris après une reprise
 // (jusqu'à la v72, l'écran apparaissait alors vide).
 function remplirEntree() {
   parId("champ-nom-objet").value = evaluationEnCours.nomObjet || "";
   genererCartesType(); // marque la carte du domaine déjà choisi
-  parId(estModeGroupe(evaluationEnCours) ? "mode-groupe" : "mode-individuel").checked = true;
   rafraichirBoutonCommencer();
 }
 
@@ -478,10 +478,11 @@ function validerEntree() {
 function reprendreEvaluation(donnees) {
   evaluationEnCours.nomObjet = donnees.nomObjet;
   evaluationEnCours.typeObjet = donnees.typeObjet;
-  evaluationEnCours.mode = donnees.mode || "individuel";
+  // v81 : toujours « individuel ». Une évaluation en groupe commencée avant
+  // la v81 (version de test) reprend comme une évaluation faite seul.
+  evaluationEnCours.mode = "individuel";
   reponses = donnees.reponses || {};
   commentaires = donnees.commentaires || {};
-  comptes = donnees.comptes || {};
   // On reprend au critère où l'utilisateur s'était arrêté (sécurité sur l'index).
   let index = donnees.indexCritere || 0;
   if (index < 0 || index >= CRITERES.length) index = 0;
@@ -507,7 +508,6 @@ function sauvegarderEnCours() {
     mode: evaluationEnCours.mode,
     reponses: reponses,
     commentaires: commentaires,
-    comptes: comptes,
     indexCritere: indexCritereActuel,
     dateModification: new Date().toISOString()
   };
@@ -551,10 +551,6 @@ let reponses = {};
 // Observations libres saisies par l'utilisateur, par critère (id -> texte).
 let commentaires = {};
 
-// Mode groupe (v73) : nombre d'avis par réponse, pour chaque critère :
-// { idCritere: { "present": 3, "a-developper": 2, "non-present": 1, "non-applicable": 0 } }
-let comptes = {};
-
 // État de consultation d'une évaluation archivée.
 // Quand on rouvre une évaluation depuis l'historique, on est en "consultation"
 // (lecture seule) : ces variables gardent ses données le temps de l'affichage.
@@ -569,12 +565,9 @@ let comptesConsultation = {};
 // affiché : sert à fabriquer son code de comparaison (v74).
 let idEvaluationDiagnostic = null;
 
-// Un pilier est « renseigné » quand il a une réponse (mode habituel) ou au
-// moins un avis compté (mode groupe). Sert à activer « Suivant » et le sommaire.
+// Un pilier est « renseigné » quand il a une réponse. Sert à activer
+// « Suivant » et le sommaire.
 function pilierRenseigne(critere) {
-  if (estModeGroupe(evaluationEnCours)) {
-    return totalAvis(comptes[critere.id]) > 0;
-  }
   return !!reponses[critere.id];
 }
 
@@ -661,12 +654,6 @@ function genererModalites(critere) {
   const conteneur = parId("modalites");
   conteneur.innerHTML = "";
 
-  // Mode groupe : on affiche des compteurs au lieu des 4 boutons.
-  if (estModeGroupe(evaluationEnCours)) {
-    genererCompteurs(critere);
-    return;
-  }
-
   const reponseActuelle = reponses[critere.id] || null;
 
   MODALITES.forEach((modalite) => {
@@ -675,14 +662,11 @@ function genererModalites(critere) {
     bouton.className = "modalite";
     bouton.dataset.idModalite = modalite.id;
 
-    // Pastille de couleur (ou contour pointillé pour "Non applicable")
+    // Pictogramme de la réponse (v80, pictogrammes.js) : une maison à
+    // différents stades de construction, dans la couleur de la réponse.
     const pastille = document.createElement("span");
-    pastille.className = "modalite__pastille";
-    if (modalite.couleur === null) {
-      pastille.classList.add("modalite__pastille--vide");
-    } else {
-      pastille.style.backgroundColor = modalite.couleur;
-    }
+    pastille.className = "modalite__picto";
+    pastille.innerHTML = pictogramme(modalite.id, 32);
 
     const texte = document.createElement("span");
     texte.className = "modalite__libelle";
@@ -716,115 +700,16 @@ function genererModalites(critere) {
   });
 }
 
-// --- Mode groupe (v73) : compteurs d'avis ---
-// Pour chaque réponse possible : une pastille, le libellé, un bouton « − »,
-// le nombre (modifiable au clavier, utile pour un grand groupe) et un « + ».
-function genererCompteurs(critere) {
-  const conteneur = parId("modalites");
-  if (!comptes[critere.id]) comptes[critere.id] = compteVide();
-  const compte = comptes[critere.id];
-
-  const consigne = document.createElement("p");
-  consigne.className = "compteurs__consigne";
-  consigne.textContent = t("compteur_consigne");
-  conteneur.appendChild(consigne);
-
-  MODALITES.forEach((modalite) => {
-    const ligne = document.createElement("div");
-    ligne.className = "compteur";
-    ligne.dataset.idModalite = modalite.id;   // repère pour la feuille de style (séparation avant « Non applicable »)
-
-    const pastille = document.createElement("span");
-    pastille.className = "modalite__pastille";
-    if (modalite.couleur === null) {
-      pastille.classList.add("modalite__pastille--vide");
-    } else {
-      pastille.style.backgroundColor = modalite.couleur;
-    }
-
-    const libelle = document.createElement("span");
-    libelle.className = "compteur__libelle";
-    libelle.textContent = tr(modalite.libelle);
-
-    const moins = document.createElement("button");
-    moins.type = "button";
-    moins.className = "compteur__bouton";
-    moins.textContent = "−";
-    moins.setAttribute("aria-label", tAvec("compteur_moins", { reponse: tr(modalite.libelle) }));
-
-    const nombre = document.createElement("input");
-    nombre.type = "number";
-    nombre.className = "compteur__nombre";
-    nombre.min = "0";
-    nombre.max = "999";
-    nombre.inputMode = "numeric";
-    nombre.value = String(compte[modalite.id] || 0);
-    nombre.setAttribute("aria-label", tAvec("compteur_nombre", { reponse: tr(modalite.libelle) }));
-
-    const plus = document.createElement("button");
-    plus.type = "button";
-    plus.className = "compteur__bouton compteur__bouton--plus";
-    plus.textContent = "+";
-    plus.setAttribute("aria-label", tAvec("compteur_plus", { reponse: tr(modalite.libelle) }));
-
-    moins.addEventListener("click", () => fixerCompte(critere, modalite.id, (compte[modalite.id] || 0) - 1, nombre));
-    plus.addEventListener("click", () => fixerCompte(critere, modalite.id, (compte[modalite.id] || 0) + 1, nombre));
-    nombre.addEventListener("input", () => fixerCompte(critere, modalite.id, parseInt(nombre.value, 10), null));
-    // En quittant le champ, on réaffiche la valeur retenue (ex. « 0 » si vide).
-    nombre.addEventListener("blur", () => { nombre.value = String(compte[modalite.id] || 0); });
-
-    ligne.appendChild(pastille);
-    ligne.appendChild(libelle);
-    ligne.appendChild(moins);
-    ligne.appendChild(nombre);
-    ligne.appendChild(plus);
-    conteneur.appendChild(ligne);
-  });
-
-  const total = document.createElement("p");
-  total.className = "compteurs__total";
-  total.id = "compteurs-total";
-  total.setAttribute("aria-live", "polite");
-  conteneur.appendChild(total);
-  majTotalAvis(critere);
-}
-
-// Un compte vide : zéro avis pour chaque réponse.
+// Un compte vide : zéro avis pour chaque réponse (diagnostic du groupe :
+// « Rassembler des évaluations », comparaison.js).
 function compteVide() {
-  const vide = {};
-  MODALITES.forEach((m) => { vide[m.id] = 0; });
-  return vide;
+  return decompteVide();
 }
 
 // Nombre total d'avis notés pour un pilier (0 si rien).
 function totalAvis(compte) {
   if (!compte) return 0;
   return MODALITES.reduce((somme, m) => somme + (compte[m.id] || 0), 0);
-}
-
-// Enregistre un nouveau nombre d'avis (entier entre 0 et 999), met à jour
-// l'affichage, le bouton « Suivant », le sommaire, puis sauvegarde.
-function fixerCompte(critere, idModalite, valeur, champ) {
-  let n = parseInt(valeur, 10);
-  if (isNaN(n) || n < 0) n = 0;
-  if (n > 999) n = 999;
-  if (!comptes[critere.id]) comptes[critere.id] = compteVide();
-  comptes[critere.id][idModalite] = n;
-  if (champ) champ.value = String(n);
-  majTotalAvis(critere);
-  parId("critere-suivant").disabled = !pilierRenseigne(critere);
-  construireSommaire();
-  sauvegarderEnCours();
-}
-
-// Affiche « N avis notés pour ce pilier » sous les compteurs.
-function majTotalAvis(critere) {
-  const zone = parId("compteurs-total");
-  if (!zone) return;
-  const n = totalAvis(comptes[critere.id]);
-  zone.textContent = n === 0 ? t("compteur_total_zero")
-                   : n === 1 ? t("compteur_total_un")
-                   : tAvec("compteur_total", { nombre: n });
 }
 
 // Applique le style "actif" à un bouton de modalité (couleur de la modalité).
@@ -888,12 +773,6 @@ function afficherCritere(index) {
   // Modalités
   genererModalites(critere);
 
-  // Explication de « Non applicable » : sous le premier pilier seulement,
-  // pour ne pas la répéter (elle est détaillée dans le lexique).
-  // Note « Non applicable » sous les compteurs, au pilier 1, en mode groupe
-  // seulement (en mode seul, elle est dans le bouton : voir genererModalites).
-  parId("critere-na-note").classList.toggle("cache", index !== 0 || !estModeGroupe(evaluationEnCours));
-
   // Observation libre
   preparerCommentaire(critere);
 
@@ -903,8 +782,7 @@ function afficherCritere(index) {
   // Sommaire des piliers (visible sur ordinateur)
   construireSommaire();
 
-  // Le bouton "Suivant" est actif seulement si le pilier est renseigné
-  // (une réponse, ou au moins un avis compté en mode groupe).
+  // Le bouton "Suivant" est actif seulement si le pilier a une réponse.
   parId("critere-suivant").disabled = !pilierRenseigne(critere);
 
   // Au dernier critère, le bouton invite à voir le diagnostic.
@@ -947,13 +825,7 @@ function construireSommaire() {
       const pastille = document.createElement("span");
       pastille.className = "sommaire__pastille";
       const modalite = MODALITES.find((m) => m.id === reponses[critere.id]);
-      if (estModeGroupe(evaluationEnCours)) {
-        // Mode groupe : pastille pleine (marine) dès qu'au moins un avis est noté.
-        if (pilierRenseigne(critere)) {
-          pastille.style.backgroundColor = "#163458";
-          pastille.style.borderColor = "#163458";
-        }
-      } else if (modalite && modalite.couleur) {
+      if (modalite && modalite.couleur) {
         pastille.style.backgroundColor = modalite.couleur;
         pastille.style.borderColor = modalite.couleur;
       } else if (modalite) {
@@ -1115,14 +987,14 @@ function terminerQuestionnaire() {
   consultationArchive = false;
 
   // Archivage automatique dans l'historique (décidé au cadrage).
-  idEvaluationDiagnostic = archiverEvaluation(evaluationEnCours, reponses, commentaires, comptes);
+  idEvaluationDiagnostic = archiverEvaluation(evaluationEnCours, reponses, commentaires);
   diagnosticComparaison = null;
 
   // L'évaluation "en cours" est terminée : on l'efface de la reprise.
   effacerEnCours();
 
   // On affiche le diagnostic à partir des réponses collectées.
-  afficherDiagnostic(evaluationEnCours, reponses, undefined, commentaires, comptes);
+  afficherDiagnostic(evaluationEnCours, reponses, undefined, commentaires);
 }
 
 // Affiche l'écran historique : construit la liste des évaluations archivées.
@@ -1205,7 +1077,7 @@ function construireMiniJaugeDepuis(compo) {
     return segments;
   }
 
-  const ordre = ["present", "a-developper", "non-present"].map((id) => ({ mod: id, couleur: couleurModalite(id) }));
+  const ordre = REPONSES_APPLICABLES.map((id) => ({ mod: id, couleur: couleurModalite(id) }));
 
   ordre.forEach((seg) => {
     const n = compo.compte[seg.mod];
@@ -1435,7 +1307,7 @@ function rafraichirEcranCourant() {
     } else if (consultationArchive) {
       afficherDiagnostic(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation);
     } else {
-      afficherDiagnostic(evaluationEnCours, reponses, undefined, commentaires, comptes);
+      afficherDiagnostic(evaluationEnCours, reponses, undefined, commentaires);
     }
   } else if (id === "ecran-historique") {
     afficherHistorique();
@@ -1539,13 +1411,6 @@ function brancherBoutons() {
   // À chaque frappe dans le champ nom : on réévalue l'état du bouton.
   parId("champ-nom-objet").addEventListener("input", rafraichirBoutonCommencer);
 
-  // Choix du mode (v73) : une réponse par pilier, ou compter les avis du groupe.
-  document.querySelectorAll('input[name="mode-evaluation"]').forEach((radio) => {
-    radio.addEventListener("change", () => {
-      if (radio.checked) evaluationEnCours.mode = radio.value;
-    });
-  });
-
   // Bouton "Commencer l'évaluation".
   parId("bouton-commencer-evaluation").addEventListener("click", validerEntree);
 
@@ -1600,7 +1465,7 @@ function brancherBoutons() {
     } else if (consultationArchive) {
       lancerImpression(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation);
     } else {
-      lancerImpression(evaluationEnCours, reponses, undefined, commentaires, comptes);
+      lancerImpression(evaluationEnCours, reponses, undefined, commentaires);
     }
   });
 
@@ -1637,10 +1502,19 @@ function brancherBoutons() {
   parId("historique-retour").addEventListener("click", () => {
     afficherEcran("ecran-accueil");
   });
-  parId("historique-comparer").addEventListener("click", () => afficherComparer());
+  parId("historique-comparer").addEventListener("click", () => afficherComparer(null, "historique"));
 
-  // --- Écran « Comparer des évaluations » (v74) ---
-  parId("comparer-retour").addEventListener("click", afficherHistorique);
+  // --- Écran « Rassembler des évaluations » (v74, renommé en v79) ---
+  // Accès direct depuis l'accueil (v79).
+  parId("bouton-rassembler").addEventListener("click", () => afficherComparer(null, "accueil"));
+  // « ‹ » ramène là d'où l'on vient (accueil ou Mes évaluations).
+  parId("comparer-retour").addEventListener("click", () => {
+    if (retourComparer === "historique") {
+      afficherHistorique();
+    } else {
+      afficherEcran("ecran-accueil");
+    }
+  });
   parId("comparer-ajouter").addEventListener("click", ajouterDepuisSaisie);
   parId("comparer-code").addEventListener("keydown", (e) => {
     if (e.key === "Enter") ajouterDepuisSaisie();

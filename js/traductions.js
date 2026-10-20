@@ -80,39 +80,27 @@ const TRADUCTIONS = {
   "critere_na_explication": { fr: "Le pilier ne concerne pas la pratique évaluée\u00a0; il n'est pas compté dans le diagnostic.",
                               en: "The pillar does not concern the practice being evaluated; it is not counted in the diagnosis.",
                               nl: "Het criterium heeft geen betrekking op de geëvalueerde geloofspraktijk; het wordt niet meegeteld in de diagnose." },
-  "critere_na_note": { fr: "«\u00a0Non applicable\u00a0»\u00a0: le pilier ne concerne pas la pratique évaluée\u00a0; il n'est pas compté dans le diagnostic.",
-                       en: "“Not applicable”: the pillar does not concern the practice being evaluated; it is not counted in the diagnosis.",
-                       nl: "‘Niet van toepassing’: het criterium heeft geen betrekking op de geëvalueerde geloofspraktijk; het wordt niet meegeteld in de diagnose." },
 
-  // --- Évaluer à plusieurs : mode « Compter les avis du groupe » (v73) ---
+  // --- Diagnostic d'un groupe (v73) ---
+  // Utilisé par « Rassembler des évaluations » (codes de comparaison) et pour
+  // relire d'anciennes évaluations archivées. v81 : le mode « Évaluer en
+  // groupe » (compteurs sur un seul appareil) a été retiré, avec ses textes.
   // EN et NL : traductions provisoires (Claude), à faire valider.
   // (\u00a0 = espace insécable, comme plus haut)
-  "entree_question_mode":   { fr: "Comment se fait l'évaluation\u00a0?", en: "How is the evaluation carried out?", nl: "Hoe verloopt de evaluatie?" },
-  // (v74 : intitulés « Évaluer seul » / « Évaluer en groupe », choisis par FX)
-  "mode_individuel_titre":  { fr: "Évaluer seul", en: "Evaluate alone", nl: "Alleen evalueren" },
-  "mode_individuel_texte":  { fr: "Une personne donne une réponse pour chaque pilier. Un groupe qui cherche une réponse commune peut aussi choisir ce mode.",
-                              en: "One person gives an answer for each pillar. A group looking for a shared answer can also choose this mode.",
-                              nl: "Eén persoon geeft een antwoord per criterium. Een groep die naar een gemeenschappelijk antwoord zoekt, kan ook deze manier kiezen." },
-  "mode_groupe_titre":      { fr: "Évaluer en groupe", en: "Evaluate as a group", nl: "In groep evalueren" },
-  "mode_groupe_texte":      { fr: "Sur un seul appareil\u00a0: pour chaque pilier, l'animateur note combien de personnes choisissent chaque réponse. Aucun nom n'est enregistré.",
-                              en: "On a single device: for each pillar, the facilitator records how many people choose each answer. No names are recorded.",
-                              nl: "Op één toestel: per criterium noteert de begeleider hoeveel mensen elk antwoord kiezen. Er worden geen namen opgeslagen." },
-  "compteur_consigne":      { fr: "Combien de personnes choisissent chaque réponse\u00a0?", en: "How many people choose each answer?", nl: "Hoeveel mensen kiezen elk antwoord?" },
-  "compteur_plus":          { fr: "Ajouter un avis\u00a0: {reponse}", en: "Add one view: {reponse}", nl: "Eén mening toevoegen: {reponse}" },
-  "compteur_moins":         { fr: "Retirer un avis\u00a0: {reponse}", en: "Remove one view: {reponse}", nl: "Eén mening weghalen: {reponse}" },
-  "compteur_nombre":        { fr: "Nombre d'avis\u00a0: {reponse}", en: "Number of views: {reponse}", nl: "Aantal meningen: {reponse}" },
-  "compteur_total_zero":    { fr: "Aucun avis noté pour ce pilier.", en: "No views recorded for this pillar.", nl: "Nog geen meningen genoteerd voor dit criterium." },
-  "compteur_total_un":      { fr: "1 avis noté pour ce pilier.", en: "1 view recorded for this pillar.", nl: "1 mening genoteerd voor dit criterium." },
-  "compteur_total":         { fr: "{nombre} avis notés pour ce pilier.", en: "{nombre} views recorded for this pillar.", nl: "{nombre} meningen genoteerd voor dit criterium." },
   "groupe_mode":            { fr: "En groupe", en: "In a group", nl: "In groep" },
   "groupe_avis_un":         { fr: "1 avis", en: "1 view", nl: "1 mening" },
   "groupe_avis":            { fr: "{nombre} avis", en: "{nombre} views", nl: "{nombre} meningen" },
   "groupe_avis_plage":      { fr: "{min} à {max} avis par pilier", en: "{min} to {max} views per pillar", nl: "{min} tot {max} meningen per criterium" },
   "diagnostic_groupe_titre":{ fr: "Diagnostic du groupe", en: "Group diagnosis", nl: "Diagnose van de groep" },
   "diagnostic_pdf_groupe":  { fr: "Exporter le diagnostic du groupe en PDF", en: "Export the group diagnosis as PDF", nl: "De diagnose van de groep exporteren als pdf" },
-  "groupe_partages_zero":   { fr: "Aucun pilier aux avis partagés", en: "No pillar with divided views", nl: "Geen enkel criterium met verdeelde meningen" },
-  "groupe_partages_un":     { fr: "1 pilier aux avis partagés", en: "1 pillar with divided views", nl: "1 criterium met verdeelde meningen" },
-  "groupe_partages":        { fr: "{nombre} piliers aux avis partagés", en: "{nombre} pillars with divided views", nl: "{nombre} criteria met verdeelde meningen" },
+  // v83 : en français, « avis partagés » devient « avis divergents » (« partagés »
+  // pouvait se lire « que tout le monde partage », le contraire du sens voulu).
+  // L'anglais (« divided views ») et le néerlandais (« verdeelde meningen »)
+  // n'avaient pas cette ambiguïté : inchangés. Les identifiants (groupe_partages…)
+  // restent les mêmes, pour ne rien casser.
+  "groupe_partages_zero":   { fr: "Aucun pilier aux avis divergents", en: "No pillar with divided views", nl: "Geen enkel criterium met verdeelde meningen" },
+  "groupe_partages_un":     { fr: "1 pilier aux avis divergents", en: "1 pillar with divided views", nl: "1 criterium met verdeelde meningen" },
+  "groupe_partages":        { fr: "{nombre} piliers aux avis divergents", en: "{nombre} pillars with divided views", nl: "{nombre} criteria met verdeelde meningen" },
   "groupe_partages_texte":  { fr: "À discuter en priorité\u00a0: au moins une personne y répond «\u00a0Solidement établi\u00a0» et une autre «\u00a0À bâtir\u00a0».",
                               en: "To discuss first: at least one person answered “Well established” and another “To be built”.",
                               nl: "Eerst te bespreken: minstens één persoon antwoordde ‘Stevig verankerd’ en een andere ‘Nog op te bouwen’." },
@@ -120,13 +108,13 @@ const TRADUCTIONS = {
                               en: "No pillar has both “Well established” and “To be built” answers.",
                               nl: "Geen enkel criterium kreeg tegelijk de antwoorden ‘Stevig verankerd’ en ‘Nog op te bouwen’." },
   "groupe_piliers_concernes": { fr: "Piliers concernés\u00a0: {liste}", en: "Pillars concerned: {liste}", nl: "Betrokken criteria: {liste}" },
-  "groupe_badge":           { fr: "Avis partagés", en: "Divided views", nl: "Verdeelde meningen" },
+  "groupe_badge":           { fr: "Avis divergents", en: "Divided views", nl: "Verdeelde meningen" },
   "groupe_repartition_titre": { fr: "Répartition des avis par pilier", en: "Distribution of views by pillar", nl: "Verdeling van de meningen per criterium" },
   "groupe_observations_titre": { fr: "Observations notées", en: "Recorded observations", nl: "Genoteerde observaties" },
 
   // --- Évaluer à plusieurs : code, lien et comparaison (v74) ---
   // EN et NL : traductions provisoires (Claude), à faire valider.
-  "partage_bouton":         { fr: "Partager pour une comparaison", en: "Share for a comparison", nl: "Delen voor een vergelijking" },
+  "partage_bouton":         { fr: "Partager pour le groupe", en: "Share with the group", nl: "Delen met de groep" },
   "partage_texte":          { fr: "Ce code contient seulement le domaine et les réponses aux 14 piliers\u00a0: aucun nom de personne, aucune observation. Le lien y ajoute le nom de la pratique évaluée.",
                               en: "This code only contains the area and the answers to the 14 pillars: no personal names, no observations. The link also includes the name of the practice evaluated.",
                               nl: "Deze code bevat enkel het domein en de antwoorden op de 14 criteria: geen persoonsnamen, geen observaties. De link voegt daar de naam van de geëvalueerde praktijk aan toe." },
@@ -143,7 +131,7 @@ const TRADUCTIONS = {
   "resultat_envoyer":       { fr: "Envoyer le résultat au groupe", en: "Send the result to the group", nl: "Het resultaat naar de groep sturen" },
   "resultat_message":       { fr: "Diagnostic du groupe SPIRIT", en: "SPIRIT group diagnosis", nl: "SPIRIT-diagnose van de groep" },
   "comparer_sans_nom":       { fr: "Pratique sans nom", en: "Unnamed practice", nl: "Naamloze praktijk" },
-  "comparer_titre":         { fr: "Comparer des évaluations", en: "Compare evaluations", nl: "Evaluaties vergelijken" },
+  "comparer_titre":         { fr: "Rassembler des évaluations", en: "Gather evaluations", nl: "Evaluaties bundelen" },
   "comparer_intro":         { fr: "Rassemblez les codes ou les liens reçus après chaque évaluation pour voir la répartition des avis du groupe.",
                               en: "Gather the codes or links received after each evaluation to see how the group's views are distributed.",
                               nl: "Verzamel de codes of links die je na elke evaluatie ontvangt, om de verdeling van de meningen in de groep te zien." },
@@ -154,7 +142,9 @@ const TRADUCTIONS = {
   "comparer_code_invalide": { fr: "Ce code n'est pas reconnu. Vérifiez-le\u00a0: il compte 9 caractères (lettres et chiffres).",
                               en: "This code is not recognised. Please check it: it has 9 characters (letters and digits).",
                               nl: "Deze code wordt niet herkend. Controleer hem: hij telt 9 tekens (letters en cijfers)." },
-  "comparer_code_double":   { fr: "Ce code est déjà dans la liste.", en: "This code is already in the list.", nl: "Deze code staat al in de lijst." },
+  "comparer_code_double":   { fr: "Ce code est déjà dans la liste. Il peut s'agir de la même évaluation envoyée deux fois, ou de deux personnes qui ont répondu exactement la même chose.",
+                              en: "This code is already in the list. It may be the same evaluation sent twice, or two people who gave exactly the same answers.",
+                              nl: "Deze code staat al in de lijst. Het kan om dezelfde evaluatie gaan die twee keer werd verstuurd, of om twee personen die precies hetzelfde hebben geantwoord." },
   "comparer_ajouter_quand_meme": { fr: "L'ajouter quand même", en: "Add it anyway", nl: "Toch toevoegen" },
   "comparer_ajout_un":      { fr: "1 évaluation ajoutée.", en: "1 evaluation added.", nl: "1 evaluatie toegevoegd." },
   "comparer_ajout":         { fr: "{nombre} évaluations ajoutées.", en: "{nombre} evaluations added.", nl: "{nombre} evaluaties toegevoegd." },
@@ -214,6 +204,7 @@ const TRADUCTIONS = {
 
   // --- Retour (bouton ‹ générique, libellé d'accessibilité) ---
   "retour_accueil": { fr: "Retour à l'accueil", en: "Back to home", nl: "Terug naar start" },
+  "retour_historique": { fr: "Retour à Mes évaluations", en: "Back to My evaluations", nl: "Terug naar Mijn evaluaties" },
 
   // --- Messages (boîtes de dialogue) ---
   // Guillemets autour d'un nom de pratique ({texte} = le nom)
@@ -283,6 +274,7 @@ const TRADUCTIONS = {
   "lecture_piliers":  { fr: "piliers", en: "pillars", nl: "criteria" },
   "lecture_present":  { fr: "solidement établi",  en: "well established", nl: "stevig verankerd" },
   "lecture_presents": { fr: "solidement établis", en: "well established", nl: "stevig verankerd" },
+  "lecture_consolider": { fr: "à consolider", en: "to be consolidated", nl: "te consolideren" },   // v80
   "lecture_chantier": { fr: "en chantier",    en: "under development", nl: "in opbouw" },
   "lecture_a_batir":  { fr: "encore à bâtir", en: "still to be built", nl: "nog op te bouwen" },
   "lecture_et":       { fr: "et", en: "and", nl: "en" },
@@ -313,6 +305,12 @@ const TRADUCTIONS = {
   "pdf_ref_titre":    { fr: "Pour aller plus loin", en: "Going deeper", nl: "Verder verdiepen" },
   "pdf_sous_titre":   { fr: "Cadre SPIRIT — d'après le <em>Document final</em> du Synode 2024",
                         en: "SPIRIT framework — based on the 2024 Synod <em>Final Document</em>", nl: "SPIRIT-kader — gebaseerd op het <em>Slotdocument</em> van de Synode 2024" },
+  // v84 : sous le sous-titre des deux PDF. La mention du panel se trouvait
+  // dans l'ancienne section « Pistes de progression » (retirée en v82).
+  // Formulation reprise du guide de l'animateur (section 1).
+  "pdf_validation_panel": avecPanel({ fr: "Pierres angulaires et piliers validés selon la méthode Delphi par un panel de {panel}.",
+                                      en: "Cornerstones and pillars validated using the Delphi method by a panel of {panel}.",
+                                      nl: "Pijlers en criteria gevalideerd volgens de Delphi-methode door een panel van {panel}." }),
   "pdf_objet_label":  { fr: "Pratique évaluée", en: "Practice evaluated", nl: "Geëvalueerde geloofspraktijk" },
   // F5 (audit v72) : « Evaluation of 4 October » se lisait « l'évaluation d'une date »
   "pdf_evaluation_date": { fr: "Évaluation du {date}", en: "Evaluated on {date}", nl: "Evaluatie van {date}" },
@@ -332,15 +330,37 @@ const TRADUCTIONS = {
   "pdf_detail":       { fr: "Détail des piliers", en: "Pillar details", nl: "Detail van de criteria" },
   "pdf_observation": { fr: "Observation", en: "Observation", nl: "Opmerking" },
   "diagnostic_observations_titre": { fr: "Vos observations", en: "Your observations", nl: "Je observaties" },
-  "pdf_pistes":       { fr: "Pistes de progression", en: "Pathways for progress", nl: "Groeimogelijkheden" },
-  "pdf_pistes_attente": { fr: "Les pistes de progression personnalisées seront proposées dans une prochaine version de SPIRIT, à partir des piliers en chantier ou à bâtir.",
-                          en: "Personalised pathways for progress will be offered in a future version of SPIRIT, based on the pillars that are under development or to be built.", nl: "De gepersonaliseerde groeimogelijkheden worden aangeboden in een volgende versie van SPIRIT, op basis van de criteria ‘in opbouw’ of ‘nog op te bouwen’." },
-  "pdf_pistes_validation": avecPanel({ fr: "En attendant, toutes les phrases issues du <em>Document final</em> du Synode sur la synodalité ont été réunies comme pistes de réflexion, accessibles via le bouton « Pour aller plus loin » de l'application. Elles ont été validées par un panel de {panel} issus du monde entier lors de la phase théorique de création de l'outil.",
-                             en: "In the meantime, all the phrases drawn from the <em>Final Document</em> of the Synod on Synodality have been gathered as prompts for reflection, available via the 'Going deeper' button in the app. They were validated by a panel of {panel} from around the world during the theoretical phase of the tool's creation.", nl: "In afwachting daarvan zijn alle zinnen uit het <em>Slotdocument</em> van de Synode over synodaliteit samengebracht als denkpistes, toegankelijk via de knop ‘Verder verdiepen’ in de applicatie. Ze werden gevalideerd door een panel van {panel} uit de hele wereld tijdens de theoretische fase van de ontwikkeling van het instrument." }),
-  "pdf_pistes_groupe": { fr: "Pour une utilisation en groupe, chacun fait sa propre évaluation sur SPIRIT, puis les PDF individuels peuvent être confrontés afin d'en tirer des pistes d'action.",
-                         en: "For group use, each person carries out their own evaluation on SPIRIT; the individual PDFs can then be compared to draw out shared pathways for progress.", nl: "Voor gebruik in groep maakt ieder zijn eigen evaluatie op SPIRIT; de individuele pdf’s kunnen daarna naast elkaar worden gelegd om er gezamenlijke groeimogelijkheden uit af te leiden." },
-  "diagnostic_pistes_note": avecPanel({ fr: "Les pistes de progression personnalisées sont en cours de développement. En attendant, des phrases issues du <em>Document final</em> du Synode — validées par un panel de {panel} — sont proposées comme pistes de réflexion via le bouton « Pour aller plus loin ».",
-                              en: "Personalised pathways for progress are still in development. In the meantime, phrases from the Synod <em>Final Document</em> — validated by a panel of {panel} — are offered as prompts for reflection via the 'Going deeper' button.", nl: "De gepersonaliseerde groeimogelijkheden zijn in ontwikkeling. In afwachting daarvan worden zinnen uit het <em>Slotdocument</em> van de Synode — gevalideerd door een panel van {panel} — aangeboden als denkpistes via de knop ‘Verder verdiepen’." }),
+  // v82 : la section « Pistes de progression » du PDF est retirée (on
+  // n'investit pas dessus pour le moment). Elle est remplacée par la section
+  // « Évaluer à plusieurs, le temps d'une soirée », commune aux deux PDF.
+  // FR validé par FX (19 octobre 2026) ; EN et NL : propositions à faire relire.
+  // (\u00a0 = espace insécable, comme plus haut)
+  "pdf_soiree_titre": { fr: "Évaluer à plusieurs, le temps d'une soirée",
+                        en: "Evaluating with several people, over one evening",
+                        nl: "Met meerdere personen evalueren, tijdens één avond" },
+  "pdf_soiree_intro": { fr: "SPIRIT peut servir de point de départ à une rencontre. Chaque participant évalue la même pratique de son côté, puis le groupe découvre le diagnostic commun et en parle.",
+                        en: "SPIRIT can serve as the starting point for a meeting. Each participant evaluates the same practice separately, then the group discovers the shared diagnosis and talks about it.",
+                        nl: "SPIRIT kan het vertrekpunt zijn van een bijeenkomst. Elke deelnemer evalueert afzonderlijk dezelfde geloofspraktijk, waarna de groep de gezamenlijke diagnose ontdekt en erover in gesprek gaat." },
+  "pdf_soiree_etape1_titre": { fr: "Avant la soirée, ou au début de celle-ci.", en: "Before the evening, or at its start.", nl: "Vóór de avond, of bij het begin ervan." },
+  "pdf_soiree_etape1_texte": { fr: "Chacun évalue la pratique sur son propre téléphone, seul et sans se concerter. L'animateur indique la pratique à évaluer et le domaine à choisir, pour que tous répondent aux mêmes questions.",
+                               en: "Each person evaluates the practice on their own phone, alone and without conferring. The facilitator states which practice is to be evaluated and which area to choose, so that everyone answers the same questions.",
+                               nl: "Ieder evalueert de geloofspraktijk op zijn eigen telefoon, alleen en zonder overleg. De begeleider geeft aan welke geloofspraktijk geëvalueerd wordt en welk domein gekozen moet worden, zodat iedereen dezelfde vragen beantwoordt." },
+  "pdf_soiree_etape2_titre": { fr: "Rassembler les codes.", en: "Gather the codes.", nl: "De codes verzamelen." },
+  "pdf_soiree_etape2_texte": { fr: "Chacun transmet son code de comparaison\u00a0: il figure en haut de son PDF et dans «\u00a0Partager pour le groupe\u00a0». L'animateur les saisit dans «\u00a0Rassembler des évaluations\u00a0» et obtient le diagnostic du groupe. Celui-ci montre la répartition des réponses, sans moyenne et sans dire qui a répondu quoi.",
+                               en: "Each person passes on their comparison code: it appears at the top of their PDF and under ‘Share with the group’. The facilitator enters the codes in ‘Gather evaluations’ and obtains the group diagnosis. It shows how the answers are distributed, without an average and without revealing who answered what.",
+                               nl: "Ieder bezorgt zijn vergelijkingscode: die staat bovenaan zijn pdf en onder ‘Delen met de groep’. De begeleider voert de codes in bij ‘Evaluaties bundelen’ en verkrijgt de diagnose van de groep. Die toont hoe de antwoorden verdeeld zijn, zonder gemiddelde en zonder te zeggen wie wat heeft geantwoord." },
+  "pdf_soiree_etape3_titre": { fr: "Commencer par les avis divergents.", en: "Start with the divided views.", nl: "Beginnen bij de verdeelde meningen." },
+  "pdf_soiree_etape3_texte": { fr: "Les piliers où au moins une personne a répondu «\u00a0Solidement établi\u00a0» et une autre «\u00a0À bâtir\u00a0» sont signalés\u00a0: ce sont eux qui appellent le plus d'échange. Chacun peut dire ce qui fonde sa réponse, en écoutant les autres avant de chercher à convaincre.",
+                               en: "Pillars where at least one person answered ‘Well established’ and another ‘To be built’ are flagged: these are the ones that call for the most discussion. Each person can say what lies behind their answer, listening to the others before trying to convince them.",
+                               nl: "Criteria waarbij minstens één persoon ‘Stevig verankerd’ en een ander ‘Nog op te bouwen’ heeft geantwoord, worden aangeduid: daarover is het meeste gesprek nodig. Ieder kan zeggen waarop zijn antwoord steunt, en luistert naar de anderen voordat hij hen probeert te overtuigen." },
+  "pdf_soiree_etape4_titre": { fr: "Choisir où avancer.", en: "Choose where to move forward.", nl: "Kiezen waaraan gewerkt wordt." },
+  "pdf_soiree_etape4_texte": { fr: "Le groupe retient un ou deux piliers à travailler en priorité et formule ensemble des pistes d'action concrètes. Les extraits du <em>Document final</em> rassemblés pour chaque pilier dans le PDF «\u00a0Pour aller plus loin\u00a0» peuvent nourrir cette réflexion.",
+                               en: "The group selects one or two pillars to work on first and together formulates concrete courses of action. The extracts from the <em>Final Document</em> gathered for each pillar in the ‘Going deeper’ PDF can nourish this reflection.",
+                               nl: "De groep kiest één of twee criteria om eerst aan te werken en formuleert samen concrete actiepunten. De fragmenten uit het <em>Slotdocument</em> die per criterium zijn samengebracht in de pdf ‘Verder verdiepen’, kunnen deze reflectie voeden." },
+  // Note sous le diagnostic. v82 : plus d'annonce de « pistes de progression
+  // personnalisées » ; seul reste le renvoi à « Pour aller plus loin ».
+  "diagnostic_pistes_note": avecPanel({ fr: "Des phrases issues du <em>Document final</em> du Synode, validées par un panel de {panel}, sont proposées comme pistes de réflexion via le bouton «\u00a0Pour aller plus loin\u00a0».",
+                              en: "Phrases from the Synod <em>Final Document</em>, validated by a panel of {panel}, are offered as prompts for reflection via the ‘Going deeper’ button.", nl: "Zinnen uit het <em>Slotdocument</em> van de Synode, gevalideerd door een panel van {panel}, worden aangeboden als denkpistes via de knop ‘Verder verdiepen’." }),
 
   // Dernière feuille du PDF : les 14 piliers et leurs fondements (Document final du Synode)
   "panel_theologiens": PANEL_THEOLOGIENS,

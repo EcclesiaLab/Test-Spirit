@@ -10,11 +10,10 @@ L'application est un projet d'**EcclesiaLab**, laboratoire de recherche sur l'in
 
 ## Ce que fait l'application
 
-- **Évaluer** une pratique ecclésiale en répondant, pilier par pilier, à un questionnaire avec quatre modalités de réponse (*Solidement établi / En chantier / À bâtir / Non applicable*).
-- **Évaluer en groupe** (v73) : en salle, sur un seul appareil, l'animateur note pour chaque pilier combien de personnes choisissent chaque réponse ; le « diagnostic du groupe » montre la répartition des avis, sans moyenne, et signale les piliers aux avis partagés.
-- **Comparer des évaluations** (v74) : chaque personne qui a évalué seule peut transmettre un code de 9 caractères (ou un lien) contenant uniquement le domaine et ses 14 réponses ; l'animateur rassemble ces codes dans l'écran « Comparer des évaluations » (depuis *Mes évaluations*) et obtient le même diagnostic du groupe. Fonctionne en salle comme à distance, sans serveur.
+- **Évaluer** une pratique ecclésiale en répondant, pilier par pilier, à un questionnaire avec quatre niveaux de réponse et « Non applicable » (*Solidement établi / À consolider / En chantier / À bâtir / Non applicable*). Le niveau « À consolider » et les pictogrammes de construction datent de la v80. Une évaluation se fait toujours seul (le mode « Évaluer en groupe » des versions 73 à 80 a été retiré en v81 ; les évaluations de groupe déjà enregistrées restent lisibles).
+- **Rassembler des évaluations** (v74, appelé « Comparer des évaluations » jusqu'à la v78) : c'est la seule manière d'évaluer à plusieurs depuis la v81. Chaque personne évalue de son côté, puis transmet un code de 9 caractères (ou un lien) contenant uniquement le domaine et ses 14 réponses (bouton « Partager pour le groupe » du diagnostic) ; une personne rassemble ces codes dans l'écran « Rassembler des évaluations », accessible depuis l'accueil (v79) ou depuis *Mes évaluations*, et obtient le diagnostic du groupe : la répartition des avis par pilier, sans moyenne, avec les piliers aux avis divergents signalés. Fonctionne en salle comme à distance, sans serveur. Depuis la v80, le code suit un format 2 (5 réponses possibles par pilier) ; les codes donnés avant la v80 restent lisibles.
 - **Visualiser** un diagnostic sous forme de trois jauges (une par pierre angulaire), accompagné d'une lecture textuelle.
-- **Exporter** le résultat en PDF via la fonction d'impression du navigateur.
+- **Exporter** le résultat en PDF via la fonction d'impression du navigateur. Depuis la v82, le PDF d'une évaluation porte son code de comparaison en première page et se termine par une démarche « Évaluer à plusieurs, le temps d'une soirée ».
 - **Conserver** l'historique des évaluations sur l'appareil (consultation, réouverture, suppression).
 - **Garder une copie** (v75) : dans *Mes évaluations*, « Exporter les évaluations » crée un fichier `.json` (toutes les évaluations terminées) ; « Importer un fichier » les ajoute sur un autre appareil, sans doublon. Le fichier va où l'utilisateur le décide.
 - **Choisir la langue** : interface et contenu en français, anglais et néerlandais.
@@ -45,6 +44,7 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 │   └── styles.css          Toute la mise en forme
 ├── js/
 │   ├── donnees-spirit.js   ★ CŒUR ÉDITORIAL : piliers, pierres angulaires, textes
+│   ├── pictogrammes.js     Pictogrammes des réponses (maison en construction, v80)
 │   ├── questions-domaines.js  Questions d'aide des 4 domaines (version d'essai)
 │   ├── lexique.js          Lexique : mots de l'Église et de SPIRIT (provisoire)
 │   ├── traductions.js      Textes d'interface (FR / EN / NL)
@@ -54,7 +54,7 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 │   ├── historique.js       Archivage des évaluations terminées
 │   ├── sauvegarde.js       Export / import des évaluations dans un fichier (v75)
 │   ├── fenetres.js         Fenêtres : ouverture, fermeture, accessibilité, questions (v75)
-│   ├── comparaison.js      Codes et liens de comparaison, écran « Comparer »
+│   ├── comparaison.js      Codes et liens de partage, écran « Rassembler des évaluations »
 │   └── impression.js       Construction du document PDF
 ├── icons/
 │   ├── icon-192.png        Icône PWA (écran d'accueil)
@@ -73,7 +73,7 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 
 ## Modifier le contenu
 
-Le contenu de l'évaluation — **piliers, pierres angulaires, sous-questions, modalités, et à venir les pistes d'action** — vit dans un seul fichier : **`js/donnees-spirit.js`**.
+Le contenu de l'évaluation — **piliers, pierres angulaires, sous-questions et modalités** — vit dans un seul fichier : **`js/donnees-spirit.js`**.
 
 C'est là, et seulement là, qu'on modifie les textes. La mécanique de l'application (calcul, affichage, navigation) n'a pas besoin d'être touchée.
 
@@ -92,13 +92,13 @@ Quelques règles à respecter dans ce fichier :
 À **chaque modification** d'un fichier (HTML, CSS, JS), il faut **incrémenter le numéro de version** du cache dans `service-worker.js` :
 
 ```js
-const CACHE_VERSION = "spirit-v78";   // → passer à "spirit-v79", etc.
+const CACHE_VERSION = "spirit-v84";   // → passer à "spirit-v85", etc.
 ```
 
 Changer en même temps le numéro affiché dans « À propos » et en pied de PDF, en tête de `js/app.js` :
 
 ```js
-const VERSION_SPIRIT = "78";          // → "79", etc.
+const VERSION_SPIRIT = "80";          // → "81", etc.
 ```
 
 Vérifier aussi que **chaque fichier listé dans `FICHIERS_A_CACHER` existe** : un seul fichier absent (un logo renommé, par exemple) fait échouer l'installation de la nouvelle version, et les utilisateurs restent sur l'ancienne sans que rien ne le signale.
@@ -151,7 +151,9 @@ Conséquence : si l'utilisateur change d'appareil ou efface les données de son 
 
 Prototype fonctionnel, en cours de consolidation.
 
-Reste notamment à finaliser : les **pistes d'action** associées à chaque pilier (travail éditorial de l'équipe), les tests sur appareils réels, et la relecture du néerlandais.
+Les pistes de progression par pilier ont été abandonnées pour le moment (v82) : le PDF propose à la place une démarche pour évaluer à plusieurs, le temps d'une soirée.
+
+Reste notamment à finaliser : les tests sur appareils réels, et la relecture du néerlandais.
 
 ---
 

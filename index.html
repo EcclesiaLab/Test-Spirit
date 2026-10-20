@@ -74,6 +74,10 @@
            une évaluation). -->
       <div class="accueil__action">
         <button class="bouton" id="bouton-demarrer" data-t="accueil_demarrer">Démarrer une évaluation</button>
+        <!-- v79 : accès direct à « Rassembler des évaluations » (codes ou liens
+             reçus des personnes qui ont évalué chacune de leur côté). Bouton
+             en contour : action secondaire, sous l'action principale. -->
+        <button class="bouton bouton--contour accueil__rassembler" id="bouton-rassembler" type="button" data-t="comparer_titre">Rassembler des évaluations</button>
       </div>
 
       <!-- Bloc du bas : liens secondaires -->
@@ -138,29 +142,9 @@
           </div>
         </fieldset>
 
-        <!-- Choix : manière de faire l'évaluation (v73).
-             « Évaluer seul » = fonctionnement habituel (une personne,
-             ou un groupe qui s'accorde sur une réponse commune).
-             « Évaluer en groupe » = en salle, sur un seul appareil,
-             on note pour chaque pilier combien de personnes choisissent
-             chaque réponse (aucun nom enregistré). -->
-        <fieldset class="entree__modes">
-          <legend class="entree__label" data-t="entree_question_mode">Comment se fait l'évaluation ?</legend>
-          <label class="carte-mode">
-            <input type="radio" name="mode-evaluation" value="individuel" id="mode-individuel" checked>
-            <span class="carte-mode__textes">
-              <span class="carte-mode__titre" data-t="mode_individuel_titre">Évaluer seul</span>
-              <span class="carte-mode__description" data-t="mode_individuel_texte">Une personne donne une réponse pour chaque pilier. Un groupe qui cherche une réponse commune peut aussi choisir ce mode.</span>
-            </span>
-          </label>
-          <label class="carte-mode">
-            <input type="radio" name="mode-evaluation" value="groupe" id="mode-groupe">
-            <span class="carte-mode__textes">
-              <span class="carte-mode__titre" data-t="mode_groupe_titre">Évaluer en groupe</span>
-              <span class="carte-mode__description" data-t="mode_groupe_texte">Sur un seul appareil : pour chaque pilier, l'animateur note combien de personnes choisissent chaque réponse. Aucun nom n'est enregistré.</span>
-            </span>
-          </label>
-        </fieldset>
+        <!-- v81 : le choix « Évaluer seul / Évaluer en groupe » (v73) a été
+             retiré. Pour évaluer à plusieurs, chacun évalue seul puis une
+             personne rassemble les codes (« Rassembler des évaluations »). -->
 
       </div>
 
@@ -222,10 +206,6 @@
           <!-- Les boutons seront générés par JS -->
         </div>
 
-        <!-- Courte explication de « Non applicable », sous le premier pilier
-             seulement (détails dans le lexique) -->
-        <p class="critere__na-note" id="critere-na-note" data-t="critere_na_note">« Non applicable » : le pilier ne concerne pas la pratique évaluée ; il n'est pas compté dans le diagnostic.</p>
-
         <!-- Zone d'observation libre (facultative), dépliable -->
         <div class="commentaire">
           <button class="commentaire__bouton" id="commentaire-bouton" type="button" aria-expanded="false" aria-controls="commentaire-zone">
@@ -282,8 +262,8 @@
         <!-- Observations libres saisies par l'utilisateur (générées par JS) -->
         <div class="diagnostic__observations" id="diagnostic-observations"></div>
 
-        <!-- Note transitoire sur les pistes d'action -->
-        <p class="diagnostic__pistes-note" data-t-html="diagnostic_pistes_note">Les pistes de progression personnalisées sont en cours de développement. En attendant, des phrases issues du <em>Document final</em> du Synode — validées par un panel de près de 50 théologiens et théologiennes — sont proposées comme pistes de réflexion dans le PDF (dernière page).</p>
+        <!-- Renvoi au bouton « Pour aller plus loin » (v82 : on n'annonce plus de pistes de progression) -->
+        <p class="diagnostic__pistes-note" data-t-html="diagnostic_pistes_note">Des phrases issues du <em>Document final</em> du Synode, validées par un panel de près de 50 théologiens et théologiennes, sont proposées comme pistes de réflexion via le bouton « Pour aller plus loin ».</p>
 
         <!-- Actions : placées dans le contenu pour défiler avec lui
              (et non collées en bas), car le diagnostic est un écran de
@@ -292,7 +272,7 @@
           <button class="bouton" id="diagnostic-pdf" data-t="diagnostic_pdf">Exporter le diagnostic en PDF</button>
           <!-- v74 : partager une évaluation faite seul (code ou lien), ou
                renvoyer au groupe le résultat d'une comparaison -->
-          <button class="bouton bouton--contour cache" id="diagnostic-partager" type="button" data-t="partage_bouton">Partager pour une comparaison</button>
+          <button class="bouton bouton--contour cache" id="diagnostic-partager" type="button" data-t="partage_bouton">Partager pour le groupe</button>
           <button class="bouton bouton--contour cache" id="diagnostic-envoyer-resultat" type="button" data-t="resultat_envoyer">Envoyer le résultat au groupe</button>
           <button class="bouton bouton--contour" id="diagnostic-references" data-t="diagnostic_references">Pour aller plus loin</button>
           <button class="bouton bouton--lien" id="diagnostic-accueil" data-t="diagnostic_accueil">Revenir à l'accueil</button>
@@ -314,8 +294,8 @@
       </header>
 
       <div class="historique__contenu">
-        <!-- Comparer des évaluations (v74) : rassembler des codes ou des liens -->
-        <button class="bouton bouton--contour historique__comparer" id="historique-comparer" type="button" data-t="comparer_titre">Comparer des évaluations</button>
+        <!-- Rassembler des évaluations (v74, renommé en v79) : codes ou liens reçus -->
+        <button class="bouton bouton--contour historique__comparer" id="historique-comparer" type="button" data-t="comparer_titre">Rassembler des évaluations</button>
         <!-- Message affiché quand il n'y a aucune évaluation -->
         <p class="historique__vide cache" id="historique-vide" data-t="historique_vide">
           Vous n'avez pas encore d'évaluation enregistrée. Les évaluations terminées apparaîtront ici.
@@ -342,7 +322,7 @@
     <section class="ecran comparer" id="ecran-comparer">
       <header class="barre-titre">
         <button class="barre-titre__retour" id="comparer-retour" aria-label="Retour" data-t-aria="retour_accueil">‹</button>
-        <h2 class="barre-titre__titre" data-t="comparer_titre">Comparer des évaluations</h2>
+        <h2 class="barre-titre__titre" data-t="comparer_titre">Rassembler des évaluations</h2>
       </header>
 
       <div class="comparer__contenu">
@@ -399,7 +379,7 @@
 
           <h3 class="page-info__titre">Comment ça fonctionne ?</h3>
           <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>Vous donnez un nom à la pratique à évaluer et vous choisissez son domaine : annoncer la foi, célébrer la foi, gouverner ou servir (ou « autre pratique »). Pour chacun des 14 piliers, répartis selon les 3 pierres angulaires de la synodalité (communion, participation et mission), vous indiquez s'il est solidement établi, en chantier, à bâtir ou non applicable. Des questions, adaptées à ce domaine, vous aident dans votre réflexion. Vous n'avez pas à répondre à chacune d'entre elles, mais vous évaluez l'ensemble du pilier. Au terme, l'application génère un diagnostic visuel, que vous pouvez exporter en PDF. Le PDF inclut un rapport détaillé d'évaluation pour chacun des piliers. Les références au <em>Document final</em> de chaque pilier sont rassemblées dans un second PDF, accessible par le bouton « Pour aller plus loin ». Des pistes de progression personnalisées seront proposées dans une prochaine version. L'évaluation peut aussi se faire en groupe : sur un seul appareil, en notant les avis de chacun, ou en rassemblant les codes de comparaison de personnes qui ont évalué chacune de leur côté.</p>
+          <p>Vous donnez un nom à la pratique à évaluer et vous choisissez son domaine : annoncer la foi, célébrer la foi, gouverner ou servir (ou « autre pratique »). Pour chacun des 14 piliers, répartis selon les 3 pierres angulaires de la synodalité (communion, participation et mission), vous indiquez s'il est solidement établi, à consolider, en chantier, à bâtir ou non applicable. Des questions, adaptées à ce domaine, vous aident dans votre réflexion. Vous n'avez pas à répondre à chacune d'entre elles, mais vous évaluez l'ensemble du pilier. Au terme, l'application génère un diagnostic visuel, que vous pouvez exporter en PDF. Le PDF inclut un rapport détaillé d'évaluation pour chacun des piliers. Les références au <em>Document final</em> de chaque pilier sont rassemblées dans un second PDF, accessible par le bouton « Pour aller plus loin ». L'évaluation peut aussi se faire à plusieurs : chacun évalue de son côté, puis une personne rassemble les codes de comparaison pour obtenir le diagnostic du groupe.</p>
         </div>
 
         <!-- Version anglaise (traduction officielle de l'équipe) -->
@@ -416,7 +396,7 @@
 
           <h3 class="page-info__titre">How does it work?</h3>
           <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>You give the practice you wish to assess a name and choose its area: proclaiming the faith, celebrating the faith, governing or serving (or ‘other practice’). For each of the 14 pillars, organized according to the three cornerstones of synodality (communion, participation and mission) you indicate whether it is well established, under development, to be built or not applicable. Guiding questions, adapted to this area, are provided to support your reflection. You do not need to answer every question; rather, you assess the pillar as a whole. At the end of the process, the application generates a visual assessment, which you can export as a PDF. The PDF includes a detailed evaluation report for each pillar. References to the <em>Final Document</em> for each pillar are gathered in a second PDF, available via the ‘Going deeper’ button. Personalised pathways for progress will be offered in a future version. The evaluation can also be carried out as a group: on a single device, by recording each person’s view, or by gathering the comparison codes of people who evaluated separately.</p>
+          <p>You give the practice you wish to assess a name and choose its area: proclaiming the faith, celebrating the faith, governing or serving (or ‘other practice’). For each of the 14 pillars, organized according to the three cornerstones of synodality (communion, participation and mission) you indicate whether it is well established, to be consolidated, under development, to be built or not applicable. Guiding questions, adapted to this area, are provided to support your reflection. You do not need to answer every question; rather, you assess the pillar as a whole. At the end of the process, the application generates a visual assessment, which you can export as a PDF. The PDF includes a detailed evaluation report for each pillar. References to the <em>Final Document</em> for each pillar are gathered in a second PDF, available via the ‘Going deeper’ button. The evaluation can also be carried out by several people: each person evaluates separately, then one person gathers the comparison codes to obtain the group diagnosis.</p>
         </div>
 
         <!-- Version néerlandaise (traduction à valider par l'équipe) -->
@@ -433,7 +413,7 @@
 
           <h3 class="page-info__titre">Hoe werkt het?</h3>
           <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>Je geeft de geloofspraktijk die je wilt evalueren een naam en kiest het domein: het geloof verkondigen, het geloof vieren, besturen of dienen (of ‘andere geloofspraktijk’). Voor elk van de 14 criteria, verdeeld over de 3 pijlers van synodaliteit (gemeenschap, participatie en zending), geef je aan of het stevig verankerd, in opbouw, nog op te bouwen of niet van toepassing is. Vragen, aangepast aan dit domein, helpen je bij je reflectie. Je hoeft ze niet allemaal te beantwoorden, maar je beoordeelt het criterium in zijn geheel. Op het einde genereert de applicatie een visuele diagnose, die je als pdf kunt exporteren. De pdf bevat een gedetailleerd evaluatierapport voor elk criterium. De verwijzingen naar het <em>Slotdocument</em> voor elk criterium zijn gebundeld in een tweede pdf, beschikbaar via de knop ‘Verder verdiepen’. Gepersonaliseerde groeimogelijkheden worden in een volgende versie aangeboden. De evaluatie kan ook in groep gebeuren: op één toestel, door ieders mening te noteren, of door de vergelijkingscodes te verzamelen van mensen die elk afzonderlijk hebben geëvalueerd.</p>
+          <p>Je geeft de geloofspraktijk die je wilt evalueren een naam en kiest het domein: het geloof verkondigen, het geloof vieren, besturen of dienen (of ‘andere geloofspraktijk’). Voor elk van de 14 criteria, verdeeld over de 3 pijlers van synodaliteit (gemeenschap, participatie en zending), geef je aan of het stevig verankerd, te consolideren, in opbouw, nog op te bouwen of niet van toepassing is. Vragen, aangepast aan dit domein, helpen je bij je reflectie. Je hoeft ze niet allemaal te beantwoorden, maar je beoordeelt het criterium in zijn geheel. Op het einde genereert de applicatie een visuele diagnose, die je als pdf kunt exporteren. De pdf bevat een gedetailleerd evaluatierapport voor elk criterium. De verwijzingen naar het <em>Slotdocument</em> voor elk criterium zijn gebundeld in een tweede pdf, beschikbaar via de knop ‘Verder verdiepen’. De evaluatie kan ook met meerdere personen gebeuren: ieder evalueert afzonderlijk, waarna één persoon de vergelijkingscodes verzamelt om de diagnose van de groep te verkrijgen.</p>
         </div>
 
         <div class="page-info__logo-zone">
@@ -509,7 +489,7 @@
         </div>
 
         <!-- Numéro de version (v75) : utile quand un testeur signale un problème -->
-        <p class="page-info__version" id="a-propos-version">SPIRIT, version 78</p>
+        <p class="page-info__version" id="a-propos-version">SPIRIT, version 84</p>
 
       </div>
     </section>
@@ -585,25 +565,25 @@
         <!-- Version française (texte validé par l'équipe) -->
         <div data-lang="fr">
           <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>Vous donnez un nom à la pratique à évaluer et vous choisissez son domaine : annoncer la foi, célébrer la foi, gouverner ou servir (ou « autre pratique »). Pour chacun des 14 piliers, répartis selon les 3 pierres angulaires de la synodalité (communion, participation et mission), vous indiquez s'il est <em>« solidement établi, en chantier, à bâtir ou non applicable »</em>. Des questions, adaptées à ce domaine, vous aident dans votre réflexion. Vous n'avez pas à répondre à chacune d'entre elles, mais vous évaluez l'ensemble du pilier.</p>
+          <p>Vous donnez un nom à la pratique à évaluer et vous choisissez son domaine : annoncer la foi, célébrer la foi, gouverner ou servir (ou « autre pratique »). Pour chacun des 14 piliers, répartis selon les 3 pierres angulaires de la synodalité (communion, participation et mission), vous indiquez s'il est <em>« solidement établi, à consolider, en chantier, à bâtir ou non applicable »</em>. Des questions, adaptées à ce domaine, vous aident dans votre réflexion. Vous n'avez pas à répondre à chacune d'entre elles, mais vous évaluez l'ensemble du pilier.</p>
 
-          <p>Au terme, l'application génère un diagnostic visuel, que vous pouvez exporter en PDF. Le PDF inclut un rapport détaillé d'évaluation pour chacun des piliers. Les références au <em>Document final</em> de chaque pilier sont rassemblées dans un second PDF, accessible par le bouton « Pour aller plus loin ». Des pistes de progression personnalisées seront proposées dans une prochaine version. L'évaluation peut aussi se faire en groupe : sur un seul appareil, en notant les avis de chacun, ou en rassemblant les codes de comparaison de personnes qui ont évalué chacune de leur côté.</p>
+          <p>Au terme, l'application génère un diagnostic visuel, que vous pouvez exporter en PDF. Le PDF inclut un rapport détaillé d'évaluation pour chacun des piliers. Les références au <em>Document final</em> de chaque pilier sont rassemblées dans un second PDF, accessible par le bouton « Pour aller plus loin ». L'évaluation peut aussi se faire à plusieurs : chacun évalue de son côté, puis une personne rassemble les codes de comparaison pour obtenir le diagnostic du groupe.</p>
         </div>
 
         <!-- Version anglaise (traduction officielle de l'équipe) -->
         <div data-lang="en">
           <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>You give the practice you wish to assess a name and choose its area: proclaiming the faith, celebrating the faith, governing or serving (or ‘other practice’). For each of the 14 pillars, organized according to the three cornerstones of synodality (communion, participation and mission) you indicate whether it is <em>"well established, under development, to be built or not applicable"</em>. Guiding questions, adapted to this area, are provided to support your reflection. You do not need to answer every question; rather, you assess the pillar as a whole.</p>
+          <p>You give the practice you wish to assess a name and choose its area: proclaiming the faith, celebrating the faith, governing or serving (or ‘other practice’). For each of the 14 pillars, organized according to the three cornerstones of synodality (communion, participation and mission) you indicate whether it is <em>"well established, to be consolidated, under development, to be built or not applicable"</em>. Guiding questions, adapted to this area, are provided to support your reflection. You do not need to answer every question; rather, you assess the pillar as a whole.</p>
 
-          <p>At the end of the process, the application generates a visual assessment, which you can export as a PDF. The PDF includes a detailed evaluation report for each pillar. References to the <em>Final Document</em> for each pillar are gathered in a second PDF, available via the ‘Going deeper’ button. Personalised pathways for progress will be offered in a future version. The evaluation can also be carried out as a group: on a single device, by recording each person’s view, or by gathering the comparison codes of people who evaluated separately.</p>
+          <p>At the end of the process, the application generates a visual assessment, which you can export as a PDF. The PDF includes a detailed evaluation report for each pillar. References to the <em>Final Document</em> for each pillar are gathered in a second PDF, available via the ‘Going deeper’ button. The evaluation can also be carried out by several people: each person evaluates separately, then one person gathers the comparison codes to obtain the group diagnosis.</p>
         </div>
 
         <!-- Version néerlandaise (traduction à valider par l'équipe) -->
         <div data-lang="nl">
           <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>Je geeft de geloofspraktijk die je wilt evalueren een naam en kiest het domein: het geloof verkondigen, het geloof vieren, besturen of dienen (of ‘andere geloofspraktijk’). Voor elk van de 14 criteria, verdeeld over de 3 pijlers van synodaliteit (gemeenschap, participatie en zending), geef je aan of het “stevig verankerd, in opbouw, nog op te bouwen of niet van toepassing” is. Vragen, aangepast aan dit domein, helpen je bij je reflectie. Je hoeft ze niet allemaal te beantwoorden, maar je beoordeelt het criterium in zijn geheel.</p>
+          <p>Je geeft de geloofspraktijk die je wilt evalueren een naam en kiest het domein: het geloof verkondigen, het geloof vieren, besturen of dienen (of ‘andere geloofspraktijk’). Voor elk van de 14 criteria, verdeeld over de 3 pijlers van synodaliteit (gemeenschap, participatie en zending), geef je aan of het “stevig verankerd, te consolideren, in opbouw, nog op te bouwen of niet van toepassing” is. Vragen, aangepast aan dit domein, helpen je bij je reflectie. Je hoeft ze niet allemaal te beantwoorden, maar je beoordeelt het criterium in zijn geheel.</p>
 
-          <p>Op het einde genereert de applicatie een visuele diagnose, die je als pdf kunt exporteren. De pdf bevat een gedetailleerd evaluatierapport voor elk criterium. De verwijzingen naar het <em>Slotdocument</em> voor elk criterium zijn gebundeld in een tweede pdf, beschikbaar via de knop ‘Verder verdiepen’. Gepersonaliseerde groeimogelijkheden worden in een volgende versie aangeboden. De evaluatie kan ook in groep gebeuren: op één toestel, door ieders mening te noteren, of door de vergelijkingscodes te verzamelen van mensen die elk afzonderlijk hebben geëvalueerd.</p>
+          <p>Op het einde genereert de applicatie een visuele diagnose, die je als pdf kunt exporteren. De pdf bevat een gedetailleerd evaluatierapport voor elk criterium. De verwijzingen naar het <em>Slotdocument</em> voor elk criterium zijn gebundeld in een tweede pdf, beschikbaar via de knop ‘Verder verdiepen’. De evaluatie kan ook met meerdere personen gebeuren: ieder evalueert afzonderlijk, waarna één persoon de vergelijkingscodes verzamelt om de diagnose van de groep te verkrijgen.</p>
         </div>
       </div>
       <div class="bienvenue__bouton-zone">
@@ -648,7 +628,7 @@
        ============================================================ -->
   <div class="bienvenue-voile cache" id="partage-voile">
     <section class="bienvenue partage" role="dialog" aria-modal="true" aria-labelledby="partage-titre" tabindex="-1">
-      <h2 class="bienvenue__titre" id="partage-titre" data-t="partage_bouton">Partager pour une comparaison</h2>
+      <h2 class="bienvenue__titre" id="partage-titre" data-t="partage_bouton">Partager pour le groupe</h2>
       <p class="partage__texte" data-t="partage_texte">Ce code contient seulement le domaine et les réponses aux 14 piliers : ni nom, ni observation.</p>
       <div class="partage__code-bloc">
         <span class="partage__code-label" data-t="partage_code_label">Code de comparaison</span>
@@ -700,6 +680,8 @@
   <script src="js/donnees-spirit.js"></script>
 
   <!-- Questions d'aide propres à chaque domaine (version d'essai). -->
+  <!-- Pictogrammes des réponses (v80) : une maison à différents stades de construction -->
+  <script src="js/pictogrammes.js"></script>
   <script src="js/questions-domaines.js"></script>
 
   <!-- Lexique (écran « Lexique », version provisoire). -->
