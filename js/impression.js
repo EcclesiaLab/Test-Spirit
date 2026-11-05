@@ -190,7 +190,11 @@ function ligneOrigineQuestions(evaluation) {
    =========================================================== */
 function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commentaires) {
   const conteneur = document.getElementById("document-impression");
-  const date = formaterDateLongue(dateISO || new Date());
+  // v86 : rassemblement de codes → « Diagnostic du … » avec la date du
+  // diagnostic, ou aucune date si on ne la connaît pas (voir comparaison.js).
+  const rassemblement = evaluation.origine === "comparaison";
+  const date = formaterDateLongue(dateISO || (rassemblement ? null : new Date()));
+  const ligneDate = date ? tAvec(rassemblement ? "pdf_diagnostic_date" : "pdf_evaluation_date", { date: date }) : "";
 
   let html = "";
 
@@ -208,7 +212,7 @@ function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commen
   html += '<div class="pdf-objet-bloc">';
   html += '<p class="pdf-objet-label">' + t("pdf_objet_label") + '</p>';
   html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet || t("comparer_sans_nom")) + '</p>';
-  html += '<p class="pdf-objet-meta">' + joindrePoints([descriptionGroupe(evaluation, comptes), date ? tAvec("pdf_evaluation_date", { date: date }) : ""]) + '</p>';
+  html += '<p class="pdf-objet-meta">' + joindrePoints([descriptionGroupe(evaluation, comptes), ligneDate]) + '</p>';
   html += ligneOrigineQuestions(evaluation);
   html += '</div>';
 

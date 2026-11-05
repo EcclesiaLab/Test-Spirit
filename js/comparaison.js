@@ -146,7 +146,8 @@ function formaterCode(code) {
 /* ===========================================================
    2. LES LIENS
    #c=CODE&n=NOM          : une évaluation à ajouter à une comparaison
-   #r=CODE1.CODE2…&n=NOM  : le résultat d'une comparaison, à afficher
+   #r=CODE1.CODE2…&n=NOM&d=AAAA-MM-JJ : le résultat d'une comparaison, à
+                            afficher (d = date du diagnostic, depuis la v86)
    =========================================================== */
 function adresseApp() {
   return window.location.origin + window.location.pathname;
@@ -156,8 +157,42 @@ function lienContribution(code, nom) {
   return adresseApp() + "#c=" + code + (nom ? "&n=" + encodeURIComponent(nom) : "");
 }
 
-function lienResultat(codes, nom) {
-  return adresseApp() + "#r=" + codes.join(".") + (nom ? "&n=" + encodeURIComponent(nom) : "");
+function lienResultat(codes, nom, date) {
+  return adresseApp() + "#r=" + codes.join(".") + (nom ? "&n=" + encodeURIComponent(nom) : "") +
+         (date ? "&d=" + date : "");
+}
+
+/* v86 — La date du diagnostic du groupe.
+   Pourquoi : un lien de résultat gardé dans un compte rendu peut être
+   rouvert des mois plus tard (par exemple pour comparer avec une nouvelle
+   évaluation à 6 ou 12 mois). Sans date dans le lien, l'écran affichait la
+   date du jour, ce qui trompait. Le lien porte donc la date du diagnostic.
+   Format : « AAAA-MM-JJ » (court, lisible, sans heure). */
+
+// Date du jour, au format AAAA-MM-JJ, selon l'heure de l'appareil.
+// (On n'utilise pas toISOString(), qui donne le jour en heure de Greenwich :
+// à 0 h 30 à Bruxelles, ce serait encore la veille.)
+function dateDuJourISO() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
+
+// Lit une date « AAAA-MM-JJ » venue d'un lien. Renvoie la date en objet Date
+// (au jour local), ou null si elle est absente ou invalide (ex. 2026-02-31).
+// (On n'utilise pas new Date("2026-11-05"), qui lit minuit à Greenwich :
+// au Québec, la date affichée serait le 4 novembre.)
+function dateDepuisISO(texte) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(texte || "");
+  if (!m) return null;
+  const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  if (d.getFullYear() !== Number(m[1]) || d.getMonth() !== Number(m[2]) - 1 || d.getDate() !== Number(m[3])) return null;
+  return d;
+}
+
+// Date du diagnostic de comparaison affiché (objet Date), ou null si elle
+// n'est pas connue (lien envoyé avant la v86).
+function dateDiagnosticComparaison() {
+  return diagnosticComparaison ? dateDepuisISO(diagnosticComparaison.date) : null;
 }
 
 // Lit les paramètres placés après « # » dans un lien (ou dans le texte collé).
@@ -431,7 +466,8 @@ function viderComparaison() {
 // au PDF, à l'envoi du résultat et au changement de langue.
 let diagnosticComparaison = null;
 
-function afficherDiagnosticComparaison(nom, codes, retour) {
+// « date » : AAAA-MM-JJ, ou null si on ne la connaît pas (ancien lien).
+function afficherDiagnosticComparaison(nom, codes, retour, date) {
   const lus = codes.map(decoderCode).filter(Boolean);
   const comptes = {};
   CRITERES.forEach((c) => { comptes[c.id] = compteVide(); });
@@ -447,16 +483,18 @@ function afficherDiagnosticComparaison(nom, codes, retour) {
     domainesMultiples: domaines.length > 1,
     nbEvaluations: lus.length
   };
-  diagnosticComparaison = { evaluation: evaluation, comptes: comptes, codes: lus.map((lu) => lu.code), retour: retour };
+  diagnosticComparaison = { evaluation: evaluation, comptes: comptes, codes: lus.map((lu) => lu.code), retour: retour,
+                            date: dateDepuisISO(date) ? date : null };   // v86
   consultationArchive = false;
-  afficherDiagnostic(evaluation, {}, undefined, {}, comptes);
+  afficherDiagnostic(evaluation, {}, dateDiagnosticComparaison(), {}, comptes);
 }
 
 function voirDiagnosticComparaison() {
   enregistrerNomComparaison();
   const donnees = lireComparaison();
   if (donnees.elements.length < 2) return;
-  afficherDiagnosticComparaison(donnees.nom, donnees.elements.map((e) => e.code), "comparer");
+  // Diagnostic calculé maintenant à partir de la liste : il porte la date du jour.
+  afficherDiagnosticComparaison(donnees.nom, donnees.elements.map((e) => e.code), "comparer", dateDuJourISO());
 }
 
 
@@ -515,7 +553,9 @@ function copierCodePartage() {
 // « Envoyer le résultat au groupe » : un lien qui contient tous les codes.
 function envoyerResultatGroupe() {
   if (!diagnosticComparaison) return;
-  const url = lienResultat(diagnosticComparaison.codes, diagnosticComparaison.evaluation.nomObjet);
+  // v86 : le lien garde la date du diagnostic (celle d'origine si le
+  // diagnostic a lui-même été ouvert depuis un lien daté).
+  const url = lienResultat(diagnosticComparaison.codes, diagnosticComparaison.evaluation.nomObjet, diagnosticComparaison.date);
   envoyerLien(url, t("resultat_message"), (ok) => {
     afficherMessage(t("resultat_envoyer"), ok ? t("partage_lien_copie") : t("resultat_lien_copier"), url);
   });
@@ -543,6 +583,6 @@ function traiterLienEntrant() {
     afficherComparer(resultat, "accueil");
   } else if (params.r) {
     effacerFragment();
-    afficherDiagnosticComparaison(params.n || "", params.r.split("."), "accueil");
+    afficherDiagnosticComparaison(params.n || "", params.r.split("."), "accueil", params.d || null);
   }
 }

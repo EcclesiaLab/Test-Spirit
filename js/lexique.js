@@ -165,7 +165,7 @@ const LEXIQUE = [
     definition: {
       fr: "Réponse à choisir quand le pilier ne concerne pas la pratique évaluée, compte tenu de sa nature. Le pilier n'est alors pas pris en compte dans le diagnostic. Si le pilier concerne la pratique mais n'est pas encore vécu, choisissez plutôt « À bâtir ».",
       en: "The answer to choose when the pillar does not concern the practice being evaluated, given its nature. The pillar is then not taken into account in the diagnosis. If the pillar does concern the practice but is not yet lived out, choose “To be built” instead.",
-      nl: "Het antwoord dat je kiest wanneer het criterium, gezien de aard van de geloofspraktijk, er geen betrekking op heeft. Het criterium wordt dan niet meegeteld in de diagnose. Heeft het criterium wel betrekking op de geloofspraktijk, maar wordt het nog niet beleefd? Kies dan ‘Nog op te bouwen’."
+      nl: "Het antwoord dat je kiest wanneer het criterium, gezien de aard van de kerkelijke praktijk, er geen betrekking op heeft. Het criterium wordt dan niet meegeteld in de diagnose. Heeft het criterium wel betrekking op de kerkelijke praktijk, maar wordt het nog niet beleefd? Kies dan ‘Nog op te bouwen’."
     }
   },
   {
@@ -173,7 +173,7 @@ const LEXIQUE = [
     definition: {
       fr: "Dans SPIRIT, l'un des 14 critères qui servent à évaluer une pratique. Les piliers sont répartis entre les trois pierres angulaires (5 pour la communion, 4 pour la participation, 5 pour la mission). Chacun nomme un aspect concret de la synodalité, comme l'hospitalité, la coresponsabilité ou la transparence, et s'accompagne de questions pour aider à répondre. Les piliers ont été validés par un panel de théologiens et théologiennes selon la méthode Delphi.",
       en: "In SPIRIT, one of the 14 criteria used to evaluate a practice. The pillars are grouped under the three cornerstones (5 for communion, 4 for participation, 5 for mission). Each one names a concrete aspect of synodality, such as hospitality, co-responsibility or transparency, and comes with questions to help answer it. The pillars were validated by a panel of theologians using the Delphi method.",
-      nl: "In SPIRIT een van de 14 criteria waarmee een geloofspraktijk geëvalueerd wordt. De criteria zijn verdeeld over de drie pijlers (5 voor gemeenschap, 4 voor participatie, 5 voor zending). Elk criterium benoemt een concreet aspect van synodaliteit, zoals gastvrijheid, medeverantwoordelijkheid of transparantie, en gaat vergezeld van vragen die helpen om te antwoorden. De criteria werden gevalideerd door een panel van theologen volgens de Delphi-methode."
+      nl: "In SPIRIT een van de 14 criteria waarmee een kerkelijke praktijk geëvalueerd wordt. De criteria zijn verdeeld over de drie pijlers (5 voor gemeenschap, 4 voor participatie, 5 voor zending). Elk criterium benoemt een concreet aspect van synodaliteit, zoals gastvrijheid, medeverantwoordelijkheid of transparantie, en gaat vergezeld van vragen die helpen om te antwoorden. De criteria werden gevalideerd door een panel van theologen volgens de Delphi-methode."
     }
   },
   {

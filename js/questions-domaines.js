@@ -49,10 +49,10 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Richt de verkondiging zich tot iedereen, met name tot mensen die zich misschien ver van de Kerk, gemarginaliseerd of anders voelen of die zich terughoudend opstellen?" },
       { fr: "La pratique respecte-t-elle l'égale dignité de chaque participant ?",
         en: "Does the practice respect the equal dignity of every participant?",
-        nl: "Wordt de gelijkwaardigheid van elke deelnemer gerespecteerd in deze geloofspraktijk?" },
+        nl: "Wordt de gelijkwaardigheid van elke deelnemer gerespecteerd in deze kerkelijke praktijk?" },
       { fr: "La pratique encourage-t-elle une écoute réciproque des questions, des doutes et des expériences de chacun ?",
         en: "Does the practice encourage reciprocal listening to each person's questions, doubts and experiences?",
-        nl: "Wordt er in de geloofspraktijk aangemoedigd om wederzijds te luisteren naar ieders vragen, twijfels en ervaringen?" }
+        nl: "Wordt er in de kerkelijke praktijk aangemoedigd om wederzijds te luisteren naar ieders vragen, twijfels en ervaringen?" }
     ],
     // Pilier 2 — Accueil de la différence et de la diversité
     "diversite": [
@@ -73,7 +73,7 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Is de verkondiging geworteld in het aandachtig luisteren naar het Woord van God?" },
       { fr: "La pratique est-elle inspirée par la prière ?",
         en: "Is the practice inspired by prayer?",
-        nl: "Wordt deze geloofspraktijk geïnspireerd door gebed?" },
+        nl: "Wordt deze kerkelijke praktijk geïnspireerd door gebed?" },
       { fr: "La Parole de Dieu est-elle le fondement du discernement sur les contenus et les manières d'annoncer ?",
         en: "Is the Word of God the foundation for discernment about the content and ways of proclaiming?",
         nl: "Vormt het Woord van God de basis voor onderscheiding over de inhoud en de manieren van verkondigen?" }
@@ -85,7 +85,7 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Put de verkondiging uit de viering van de eucharistie en leidt ze ernaartoe?" },
       { fr: "La pratique favorise-t-elle une participation active à la liturgie ?",
         en: "Does the practice foster active participation in the liturgy?",
-        nl: "Bevordert deze geloofspraktijk actieve deelname aan de liturgie?" }
+        nl: "Bevordert deze kerkelijke praktijk actieve deelname aan de liturgie?" }
     ],
     // Pilier 5 — Dimension œcuménique et dialogue interreligieux dans le monde
     "oecumenisme": [
@@ -97,7 +97,7 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Gebeurt de verkondiging met respect en in dialoog met andere religieuze tradities en met mensen zonder geloof?" },
       { fr: "La pratique résiste-t-elle à la tentation du repli sur soi ?",
         en: "Does the practice resist the temptation of self-centredness?",
-        nl: "Weerstaat deze geloofspraktijk de verleiding tot egocentrisme?" }
+        nl: "Weerstaat deze kerkelijke praktijk de verleiding tot egocentrisme?" }
     ],
     // Pilier 6 — Implication dans le discernement et la prise de décision
     "discernement-decision": [
@@ -118,58 +118,58 @@ const QUESTIONS_PAR_DOMAINE = {
     "coresponsabilite": [
       { fr: "La pratique encourage-t-elle un partage plus large des tâches et des responsabilités entre tous les baptisés ?",
         en: "Does the practice encourage a wider sharing of tasks and responsibilities among all the baptised?",
-        nl: "Bevordert de geloofspraktijk een bredere verdeling van de taken en verantwoordelijkheden onder alle gedoopten?" },
+        nl: "Bevordert de kerkelijke praktijk een bredere verdeling van de taken en verantwoordelijkheden onder alle gedoopten?" },
       { fr: "La pratique reflète-t-elle la coresponsabilité différenciée des ministres ordonnés et des fidèles laïcs dans l’annonce de la foi ?",
         en: "Does the practice reflect the differentiated co-responsibility of ordained ministers and lay faithful in proclaiming the faith?",
-        nl: "Weerspiegelt de geloofspraktijk de gedifferentieerde medeverantwoordelijkheid van gewijde ambtsdragers en lekengelovigen in de verkondiging van het geloof?" }
+        nl: "Weerspiegelt de kerkelijke praktijk de gedifferentieerde medeverantwoordelijkheid van gewijde ambtsdragers en lekengelovigen in de verkondiging van het geloof?" }
     ],
     // Pilier 8 — Transparence, reddition de comptes et évaluation
     "transparence": [
       { fr: "Les responsabilités au sein de la pratique sont-elles clairement définies et comprises ?",
         en: "Are responsibilities within the practice clearly defined and understood?",
-        nl: "Zijn de verantwoordelijkheden binnen de geloofspraktijk duidelijk vastgelegd en worden ze begrepen?" },
+        nl: "Zijn de verantwoordelijkheden binnen de kerkelijke praktijk duidelijk vastgelegd en worden ze begrepen?" },
       { fr: "La gestion des ressources humaines et financières est-elle documentée ?",
         en: "Is the management of human and financial resources in the practice documented?",
-        nl: "Wordt het beheer van de mensen en financiële middelen binnen de geloofspraktijk gedocumenteerd?" },
+        nl: "Wordt het beheer van de mensen en financiële middelen binnen de kerkelijke praktijk gedocumenteerd?" },
       { fr: "Les informations essentielles sont-elles partagées ouvertement et en temps utile ?",
         en: "Is essential information shared openly and in a timely manner in the practice?",
-        nl: "Wordt essentiële informatie binnen de geloofspraktijk openlijk en tijdig gedeeld?" },
+        nl: "Wordt essentiële informatie binnen de kerkelijke praktijk openlijk en tijdig gedeeld?" },
       { fr: "Une évaluation régulière de la pratique est-elle prévue ?",
         en: "Is there a regular evaluation of the practice?",
-        nl: "Wordt de geloofspraktijk regelmatig geëvalueerd?" }
+        nl: "Wordt de kerkelijke praktijk regelmatig geëvalueerd?" }
     ],
     // Pilier 9 — Ouverture à la formation et à l'apprentissage par l'expérience
     "formation": [
       { fr: "La pratique intègre-t-elle une dimension d'apprentissage ?",
         en: "Does the practice include a learning dimension?",
-        nl: "Maakt (bij)leren deel uit van de geloofspraktijk?" },
+        nl: "Maakt (bij)leren deel uit van de kerkelijke praktijk?" },
       { fr: "La pratique comprend-elle des temps de relecture et d'évaluation continue des expériences vécues ?",
         en: "Does the practice include moments of reflection and continuous evaluation on the lived experiences?",
-        nl: "Zijn er binnen de geloofspraktijk momenten van reflectie en voortdurende evaluatie van de beleefde ervaringen?" },
+        nl: "Zijn er binnen de kerkelijke praktijk momenten van reflectie en voortdurende evaluatie van de beleefde ervaringen?" },
       { fr: "La pratique favorise-t-elle l’apprentissage à partir des échecs et des résistances ?",
         en: "Does the practice foster learning from failures and resistance?",
-        nl: "Bevordert de geloofspraktijk het leren van mislukkingen en weerstand?" }
+        nl: "Bevordert de kerkelijke praktijk het leren van mislukkingen en weerstand?" }
     ],
     // Pilier 10 — Centralité de Jésus-Christ
     "centralite-christ": [
       { fr: "La pratique témoigne-t-elle du Christ vivant et ressuscité ?",
         en: "Does the practice bear witness to the living and risen Christ?",
-        nl: "Legt de geloofspraktijk getuigenis af van de levende en verrezen Christus?" },
+        nl: "Legt de kerkelijke praktijk getuigenis af van de levende en verrezen Christus?" },
       { fr: "La pratique vise-t-elle à approfondir la relation de chacun avec le Christ ?",
         en: "Does the practice aim to deepen each person's relationship with Christ?",
-        nl: "Is het doel van de geloofspraktijk om de relatie van ieder individu met Christus te verdiepen?" },
+        nl: "Is het doel van de kerkelijke praktijk om de relatie van ieder individu met Christus te verdiepen?" },
       { fr: "La pratique promeut-elle une manière de vivre qui intègre la foi dans la vie quotidienne ?",
         en: "Does the practice promote a way of life that integrates faith into daily life?",
-        nl: "Bevordert de geloofspraktijk een levenswijze waarin geloof en dagelijks leven met elkaar worden verbonden?" }
+        nl: "Bevordert de kerkelijke praktijk een levenswijze waarin geloof en dagelijks leven met elkaar worden verbonden?" }
     ],
     // Pilier 11 — Orientée vers l'activité missionnaire de l'Église
     "activite-missionnaire": [
       { fr: "La pratique contribue-t-elle à un nouvel élan missionnaire ?",
         en: "Does the practice contribute to a new impulse to mission?",
-        nl: "Draagt deze geloofspraktijk bij aan een nieuwe impuls voor zending/missie?" },
+        nl: "Draagt deze kerkelijke praktijk bij aan een nieuwe impuls voor zending/missie?" },
       { fr: "La pratique s'inscrit-elle dans la dynamique missionnaire de l'Église locale ?",
         en: "Is the practice embedded in the missionary dynamic of the local Church?",
-        nl: "Is deze geloofspraktijk verankerd in de missionaire dynamiek van de lokale Kerk?" }
+        nl: "Is deze kerkelijke praktijk verankerd in de missionaire dynamiek van de lokale Kerk?" }
     ],
     // Pilier 12 — Collaboration dans la mission par la reconnaissance des services et des ministères
     "services-ministeres": [
@@ -178,34 +178,34 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Worden de charisma’s van elk individu erkend in het licht van de behoeften van de gemeenschap en de zending?" },
       { fr: "La pratique soutient-elle une diversité de services et de ministères en réponse aux besoins pastoraux ?",
         en: "Does the practice support a variety of services and ministries in response to the pastoral needs?",
-        nl: "Maakt de geloofspraktijk verschillende diensttaken en ambten mogelijk om tegemoet te komen aan de pastorale behoeften?" },
+        nl: "Maakt de kerkelijke praktijk verschillende diensttaken en ambten mogelijk om tegemoet te komen aan de pastorale behoeften?" },
       { fr: "Les femmes ont-elles l'occasion d'accéder aux postes de responsabilités ?",
         en: "Do women have opportunities to take on roles of responsibility in the practice?",
-        nl: "Hebben vrouwen mogelijkheden om verantwoordelijke functies binnen de geloofspraktijk te bekleden?" }
+        nl: "Hebben vrouwen mogelijkheden om verantwoordelijke functies binnen de kerkelijke praktijk te bekleden?" }
     ],
     // Pilier 13 — Prise en compte des contextes culturels et sociétaux
     "contextes-culturels": [
       { fr: "La pratique tient-elle compte des réalités historiques, contemporaines, sociales, culturelles et digitales de celles et ceux à qui elle s'adresse ?",
         en: "Does the practice take into account the historical, contemporary, social, cultural, and digital realities of those it addresses?",
-        nl: "Houdt de geloofspraktijk rekening met de historische, hedendaagse, sociale, culturele en digitale omstandigheden van de mensen tot wie ze zich richt?" },
+        nl: "Houdt de kerkelijke praktijk rekening met de historische, hedendaagse, sociale, culturele en digitale omstandigheden van de mensen tot wie ze zich richt?" },
       { fr: "Prend-elle en compte les réalités de mobilité culturelle et géographique (migrants, personnes déplacées ou de passage, etc.) ?",
         en: "Does the practice take the realities of cultural and geographic mobility into account (migrants, displaced people or people passing through, etc.)?",
-        nl: "Houdt de geloofspraktijk rekening met de realiteit van culturele en geografische mobiliteit (migranten, ontheemden of mensen op doortocht enz.)?" },
+        nl: "Houdt de kerkelijke praktijk rekening met de realiteit van culturele en geografische mobiliteit (migranten, ontheemden of mensen op doortocht enz.)?" },
       { fr: "Engage-t-elle un dialogue avec d'autres acteurs de la société, de la culture, de la politique, etc. ?",
         en: "Does the practice engage in dialogue with other actors in society, culture, politics etc.?",
-        nl: "Gaat de geloofspraktijk de dialoog aan met andere actoren uit de samenleving, de cultuur, de politiek enz.?" }
+        nl: "Gaat de kerkelijke praktijk de dialoog aan met andere actoren uit de samenleving, de cultuur, de politiek enz.?" }
     ],
     // Pilier 14 — Conversion synodale par des transformations concrètes
     "conversion-transformations": [
       { fr: "La pratique conduit-elle à une conversion personnelle de tous les participants ?",
         en: "Does the practice lead to a personal conversion of all the participants?",
-        nl: "Leidt deze geloofspraktijk tot een persoonlijke bekering van alle deelnemers?" },
+        nl: "Leidt deze kerkelijke praktijk tot een persoonlijke bekering van alle deelnemers?" },
       { fr: "La pratique rend-elle possible une transformation communautaire ?",
         en: "Does the practice enable communal transformation?",
-        nl: "Zorgt deze geloofspraktijk voor een gemeenschappelijke transformatie?" },
+        nl: "Zorgt deze kerkelijke praktijk voor een gemeenschappelijke transformatie?" },
       { fr: "La pratique contribue-t-elle à un renouveau spirituel et indirectement à une réforme structurelle de l'Église ?",
         en: "Does the practice contribute to a spiritual renewal and, indirectly, to a structural reform of the Church?",
-        nl: "Draagt deze geloofspraktijk bij aan een spirituele vernieuwing en indirect aan een structurele hervorming van de Kerk?" }
+        nl: "Draagt deze kerkelijke praktijk bij aan een spirituele vernieuwing en indirect aan een structurele hervorming van de Kerk?" }
     ]
   },
 
@@ -215,10 +215,10 @@ const QUESTIONS_PAR_DOMAINE = {
     "hospitalite": [
       { fr: "La pratique accueille-t-elle chacun, en particulier ceux qui se sentent marginalisés, différents ou hésitants à participer ?",
         en: "Does the practice you are evaluating welcome everyone, especially those who may feel marginalised, different, or hesitant to participate?",
-        nl: "Is iedereen welkom bij de geloofspraktijk die je evalueert, met name mensen die zich misschien gemarginaliseerd of anders voelen of die zich terughoudend opstellen?" },
+        nl: "Is iedereen welkom bij de kerkelijke praktijk die je evalueert, met name mensen die zich misschien gemarginaliseerd of anders voelen of die zich terughoudend opstellen?" },
       { fr: "La pratique respecte-t-elle l'égale dignité de chaque participant ?",
         en: "Does the practice respect the equal dignity of every participant?",
-        nl: "Wordt de gelijkwaardigheid van elke deelnemer gerespecteerd in deze geloofspraktijk?" },
+        nl: "Wordt de gelijkwaardigheid van elke deelnemer gerespecteerd in deze kerkelijke praktijk?" },
       { fr: "Les modes de gouvernance favorisent-ils une écoute réciproque entre responsables et membres du groupe ?",
         en: "Do the ways of governing foster reciprocal listening between those in charge and members of the group?",
         nl: "Bevorderen de manieren van besturen het wederzijds luisteren tussen verantwoordelijken en leden van de groep?" }
@@ -230,7 +230,7 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Verwelkomt het bestuur verschillende standpunten als een kans om samen te groeien en tot volwassenheid te komen?" },
       { fr: "La pratique valorise-t-elle la diversité des expressions de la foi ?",
         en: "Does the practice value the diversity of expressions of faith?",
-        nl: "Wordt in de geloofspraktijk waarde gehecht aan de diversiteit in geloofsuitingen?" },
+        nl: "Wordt in de kerkelijke praktijk waarde gehecht aan de diversiteit in geloofsuitingen?" },
       { fr: "La gouvernance s'exerce-t-elle en lien avec l'Église locale et ses orientations pastorales ?",
         en: "Is governance exercised in connection with the local Church and its pastoral orientations?",
         nl: "Wordt het bestuur uitgeoefend in verbondenheid met de lokale Kerk en haar pastorale beleidslijnen?" }
@@ -251,22 +251,22 @@ const QUESTIONS_PAR_DOMAINE = {
     "eucharistie": [
       { fr: "La pratique est-elle nourrie par la célébration de l'Eucharistie ?",
         en: "Is the practice nourished by the celebration of the Eucharist?",
-        nl: "Wordt deze geloofspraktijk gevoed door de viering van de eucharistie?" },
+        nl: "Wordt deze kerkelijke praktijk gevoed door de viering van de eucharistie?" },
       { fr: "La pratique favorise-t-elle une participation active à la liturgie ?",
         en: "Does the practice foster active participation in the liturgy?",
-        nl: "Bevordert deze geloofspraktijk actieve deelname aan de liturgie?" }
+        nl: "Bevordert deze kerkelijke praktijk actieve deelname aan de liturgie?" }
     ],
     // Pilier 5 — Dimension œcuménique et dialogue interreligieux dans le monde
     "oecumenisme": [
       { fr: "La pratique favorise-t-elle le dialogue avec d'autres Églises et communautés chrétiennes ?",
         en: "Does the practice foster dialogue with other Churches and Christian communities?",
-        nl: "Bevordert deze geloofspraktijk de dialoog met andere Kerken en christelijke gemeenschappen?" },
+        nl: "Bevordert deze kerkelijke praktijk de dialoog met andere Kerken en christelijke gemeenschappen?" },
       { fr: "La pratique de gouvernance tient-elle compte du dialogue avec les autres traditions religieuses et avec les personnes sans religion ?",
         en: "Does the practice of governance take into account dialogue with other religious traditions and with people of no faith?",
         nl: "Houdt de bestuurspraktijk rekening met de dialoog met andere religieuze tradities en met mensen zonder geloof?" },
       { fr: "La pratique résiste-t-elle à la tentation du repli sur soi ?",
         en: "Does the practice resist the temptation of self-centredness?",
-        nl: "Weerstaat deze geloofspraktijk de verleiding tot egocentrisme?" }
+        nl: "Weerstaat deze kerkelijke praktijk de verleiding tot egocentrisme?" }
     ],
     // Pilier 6 — Implication dans le discernement et la prise de décision
     "discernement-decision": [
@@ -287,7 +287,7 @@ const QUESTIONS_PAR_DOMAINE = {
     "coresponsabilite": [
       { fr: "La pratique encourage-t-elle un partage plus large des tâches et des responsabilités entre les personnes impliquées ?",
         en: "Does the practice encourage a wider sharing of tasks and responsibilities among the people involved?",
-        nl: "Bevordert de geloofspraktijk een bredere verdeling van de taken en verantwoordelijkheden onder de betrokkenen?" },
+        nl: "Bevordert de kerkelijke praktijk een bredere verdeling van de taken en verantwoordelijkheden onder de betrokkenen?" },
       { fr: "La gouvernance reflète-t-elle la coresponsabilité différenciée des ministres ordonnés et des fidèles laïcs ?",
         en: "Does governance reflect the differentiated co-responsibility of ordained ministers and lay faithful?",
         nl: "Weerspiegelt het bestuur de gedifferentieerde medeverantwoordelijkheid van gewijde ambtsdragers en lekengelovigen?" }
@@ -296,28 +296,28 @@ const QUESTIONS_PAR_DOMAINE = {
     "transparence": [
       { fr: "Les responsabilités au sein de la pratique sont-elles clairement définies et comprises ?",
         en: "Are responsibilities within the practice clearly defined and understood?",
-        nl: "Zijn de verantwoordelijkheden binnen de geloofspraktijk duidelijk vastgelegd en worden ze begrepen?" },
+        nl: "Zijn de verantwoordelijkheden binnen de kerkelijke praktijk duidelijk vastgelegd en worden ze begrepen?" },
       { fr: "La gestion des ressources humaines et financières est-elle documentée ?",
         en: "Is the management of human and financial resources in the practice documented?",
-        nl: "Wordt het beheer van de mensen en financiële middelen binnen de geloofspraktijk gedocumenteerd?" },
+        nl: "Wordt het beheer van de mensen en financiële middelen binnen de kerkelijke praktijk gedocumenteerd?" },
       { fr: "Les informations essentielles sont-elles partagées ouvertement et en temps utile ?",
         en: "Is essential information shared openly and in a timely manner in the practice?",
-        nl: "Wordt essentiële informatie binnen de geloofspraktijk openlijk en tijdig gedeeld?" },
+        nl: "Wordt essentiële informatie binnen de kerkelijke praktijk openlijk en tijdig gedeeld?" },
       { fr: "Une évaluation régulière de la pratique est-elle prévue ?",
         en: "Is there a regular evaluation of the practice?",
-        nl: "Wordt de geloofspraktijk regelmatig geëvalueerd?" }
+        nl: "Wordt de kerkelijke praktijk regelmatig geëvalueerd?" }
     ],
     // Pilier 9 — Ouverture à la formation et à l'apprentissage par l'expérience
     "formation": [
       { fr: "La pratique intègre-t-elle une dimension d'apprentissage ?",
         en: "Does the practice include a learning dimension?",
-        nl: "Maakt (bij)leren deel uit van de geloofspraktijk?" },
+        nl: "Maakt (bij)leren deel uit van de kerkelijke praktijk?" },
       { fr: "La pratique comprend-elle des temps de relecture et d'évaluation continue des expériences vécues ?",
         en: "Does the practice include moments of reflection and continuous evaluation on the lived experiences?",
-        nl: "Zijn er binnen de geloofspraktijk momenten van reflectie en voortdurende evaluatie van de beleefde ervaringen?" },
+        nl: "Zijn er binnen de kerkelijke praktijk momenten van reflectie en voortdurende evaluatie van de beleefde ervaringen?" },
       { fr: "La pratique favorise-t-elle l’apprentissage à partir des échecs et des résistances ?",
         en: "Does the practice foster learning from failures and resistance?",
-        nl: "Bevordert de geloofspraktijk het leren van mislukkingen en weerstand?" }
+        nl: "Bevordert de kerkelijke praktijk het leren van mislukkingen en weerstand?" }
     ],
     // Pilier 10 — Centralité de Jésus-Christ
     "centralite-christ": [
@@ -326,19 +326,19 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Legt de manier van besturen getuigenis af van de levende Christus, die niet gekomen is om gediend te worden, maar om te dienen?" },
       { fr: "La pratique vise-t-elle à approfondir la relation de chacun avec le Christ ?",
         en: "Does the practice aim to deepen each person's relationship with Christ?",
-        nl: "Is het doel van de geloofspraktijk om de relatie van ieder individu met Christus te verdiepen?" },
+        nl: "Is het doel van de kerkelijke praktijk om de relatie van ieder individu met Christus te verdiepen?" },
       { fr: "La pratique promeut-elle une manière de vivre qui intègre la foi dans la vie quotidienne ?",
         en: "Does the practice promote a way of life that integrates faith into daily life?",
-        nl: "Bevordert de geloofspraktijk een levenswijze waarin geloof en dagelijks leven met elkaar worden verbonden?" }
+        nl: "Bevordert de kerkelijke praktijk een levenswijze waarin geloof en dagelijks leven met elkaar worden verbonden?" }
     ],
     // Pilier 11 — Orientée vers l'activité missionnaire de l'Église
     "activite-missionnaire": [
       { fr: "La pratique contribue-t-elle à un nouvel élan missionnaire ?",
         en: "Does the practice contribute to a new impulse to mission?",
-        nl: "Draagt deze geloofspraktijk bij aan een nieuwe impuls voor zending/missie?" },
+        nl: "Draagt deze kerkelijke praktijk bij aan een nieuwe impuls voor zending/missie?" },
       { fr: "La pratique s'inscrit-elle dans la dynamique missionnaire de l'Église locale ?",
         en: "Is the practice embedded in the missionary dynamic of the local Church?",
-        nl: "Is deze geloofspraktijk verankerd in de missionaire dynamiek van de lokale Kerk?" }
+        nl: "Is deze kerkelijke praktijk verankerd in de missionaire dynamiek van de lokale Kerk?" }
     ],
     // Pilier 12 — Collaboration dans la mission par la reconnaissance des services et des ministères
     "services-ministeres": [
@@ -347,22 +347,22 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Worden de charisma’s van elk individu erkend in het licht van de behoeften van de gemeenschap en de zending?" },
       { fr: "La pratique soutient-elle une diversité de services et de ministères en réponse aux besoins pastoraux ?",
         en: "Does the practice support a variety of services and ministries in response to the pastoral needs?",
-        nl: "Maakt de geloofspraktijk verschillende diensttaken en ambten mogelijk om tegemoet te komen aan de pastorale behoeften?" },
+        nl: "Maakt de kerkelijke praktijk verschillende diensttaken en ambten mogelijk om tegemoet te komen aan de pastorale behoeften?" },
       { fr: "Les femmes ont-elles l'occasion d'accéder aux postes de responsabilités ?",
         en: "Do women have opportunities to take on roles of responsibility in the practice?",
-        nl: "Hebben vrouwen mogelijkheden om verantwoordelijke functies binnen de geloofspraktijk te bekleden?" }
+        nl: "Hebben vrouwen mogelijkheden om verantwoordelijke functies binnen de kerkelijke praktijk te bekleden?" }
     ],
     // Pilier 13 — Prise en compte des contextes culturels et sociétaux
     "contextes-culturels": [
       { fr: "La pratique manifeste-t-elle une attention aux réalités historiques, contemporaines, sociales, culturelles et digitales ?",
         en: "Does the practice pay attention to historical, contemporary, social, cultural, and digital realities?",
-        nl: "Wordt er in de geloofspraktijk rekening gehouden met historische, hedendaagse, sociale, culturele en digitale omstandigheden?" },
+        nl: "Wordt er in de kerkelijke praktijk rekening gehouden met historische, hedendaagse, sociale, culturele en digitale omstandigheden?" },
       { fr: "Prend-elle en compte les réalités de mobilité culturelle et géographique (migrants, personnes déplacées ou de passage, etc.) ?",
         en: "Does the practice take the realities of cultural and geographic mobility into account (migrants, displaced people or people passing through, etc.)?",
-        nl: "Houdt de geloofspraktijk rekening met de realiteit van culturele en geografische mobiliteit (migranten, ontheemden of mensen op doortocht enz.)?" },
+        nl: "Houdt de kerkelijke praktijk rekening met de realiteit van culturele en geografische mobiliteit (migranten, ontheemden of mensen op doortocht enz.)?" },
       { fr: "Engage-t-elle un dialogue avec d'autres acteurs de la société, de la culture, de la politique, etc. ?",
         en: "Does the practice engage in dialogue with other actors in society, culture, politics etc.?",
-        nl: "Gaat de geloofspraktijk de dialoog aan met andere actoren uit de samenleving, de cultuur, de politiek enz.?" }
+        nl: "Gaat de kerkelijke praktijk de dialoog aan met andere actoren uit de samenleving, de cultuur, de politiek enz.?" }
     ],
     // Pilier 14 — Conversion synodale par des transformations concrètes
     "conversion-transformations": [
@@ -371,10 +371,10 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Draagt de manier van besturen bij aan een persoonlijke bekering van alle deelnemers?" },
       { fr: "La pratique rend-elle possible une transformation communautaire ?",
         en: "Does the practice enable communal transformation?",
-        nl: "Zorgt deze geloofspraktijk voor een gemeenschappelijke transformatie?" },
+        nl: "Zorgt deze kerkelijke praktijk voor een gemeenschappelijke transformatie?" },
       { fr: "La pratique contribue-t-elle au renouveau spirituel et à une réforme structurelle de l'Église ?",
         en: "Does the practice contribute to a spiritual renewal and structural reform of the Church?",
-        nl: "Draagt deze geloofspraktijk bij aan een spirituele vernieuwing en structurele hervorming van de Kerk?" }
+        nl: "Draagt deze kerkelijke praktijk bij aan een spirituele vernieuwing en structurele hervorming van de Kerk?" }
     ]
   },
 
@@ -384,31 +384,31 @@ const QUESTIONS_PAR_DOMAINE = {
     "hospitalite": [
       { fr: "La pratique s’adresse-t-elle à tous, en particulier les personnes pauvres, marginalisées, différentes ou hésitantes à participer ?",
         en: "Is the practice addressed to everyone, especially people who are poor, marginalised, different, or hesitant to participate?",
-        nl: "Richt de geloofspraktijk zich tot iedereen, met name tot mensen die arm, gemarginaliseerd of anders zijn of die zich terughoudend opstellen?" },
+        nl: "Richt de kerkelijke praktijk zich tot iedereen, met name tot mensen die arm, gemarginaliseerd of anders zijn of die zich terughoudend opstellen?" },
       { fr: "La pratique respecte-t-elle l'égale dignité des personnes servies et de celles qui servent ?",
         en: "Does the practice respect the equal dignity of those who are served and of those who serve?",
-        nl: "Wordt de gelijkwaardigheid van wie gediend wordt en van wie dient gerespecteerd in deze geloofspraktijk?" },
+        nl: "Wordt de gelijkwaardigheid van wie gediend wordt en van wie dient gerespecteerd in deze kerkelijke praktijk?" },
       { fr: "La pratique favorise-t-elle une écoute réciproque, où les personnes aidées sont aussi reconnues comme porteuses d'une parole et de dons ?",
         en: "Does the practice foster reciprocal listening, in which the people being helped are also recognised as having a voice and gifts of their own?",
-        nl: "Bevordert de geloofspraktijk het wederzijds luisteren, waarbij de mensen die geholpen worden ook erkend worden als mensen met een eigen stem en eigen gaven?" }
+        nl: "Bevordert de kerkelijke praktijk het wederzijds luisteren, waarbij de mensen die geholpen worden ook erkend worden als mensen met een eigen stem en eigen gaven?" }
     ],
     // Pilier 2 — Accueil de la différence et de la diversité
     "diversite": [
       { fr: "La pratique invite-t-elle chacun à s'ouvrir à l'altérité pour grandir et mûrir ?",
         en: "Does the practice invite each person to open themselves to otherness in order to grow and mature?",
-        nl: "Moedigt de geloofspraktijk iedereen aan om zich open te stellen voor anders-zijn, om zo te groeien en te komen tot volwassenheid?" },
+        nl: "Moedigt de kerkelijke praktijk iedereen aan om zich open te stellen voor anders-zijn, om zo te groeien en te komen tot volwassenheid?" },
       { fr: "La pratique valorise-t-elle la diversité des personnes, de leurs cultures et de leurs expressions de foi ?",
         en: "Does the practice value the diversity of people, their cultures and their expressions of faith?",
-        nl: "Wordt in de geloofspraktijk waarde gehecht aan de diversiteit van mensen, hun culturen en hun geloofsuitingen?" },
+        nl: "Wordt in de kerkelijke praktijk waarde gehecht aan de diversiteit van mensen, hun culturen en hun geloofsuitingen?" },
       { fr: "La pratique est-elle vécue en lien avec l'Église locale ?",
         en: "Is the practice lived in connection with the local Church?",
-        nl: "Wordt de geloofspraktijk beleefd in verbondenheid met de lokale Kerk?" }
+        nl: "Wordt de kerkelijke praktijk beleefd in verbondenheid met de lokale Kerk?" }
     ],
     // Pilier 3 — Enracinée dans la prière et nourrie par l'écoute de la Parole de Dieu
     "parole-de-dieu": [
       { fr: "La pratique est-elle enracinée dans une écoute attentive de la Parole de Dieu ?",
         en: "Is the practice rooted in attentive listening to the Word of God?",
-        nl: "Is deze geloofspraktijk geworteld in het aandachtig luisteren naar het Woord van God?" },
+        nl: "Is deze kerkelijke praktijk geworteld in het aandachtig luisteren naar het Woord van God?" },
       { fr: "Le service est-il inspiré et soutenu par la prière ?",
         en: "Is the service inspired and sustained by prayer?",
         nl: "Wordt de dienst geïnspireerd en gedragen door gebed?" },
@@ -432,7 +432,7 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Staat de dienst open voor dialoog en samenwerking met andere religieuze tradities en met mensen zonder geloof?" },
       { fr: "La pratique résiste-t-elle à la tentation du repli sur soi ?",
         en: "Does the practice resist the temptation of self-centredness?",
-        nl: "Weerstaat deze geloofspraktijk de verleiding tot egocentrisme?" }
+        nl: "Weerstaat deze kerkelijke praktijk de verleiding tot egocentrisme?" }
     ],
     // Pilier 6 — Implication dans le discernement et la prise de décision
     "discernement-decision": [
@@ -456,34 +456,34 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Bevordert de dienst een bredere verdeling van de taken en verantwoordelijkheden onder de betrokkenen?" },
       { fr: "La pratique témoigne-t-elle de la coresponsabilité différenciée des ministres ordonnés et des fidèles laïcs dans la mission commune ?",
         en: "Does the practice bear witness to the differentiated co-responsibility of ordained ministers and lay faithful within the shared mission?",
-        nl: "Getuigt de geloofspraktijk van de gedifferentieerde medeverantwoordelijkheid van gewijde ambtsdragers en lekengelovigen binnen de gezamenlijke zending?" }
+        nl: "Getuigt de kerkelijke praktijk van de gedifferentieerde medeverantwoordelijkheid van gewijde ambtsdragers en lekengelovigen binnen de gezamenlijke zending?" }
     ],
     // Pilier 8 — Transparence, reddition de comptes et évaluation
     "transparence": [
       { fr: "Les responsabilités au sein de la pratique sont-elles clairement définies et comprises ?",
         en: "Are responsibilities within the practice clearly defined and understood?",
-        nl: "Zijn de verantwoordelijkheden binnen de geloofspraktijk duidelijk vastgelegd en worden ze begrepen?" },
+        nl: "Zijn de verantwoordelijkheden binnen de kerkelijke praktijk duidelijk vastgelegd en worden ze begrepen?" },
       { fr: "La gestion des ressources humaines et financières est-elle documentée ?",
         en: "Is the management of human and financial resources in the practice documented?",
-        nl: "Wordt het beheer van de mensen en financiële middelen binnen de geloofspraktijk gedocumenteerd?" },
+        nl: "Wordt het beheer van de mensen en financiële middelen binnen de kerkelijke praktijk gedocumenteerd?" },
       { fr: "Les informations essentielles sont-elles partagées ouvertement et en temps utile ?",
         en: "Is essential information shared openly and in a timely manner in the practice?",
-        nl: "Wordt essentiële informatie binnen de geloofspraktijk openlijk en tijdig gedeeld?" },
+        nl: "Wordt essentiële informatie binnen de kerkelijke praktijk openlijk en tijdig gedeeld?" },
       { fr: "Une évaluation régulière de la pratique est-elle prévue ?",
         en: "Is there a regular evaluation of the practice?",
-        nl: "Wordt de geloofspraktijk regelmatig geëvalueerd?" }
+        nl: "Wordt de kerkelijke praktijk regelmatig geëvalueerd?" }
     ],
     // Pilier 9 — Ouverture à la formation et à l'apprentissage par l'expérience
     "formation": [
       { fr: "La pratique intègre-t-elle une dimension d'apprentissage ?",
         en: "Does the practice include a learning dimension?",
-        nl: "Maakt (bij)leren deel uit van de geloofspraktijk?" },
+        nl: "Maakt (bij)leren deel uit van de kerkelijke praktijk?" },
       { fr: "Le service bénéficie-t-il de temps de relecture et d'évaluation continue des expériences vécues ?",
         en: "Does the service benefit from moments of reflection and continuous evaluation on the lived experiences?",
         nl: "Zijn er binnen de dienst momenten van reflectie en voortdurende evaluatie van de beleefde ervaringen?" },
       { fr: "La pratique favorise-t-elle l’apprentissage à partir des échecs et des résistances ?",
         en: "Does the practice foster learning from failures and resistance?",
-        nl: "Bevordert de geloofspraktijk het leren van mislukkingen en weerstand?" }
+        nl: "Bevordert de kerkelijke praktijk het leren van mislukkingen en weerstand?" }
     ],
     // Pilier 10 — Centralité de Jésus-Christ
     "centralite-christ": [
@@ -492,19 +492,19 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Legt de dienst getuigenis af van de levende Christus, aanwezig in de geringsten?" },
       { fr: "La pratique vise-t-elle à approfondir la relation de chacun avec le Christ ?",
         en: "Does the practice aim to deepen each person's relationship with Christ?",
-        nl: "Is het doel van de geloofspraktijk om de relatie van ieder individu met Christus te verdiepen?" },
+        nl: "Is het doel van de kerkelijke praktijk om de relatie van ieder individu met Christus te verdiepen?" },
       { fr: "La pratique reflète-t-elle une manière de vivre qui intègre la foi dans la vie quotidienne ?",
         en: "Does the practice reflect a way of life that integrates faith into daily life?",
-        nl: "Weerspiegelt de geloofspraktijk een levenswijze waarin geloof en dagelijks leven met elkaar worden verbonden?" }
+        nl: "Weerspiegelt de kerkelijke praktijk een levenswijze waarin geloof en dagelijks leven met elkaar worden verbonden?" }
     ],
     // Pilier 11 — Orientée vers l'activité missionnaire de l'Église
     "activite-missionnaire": [
       { fr: "La pratique contribue-t-elle à un nouvel élan missionnaire ?",
         en: "Does the practice contribute to a new impulse to mission?",
-        nl: "Draagt deze geloofspraktijk bij aan een nieuwe impuls voor zending/missie?" },
+        nl: "Draagt deze kerkelijke praktijk bij aan een nieuwe impuls voor zending/missie?" },
       { fr: "La pratique s'inscrit-elle dans la dynamique missionnaire de l'Église locale ?",
         en: "Is the practice embedded in the missionary dynamic of the local Church?",
-        nl: "Is deze geloofspraktijk verankerd in de missionaire dynamiek van de lokale Kerk?" }
+        nl: "Is deze kerkelijke praktijk verankerd in de missionaire dynamiek van de lokale Kerk?" }
     ],
     // Pilier 12 — Collaboration dans la mission par la reconnaissance des services et des ministères
     "services-ministeres": [
@@ -513,7 +513,7 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Worden de charisma’s van elk individu, ook die van de mensen die gediend worden, erkend in het licht van de behoeften van de zending?" },
       { fr: "La pratique soutient-elle une diversité de services et de ministères en réponse aux besoins pastoraux ?",
         en: "Does the practice support a variety of services and ministries in response to the pastoral needs?",
-        nl: "Maakt de geloofspraktijk verschillende diensttaken en ambten mogelijk om tegemoet te komen aan de pastorale behoeften?" },
+        nl: "Maakt de kerkelijke praktijk verschillende diensttaken en ambten mogelijk om tegemoet te komen aan de pastorale behoeften?" },
       { fr: "Les femmes ont-elles l'occasion d'accéder aux postes de responsabilités dans ce service ?",
         en: "Do women have opportunities to take on roles of responsibility in this service?",
         nl: "Hebben vrouwen mogelijkheden om verantwoordelijke functies binnen deze dienst te bekleden?" }
@@ -522,10 +522,10 @@ const QUESTIONS_PAR_DOMAINE = {
     "contextes-culturels": [
       { fr: "La pratique est-elle attentive aux réalités historiques, contemporaines, sociales, culturelles et digitales, y compris aux causes de la pauvreté et de l'exclusion ?",
         en: "Does the practice pay attention to historical, contemporary, social, cultural, and digital realities, including the causes of poverty and exclusion?",
-        nl: "Wordt er in de geloofspraktijk rekening gehouden met historische, hedendaagse, sociale, culturele en digitale omstandigheden, ook met de oorzaken van armoede en uitsluiting?" },
+        nl: "Wordt er in de kerkelijke praktijk rekening gehouden met historische, hedendaagse, sociale, culturele en digitale omstandigheden, ook met de oorzaken van armoede en uitsluiting?" },
       { fr: "Prend-elle en compte les réalités de mobilité culturelle et géographique (migrants, personnes déplacées ou de passage, etc.) ?",
         en: "Does the practice take the realities of cultural and geographic mobility into account (migrants, displaced people or people passing through, etc.)?",
-        nl: "Houdt de geloofspraktijk rekening met de realiteit van culturele en geografische mobiliteit (migranten, ontheemden of mensen op doortocht enz.)?" },
+        nl: "Houdt de kerkelijke praktijk rekening met de realiteit van culturele en geografische mobiliteit (migranten, ontheemden of mensen op doortocht enz.)?" },
       { fr: "Le service bénéficie-t-il du dialogue avec d’autres acteurs de la société (associations, services publics, monde politique, etc.) ?",
         en: "Does the service benefit from dialogue with other actors in society (associations, public services, the political world, etc.)?",
         nl: "Heeft de dienst baat bij de dialoog met andere actoren uit de samenleving (verenigingen, openbare diensten, de politiek enz.)?" }
@@ -534,7 +534,7 @@ const QUESTIONS_PAR_DOMAINE = {
     "conversion-transformations": [
       { fr: "La pratique conduit-elle à une conversion personnelle des participants ?",
         en: "Does the practice lead to a personal conversion of the participants?",
-        nl: "Leidt deze geloofspraktijk tot een persoonlijke bekering van de deelnemers?" },
+        nl: "Leidt deze kerkelijke praktijk tot een persoonlijke bekering van de deelnemers?" },
       { fr: "Le service rend-il possible une transformation communautaire ?",
         en: "Does the service enable communal transformation?",
         nl: "Maakt de dienst een gemeenschappelijke transformatie mogelijk?" }
@@ -559,7 +559,7 @@ const QUESTIONS_PAR_DOMAINE = {
     "diversite": [
       { fr: "La pratique invite-t-elle chacun à s'ouvrir à l'altérité pour grandir et mûrir ?",
         en: "Does the practice invite each person to open themselves to otherness in order to grow and mature?",
-        nl: "Moedigt de geloofspraktijk iedereen aan om zich open te stellen voor anders-zijn, om zo te groeien en te komen tot volwassenheid?" },
+        nl: "Moedigt de kerkelijke praktijk iedereen aan om zich open te stellen voor anders-zijn, om zo te groeien en te komen tot volwassenheid?" },
       { fr: "La célébration valorise-t-elle la diversité des expressions de la foi (chants, cultures, piété populaire) ?",
         en: "Does the celebration value the diversity of expressions of faith (songs, cultures, popular piety)?",
         nl: "Wordt in de viering waarde gehecht aan de diversiteit in geloofsuitingen (gezangen, culturen, volksvroomheid)?" },
@@ -598,7 +598,7 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Heeft de viering aandacht voor aanwezigen van andere religieuze tradities of zonder geloof (huwelijken, uitvaarten, feesten)?" },
       { fr: "La pratique résiste-t-elle à la tentation du repli sur soi ?",
         en: "Does the practice resist the temptation of self-centredness?",
-        nl: "Weerstaat deze geloofspraktijk de verleiding tot egocentrisme?" }
+        nl: "Weerstaat deze kerkelijke praktijk de verleiding tot egocentrisme?" }
     ],
     // Pilier 6 — Implication dans le discernement et la prise de décision
     "discernement-decision": [
@@ -634,19 +634,19 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Wordt het beheer van de mensen en financiële middelen die met de vieringen verbonden zijn (collectes, offergaven, materiaal enz.) gedocumenteerd?" },
       { fr: "Les informations essentielles sont-elles partagées ouvertement et en temps utile ?",
         en: "Is essential information shared openly and in a timely manner in the practice?",
-        nl: "Wordt essentiële informatie binnen de geloofspraktijk openlijk en tijdig gedeeld?" },
+        nl: "Wordt essentiële informatie binnen de kerkelijke praktijk openlijk en tijdig gedeeld?" },
       { fr: "Une évaluation régulière de la pratique est-elle prévue ?",
         en: "Is there a regular evaluation of the practice?",
-        nl: "Wordt de geloofspraktijk regelmatig geëvalueerd?" }
+        nl: "Wordt de kerkelijke praktijk regelmatig geëvalueerd?" }
     ],
     // Pilier 9 — Ouverture à la formation et à l'apprentissage par l'expérience
     "formation": [
       { fr: "La pratique intègre-t-elle une dimension d'apprentissage ?",
         en: "Does the practice include a learning dimension?",
-        nl: "Maakt (bij)leren deel uit van de geloofspraktijk?" },
+        nl: "Maakt (bij)leren deel uit van de kerkelijke praktijk?" },
       { fr: "La pratique bénéficie-t-elle de temps de relecture et d'évaluation continue des célébrations vécues ?",
         en: "Does the practice benefit from moments of reflection and continuous evaluation on the celebrations that have taken place?",
-        nl: "Zijn er binnen de geloofspraktijk momenten van reflectie en voortdurende evaluatie van de beleefde vieringen?" },
+        nl: "Zijn er binnen de kerkelijke praktijk momenten van reflectie en voortdurende evaluatie van de beleefde vieringen?" },
       { fr: "L’accompagnement des célébrations permet-il d'apprendre des échecs et des résistances ?",
         en: "Does the follow-up of celebrations make it possible to learn from failures and resistance?",
         nl: "Maakt de begeleiding van de vieringen het mogelijk te leren van mislukkingen en weerstand?" }
@@ -667,10 +667,10 @@ const QUESTIONS_PAR_DOMAINE = {
     "activite-missionnaire": [
       { fr: "La pratique contribue-t-elle à un nouvel élan missionnaire ?",
         en: "Does the practice contribute to a new impulse to mission?",
-        nl: "Draagt deze geloofspraktijk bij aan een nieuwe impuls voor zending/missie?" },
+        nl: "Draagt deze kerkelijke praktijk bij aan een nieuwe impuls voor zending/missie?" },
       { fr: "La pratique s'inscrit-elle dans la dynamique missionnaire de l'Église locale ?",
         en: "Is the practice embedded in the missionary dynamic of the local Church?",
-        nl: "Is deze geloofspraktijk verankerd in de missionaire dynamiek van de lokale Kerk?" }
+        nl: "Is deze kerkelijke praktijk verankerd in de missionaire dynamiek van de lokale Kerk?" }
     ],
     // Pilier 12 — Collaboration dans la mission par la reconnaissance des services et des ministères
     "services-ministeres": [
@@ -679,7 +679,7 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Worden de charisma’s van ieder erkend en ingezet ten dienste van de viering?" },
       { fr: "La pratique s’appuie-t-elle sur une diversité de services et de ministères ?",
         en: "Does the practice rely on a variety of services and ministries?",
-        nl: "Steunt de geloofspraktijk op verschillende diensttaken en ambten?" },
+        nl: "Steunt de kerkelijke praktijk op verschillende diensttaken en ambten?" },
       { fr: "Les femmes ont-elles la possibilité d'accomplir tous les rôles non-ordonnés dans la préparation et la célébration ?",
         en: "Do women have the opportunity to carry out all non-ordained roles in preparing and celebrating?",
         nl: "Hebben vrouwen de mogelijkheid om alle niet-gewijde taken op te nemen bij de voorbereiding en de viering?" }
@@ -703,10 +703,10 @@ const QUESTIONS_PAR_DOMAINE = {
         nl: "Is de viering erop gericht te leiden tot een persoonlijke bekering van de deelnemers?" },
       { fr: "La pratique rend-elle possible une transformation communautaire ?",
         en: "Does the practice enable communal transformation?",
-        nl: "Zorgt deze geloofspraktijk voor een gemeenschappelijke transformatie?" },
+        nl: "Zorgt deze kerkelijke praktijk voor een gemeenschappelijke transformatie?" },
       { fr: "La pratique contribue-t-elle à un renouveau spirituel et indirectement à une réforme structurelle de l'Église ?",
         en: "Does the practice contribute to a spiritual renewal and, indirectly, to a structural reform of the Church?",
-        nl: "Draagt deze geloofspraktijk bij aan een spirituele vernieuwing en indirect aan een structurele hervorming van de Kerk?" }
+        nl: "Draagt deze kerkelijke praktijk bij aan een spirituele vernieuwing en indirect aan een structurele hervorming van de Kerk?" }
     ]
   }
 };

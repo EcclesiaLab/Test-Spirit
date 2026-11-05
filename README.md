@@ -10,8 +10,8 @@ L'application est un projet d'**EcclesiaLab**, laboratoire de recherche sur l'in
 
 ## Ce que fait l'application
 
-- **Évaluer** une pratique ecclésiale en répondant, pilier par pilier, à un questionnaire avec quatre niveaux de réponse et « Non applicable » (*Solidement établi / À consolider / En chantier / À bâtir / Non applicable*). Le niveau « À consolider » et les pictogrammes de construction datent de la v80. Une évaluation se fait toujours seul (le mode « Évaluer en groupe » des versions 73 à 80 a été retiré en v81 ; les évaluations de groupe déjà enregistrées restent lisibles).
-- **Rassembler des évaluations** (v74, appelé « Comparer des évaluations » jusqu'à la v78) : c'est la seule manière d'évaluer à plusieurs depuis la v81. Chaque personne évalue de son côté, puis transmet un code de 9 caractères (ou un lien) contenant uniquement le domaine et ses 14 réponses (bouton « Partager pour le groupe » du diagnostic) ; une personne rassemble ces codes dans l'écran « Rassembler des évaluations », accessible depuis l'accueil (v79) ou depuis *Mes évaluations*, et obtient le diagnostic du groupe : la répartition des avis par pilier, sans moyenne, avec les piliers aux avis divergents signalés. Fonctionne en salle comme à distance, sans serveur. Depuis la v80, le code suit un format 2 (5 réponses possibles par pilier) ; les codes donnés avant la v80 restent lisibles.
+- **Évaluer** une pratique ecclésiale (en néerlandais « kerkelijke praktijk » depuis la v85) en répondant, pilier par pilier, à un questionnaire avec quatre niveaux de réponse et « Non applicable » (*Solidement établi / À consolider / En chantier / À bâtir / Non applicable*). Le niveau « À consolider » et les pictogrammes de construction datent de la v80. Une évaluation se fait toujours seul (le mode « Évaluer en groupe » des versions 73 à 80 a été retiré en v81 ; les évaluations de groupe déjà enregistrées restent lisibles).
+- **Rassembler des évaluations** (v74, appelé « Comparer des évaluations » jusqu'à la v78) : c'est la seule manière d'évaluer à plusieurs depuis la v81. Chaque personne évalue de son côté, puis transmet un code de 9 caractères (ou un lien) contenant uniquement le domaine et ses 14 réponses (bouton « Partager pour le groupe » du diagnostic) ; une personne rassemble ces codes dans l'écran « Rassembler des évaluations », accessible depuis l'accueil (v79) ou depuis *Mes évaluations*, et obtient le diagnostic du groupe : la répartition des avis par pilier, sans moyenne, avec les piliers aux avis divergents signalés. Fonctionne en salle comme à distance, sans serveur. Depuis la v80, le code suit un format 2 (5 réponses possibles par pilier) ; les codes donnés avant la v80 restent lisibles. Le lien « Envoyer le résultat au groupe » contient tous les codes ; depuis la v86, il porte aussi la date du diagnostic (`&d=AAAA-MM-JJ`), affichée quand on le rouvre, par exemple pour comparer avec une nouvelle évaluation à 6 ou 12 mois.
 - **Visualiser** un diagnostic sous forme de trois jauges (une par pierre angulaire), accompagné d'une lecture textuelle.
 - **Exporter** le résultat en PDF via la fonction d'impression du navigateur. Depuis la v82, le PDF d'une évaluation porte son code de comparaison en première page et se termine par une démarche « Évaluer à plusieurs, le temps d'une soirée ».
 - **Conserver** l'historique des évaluations sur l'appareil (consultation, réouverture, suppression).
@@ -92,7 +92,7 @@ Quelques règles à respecter dans ce fichier :
 À **chaque modification** d'un fichier (HTML, CSS, JS), il faut **incrémenter le numéro de version** du cache dans `service-worker.js` :
 
 ```js
-const CACHE_VERSION = "spirit-v84";   // → passer à "spirit-v85", etc.
+const CACHE_VERSION = "spirit-v86";   // → passer à "spirit-v87", etc.
 ```
 
 Changer en même temps le numéro affiché dans « À propos » et en pied de PDF, en tête de `js/app.js` :

@@ -71,7 +71,7 @@ function appliquerMiseAJourSiPossible() {
 
 // Numéro de version affiché dans « À propos » et en pied de PDF (constat M10).
 // ⚠ À changer en même temps que CACHE_VERSION dans service-worker.js.
-const VERSION_SPIRIT = "84";
+const VERSION_SPIRIT = "86";
 
 // Clé de mémoire locale : la bienvenue a-t-elle déjà été vue ?
 const CLE_BIENVENUE_VUE = "spirit_bienvenue_vue";
@@ -1303,7 +1303,7 @@ function rafraichirEcranCourant() {
   } else if (id === "ecran-diagnostic") {
     // On régénère le diagnostic dans la bonne langue.
     if (diagnosticComparaison) {
-      afficherDiagnostic(diagnosticComparaison.evaluation, {}, undefined, {}, diagnosticComparaison.comptes);
+      afficherDiagnostic(diagnosticComparaison.evaluation, {}, dateDiagnosticComparaison(), {}, diagnosticComparaison.comptes);
     } else if (consultationArchive) {
       afficherDiagnostic(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation);
     } else {
@@ -1461,7 +1461,7 @@ function brancherBoutons() {
   // archive, sinon celles de l'évaluation en cours.
   parId("diagnostic-pdf").addEventListener("click", () => {
     if (diagnosticComparaison) {
-      lancerImpression(diagnosticComparaison.evaluation, {}, undefined, {}, diagnosticComparaison.comptes);
+      lancerImpression(diagnosticComparaison.evaluation, {}, dateDiagnosticComparaison(), {}, diagnosticComparaison.comptes);
     } else if (consultationArchive) {
       lancerImpression(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation);
     } else {

@@ -98,11 +98,11 @@ const CRITERES = [
     titre: { fr: "Hospitalité et égale dignité", en: "Hospitality and Equal Dignity", nl: "Gastvrijheid en gelijkwaardigheid" },
     sousQuestions: [
       { fr: "La pratique accueille-t-elle chacun, en particulier ceux qui se sentent marginalisés, différents ou hésitants à participer ?",
-        en: "Does the practice you are evaluating welcome everyone, especially those who may feel marginalised, different, or hesitant to participate?", nl: "Is iedereen welkom bij de geloofspraktijk die je evalueert, met name mensen die zich misschien gemarginaliseerd of anders voelen of die zich terughoudend opstellen?" },
+        en: "Does the practice you are evaluating welcome everyone, especially those who may feel marginalised, different, or hesitant to participate?", nl: "Is iedereen welkom bij de kerkelijke praktijk die je evalueert, met name mensen die zich misschien gemarginaliseerd of anders voelen of die zich terughoudend opstellen?" },
       { fr: "La pratique respecte-t-elle l'égale dignité de chaque participant ?",
-        en: "Does the practice respect the equal dignity of every participant?", nl: "Wordt de gelijkwaardigheid van elke deelnemer gerespecteerd in deze geloofspraktijk?" },
+        en: "Does the practice respect the equal dignity of every participant?", nl: "Wordt de gelijkwaardigheid van elke deelnemer gerespecteerd in deze kerkelijke praktijk?" },
       { fr: "La pratique encourage-t-elle une écoute réciproque ?",
-        en: "Does the practice encourage reciprocal listening?", nl: "Wordt er in de geloofspraktijk aangemoedigd om wederzijds naar elkaar te luisteren?" }
+        en: "Does the practice encourage reciprocal listening?", nl: "Wordt er in de kerkelijke praktijk aangemoedigd om wederzijds naar elkaar te luisteren?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -113,11 +113,11 @@ const CRITERES = [
     titre: { fr: "Accueil de la différence et de la diversité", en: "Embracing difference and diversity", nl: "Omarmen van verschil en diversiteit" },
     sousQuestions: [
       { fr: "La pratique invite-t-elle chacun à s'ouvrir à l'altérité pour grandir et mûrir ?",
-        en: "Does the practice invite each person to open themselves to otherness in order to grow and mature?", nl: "Moedigt de geloofspraktijk iedereen aan om zich open te stellen voor anders-zijn, om zo te groeien en te komen tot volwassenheid?" },
+        en: "Does the practice invite each person to open themselves to otherness in order to grow and mature?", nl: "Moedigt de kerkelijke praktijk iedereen aan om zich open te stellen voor anders-zijn, om zo te groeien en te komen tot volwassenheid?" },
       { fr: "Valorise-t-elle la diversité des expressions de la foi ?",
-        en: "Does the practice value the diversity of expressions of faith?", nl: "Wordt in de geloofspraktijk waarde gehecht aan de diversiteit in geloofsuitingen?" },
+        en: "Does the practice value the diversity of expressions of faith?", nl: "Wordt in de kerkelijke praktijk waarde gehecht aan de diversiteit in geloofsuitingen?" },
       { fr: "Reflète-t-elle les liens avec l'Église locale ?",
-        en: "Does the practice reflect bonds with the local Church?", nl: "Weerspiegelt deze geloofspraktijk de band met de lokale Kerk?" }
+        en: "Does the practice reflect bonds with the local Church?", nl: "Weerspiegelt deze kerkelijke praktijk de band met de lokale Kerk?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -129,11 +129,11 @@ const CRITERES = [
              en: "Embedded in prayer and nourished by listening to the Word of God", nl: "Geworteld in gebed en gevoed door het luisteren naar het Woord van God" },
     sousQuestions: [
       { fr: "La pratique est-elle enracinée dans une écoute attentive de la Parole de Dieu ?",
-        en: "Is the practice rooted in attentive listening to the Word of God?", nl: "Is deze geloofspraktijk geworteld in het aandachtig luisteren naar het Woord van God?" },
+        en: "Is the practice rooted in attentive listening to the Word of God?", nl: "Is deze kerkelijke praktijk geworteld in het aandachtig luisteren naar het Woord van God?" },
       { fr: "Est-elle inspirée par la prière ?",
-        en: "Is the practice inspired by prayer?", nl: "Wordt deze geloofspraktijk geïnspireerd door gebed?" },
+        en: "Is the practice inspired by prayer?", nl: "Wordt deze kerkelijke praktijk geïnspireerd door gebed?" },
       { fr: "La Parole de Dieu est-elle le fondement du discernement dans la pratique ?",
-        en: "Is the Word of God the foundation for discernment in the practice?", nl: "Vormt het Woord van God de basis voor onderscheiding in deze geloofspraktijk?" }
+        en: "Is the Word of God the foundation for discernment in the practice?", nl: "Vormt het Woord van God de basis voor onderscheiding in deze kerkelijke praktijk?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -144,9 +144,9 @@ const CRITERES = [
     titre: { fr: "Source et sommet : l'Eucharistie", en: "Source and summit in the Eucharist", nl: "De Eucharistie als bron en hoogtepunt" },
     sousQuestions: [
       { fr: "La pratique est-elle nourrie par la célébration de l'Eucharistie ?",
-        en: "Is the practice nourished by the celebration of the Eucharist?", nl: "Wordt deze geloofspraktijk gevoed door de viering van de eucharistie?" },
+        en: "Is the practice nourished by the celebration of the Eucharist?", nl: "Wordt deze kerkelijke praktijk gevoed door de viering van de eucharistie?" },
       { fr: "Favorise-t-elle une participation active à la liturgie ?",
-        en: "Does the practice foster active participation in the liturgy?", nl: "Bevordert deze geloofspraktijk actieve deelname aan de liturgie?" }
+        en: "Does the practice foster active participation in the liturgy?", nl: "Bevordert deze kerkelijke praktijk actieve deelname aan de liturgie?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -158,11 +158,11 @@ const CRITERES = [
              en: "Considering the ecumenical dimension and interfaith dialogue in the world", nl: "Overwegen van de oecumenische dimensie en interreligieuze dialoog in de wereld" },
     sousQuestions: [
       { fr: "La pratique favorise-t-elle le dialogue avec d'autres Églises et communautés chrétiennes ?",
-        en: "Does the practice foster dialogue with other Churches and Christian communities?", nl: "Bevordert deze geloofspraktijk de dialoog met andere Kerken en christelijke gemeenschappen?" },
+        en: "Does the practice foster dialogue with other Churches and Christian communities?", nl: "Bevordert deze kerkelijke praktijk de dialoog met andere Kerken en christelijke gemeenschappen?" },
       { fr: "Favorise-t-elle le dialogue avec d'autres traditions religieuses, ainsi qu'avec les personnes sans religion ?",
-        en: "Does the practice foster dialogue with other religious traditions, and those of no faith?", nl: "Bevordert deze geloofspraktijk de dialoog met andere religieuze tradities en met mensen zonder geloof?" },
+        en: "Does the practice foster dialogue with other religious traditions, and those of no faith?", nl: "Bevordert deze kerkelijke praktijk de dialoog met andere religieuze tradities en met mensen zonder geloof?" },
       { fr: "La pratique résiste-t-elle à la tentation du repli sur soi ?",
-        en: "Does the practice resist the temptation of self-centredness?", nl: "Weerstaat deze geloofspraktijk de verleiding tot egocentrisme?" }
+        en: "Does the practice resist the temptation of self-centredness?", nl: "Weerstaat deze kerkelijke praktijk de verleiding tot egocentrisme?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -176,9 +176,9 @@ const CRITERES = [
              en: "Involvement in discernment and decision-making", nl: "Betrokkenheid in onderscheiden en besluitvorming" },
     sousQuestions: [
       { fr: "La pratique favorise-t-elle la participation à la prise de décision ?",
-        en: "Does the practice foster participation in decision-making?", nl: "Moedigt deze geloofspraktijk het deelnemen aan besluitvorming aan?" },
+        en: "Does the practice foster participation in decision-making?", nl: "Moedigt deze kerkelijke praktijk het deelnemen aan besluitvorming aan?" },
       { fr: "Est-elle portée par une communauté plutôt que par une personne agissant seule ?",
-        en: "Is the practice carried out by a community rather than by a single individual acting alone?", nl: "Wordt deze geloofspraktijk uitgevoerd door een gemeenschap in plaats van door één persoon die op eigen houtje handelt?" },
+        en: "Is the practice carried out by a community rather than by a single individual acting alone?", nl: "Wordt deze kerkelijke praktijk uitgevoerd door een gemeenschap in plaats van door één persoon die op eigen houtje handelt?" },
       { fr: "Les personnes qui participent se sentent-elles libres de parler ouvertement et d'exprimer un désaccord ?",
         en: "Do people who participate feel free to speak openly and express disagreement?", nl: "Voelen de deelnemers zich vrij om openlijk te spreken en hun onenigheid te uiten?" },
       { fr: "Des mesures sont-elles prises pour qu'aucun groupe social ou culturel ne domine le processus de discernement ou de décision ?",
@@ -193,9 +193,9 @@ const CRITERES = [
     titre: { fr: "Coresponsabilité", en: "Co-responsibility", nl: "Medeverantwoordelijkheid" },
     sousQuestions: [
       { fr: "La pratique encourage-t-elle un partage plus large des tâches et des responsabilités au sein du Peuple de Dieu ?",
-        en: "Does the practice encourage a wider sharing of the tasks and responsibilities of the People of God?", nl: "Bevordert deze geloofspraktijk een bredere verdeling van de taken en verantwoordelijkheden binnen het Volk van God?" },
+        en: "Does the practice encourage a wider sharing of the tasks and responsibilities of the People of God?", nl: "Bevordert deze kerkelijke praktijk een bredere verdeling van de taken en verantwoordelijkheden binnen het Volk van God?" },
       { fr: "Reflète-t-elle la coresponsabilité différenciée des ministères ordonnés et non ordonnés au sein de la mission commune de tous les fidèles dans l'Église ?",
-        en: "Does the practice reflect the differentiated co-responsibility of ordained and non-ordained ministries within the shared mission of all the faithful in the Church?", nl: "Weerspiegelt deze geloofspraktijk de gedifferentieerde medeverantwoordelijkheid van gewijde en niet-gewijde ambten binnen de gezamenlijke zending van alle gelovigen in de Kerk?" }
+        en: "Does the practice reflect the differentiated co-responsibility of ordained and non-ordained ministries within the shared mission of all the faithful in the Church?", nl: "Weerspiegelt deze kerkelijke praktijk de gedifferentieerde medeverantwoordelijkheid van gewijde en niet-gewijde ambten binnen de gezamenlijke zending van alle gelovigen in de Kerk?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -207,13 +207,13 @@ const CRITERES = [
              en: "Transparency, accountability, and evaluation", nl: "Transparantie, verantwoording en evaluatie" },
     sousQuestions: [
       { fr: "Les responsabilités au sein de la pratique sont-elles clairement définies et comprises ?",
-        en: "Are responsibilities within the practice clearly defined and understood?", nl: "Zijn de verantwoordelijkheden binnen de geloofspraktijk duidelijk vastgelegd en worden ze begrepen?" },
+        en: "Are responsibilities within the practice clearly defined and understood?", nl: "Zijn de verantwoordelijkheden binnen de kerkelijke praktijk duidelijk vastgelegd en worden ze begrepen?" },
       { fr: "La gestion des ressources humaines et financières est-elle documentée ?",
-        en: "Is the management of human and financial resources in the practice documented?", nl: "Wordt het beheer van de mensen en financiële middelen binnen de geloofspraktijk gedocumenteerd?" },
+        en: "Is the management of human and financial resources in the practice documented?", nl: "Wordt het beheer van de mensen en financiële middelen binnen de kerkelijke praktijk gedocumenteerd?" },
       { fr: "Les informations essentielles sont-elles partagées ouvertement et en temps utile ?",
-        en: "Is essential information shared openly and in a timely manner in the practice?", nl: "Wordt essentiële informatie binnen de geloofspraktijk openlijk en tijdig gedeeld?" },
+        en: "Is essential information shared openly and in a timely manner in the practice?", nl: "Wordt essentiële informatie binnen de kerkelijke praktijk openlijk en tijdig gedeeld?" },
       { fr: "Une évaluation régulière de la pratique est-elle prévue ?",
-        en: "Is there a regular evaluation of the practice?", nl: "Wordt de geloofspraktijk regelmatig geëvalueerd?" }
+        en: "Is there a regular evaluation of the practice?", nl: "Wordt de kerkelijke praktijk regelmatig geëvalueerd?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -225,11 +225,11 @@ const CRITERES = [
              en: "Openness for formation and learning from experience", nl: "Openheid voor vorming en leren van ervaring" },
     sousQuestions: [
       { fr: "La pratique intègre-t-elle une dimension d'apprentissage ?",
-        en: "Does the practice include a learning dimension?", nl: "Maakt (bij)leren deel uit van de geloofspraktijk?" },
+        en: "Does the practice include a learning dimension?", nl: "Maakt (bij)leren deel uit van de kerkelijke praktijk?" },
       { fr: "Comprend-elle des moments de réflexion et d'évaluation continue sur les expériences vécues ?",
-        en: "Does the practice include moments of reflection and continuous evaluation on the lived experiences?", nl: "Zijn er binnen de geloofspraktijk momenten van reflectie en voortdurende evaluatie van de beleefde ervaringen?" },
+        en: "Does the practice include moments of reflection and continuous evaluation on the lived experiences?", nl: "Zijn er binnen de kerkelijke praktijk momenten van reflectie en voortdurende evaluatie van de beleefde ervaringen?" },
       { fr: "Favorise-t-elle l'apprentissage à partir des échecs et des résistances ?",
-        en: "Does the practice foster learning from failures and resistance?", nl: "Bevordert de geloofspraktijk het leren van mislukkingen en weerstand?" }
+        en: "Does the practice foster learning from failures and resistance?", nl: "Bevordert de kerkelijke praktijk het leren van mislukkingen en weerstand?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -242,11 +242,11 @@ const CRITERES = [
     titre: { fr: "Centralité de Jésus-Christ", en: "Centrality of Jesus Christ", nl: "Centraliteit van Jezus Christus" },
     sousQuestions: [
       { fr: "La pratique témoigne-t-elle du Christ vivant ?",
-        en: "Does the practice bear witness of the living Christ?", nl: "Legt de geloofspraktijk getuigenis af van de levende Christus?" },
+        en: "Does the practice bear witness of the living Christ?", nl: "Legt de kerkelijke praktijk getuigenis af van de levende Christus?" },
       { fr: "Vise-t-elle à approfondir la relation de chacun avec le Christ ?",
-        en: "Does the practice aim to deepen each person's relationship with Christ?", nl: "Is het doel van de geloofspraktijk om de relatie van ieder individu met Christus te verdiepen?" },
+        en: "Does the practice aim to deepen each person's relationship with Christ?", nl: "Is het doel van de kerkelijke praktijk om de relatie van ieder individu met Christus te verdiepen?" },
       { fr: "Promeut-elle une manière de vivre qui intègre la foi dans la vie quotidienne ?",
-        en: "Does the practice promote a Christian way of life that integrates faith and daily life?", nl: "Bevordert de geloofspraktijk een christelijke levenswijze waarin geloof en dagelijks leven met elkaar worden verbonden?" }
+        en: "Does the practice promote a Christian way of life that integrates faith and daily life?", nl: "Bevordert de kerkelijke praktijk een christelijke levenswijze waarin geloof en dagelijks leven met elkaar worden verbonden?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -258,9 +258,9 @@ const CRITERES = [
              en: "Aimed at the missionary activity of the Church", nl: "Gericht op de missionaire activiteit van de Kerk" },
     sousQuestions: [
       { fr: "La pratique contribue-t-elle à un nouvel élan missionnaire ?",
-        en: "Does the practice contribute to a new impulse to mission?", nl: "Draagt deze geloofspraktijk bij aan een nieuwe impuls voor zending/missie?" },
+        en: "Does the practice contribute to a new impulse to mission?", nl: "Draagt deze kerkelijke praktijk bij aan een nieuwe impuls voor zending/missie?" },
       { fr: "S'inscrit-elle dans la dynamique missionnaire de l'Église locale ?",
-        en: "Is the practice embedded in the missionary dynamic of the local Church?", nl: "Is deze geloofspraktijk verankerd in de missionaire dynamiek van de lokale Kerk?" }
+        en: "Is the practice embedded in the missionary dynamic of the local Church?", nl: "Is deze kerkelijke praktijk verankerd in de missionaire dynamiek van de lokale Kerk?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -274,9 +274,9 @@ const CRITERES = [
       { fr: "Les charismes de chacun sont-ils reconnus au service des besoins de la communauté et de la mission ?",
         en: "Are the charisms of each individual recognised for the needs of the community and the mission?", nl: "Worden de charisma’s van elk individu erkend in het licht van de behoeften van de gemeenschap en de zending?" },
       { fr: "La pratique soutient-elle une diversité de services et de ministères en réponse aux besoins pastoraux ?",
-        en: "Does the practice support a variety of services and ministries in response to the pastoral needs?", nl: "Maakt de geloofspraktijk verschillende diensttaken en ambten mogelijk om tegemoet te komen aan de pastorale behoeften?" },
+        en: "Does the practice support a variety of services and ministries in response to the pastoral needs?", nl: "Maakt de kerkelijke praktijk verschillende diensttaken en ambten mogelijk om tegemoet te komen aan de pastorale behoeften?" },
       { fr: "Les femmes ont-elles l'occasion d'accéder aux postes de responsabilités ?",
-        en: "Do women have opportunities to take on roles of responsibility in the practice?", nl: "Hebben vrouwen mogelijkheden om verantwoordelijke functies binnen de geloofspraktijk te bekleden?" }
+        en: "Do women have opportunities to take on roles of responsibility in the practice?", nl: "Hebben vrouwen mogelijkheden om verantwoordelijke functies binnen de kerkelijke praktijk te bekleden?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -288,11 +288,11 @@ const CRITERES = [
              en: "Considering cultural and societal contexts", nl: "Rekening houden met culturele en maatschappelijke contexten" },
     sousQuestions: [
       { fr: "La pratique manifeste-t-elle une attention aux réalités historiques, contemporaines, sociales, culturelles et digitales ?",
-        en: "Does the practice pay attention to historical, contemporary, social, cultural, and digital realities?", nl: "Wordt er in de geloofspraktijk rekening gehouden met historische, hedendaagse, sociale, culturele en digitale omstandigheden?" },
+        en: "Does the practice pay attention to historical, contemporary, social, cultural, and digital realities?", nl: "Wordt er in de kerkelijke praktijk rekening gehouden met historische, hedendaagse, sociale, culturele en digitale omstandigheden?" },
       { fr: "Prend-elle en compte les réalités de mobilité culturelle et géographique ?",
-        en: "Does the practice take the realities of cultural and geographic mobility into account?", nl: "Houdt de geloofspraktijk rekening met de realiteit van culturele en geografische mobiliteit?" },
+        en: "Does the practice take the realities of cultural and geographic mobility into account?", nl: "Houdt de kerkelijke praktijk rekening met de realiteit van culturele en geografische mobiliteit?" },
       { fr: "Engage-t-elle un dialogue avec d'autres acteurs de la société, de la culture, de la politique, etc. ?",
-        en: "Does the practice engage in dialogue with other actors in society, culture, politics etc.?", nl: "Gaat de geloofspraktijk de dialoog aan met andere actoren uit de samenleving, de cultuur, de politiek enz.?" }
+        en: "Does the practice engage in dialogue with other actors in society, culture, politics etc.?", nl: "Gaat de kerkelijke praktijk de dialoog aan met andere actoren uit de samenleving, de cultuur, de politiek enz.?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   },
@@ -304,11 +304,11 @@ const CRITERES = [
              en: "Synodal conversion through concrete transformations", nl: "Synodale bekering door concrete transformaties" },
     sousQuestions: [
       { fr: "La pratique conduit-elle à une conversion personnelle de tous les participants ?",
-        en: "Does the practice lead to a personal conversion of the participants?", nl: "Leidt deze geloofspraktijk tot een persoonlijke bekering van de deelnemers?" },
+        en: "Does the practice lead to a personal conversion of the participants?", nl: "Leidt deze kerkelijke praktijk tot een persoonlijke bekering van de deelnemers?" },
       { fr: "La pratique rend-elle possible une transformation communautaire ?",
-        en: "Does the practice enable communal transformation?", nl: "Zorgt deze geloofspraktijk voor een gemeenschappelijke transformatie?" },
+        en: "Does the practice enable communal transformation?", nl: "Zorgt deze kerkelijke praktijk voor een gemeenschappelijke transformatie?" },
       { fr: "La pratique contribue-t-elle à un renouveau spirituel et indirectement à une réforme structurelle de l'Église ?",
-        en: "Does the practice contribute to a spiritual renewal and structural reform of the Church?", nl: "Draagt deze geloofspraktijk bij aan een spirituele vernieuwing en structurele hervorming van de Kerk?" }
+        en: "Does the practice contribute to a spiritual renewal and structural reform of the Church?", nl: "Draagt deze kerkelijke praktijk bij aan een spirituele vernieuwing en structurele hervorming van de Kerk?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
   }
@@ -392,10 +392,10 @@ const TYPES_OBJET = [
   },
   {
     id: "autre",
-    libelle: { fr: "Autre pratique", en: "Other practice", nl: "Andere geloofspraktijk" },
+    libelle: { fr: "Autre pratique", en: "Other practice", nl: "Andere kerkelijke praktijk" },
     description: avecPanel({ fr: "Le questionnaire de référence de SPIRIT, validé par un panel de {panel}, pour toute pratique qui n'entre pas dans les domaines ci-dessus.",
                    en: "SPIRIT's reference questionnaire, validated by a panel of {panel}, for any practice that does not fit the areas above.",
-                   nl: "De referentievragenlijst van SPIRIT, gevalideerd door een panel van {panel}, voor elke geloofspraktijk die niet onder de bovenstaande domeinen valt." })
+                   nl: "De referentievragenlijst van SPIRIT, gevalideerd door een panel van {panel}, voor elke kerkelijke praktijk die niet onder de bovenstaande domeinen valt." })
   }
 ];
 

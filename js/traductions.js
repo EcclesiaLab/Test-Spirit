@@ -18,6 +18,12 @@
 
   Pour corriger une traduction : modifiez le texte entre guillemets de la
   bonne langue, sans toucher à la clé ni à la structure.
+
+  Vocabulaire néerlandais (v85) : la pratique évaluée se dit « kerkelijke
+  praktijk » (pluriel « kerkelijke praktijken »), et non plus
+  « geloofspraktijk ». Le changement a été fait dans tous les fichiers :
+  ici, dans index.html, donnees-spirit.js, questions-domaines.js et
+  lexique.js. Garder ce terme pour tout nouveau texte néerlandais.
   ============================================================
 */
 
@@ -25,7 +31,7 @@ const TRADUCTIONS = {
 
   // --- Accueil ---
   "accueil_baseline":        { fr: "Évaluer la synodalité d'une pratique ecclésiale",
-                               en: "Assessing the synodality of an ecclesial practice", nl: "De synodaliteit van een geloofspraktijk evalueren" },
+                               en: "Assessing the synodality of an ecclesial practice", nl: "De synodaliteit van een kerkelijke praktijk evalueren" },
   "accueil_demarrer":        { fr: "Démarrer une évaluation", en: "Start an evaluation", nl: "Een evaluatie starten" },
   "accueil_mes_evaluations": { fr: "Mes évaluations",         en: "My evaluations", nl: "Mijn evaluaties" },
   "accueil_quest_ce_que":    { fr: "Qu'est-ce que SPIRIT ?",  en: "What is SPIRIT?", nl: "Wat is SPIRIT?" },
@@ -35,19 +41,19 @@ const TRADUCTIONS = {
 
   // --- Écran d'entrée ---
   "entree_titre":        { fr: "Nouvelle évaluation",          en: "New evaluation", nl: "Nieuwe evaluatie" },
-  "entree_question_nom": { fr: "Quelle pratique évaluez-vous ?", en: "Which practice are you evaluating?", nl: "Welke geloofspraktijk evalueer je?" },
+  "entree_question_nom": { fr: "Quelle pratique évaluez-vous ?", en: "Which practice are you evaluating?", nl: "Welke kerkelijke praktijk evalueer je?" },
   "entree_aide_nom":     { fr: "Ce nom servira à retrouver l'évaluation et à titrer le document final.",
                            en: "This name will be used to find the evaluation and to title the final document.", nl: "Deze naam dient om de evaluatie terug te vinden en om het eindrapport een titel te geven." },
   "entree_placeholder":  { fr: "Ex. : Conseil pastoral, Retraite des confirmands…",
                            en: "E.g. Pastoral council, Confirmation retreat…", nl: "Bijv.: Pastorale raad, Vormselretraite…" },
-  "entree_question_type":{ fr: "Dans quel domaine s'inscrit la pratique ?", en: "Which area does the practice belong to?", nl: "Tot welk domein behoort de geloofspraktijk?" }, // v66 : provisoire
+  "entree_question_type":{ fr: "Dans quel domaine s'inscrit la pratique ?", en: "Which area does the practice belong to?", nl: "Tot welk domein behoort de kerkelijke praktijk?" }, // v66 : provisoire
   "entree_commencer":    { fr: "Commencer l'évaluation",      en: "Begin the evaluation", nl: "De evaluatie beginnen" },
 
   // --- Questionnaire (piliers) ---
   "pilier_compteur":   { fr: "Pilier",  en: "Pillar", nl: "Criterium" },   // suivi de "X / 14"
   "pilier_aide":       { fr: "Pour vous aider à répondre", en: "To help you answer", nl: "Om je te helpen antwoorden" },
   "commentaire_ajouter": { fr: "Ajouter une observation", en: "Add an observation", nl: "Een opmerking toevoegen" },
-  "commentaire_placeholder": { fr: "Vos observations sur la pratique (facultatif)…", en: "Your observations about the practice (optional)…", nl: "Je observaties over de geloofspraktijk (optioneel)…" },
+  "commentaire_placeholder": { fr: "Vos observations sur la pratique (facultatif)…", en: "Your observations about the practice (optional)…", nl: "Je observaties over de kerkelijke praktijk (optioneel)…" },
   "pilier_suivant":    { fr: "Suivant", en: "Next", nl: "Volgende" },
   "pilier_voir_diagnostic": { fr: "Voir le diagnostic", en: "View the diagnosis", nl: "De diagnose bekijken" },
   "pilier_precedent":  { fr: "Pilier précédent", en: "Previous pillar", nl: "Vorig criterium" },
@@ -79,7 +85,7 @@ const TRADUCTIONS = {
   // (\u00a0 = espace insécable : évite qu'un « ; » ou un « : » se retrouve seul en début de ligne)
   "critere_na_explication": { fr: "Le pilier ne concerne pas la pratique évaluée\u00a0; il n'est pas compté dans le diagnostic.",
                               en: "The pillar does not concern the practice being evaluated; it is not counted in the diagnosis.",
-                              nl: "Het criterium heeft geen betrekking op de geëvalueerde geloofspraktijk; het wordt niet meegeteld in de diagnose." },
+                              nl: "Het criterium heeft geen betrekking op de geëvalueerde kerkelijke praktijk; het wordt niet meegeteld in de diagnose." },
 
   // --- Diagnostic d'un groupe (v73) ---
   // Utilisé par « Rassembler des évaluations » (codes de comparaison) et pour
@@ -135,7 +141,7 @@ const TRADUCTIONS = {
   "comparer_intro":         { fr: "Rassemblez les codes ou les liens reçus après chaque évaluation pour voir la répartition des avis du groupe.",
                               en: "Gather the codes or links received after each evaluation to see how the group's views are distributed.",
                               nl: "Verzamel de codes of links die je na elke evaluatie ontvangt, om de verdeling van de meningen in de groep te zien." },
-  "comparer_nom_label":     { fr: "Pratique évaluée", en: "Practice evaluated", nl: "Geëvalueerde geloofspraktijk" },
+  "comparer_nom_label":     { fr: "Pratique évaluée", en: "Practice evaluated", nl: "Geëvalueerde kerkelijke praktijk" },
   "comparer_code_label":    { fr: "Code ou lien reçu", en: "Code or link received", nl: "Ontvangen code of link" },
   "comparer_code_placeholder": { fr: "Ex.\u00a0: K7Q-M2X-PA4", en: "E.g. K7Q-M2X-PA4", nl: "Bijv.: K7Q-M2X-PA4" },
   "comparer_ajouter":       { fr: "Ajouter", en: "Add", nl: "Toevoegen" },
@@ -251,7 +257,7 @@ const TRADUCTIONS = {
                             nl: "De evaluaties die op dit toestel bewaard zijn, blijven behouden." },
   "resultat_lien_copier": { fr: "Copiez ce lien pour l'envoyer au groupe\u00a0:", en: "Copy this link to send it to the group:", nl: "Kopieer deze link om hem naar de groep te sturen:" },
   "msg_partage_texte": { fr: "Découvrez SPIRIT, un outil pour évaluer la synodalité d'une pratique ecclésiale.",
-                         en: "Discover SPIRIT, a tool to evaluate the synodality of an ecclesial practice.", nl: "Ontdek SPIRIT, een instrument om de synodaliteit van een geloofspraktijk te evalueren." },
+                         en: "Discover SPIRIT, a tool to evaluate the synodality of an ecclesial practice.", nl: "Ontdek SPIRIT, een instrument om de synodaliteit van een kerkelijke praktijk te evalueren." },
   "msg_lien_copie": { fr: "Lien copié\u00a0: vous pouvez maintenant le coller et l'envoyer.",
                       en: "Link copied: you can now paste and send it.", nl: "Link gekopieerd: je kunt hem nu plakken en versturen." },
   "msg_lien_partager": { fr: "Pour partager SPIRIT, copiez ce lien\u00a0:",
@@ -280,7 +286,7 @@ const TRADUCTIONS = {
   "lecture_et":       { fr: "et", en: "and", nl: "en" },
   "lecture_aucun":    { fr: "Aucun pilier de cette dimension n'a été jugé applicable à la pratique évaluée.",
                         en: "No pillar in this dimension was considered applicable to the practice evaluated.",
-                        nl: "Geen enkel criterium van deze pijler werd van toepassing geacht voor de geëvalueerde geloofspraktijk." },
+                        nl: "Geen enkel criterium van deze pijler werd van toepassing geacht voor de geëvalueerde kerkelijke praktijk." },
   // M7 (audit v72) : phrase factuelle, avec le nombre de piliers
   "lecture_pleine":   { fr: "Les {nombre} piliers pris en compte sont solidement établis.",
                         en: "All {nombre} pillars taken into account are well established.",
@@ -301,7 +307,7 @@ const TRADUCTIONS = {
   // --- PDF ---
   // Abréviation du Document final devant les numéros de paragraphe
   "pdf_prefixe_ref":  { fr: "DF", en: "FD", nl: "SD" },
-  "pdf_titre":        { fr: "Évaluer la synodalité des pratiques", en: "Assessing the synodality of practices", nl: "De synodaliteit van geloofspraktijken evalueren" },
+  "pdf_titre":        { fr: "Évaluer la synodalité des pratiques", en: "Assessing the synodality of practices", nl: "De synodaliteit van kerkelijke praktijken evalueren" },
   "pdf_ref_titre":    { fr: "Pour aller plus loin", en: "Going deeper", nl: "Verder verdiepen" },
   "pdf_sous_titre":   { fr: "Cadre SPIRIT — d'après le <em>Document final</em> du Synode 2024",
                         en: "SPIRIT framework — based on the 2024 Synod <em>Final Document</em>", nl: "SPIRIT-kader — gebaseerd op het <em>Slotdocument</em> van de Synode 2024" },
@@ -311,9 +317,11 @@ const TRADUCTIONS = {
   "pdf_validation_panel": avecPanel({ fr: "Pierres angulaires et piliers validés selon la méthode Delphi par un panel de {panel}.",
                                       en: "Cornerstones and pillars validated using the Delphi method by a panel of {panel}.",
                                       nl: "Pijlers en criteria gevalideerd volgens de Delphi-methode door een panel van {panel}." }),
-  "pdf_objet_label":  { fr: "Pratique évaluée", en: "Practice evaluated", nl: "Geëvalueerde geloofspraktijk" },
+  "pdf_objet_label":  { fr: "Pratique évaluée", en: "Practice evaluated", nl: "Geëvalueerde kerkelijke praktijk" },
   // F5 (audit v72) : « Evaluation of 4 October » se lisait « l'évaluation d'une date »
   "pdf_evaluation_date": { fr: "Évaluation du {date}", en: "Evaluated on {date}", nl: "Evaluatie van {date}" },
+  // v86 : PDF d'un rassemblement de codes (date du diagnostic du groupe)
+  "pdf_diagnostic_date": { fr: "Diagnostic du {date}", en: "Diagnosis dated {date}", nl: "Diagnose van {date}" },
   // M6 (audit v72) : d'où viennent les questions d'aide imprimées dans le PDF
   "pdf_questions_reference": { fr: "Questions d'aide\u00a0: questionnaire de référence de SPIRIT (validé selon la méthode Delphi)",
                                en: "Guiding questions: SPIRIT reference questionnaire (validated using the Delphi method)",
@@ -340,11 +348,11 @@ const TRADUCTIONS = {
                         nl: "Met meerdere personen evalueren, tijdens één avond" },
   "pdf_soiree_intro": { fr: "SPIRIT peut servir de point de départ à une rencontre. Chaque participant évalue la même pratique de son côté, puis le groupe découvre le diagnostic commun et en parle.",
                         en: "SPIRIT can serve as the starting point for a meeting. Each participant evaluates the same practice separately, then the group discovers the shared diagnosis and talks about it.",
-                        nl: "SPIRIT kan het vertrekpunt zijn van een bijeenkomst. Elke deelnemer evalueert afzonderlijk dezelfde geloofspraktijk, waarna de groep de gezamenlijke diagnose ontdekt en erover in gesprek gaat." },
+                        nl: "SPIRIT kan het vertrekpunt zijn van een bijeenkomst. Elke deelnemer evalueert afzonderlijk dezelfde kerkelijke praktijk, waarna de groep de gezamenlijke diagnose ontdekt en erover in gesprek gaat." },
   "pdf_soiree_etape1_titre": { fr: "Avant la soirée, ou au début de celle-ci.", en: "Before the evening, or at its start.", nl: "Vóór de avond, of bij het begin ervan." },
   "pdf_soiree_etape1_texte": { fr: "Chacun évalue la pratique sur son propre téléphone, seul et sans se concerter. L'animateur indique la pratique à évaluer et le domaine à choisir, pour que tous répondent aux mêmes questions.",
                                en: "Each person evaluates the practice on their own phone, alone and without conferring. The facilitator states which practice is to be evaluated and which area to choose, so that everyone answers the same questions.",
-                               nl: "Ieder evalueert de geloofspraktijk op zijn eigen telefoon, alleen en zonder overleg. De begeleider geeft aan welke geloofspraktijk geëvalueerd wordt en welk domein gekozen moet worden, zodat iedereen dezelfde vragen beantwoordt." },
+                               nl: "Ieder evalueert de kerkelijke praktijk op zijn eigen telefoon, alleen en zonder overleg. De begeleider geeft aan welke kerkelijke praktijk geëvalueerd wordt en welk domein gekozen moet worden, zodat iedereen dezelfde vragen beantwoordt." },
   "pdf_soiree_etape2_titre": { fr: "Rassembler les codes.", en: "Gather the codes.", nl: "De codes verzamelen." },
   "pdf_soiree_etape2_texte": { fr: "Chacun transmet son code de comparaison\u00a0: il figure en haut de son PDF et dans «\u00a0Partager pour le groupe\u00a0». L'animateur les saisit dans «\u00a0Rassembler des évaluations\u00a0» et obtient le diagnostic du groupe. Celui-ci montre la répartition des réponses, sans moyenne et sans dire qui a répondu quoi.",
                                en: "Each person passes on their comparison code: it appears at the top of their PDF and under ‘Share with the group’. The facilitator enters the codes in ‘Gather evaluations’ and obtains the group diagnosis. It shows how the answers are distributed, without an average and without revealing who answered what.",

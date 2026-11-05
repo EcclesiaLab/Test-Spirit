@@ -556,7 +556,10 @@ function afficherDiagnosticGroupe(evaluation, comptes, dateISO, commentaires) {
   document.getElementById("diagnostic-envoyer-resultat").classList.toggle("cache", evaluation.origine !== "comparaison");
 
   document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet || t("comparer_sans_nom");
-  const date = formaterDateLongue(dateISO || new Date());
+  // v86 : pour un rassemblement de codes, la date est celle du diagnostic
+  // (portée par le lien) ; si on ne la connaît pas (lien d'avant la v86),
+  // on n'en affiche aucune plutôt que la date du jour.
+  const date = formaterDateLongue(dateISO || (evaluation.origine === "comparaison" ? null : new Date()));
   document.getElementById("diagnostic-meta").textContent = joindrePoints([descriptionGroupe(evaluation, comptes), date]);
 
   document.getElementById("diagnostic-schema").innerHTML = construireSyntheseGroupe(comptes);
