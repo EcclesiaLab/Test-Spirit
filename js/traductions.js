@@ -334,6 +334,30 @@ const TRADUCTIONS = {
   "diagnostic_non_enregistre": { fr: "Cette évaluation n'a pas pu être enregistrée sur cet appareil. Exportez le diagnostic en PDF maintenant pour la conserver.",
                                  en: "This evaluation could not be saved on this device. Export the diagnosis as PDF now to keep it.",
                                  nl: "Deze evaluatie kon niet op dit toestel worden opgeslagen. Exporteer de diagnose nu als pdf om ze te bewaren." },
+  // v90 (constat B1) : titre du bloc repliable « réponse de chaque pilier »
+  // dans chaque carte de pierre angulaire du diagnostic. À valider.
+  "diagnostic_detail_piliers": { fr: "Réponse pilier par pilier", en: "Answer pillar by pillar", nl: "Antwoord per criterium" },
+  // v90 (constat B3) : aide sous « Exporter… en PDF », selon l'appareil.
+  // ⚠ Les noms des commandes (« Enregistrer au format PDF », « Enregistrer
+  // dans Fichiers »…) sont ceux attendus sur Android (Chrome) et sur iPhone :
+  // à vérifier sur de vrais téléphones dans les trois langues. À valider.
+  "pdf_aide_android":    { fr: "Dans la fenêtre qui s'ouvre, choisissez «\u00a0Enregistrer au format PDF\u00a0» comme imprimante.",
+                           en: "In the window that opens, choose “Save as PDF” as the printer.",
+                           nl: "Kies in het venster dat opent ‘Opslaan als pdf’ als printer." },
+  "pdf_aide_iphone":     { fr: "Dans la fenêtre qui s'ouvre, touchez l'icône de partage, puis «\u00a0Enregistrer dans Fichiers\u00a0».",
+                           en: "In the window that opens, tap the share icon, then “Save to Files”.",
+                           nl: "Tik in het venster dat opent op het deelsymbool en daarna op ‘Bewaar in Bestanden’." },
+  "pdf_aide_ordinateur": { fr: "Dans la fenêtre d'impression, choisissez «\u00a0Enregistrer au format PDF\u00a0» comme destination.",
+                           en: "In the print window, choose “Save as PDF” as the destination.",
+                           nl: "Kies in het afdrukvenster ‘Opslaan als pdf’ als bestemming." },
+  // v90 (constat B3) : « Envoyer le résumé » (texte simple). À valider.
+  "resume_bouton":       { fr: "Envoyer le résumé", en: "Send the summary", nl: "De samenvatting versturen" },
+  "resume_copie":        { fr: "Résumé copié. Collez-le dans un message ou un courriel.",
+                           en: "Summary copied. Paste it into a message or an email.",
+                           nl: "Samenvatting gekopieerd. Plak ze in een bericht of een e-mail." },
+  "resume_a_copier":     { fr: "Le résumé n'a pas pu être copié automatiquement. Le voici, à sélectionner et copier\u00a0:",
+                           en: "The summary could not be copied automatically. Here it is, to select and copy:",
+                           nl: "De samenvatting kon niet automatisch worden gekopieerd. Hier is ze, om te selecteren en te kopiëren:" },
   // B5 : lien « résultat du groupe » qui ne contient pas au moins deux évaluations lisibles.
   "lien_incomplet_titre": { fr: "Ce lien est incomplet", en: "This link is incomplete", nl: "Deze link is onvolledig" },
   "lien_incomplet_texte": { fr: "Il ne contient pas au moins deux évaluations lisibles\u00a0: le diagnostic du groupe ne peut pas être affiché. Demandez à la personne qui l'a envoyé de le partager à nouveau.",

@@ -414,3 +414,114 @@ function lancerImpressionReferences() {
 
   ouvrirImpression();   // v84 : après le chargement des polices
 }
+
+
+/* ===========================================================
+   v90 (constat B3 de l'audit v86) — AIDE AU PDF ET RÉSUMÉ EN TEXTE
+   -----------------------------------------------------------
+   1. Sous le bouton « Exporter… en PDF », une ligne dit quoi choisir dans
+      la fenêtre d'impression, selon l'appareil (iPhone, Android, ordinateur).
+   2. « Envoyer le résumé » : le diagnostic en texte simple, envoyé par le
+      partage du téléphone (Messages, courriel, WhatsApp…). C'est un repli
+      quand le PDF ne s'enregistre pas (par exemple dans le navigateur
+      intégré d'une messagerie). Sans partage disponible, le texte est
+      copié ; si la copie échoue aussi, il s'affiche pour être copié à la main.
+   Le résumé reprend ce que montre l'écran : nom, domaine et date ; par
+   pierre angulaire, la phrase de lecture et la réponse de chaque pilier
+   (pour un groupe : la répartition et les avis divergents) ; les
+   observations ; le code de comparaison (évaluation faite seul).
+   =========================================================== */
+
+// Ligne d'aide sous le bouton PDF.
+function majAidePdf() {
+  const zone = document.getElementById("diagnostic-aide-pdf");
+  if (!zone) return;
+  const telephone = detecterTelephone(); // "iphone", "android" ou null (app.js)
+  zone.textContent = t(telephone === "iphone" ? "pdf_aide_iphone"
+                     : telephone === "android" ? "pdf_aide_android"
+                     : "pdf_aide_ordinateur");
+}
+
+// Texte brut d'un fragment de HTML (les phrases de lecture contiennent
+// parfois des balises ou des espaces insécables codés).
+function texteBrut(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return div.textContent.replace(/\s+/g, " ").trim();
+}
+
+// Construit le résumé (une seule chaîne de texte, lignes séparées par \n).
+function construireResumeTexte(evaluation, reponses, dateISO, commentaires, comptes) {
+  const groupe = estModeGroupe(evaluation);
+  const lignes = [];
+  reponses = reponses || {};
+  commentaires = commentaires || {};
+  comptes = comptes || {};
+
+  // En-tête
+  lignes.push("SPIRIT — " + (evaluation.nomObjet || t("comparer_sans_nom")));
+  if (groupe) {
+    const date = formaterDateLongue(dateISO || (evaluation.origine === "comparaison" ? null : new Date()));
+    lignes.push(joindrePoints([descriptionGroupe(evaluation, comptes), date]));
+  } else {
+    const type = trouverTypeObjet(evaluation.typeObjet);
+    lignes.push(joindrePoints([type ? tr(type.libelle) : "", formaterDateLongue(dateISO || new Date())]));
+  }
+
+  // Par pierre angulaire
+  PIERRES_ANGULAIRES.forEach((pierre) => {
+    lignes.push("");
+    const piliers = CRITERES.filter((c) => c.pierre === pierre.id);
+    if (groupe) {
+      lignes.push(tr(pierre.nom).toUpperCase());
+      piliers.forEach((c) => {
+        const compte = comptes[c.id] || {};
+        lignes.push(c.numero + ". " + tr(c.titre) + (estAvisPartage(compte) ? " — " + t("groupe_badge") : ""));
+        lignes.push("   " + decrireRepartition(compte));
+      });
+    } else {
+      lignes.push(tr(pierre.nom).toUpperCase() + deuxPoints() + texteBrut(redigerLecture(pierre.id, calculerComposition(pierre.id, reponses))));
+      piliers.forEach((c) => {
+        const modalite = MODALITES.find((m) => m.id === reponses[c.id]);
+        lignes.push(c.numero + ". " + tr(c.titre) + deuxPoints() + (modalite ? tr(modalite.libelle) : "—"));
+      });
+    }
+  });
+
+  // Observations
+  const obs = CRITERES.filter((c) => (commentaires[c.id] || "").trim() !== "");
+  if (obs.length > 0) {
+    lignes.push("");
+    lignes.push(t(groupe ? "groupe_observations_titre" : "diagnostic_observations_titre").toUpperCase());
+    obs.forEach((c) => lignes.push(c.numero + ". " + tr(c.titre) + deuxPoints() + commentaires[c.id].trim()));
+  }
+
+  // Code de comparaison (évaluation faite seul), comme dans le PDF
+  if (!groupe) {
+    lignes.push("");
+    lignes.push(t("partage_code_label") + deuxPoints() + formaterCode(encoderCode(evaluation.typeObjet, reponses)));
+  }
+
+  // Pied : version et adresse de l'application (lue sur la page, donc
+  // toujours juste, même après un changement d'adresse).
+  lignes.push("");
+  lignes.push(tAvec("version_libelle", { version: VERSION_SPIRIT }) + " — " + window.location.origin + window.location.pathname);
+  return lignes.join("\n");
+}
+
+// Envoie le résumé : partage du téléphone, sinon copie, sinon affichage.
+function envoyerResume(evaluation, reponses, dateISO, commentaires, comptes) {
+  const texte = construireResumeTexte(evaluation, reponses, dateISO, commentaires, comptes);
+  if (navigator.share) {
+    navigator.share({ title: "SPIRIT — " + (evaluation.nomObjet || ""), text: texte }).catch(() => {
+      // Partage annulé par l'utilisateur : on ne fait rien.
+    });
+    return;
+  }
+  copierTexte(texte).then((ok) => {
+    afficherMessage(t("resume_bouton"), ok ? t("resume_copie") : t("resume_a_copier"), ok ? null : texte);
+    // Le texte à copier garde ses retours à la ligne (classe retirée à la
+    // prochaine fenêtre, voir poserQuestion dans fenetres.js).
+    document.getElementById("question-detail").classList.toggle("question__detail--texte", !ok);
+  });
+}

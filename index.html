@@ -208,7 +208,15 @@
 
       <!-- Contenu du critère -->
       <div class="critere__contenu">
-        <p class="critere__numero" id="critere-numero">Pilier 1</p>
+        <!-- v90 (constat B8) : le lexique s'ouvre en fenêtre, sans quitter
+             le pilier (même contenu que l'écran « Lexique » de l'accueil). -->
+        <div class="critere__entete">
+          <p class="critere__numero" id="critere-numero">Pilier 1</p>
+          <button class="critere__lexique" id="critere-lexique" type="button" aria-haspopup="dialog">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.3 5.2 8 4.5 5.5 4.5H3v14h2.5c2.5 0 4.8.7 6.5 2 1.7-1.3 4-2 6.5-2H21v-14h-2.5c-2.5 0-4.8.7-6.5 2z"/><path d="M12 6.5v14"/></svg>
+            <span data-t="accueil_lexique">Lexique</span>
+          </button>
+        </div>
         <h2 class="critere__titre" id="critere-titre">—</h2>
 
         <!-- Bouton pour masquer/afficher les sous-questions.
@@ -296,6 +304,11 @@
              consultation qu'on parcourt tranquillement. -->
         <div class="diagnostic__actions">
           <button class="bouton" id="diagnostic-pdf" data-t="diagnostic_pdf">Exporter le diagnostic en PDF</button>
+          <!-- v90 (constat B3) : comment enregistrer le PDF, selon l'appareil
+               (texte posé par diagnostic.js), et un repli en texte simple qui
+               passe par le partage du téléphone (ou se copie). -->
+          <p class="diagnostic__aide-pdf" id="diagnostic-aide-pdf"></p>
+          <button class="bouton bouton--contour" id="diagnostic-resume" type="button" data-t="resume_bouton">Envoyer le résumé</button>
           <!-- v74 : partager une évaluation faite seul (code ou lien), ou
                renvoyer au groupe le résultat d'une comparaison -->
           <button class="bouton bouton--contour cache" id="diagnostic-partager" type="button" data-t="partage_bouton">Partager pour le groupe</button>
@@ -616,6 +629,23 @@
       </div>
       <div class="bienvenue__bouton-zone">
         <button class="bouton" id="bouton-fermer-fonctionnement" data-t="fonctionnement_compris">J'ai compris</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===========================================================
+       v90 (constat B8) — LE LEXIQUE EN FENÊTRE
+       Ouvert depuis l'écran du pilier (bouton « Lexique »), pour lire une
+       définition sans quitter l'évaluation. La liste est construite par
+       construireLexique() (lexique.js), comme celle de l'écran « Lexique ».
+       =========================================================== -->
+  <div class="bienvenue-voile cache" id="lexique-voile">
+    <section class="bienvenue lexique-fenetre" role="dialog" aria-labelledby="lexique-fenetre-titre" aria-modal="true" tabindex="-1">
+      <h2 class="bienvenue__titre" id="lexique-fenetre-titre" data-t="page_lexique_titre">Lexique</h2>
+      <p class="lexique__intro" data-t="lexique_intro">Quelques mots de l'Église et de SPIRIT, expliqués simplement.</p>
+      <dl class="lexique" id="lexique-fenetre-liste"></dl>
+      <div class="bienvenue__bouton-zone">
+        <button class="bouton" id="lexique-fenetre-fermer" type="button" data-t="partage_fermer">Fermer</button>
       </div>
     </section>
   </div>

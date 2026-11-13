@@ -96,13 +96,13 @@ Quelques règles à respecter dans ce fichier :
 À **chaque modification** d'un fichier (HTML, CSS, JS), il faut **incrémenter le numéro de version** du cache dans `service-worker.js` :
 
 ```js
-const CACHE_VERSION = "spirit-v88";   // → passer à "spirit-v89", etc.
+const CACHE_VERSION = "spirit-v90";   // → passer à "spirit-v91", etc.
 ```
 
 Changer en même temps le numéro affiché dans « À propos » et en pied de PDF, en tête de `js/app.js` :
 
 ```js
-const VERSION_SPIRIT = "88";          // → "89", etc.
+const VERSION_SPIRIT = "90";          // → "91", etc.
 ```
 
 Ce sont les **deux seuls** endroits à modifier (depuis la v87, le texte de « À propos » dans `index.html` se remplit tout seul). Le fichier `service-worker.js` doit changer à chaque version : c'est en le comparant à sa copie que le téléphone découvre qu'une mise à jour existe.
@@ -165,7 +165,9 @@ Reste notamment à finaliser : les tests sur appareils réels, et la relecture d
 
 **Geste « retour » du téléphone (v88).** Il ramène désormais à l'écran précédent (ou ferme la fenêtre ouverte) au lieu de quitter l'application ; depuis l'accueil, il quitte l'application comme avant. Tout est dans `js/retour.js`, qui se contente d'appuyer sur le bouton « ‹ » de l'écran affiché. À essayer sur un vrai téléphone Android et un vrai iPhone.
 
-**Essai en cours (v88) : disposition des réponses.** Deux présentations des cinq réponses d'un pilier sont à l'essai. Elles ne s'activent que si l'on ajoute un paramètre à l'adresse de l'application : `?essai=grille` (les quatre niveaux en 2 × 2) ou `?essai=liste` (liste resserrée). Sans paramètre, rien ne change. « À propos » rappelle l'essai en cours. Une fois le choix fait, supprimer le dernier bloc de `css/styles.css` et les lignes « ESSAI_REPONSES » de `js/app.js`, ou en faire la présentation normale.
+**Réponses en grille (v89).** Sur téléphone et tablette, les quatre niveaux de réponse sont présentés en 2 × 2, « Non applicable » dessous sur toute la largeur, pour que les cinq réponses tiennent à l'écran sans défiler (choix du 13 novembre 2026, après essai en v88). Sur ordinateur, la liste est conservée. Les règles sont dans le dernier bloc de `css/styles.css`. Les anciens liens d'essai (`?essai=grille`, `?essai=liste`) sont sans effet depuis la v89.
+
+**Ajouts de la v90.** Sur le diagnostic, chaque carte de pierre angulaire se termine par un bloc repliable « Réponse pilier par pilier » (`construireDetailPiliers`, `js/diagnostic.js`). Sous « Exporter le diagnostic en PDF », une ligne d'aide adaptée à l'appareil et un bouton « Envoyer le résumé » qui envoie le diagnostic en texte simple par le partage du téléphone (`majAidePdf` et `envoyerResume`, en fin de `js/impression.js`). Sur l'écran du pilier, un bouton « Lexique » ouvre le lexique en fenêtre sans quitter l'évaluation (fin de `js/lexique.js`). L'accueil se resserre désormais jusqu'à 800 px de haut (au lieu de 700). Les textes nouveaux sont à valider par l'équipe (commentaires « v90 » dans `js/traductions.js`).
 
 ---
 

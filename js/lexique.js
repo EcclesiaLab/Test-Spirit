@@ -203,8 +203,10 @@ const LEXIQUE = [
    AFFICHAGE DE L'ÉCRAN « LEXIQUE »
    Construit la liste dans la langue active, par ordre alphabétique.
    =========================================================== */
-function construireLexique() {
-  const conteneur = document.getElementById("lexique-liste");
+// v90 : « idConteneur » permet de remplir aussi la liste de la fenêtre
+// ouverte depuis l'écran du pilier ; sans lui, c'est l'écran « Lexique ».
+function construireLexique(idConteneur) {
+  const conteneur = document.getElementById(idConteneur || "lexique-liste");
   if (!conteneur) return;
   const langue = getLangue();
 
@@ -242,3 +244,21 @@ function construireLexique() {
     conteneur.appendChild(bloc);
   });
 }
+
+
+/* ===========================================================
+   v90 (constat B8 de l'audit v86) — LE LEXIQUE EN FENÊTRE
+   Pendant le questionnaire, le bouton « Lexique » (en haut du pilier)
+   ouvre la même liste dans une fenêtre : on lit une définition, on ferme,
+   et l'on est toujours sur le même pilier. La touche Échap et le geste
+   « retour » du téléphone la ferment aussi (fenetres.js, retour.js).
+   =========================================================== */
+function ouvrirLexiqueFenetre() {
+  construireLexique("lexique-fenetre-liste"); // dans la langue active
+  ouvrirFenetre("lexique-voile", { surEchap: fermerLexiqueFenetre });
+}
+
+function fermerLexiqueFenetre() {
+  fermerFenetre("lexique-voile"); // le focus revient sur le bouton « Lexique »
+}
+

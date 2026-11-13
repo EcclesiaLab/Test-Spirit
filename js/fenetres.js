@@ -146,6 +146,7 @@ function poserQuestion(question) {
 
   const detail = document.getElementById("question-detail");
   detail.textContent = question.detail || "";
+  detail.classList.remove("question__detail--texte"); // v90 : voir envoyerResume
   detail.classList.toggle("cache", !question.detail);
 
   const zone = document.getElementById("question-boutons");

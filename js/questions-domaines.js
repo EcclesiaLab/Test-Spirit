@@ -203,9 +203,11 @@ const QUESTIONS_PAR_DOMAINE = {
       { fr: "La pratique rend-elle possible une transformation communautaire ?",
         en: "Does the practice enable communal transformation?",
         nl: "Zorgt deze kerkelijke praktijk voor een gemeenschappelijke transformatie?" },
-      { fr: "La pratique contribue-t-elle à un renouveau spirituel et indirectement à une réforme structurelle de l'Église ?",
-        en: "Does the practice contribute to a spiritual renewal and, indirectly, to a structural reform of the Church?",
-        nl: "Draagt deze kerkelijke praktijk bij aan een spirituele vernieuwing en indirect aan een structurele hervorming van de Kerk?" }
+      // v90 : « indirectement » retiré dans les trois langues (décision de FX du
+      // 13 novembre 2026, alignement sur le questionnaire de référence).
+      { fr: "La pratique contribue-t-elle à un renouveau spirituel et à une réforme structurelle de l'Église ?",
+        en: "Does the practice contribute to a spiritual renewal and to a structural reform of the Church?",
+        nl: "Draagt deze kerkelijke praktijk bij aan een spirituele vernieuwing en aan een structurele hervorming van de Kerk?" }
     ]
   },
 
@@ -704,9 +706,11 @@ const QUESTIONS_PAR_DOMAINE = {
       { fr: "La pratique rend-elle possible une transformation communautaire ?",
         en: "Does the practice enable communal transformation?",
         nl: "Zorgt deze kerkelijke praktijk voor een gemeenschappelijke transformatie?" },
-      { fr: "La pratique contribue-t-elle à un renouveau spirituel et indirectement à une réforme structurelle de l'Église ?",
-        en: "Does the practice contribute to a spiritual renewal and, indirectly, to a structural reform of the Church?",
-        nl: "Draagt deze kerkelijke praktijk bij aan een spirituele vernieuwing en indirect aan een structurele hervorming van de Kerk?" }
+      // v90 : « indirectement » retiré dans les trois langues (décision de FX du
+      // 13 novembre 2026, alignement sur le questionnaire de référence).
+      { fr: "La pratique contribue-t-elle à un renouveau spirituel et à une réforme structurelle de l'Église ?",
+        en: "Does the practice contribute to a spiritual renewal and to a structural reform of the Church?",
+        nl: "Draagt deze kerkelijke praktijk bij aan een spirituele vernieuwing en aan een structurele hervorming van de Kerk?" }
     ]
   }
 };

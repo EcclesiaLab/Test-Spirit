@@ -90,26 +90,8 @@ function appliquerMiseAJourSiPossible() {
 //    1. celui-ci ;
 //    2. CACHE_VERSION dans service-worker.js.
 // Le texte de « À propos » dans index.html se remplit tout seul.
-const VERSION_SPIRIT = "88";
+const VERSION_SPIRIT = "90";
 
-// v88 — ESSAI DES DISPOSITIONS DE RÉPONSES (PROVISOIRE, constat A1 de l'audit v86)
-// Pour comparer deux façons de présenter les cinq réponses d'un pilier sans
-// rien changer pour les autres utilisateurs, on ajoute à l'adresse de l'app :
-//     ?essai=grille    ou    ?essai=liste
-// On le note alors sur la page (attribut « data-essai » de <html>), et la
-// feuille de style fait le reste (dernier bloc de styles.css). Sans ce
-// paramètre, ou avec une autre valeur, l'app se présente comme d'habitude.
-// « À propos » rappelle l'essai en cours à côté du numéro de version.
-// ⚠ À supprimer (ces lignes et le bloc de styles.css) une fois le choix fait.
-const ESSAI_REPONSES = (function () {
-  try {
-    const valeur = new URLSearchParams(window.location.search).get("essai");
-    return (valeur === "grille" || valeur === "liste") ? valeur : "";
-  } catch (e) {
-    return "";
-  }
-})();
-if (ESSAI_REPONSES) document.documentElement.setAttribute("data-essai", ESSAI_REPONSES);
 
 // Clé de mémoire locale : la bienvenue a-t-elle déjà été vue ?
 const CLE_BIENVENUE_VUE = "spirit_bienvenue_vue";
@@ -826,6 +808,21 @@ function majAlerteArchivage() {
   parId("diagnostic-alerte").classList.toggle("cache", !visible);
 }
 
+// v90 : les données du diagnostic affiché, dans l'ordre attendu par
+// lancerImpression() et envoyerResume() : évaluation, réponses, date,
+// observations, comptes (groupe). Trois cas : un rassemblement de codes,
+// une évaluation rouverte depuis « Mes évaluations », ou l'évaluation qui
+// vient de se terminer (date : celle du jour).
+function donneesDiagnosticAffiche() {
+  if (diagnosticComparaison) {
+    return [diagnosticComparaison.evaluation, {}, dateDiagnosticComparaison(), {}, diagnosticComparaison.comptes];
+  }
+  if (consultationArchive) {
+    return [evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation];
+  }
+  return [evaluationEnCours, reponses, undefined, commentaires];
+}
+
 // Affiche un critère donné (par son index dans CRITERES).
 function afficherCritere(index) {
   const critere = CRITERES[index];
@@ -1339,10 +1336,7 @@ function appliquerTraductions() {
   // 5. Titre de la page (onglet, sélecteur d'applications) et numéro de version.
   document.title = t("titre_page");
   const version = parId("a-propos-version");
-  if (version) {
-    version.textContent = tAvec("version_libelle", { version: VERSION_SPIRIT })
-      + (ESSAI_REPONSES ? " (essai : " + ESSAI_REPONSES + ")" : "");
-  }
+  if (version) version.textContent = tAvec("version_libelle", { version: VERSION_SPIRIT });
 }
 
 // Textes français écrits directement dans index.html (bienvenue, pages
@@ -1461,6 +1455,10 @@ function brancherBoutons() {
     construireLexique();
     afficherEcran("ecran-lexique");
   });
+  // v90 (constat B8) : le lexique en fenêtre, depuis l'écran du pilier.
+  parId("critere-lexique").addEventListener("click", ouvrirLexiqueFenetre);
+  parId("lexique-fenetre-fermer").addEventListener("click", fermerLexiqueFenetre);
+
   parId("lexique-retour").addEventListener("click", () => {
     afficherEcran("ecran-accueil");
   });
@@ -1555,13 +1553,12 @@ function brancherBoutons() {
   // Export PDF : on utilise les données de consultation si on consulte une
   // archive, sinon celles de l'évaluation en cours.
   parId("diagnostic-pdf").addEventListener("click", () => {
-    if (diagnosticComparaison) {
-      lancerImpression(diagnosticComparaison.evaluation, {}, dateDiagnosticComparaison(), {}, diagnosticComparaison.comptes);
-    } else if (consultationArchive) {
-      lancerImpression(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation);
-    } else {
-      lancerImpression(evaluationEnCours, reponses, undefined, commentaires);
-    }
+    lancerImpression(...donneesDiagnosticAffiche());
+  });
+
+  // v90 (constat B3) : le même diagnostic, en texte simple.
+  parId("diagnostic-resume").addEventListener("click", () => {
+    envoyerResume(...donneesDiagnosticAffiche());
   });
 
   // Bouton « Pour aller plus loin » : génère un PDF séparé contenant

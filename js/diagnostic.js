@@ -346,8 +346,47 @@ function construireLectures(reponses) {
     html += '<div class="lecture-pierre" style="border-left-color:' + pierre.couleur + '">' +
               '<div class="lecture-pierre__titre" style="color:' + pierre.couleur + '">' + tr(pierre.nom) + '</div>' +
               '<div class="lecture-pierre__texte">' + texte + '</div>' +
+              construireDetailPiliers(pierre, reponses) +
             '</div>';
   });
+  return html;
+}
+
+/*
+  v90 (constat B1 de l'audit v86) — DÉTAIL PILIER PAR PILIER
+  Jusqu'ici, le diagnostic à l'écran disait « 2 piliers solidement établis,
+  1 en chantier… » sans dire lesquels : le détail n'était que dans le PDF.
+  Chaque carte de pierre angulaire se termine donc par un bloc replié
+  (balise <details>, qui s'ouvre et se ferme sans JavaScript) :
+    - fermé, il montre une ligne de petits pictogrammes, un par pilier ;
+    - ouvert, il donne pour chaque pilier son numéro, son titre, le
+      pictogramme et le libellé de la réponse.
+  Décision du 13 novembre 2026 : réponse seule, sans les citations du
+  Document final (elles restent dans « Pour aller plus loin »).
+  Une réponse manquante (évaluation ancienne) s'affiche « — », comme dans
+  le PDF.
+*/
+function construireDetailPiliers(pierre, reponses) {
+  const piliers = CRITERES.filter((c) => c.pierre === pierre.id);
+  // Fermé : un petit pictogramme par pilier (décoratif pour les lecteurs
+  // d'écran, qui lisent le détail complet une fois le bloc ouvert).
+  const apercu = piliers.map((c) => pictogramme(reponses[c.id], 18)).join("");
+  let html = '<details class="detail-piliers">' +
+    '<summary class="detail-piliers__resume">' +
+      '<span class="detail-piliers__libelle">' + t("diagnostic_detail_piliers") + '</span>' +
+      '<span class="detail-piliers__apercu" aria-hidden="true">' + apercu + '</span>' +
+    '</summary>' +
+    '<ul class="detail-piliers__liste">';
+  piliers.forEach((c) => {
+    const modalite = MODALITES.find((m) => m.id === reponses[c.id]);
+    html += '<li class="detail-piliers__pilier">' +
+      '<span class="detail-piliers__titre"><span class="detail-piliers__numero">' + c.numero + '.</span> ' + echapper(tr(c.titre)) + '</span>' +
+      '<span class="detail-piliers__reponse">' +
+        (modalite ? pictogramme(modalite.id, 22) + '<span>' + tr(modalite.libelle) + '</span>' : '<span>—</span>') +
+      '</span>' +
+    '</li>';
+  });
+  html += '</ul></details>';
   return html;
 }
 
@@ -412,6 +451,7 @@ function afficherDiagnostic(evaluation, reponses, dateISO, commentaires, comptes
 
   // Bandeau « évaluation non enregistrée », si besoin (v87, voir app.js)
   majAlerteArchivage();
+  majAidePdf(); // v90 (B3)
 
   // On affiche l'écran
   afficherEcran("ecran-diagnostic");
@@ -571,6 +611,7 @@ function afficherDiagnosticGroupe(evaluation, comptes, dateISO, commentaires) {
   document.getElementById("diagnostic-observations").innerHTML = construireObservations(commentaires, "groupe_observations_titre");
 
   majAlerteArchivage(); // v87 : jamais affiché pour un groupe (voir app.js)
+  majAidePdf();         // v90 (B3)
 
   afficherEcran("ecran-diagnostic");
 }
