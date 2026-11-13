@@ -55,16 +55,20 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 │   ├── sauvegarde.js       Export / import des évaluations dans un fichier (v75)
 │   ├── fenetres.js         Fenêtres : ouverture, fermeture, accessibilité, questions (v75)
 │   ├── comparaison.js      Codes et liens de partage, écran « Rassembler des évaluations »
+│   ├── retour.js           Geste « retour » du téléphone (v88)
 │   └── impression.js       Construction du document PDF
 ├── icons/
 │   ├── icon-192.png        Icône PWA (écran d'accueil)
+│   ├── icon-180.png        Icône de l'écran d'accueil sur iPhone (v87)
 │   ├── icon-512.png        Icône PWA (splash screen)
 │   ├── icon-maskable-*.png Icônes « adaptatives » (Android) : marge de sécurité plus large
 │   ├── logo-spirit.png     Logo affiché dans l'application
 │   └── logo-uclouvain.png  Logo institutionnel (page « À propos »)
 ├── images/
-│   └── installation-{iphone|android}-{fr|en|nl}.png
-│                           Visuels de la fenêtre « Installer SPIRIT » (smartphone)
+│   ├── installation-{iphone|android}-{fr|en|nl}.png
+│   │                       Visuels de la fenêtre « Installer SPIRIT » (smartphone)
+│   └── apercu-lien.png     Image affichée par les messageries quand on partage
+│                           le lien de SPIRIT (v87, 1200 × 630)
 └── fonts/                  Polices Spectral et Source Sans 3 (licence SIL OFL),
                             hébergées avec l'app : rien n'est demandé à Google
 ```
@@ -92,14 +96,16 @@ Quelques règles à respecter dans ce fichier :
 À **chaque modification** d'un fichier (HTML, CSS, JS), il faut **incrémenter le numéro de version** du cache dans `service-worker.js` :
 
 ```js
-const CACHE_VERSION = "spirit-v86";   // → passer à "spirit-v87", etc.
+const CACHE_VERSION = "spirit-v88";   // → passer à "spirit-v89", etc.
 ```
 
 Changer en même temps le numéro affiché dans « À propos » et en pied de PDF, en tête de `js/app.js` :
 
 ```js
-const VERSION_SPIRIT = "80";          // → "81", etc.
+const VERSION_SPIRIT = "88";          // → "89", etc.
 ```
+
+Ce sont les **deux seuls** endroits à modifier (depuis la v87, le texte de « À propos » dans `index.html` se remplit tout seul). Le fichier `service-worker.js` doit changer à chaque version : c'est en le comparant à sa copie que le téléphone découvre qu'une mise à jour existe.
 
 Vérifier aussi que **chaque fichier listé dans `FICHIERS_A_CACHER` existe** : un seul fichier absent (un logo renommé, par exemple) fait échouer l'installation de la nouvelle version, et les utilisateurs restent sur l'ancienne sans que rien ne le signale.
 
@@ -135,6 +141,8 @@ Le projet est publié via **GitHub Pages**.
 
 Pour mettre à jour un fichier sans risque de doublon, **éditer son contenu directement sur GitHub** (icône crayon) plutôt que de le glisser-déposer.
 
+**Si l'application change d'adresse** : corriger les deux adresses complètes écrites en tête de `index.html` (balises `og:url` et `og:image`, qui donnent l'aperçu du lien dans les messageries). Attention : les évaluations enregistrées sont liées à l'adresse ; les personnes qui ont déjà utilisé SPIRIT à l'ancienne adresse ne les retrouvent à la nouvelle qu'en passant par « Exporter » puis « Importer ».
+
 ---
 
 ## Confidentialité
@@ -154,6 +162,10 @@ Prototype fonctionnel, en cours de consolidation.
 Les pistes de progression par pilier ont été abandonnées pour le moment (v82) : le PDF propose à la place une démarche pour évaluer à plusieurs, le temps d'une soirée.
 
 Reste notamment à finaliser : les tests sur appareils réels, et la relecture du néerlandais.
+
+**Geste « retour » du téléphone (v88).** Il ramène désormais à l'écran précédent (ou ferme la fenêtre ouverte) au lieu de quitter l'application ; depuis l'accueil, il quitte l'application comme avant. Tout est dans `js/retour.js`, qui se contente d'appuyer sur le bouton « ‹ » de l'écran affiché. À essayer sur un vrai téléphone Android et un vrai iPhone.
+
+**Essai en cours (v88) : disposition des réponses.** Deux présentations des cinq réponses d'un pilier sont à l'essai. Elles ne s'activent que si l'on ajoute un paramètre à l'adresse de l'application : `?essai=grille` (les quatre niveaux en 2 × 2) ou `?essai=liste` (liste resserrée). Sans paramètre, rien ne change. « À propos » rappelle l'essai en cours. Une fois le choix fait, supprimer le dernier bloc de `css/styles.css` et les lignes « ESSAI_REPONSES » de `js/app.js`, ou en faire la présentation normale.
 
 ---
 

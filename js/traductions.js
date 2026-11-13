@@ -329,6 +329,16 @@ const TRADUCTIONS = {
   "pdf_questions_domaine":   { fr: "Questions d'aide\u00a0: adaptées au domaine «\u00a0{domaine}\u00a0»",
                                en: "Guiding questions: adapted to the area \u201C{domaine}\u201D",
                                nl: "Hulpvragen: aangepast aan het domein \u201C{domaine}\u201D" },
+  // v87 (audit v86, constats B4 et B5) — à valider par l'équipe (NL : Jens ou Rick)
+  // B4 : l'évaluation terminée n'a pas pu être écrite dans la mémoire de l'appareil.
+  "diagnostic_non_enregistre": { fr: "Cette évaluation n'a pas pu être enregistrée sur cet appareil. Exportez le diagnostic en PDF maintenant pour la conserver.",
+                                 en: "This evaluation could not be saved on this device. Export the diagnosis as PDF now to keep it.",
+                                 nl: "Deze evaluatie kon niet op dit toestel worden opgeslagen. Exporteer de diagnose nu als pdf om ze te bewaren." },
+  // B5 : lien « résultat du groupe » qui ne contient pas au moins deux évaluations lisibles.
+  "lien_incomplet_titre": { fr: "Ce lien est incomplet", en: "This link is incomplete", nl: "Deze link is onvolledig" },
+  "lien_incomplet_texte": { fr: "Il ne contient pas au moins deux évaluations lisibles\u00a0: le diagnostic du groupe ne peut pas être affiché. Demandez à la personne qui l'a envoyé de le partager à nouveau.",
+                            en: "It does not contain at least two readable evaluations, so the group diagnosis cannot be shown. Ask the person who sent it to share it again.",
+                            nl: "Hij bevat geen twee leesbare evaluaties: de diagnose van de groep kan niet worden getoond. Vraag de persoon die de link stuurde om hem opnieuw te delen." },
   // M10 (audit v72) : numéro de version visible (À propos et PDF)
   "version_libelle": { fr: "SPIRIT, version {version}", en: "SPIRIT, version {version}", nl: "SPIRIT, versie {version}" },
   // F3 (audit v72) : titre de la page (onglet, lecteurs d'écran)

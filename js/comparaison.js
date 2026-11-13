@@ -215,7 +215,8 @@ function lireParametresLien(texte) {
 // (pour ne pas le traiter une deuxième fois en rechargeant la page).
 function effacerFragment() {
   try {
-    history.replaceState(null, "", window.location.pathname + window.location.search);
+    // v88 : on conserve « history.state », où retour.js note sa position.
+    history.replaceState(history.state, "", window.location.pathname + window.location.search);
   } catch (e) { /* sans effet bloquant */ }
 }
 
@@ -583,6 +584,14 @@ function traiterLienEntrant() {
     afficherComparer(resultat, "accueil");
   } else if (params.r) {
     effacerFragment();
-    afficherDiagnosticComparaison(params.n || "", params.r.split("."), "accueil", params.d || null);
+    const codes = params.r.split(".");
+    // v87 (constat B5) : un lien abîmé (coupé par une messagerie, mal recopié)
+    // peut ne plus contenir deux évaluations lisibles. Plutôt qu'un diagnostic
+    // vide (« 0 évaluations comparées »), on le dit.
+    if (codes.map(decoderCode).filter(Boolean).length < 2) {
+      afficherMessage(t("lien_incomplet_titre"), t("lien_incomplet_texte"));
+      return;
+    }
+    afficherDiagnosticComparaison(params.n || "", codes, "accueil", params.d || null);
   }
 }

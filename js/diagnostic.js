@@ -410,6 +410,9 @@ function afficherDiagnostic(evaluation, reponses, dateISO, commentaires, comptes
   // Observations libres saisies par l'utilisateur
   document.getElementById("diagnostic-observations").innerHTML = construireObservations(commentaires);
 
+  // Bandeau « évaluation non enregistrée », si besoin (v87, voir app.js)
+  majAlerteArchivage();
+
   // On affiche l'écran
   afficherEcran("ecran-diagnostic");
 }
@@ -566,6 +569,8 @@ function afficherDiagnosticGroupe(evaluation, comptes, dateISO, commentaires) {
   document.getElementById("diagnostic-legende").innerHTML = construireLegende();
   document.getElementById("diagnostic-lectures").innerHTML = construireRepartitionGroupe(comptes);
   document.getElementById("diagnostic-observations").innerHTML = construireObservations(commentaires, "groupe_observations_titre");
+
+  majAlerteArchivage(); // v87 : jamais affiché pour un groupe (voir app.js)
 
   afficherEcran("ecran-diagnostic");
 }

@@ -307,7 +307,9 @@ const CRITERES = [
         en: "Does the practice lead to a personal conversion of the participants?", nl: "Leidt deze kerkelijke praktijk tot een persoonlijke bekering van de deelnemers?" },
       { fr: "La pratique rend-elle possible une transformation communautaire ?",
         en: "Does the practice enable communal transformation?", nl: "Zorgt deze kerkelijke praktijk voor een gemeenschappelijke transformatie?" },
-      { fr: "La pratique contribue-t-elle à un renouveau spirituel et indirectement à une réforme structurelle de l'Église ?",
+      // v88 : « indirectement » retiré du français (décision du 12 novembre 2026 :
+      // pour ce questionnaire de référence, la formulation anglaise validée fait foi).
+      { fr: "La pratique contribue-t-elle à un renouveau spirituel et à une réforme structurelle de l'Église ?",
         en: "Does the practice contribute to a spiritual renewal and structural reform of the Church?", nl: "Draagt deze kerkelijke praktijk bij aan een spirituele vernieuwing en structurele hervorming van de Kerk?" }
     ],
     pistes: { fond: { fr: "", en: "" }, accrocheADevelopper: { fr: "", en: "" }, accrocheNonPresent: { fr: "", en: "" }, sourceDF: "" }
