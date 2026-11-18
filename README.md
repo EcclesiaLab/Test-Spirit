@@ -96,13 +96,13 @@ Quelques règles à respecter dans ce fichier :
 À **chaque modification** d'un fichier (HTML, CSS, JS), il faut **incrémenter le numéro de version** du cache dans `service-worker.js` :
 
 ```js
-const CACHE_VERSION = "spirit-v93";   // → passer à "spirit-v94", etc.
+const CACHE_VERSION = "spirit-v94";   // → passer à "spirit-v95", etc.
 ```
 
 Changer en même temps le numéro affiché dans « À propos » et en pied de PDF, en tête de `js/app.js` :
 
 ```js
-const VERSION_SPIRIT = "93";          // → "94", etc.
+const VERSION_SPIRIT = "94";          // → "95", etc.
 ```
 
 Ce sont les **deux seuls** endroits à modifier (depuis la v87, le texte de « À propos » dans `index.html` se remplit tout seul). Le fichier `service-worker.js` doit changer à chaque version : c'est en le comparant à sa copie que le téléphone découvre qu'une mise à jour existe.
@@ -177,6 +177,8 @@ Reste notamment à finaliser : les tests sur appareils réels, et la relecture d
 - Textes de présentation (bienvenue, « Qu'est-ce que SPIRIT ? », « Comment ça fonctionne ? ») : les domaines sont remplacés par des exemples de pratiques, et l'on y parle d'évaluer la synodalité de la pratique. Lexique : « Reddition de comptes » devient « Rendre compte », comme le titre du pilier 8.
 
 **Bouton « Document final » (v92).** Sur l'écran de chaque pilier, à côté de « Lexique », un bouton discret « Document final » ouvre une fenêtre avec les passages du *Document final* qui fondent ce pilier, chacun précédé de son numéro (DF en français, FD en anglais, SD en néerlandais). Les passages viennent de `JUSTIFICATIONS` (`js/donnees-spirit.js`), comme le PDF « Pour aller plus loin » : on ne les corrige qu'à cet endroit. Code dans `js/document-final.js` ; textes `df_*` dans `js/traductions.js` (à valider par l'équipe). Depuis la v93, la phrase d'introduction précise que ces passages ont été validés par le panel de théologiens.
+
+**Mise en page sur téléphone (v94).** Sur l'écran du pilier, « Document final » et « Lexique » deviennent deux petits boutons arrondis sur la ligne de « PILIER N », avec un peu d'air avant le titre ; sur ordinateur (960 px et plus), rien ne change. Sur l'écran « Nouvelle évaluation », les exemples de pratiques sont présentés en liste, une par ligne, sous « PAR EXEMPLE » (clés `entree_exemple_1` à `entree_exemple_7` dans `js/traductions.js`). Règles dans `css/styles.css` (commentaires « v94 »).
 
 ---
 

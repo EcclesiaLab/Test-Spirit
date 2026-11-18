@@ -617,27 +617,49 @@ body {
 }
 
 /* v91 — Exemples de pratiques ecclésiales (à la place des cartes de
-   domaine, retirées). Simple encadré de lecture : un filet à gauche, pas
-   de bordure complète, pour qu'il ne ressemble pas à un bouton. */
+   domaine, retirées). v94 : encadré discret « PAR EXEMPLE », une pratique
+   par ligne, avec des puces orange comme les questions d'aide. Fond sans
+   bordure, pour qu'il ne ressemble pas à un bouton. */
 .entree__exemples {
   margin-top: var(--espace-lg);
-  padding: 0.75rem 1rem;
-  border-left: 3px solid var(--marine-clair);
-  background-color: var(--blanc);
-  border-radius: 0 var(--arrondi) var(--arrondi) 0;
+  padding: 0.85rem 1rem;
+  background-color: var(--creme-fonce);
+  border-radius: var(--arrondi);
 }
 
 .entree__exemples-titre {
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--marine);
-  font-size: 0.94rem;
+  color: var(--texte-doux);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.entree__exemples-texte {
+.entree__exemples-liste {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+}
+
+.entree__exemples-liste li {
+  position: relative;
+  padding-left: 0.9rem;
+  margin: 0.18rem 0;
   font-size: 0.94rem;
-  color: var(--texte-doux);
-  margin-top: var(--espace-xs);
-  line-height: 1.5;
+  line-height: 1.35;
+  color: var(--texte);
+}
+
+/* La puce : un petit rond orange */
+.entree__exemples-liste li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--orange);
 }
 
 /* Pied de l'écran d'entrée : bouton de validation fixé en bas */
@@ -810,6 +832,46 @@ body {
   text-align: center;
   margin: 0 0 var(--espace-xs);
 }
+/* v94 — Sur téléphone et tablette (moins de 960 px), « Document final » et
+   « Lexique » deviennent deux petits boutons arrondis, et le titre du pilier
+   prend un peu d'air (choix de FX du 18 novembre 2026, variante C). Sur
+   ordinateur, rien ne change : liens soulignés comme en v93. */
+@media (max-width: 959px) {
+  .critere__entete {
+    margin-bottom: 0.6rem;
+  }
+  .critere__outils {
+    gap: 0.5rem;
+  }
+  .critere__outils .critere__lexique {
+    padding: 0.28rem 0.7rem;
+    border: 1px solid var(--bordure);
+    border-radius: 999px;
+    background-color: var(--blanc);
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+  .critere__outils .critere__lexique svg {
+    width: 16px;
+    height: 16px;
+  }
+  /* Zone tactile : 7 px de plus en haut et en bas (environ 44 px en tout),
+     3 px sur les côtés, pour ne pas empiéter sur le bouton voisin (8 px). */
+  .critere__outils .critere__lexique::after {
+    top: -7px;
+    bottom: -7px;
+    left: -3px;
+    right: -3px;
+  }
+}
+/* Très petits écrans (iPhone SE de 1re génération, 320 px) : sans les
+   icônes, les deux boutons tiennent encore sur la ligne de « PILIER 14 ». */
+@media (max-width: 340px) {
+  .critere__outils .critere__lexique svg {
+    display: none;
+  }
+}
+
 /* v92 : la fenêtre « Document final » (même cadre que celle du lexique). */
 .document-final__pilier {
   text-align: center;

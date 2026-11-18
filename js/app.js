@@ -90,7 +90,7 @@ function appliquerMiseAJourSiPossible() {
 //    1. celui-ci ;
 //    2. CACHE_VERSION dans service-worker.js.
 // Le texte de « À propos » dans index.html se remplit tout seul.
-const VERSION_SPIRIT = "93";
+const VERSION_SPIRIT = "94";
 
 
 // Clé de mémoire locale : la bienvenue a-t-elle déjà été vue ?

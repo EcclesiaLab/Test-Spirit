@@ -50,12 +50,15 @@ const TRADUCTIONS = {
                            en: "E.g. St John's pastoral council", nl: "Bijv.: Pastorale raad Sint-Jan" },
   // v91 : exemples de pratiques, à la place du choix du domaine (retiré).
   // À valider par l'équipe (EN et NL : propositions de Claude ; NL : Jens ou Rick).
-  "entree_exemples_titre": { fr: "Quelques exemples de pratiques ecclésiales",
-                             en: "A few examples of ecclesial practices",
-                             nl: "Enkele voorbeelden van kerkelijke praktijken" },
-  "entree_exemples_texte": { fr: "Un conseil pastoral, une équipe liturgique, un parcours de catéchèse, une équipe de préparation au baptême, un service d'accueil, une action de solidarité, une retraite de confirmands…",
-                             en: "A pastoral council, a liturgy team, a catechesis programme, a baptism preparation team, a welcome service, a solidarity initiative, a confirmation retreat…",
-                             nl: "Een pastorale raad, een liturgische werkgroep, een catechesetraject, een doopvoorbereidingsploeg, een onthaaldienst, een solidariteitsactie, een vormselretraite…" },
+  // v94 : une pratique par ligne (titre affiché en capitales par la feuille de style).
+  "entree_exemples_titre": { fr: "Par exemple", en: "For example", nl: "Bijvoorbeeld" },
+  "entree_exemple_1": { fr: "Un conseil pastoral",          en: "A pastoral council",       nl: "Een pastorale raad" },
+  "entree_exemple_2": { fr: "Une équipe liturgique",        en: "A liturgy team",           nl: "Een liturgische werkgroep" },
+  "entree_exemple_3": { fr: "Un parcours de catéchèse",     en: "A catechesis programme",   nl: "Een catechesetraject" },
+  "entree_exemple_4": { fr: "La préparation au baptême",    en: "Baptism preparation",      nl: "De doopvoorbereiding" },
+  "entree_exemple_5": { fr: "Un service d'accueil",         en: "A welcome service",        nl: "Een onthaaldienst" },
+  "entree_exemple_6": { fr: "Une action de solidarité",     en: "A solidarity initiative",  nl: "Een solidariteitsactie" },
+  "entree_exemple_7": { fr: "Une retraite de confirmands",  en: "A confirmation retreat",   nl: "Een vormselretraite" },
   "entree_commencer":    { fr: "Commencer l'évaluation",      en: "Begin the evaluation", nl: "De evaluatie beginnen" },
 
   // --- Questionnaire (piliers) ---
