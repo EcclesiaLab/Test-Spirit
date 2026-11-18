@@ -616,54 +616,28 @@ body {
   margin-top: var(--espace-xs);
 }
 
-/* Bloc des types d'objet */
-.entree__types {
-  border: none;
+/* v91 — Exemples de pratiques ecclésiales (à la place des cartes de
+   domaine, retirées). Simple encadré de lecture : un filet à gauche, pas
+   de bordure complète, pour qu'il ne ressemble pas à un bouton. */
+.entree__exemples {
   margin-top: var(--espace-lg);
-  padding: 0;
-}
-
-/* Une carte de type d'objet (générée par JS) */
-.carte-type {
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: 1.5px solid var(--bordure);
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--marine-clair);
   background-color: var(--blanc);
-  border-radius: var(--arrondi);
-  padding: 0.85rem 1rem;
-  margin-bottom: var(--espace-sm);
-  cursor: pointer;
-  font-family: var(--police-corps);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  border-radius: 0 var(--arrondi) var(--arrondi) 0;
 }
 
-.carte-type:hover {
-  border-color: var(--marine-clair);
-}
-
-/* Carte sélectionnée : bordure marine épaisse + légère ombre */
-.carte-type--active {
-  border: 2px solid var(--marine);
-  box-shadow: 0 2px 6px rgba(22, 52, 88, 0.10);
-}
-
-.carte-type__titre {
-  display: block;
+.entree__exemples-titre {
   font-weight: 600;
-  color: var(--texte);
-  font-size: 1rem;
-}
-
-.carte-type--active .carte-type__titre {
   color: var(--marine);
+  font-size: 0.94rem;
 }
 
-.carte-type__description {
-  display: block;
-  font-size: 0.94rem;  /* v87 : 15 px au lieu de 13,6 : ce texte se lit pour choisir le domaine (B7) */
+.entree__exemples-texte {
+  font-size: 0.94rem;
   color: var(--texte-doux);
-  margin-top: 2px;
+  margin-top: var(--espace-xs);
+  line-height: 1.5;
 }
 
 /* Pied de l'écran d'entrée : bouton de validation fixé en bas */
@@ -781,13 +755,23 @@ body {
    sa zone tactile atteint 44 px grâce à une zone invisible (::after). */
 .critere__entete {
   display: flex;
+  flex-wrap: wrap;          /* v92 : sur un écran très étroit, les boutons passent dessous */
   align-items: center;
   justify-content: space-between;
-  gap: 0.6rem;
+  gap: 0.25rem 0.6rem;
   margin-bottom: 2px;
 }
 .critere__entete .critere__numero {
   margin-bottom: 0;
+}
+/* v92 : « Document final » et « Lexique », côte à côte. L'écart de 0,75rem
+   (12 px) est le minimum pour que leurs zones tactiles invisibles (6 px de
+   chaque côté) ne se chevauchent pas. */
+.critere__outils {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
 }
 .critere__lexique {
   position: relative;
@@ -825,6 +809,28 @@ body {
   font-size: 0.93rem;
   text-align: center;
   margin: 0 0 var(--espace-xs);
+}
+/* v92 : la fenêtre « Document final » (même cadre que celle du lexique). */
+.document-final__pilier {
+  text-align: center;
+  font-family: var(--police-titre);
+  font-weight: 600;
+  color: var(--marine);
+  margin: 0 0 var(--espace-xs);
+}
+.document-final__passage {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--bordure);
+}
+.document-final__passage:last-child {
+  border-bottom: none;
+}
+.document-final__ref {
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.03em;
+  color: var(--marine);   /* l'orange foncé n'offrirait pas assez de contraste sur blanc */
+  margin: 0;
 }
 .lexique-fenetre .bienvenue__bouton-zone {
   position: sticky;

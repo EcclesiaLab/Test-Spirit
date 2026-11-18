@@ -13,7 +13,8 @@
   Ce qui est repris de sources validées :
     - la définition de la synodalité : citation officielle du Document
       final (DF 28), reprise telle quelle de donnees-spirit.js ;
-    - « Discernement » et « Reddition de comptes » (v72) : définitions
+    - « Discernement » et « Reddition de comptes » (v72 ; « Rendre compte »
+      depuis la v91) : définitions
       rédigées à partir des citations officielles du DF déjà présentes
       dans l'app (DF 80, 83, 87 et 97), sans renvoi chiffré.
   Relecture d'équipe intégrée en v72 : pas de renvoi au DF dans les
@@ -171,9 +172,9 @@ const LEXIQUE = [
   {
     terme: { fr: "Pilier", en: "Pillar", nl: "Criterium" },
     definition: {
-      fr: "Dans SPIRIT, l'un des 14 critères qui servent à évaluer une pratique. Les piliers sont répartis entre les trois pierres angulaires (5 pour la communion, 4 pour la participation, 5 pour la mission). Chacun nomme un aspect concret de la synodalité, comme l'hospitalité, la coresponsabilité ou la transparence, et s'accompagne de questions pour aider à répondre. Les piliers ont été validés par un panel de théologiens et théologiennes selon la méthode Delphi.",
-      en: "In SPIRIT, one of the 14 criteria used to evaluate a practice. The pillars are grouped under the three cornerstones (5 for communion, 4 for participation, 5 for mission). Each one names a concrete aspect of synodality, such as hospitality, co-responsibility or transparency, and comes with questions to help answer it. The pillars were validated by a panel of theologians using the Delphi method.",
-      nl: "In SPIRIT een van de 14 criteria waarmee een kerkelijke praktijk geëvalueerd wordt. De criteria zijn verdeeld over de drie pijlers (5 voor gemeenschap, 4 voor participatie, 5 voor zending). Elk criterium benoemt een concreet aspect van synodaliteit, zoals gastvrijheid, medeverantwoordelijkheid of transparantie, en gaat vergezeld van vragen die helpen om te antwoorden. De criteria werden gevalideerd door een panel van theologen volgens de Delphi-methode."
+      fr: "Dans SPIRIT, l'un des 14 critères qui servent à évaluer la synodalité d'une pratique. Les piliers sont répartis entre les trois pierres angulaires (5 pour la communion, 4 pour la participation, 5 pour la mission). Chacun nomme un aspect concret de la synodalité, comme l'hospitalité, la coresponsabilité ou la transparence, et s'accompagne de questions pour aider à répondre. Les piliers ont été validés par un panel de théologiens et théologiennes selon la méthode Delphi.",
+      en: "In SPIRIT, one of the 14 criteria used to evaluate the synodality of a practice. The pillars are grouped under the three cornerstones (5 for communion, 4 for participation, 5 for mission). Each one names a concrete aspect of synodality, such as hospitality, co-responsibility or transparency, and comes with questions to help answer it. The pillars were validated by a panel of theologians using the Delphi method.",
+      nl: "In SPIRIT een van de 14 criteria waarmee de synodaliteit van een kerkelijke praktijk geëvalueerd wordt. De criteria zijn verdeeld over de drie pijlers (5 voor gemeenschap, 4 voor participatie, 5 voor zending). Elk criterium benoemt een concreet aspect van synodaliteit, zoals gastvrijheid, medeverantwoordelijkheid of transparantie, en gaat vergezeld van vragen die helpen om te antwoorden. De criteria werden gevalideerd door een panel van theologen volgens de Delphi-methode."
     }
   },
   {
@@ -185,9 +186,11 @@ const LEXIQUE = [
     }
   },
   {
-    terme: { fr: "Reddition de comptes", en: "Accountability", nl: "Verantwoording" },
+    // v91 : « Reddition de comptes » devient « Rendre compte », comme le titre
+    // du pilier 8. EN et NL inchangés (accountability / verantwoording).
+    terme: { fr: "Rendre compte", en: "Accountability", nl: "Verantwoording" },
     definition: {
-      fr: "Le fait, pour celles et ceux qui exercent une responsabilité, d'expliquer leurs décisions et l'usage des moyens qui leur sont confiés, et d'en répondre devant la communauté. Le Document final parle de « rendre compte » : avec la transparence et l'évaluation, cette pratique nourrit la confiance au sein de l'Église et renforce sa crédibilité.",
+      fr: "Le fait, pour celles et ceux qui exercent une responsabilité, d'expliquer leurs décisions et l'usage des moyens qui leur sont confiés, et d'en répondre devant la communauté. Comme le souligne le Document final, avec la transparence et l'évaluation, cette pratique nourrit la confiance au sein de l'Église et renforce sa crédibilité.",
       en: "The practice, for those who hold responsibility, of explaining their decisions and how they use the resources entrusted to them, and of answering for them to the community. As the Final Document stresses, together with transparency and evaluation, it builds trust within the Church and strengthens its credibility.",
       nl: "Het feit dat wie verantwoordelijkheid draagt, uitleg geeft over de genomen beslissingen en over het gebruik van de toevertrouwde middelen, en zich daarover verantwoordt tegenover de gemeenschap. Zoals het Slotdocument benadrukt, voedt verantwoording samen met transparantie en evaluatie het vertrouwen binnen de Kerk en versterkt ze haar geloofwaardigheid."
     }

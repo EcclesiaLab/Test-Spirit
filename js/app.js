@@ -90,7 +90,7 @@ function appliquerMiseAJourSiPossible() {
 //    1. celui-ci ;
 //    2. CACHE_VERSION dans service-worker.js.
 // Le texte de « À propos » dans index.html se remplit tout seul.
-const VERSION_SPIRIT = "90";
+const VERSION_SPIRIT = "93";
 
 
 // Clé de mémoire locale : la bienvenue a-t-elle déjà été vue ?
@@ -399,7 +399,7 @@ function majLienInstallationAPropos() {
    =========================================================== */
 let evaluationEnCours = {
   nomObjet: "",
-  typeObjet: null,  // recevra l'id du type choisi (ex. "gouverner")
+  typeObjet: TYPE_OBJET_UNIQUE, // v91 : toujours « autre » (plus de choix de domaine)
   mode: "individuel" // v81 : toujours « individuel » (une réponse par pilier)
 };
 
@@ -413,107 +413,56 @@ function estModeGroupe(evaluation) {
 
 
 /* ===========================================================
-   5. ÉCRAN D'ENTRÉE (nom de l'objet + type)
+   5. ÉCRAN D'ENTRÉE (nom de la pratique)
+   v91 : le choix du domaine (cartes « Annoncer la foi », « Célébrer la
+   foi », « Gouverner », « Servir », « Autre pratique ») a été retiré.
+   L'écran ne demande plus que le nom de la pratique ; des exemples de
+   pratiques sont écrits dans index.html.
    =========================================================== */
 
-// Génère les cartes de type d'objet à partir du fichier de données.
-function genererCartesType() {
-  const conteneur = parId("liste-types-objet");
-  conteneur.innerHTML = ""; // on vide d'abord (au cas où)
-
-  TYPES_OBJET.forEach((type) => {
-    // On crée un bouton-carte pour chaque type.
-    const carte = document.createElement("button");
-    carte.type = "button";
-    carte.className = "carte-type";
-    carte.dataset.idType = type.id; // on retient l'id dans l'attribut data-id-type
-
-    carte.innerHTML =
-      '<span class="carte-type__titre">' + tr(type.libelle) + '</span>' +
-      '<span class="carte-type__description">' + tr(type.description) + '</span>';
-
-    // Carte déjà choisie (par ex. quand on régénère les cartes après un
-    // changement de langue, ou en revenant du premier pilier) : on la garde active.
-    if (evaluationEnCours.typeObjet === type.id) {
-      carte.classList.add("carte-type--active");
-    }
-    carte.setAttribute("aria-pressed", evaluationEnCours.typeObjet === type.id ? "true" : "false");
-
-    // Au clic : on sélectionne cette carte.
-    carte.addEventListener("click", () => choisirType(type.id));
-
-    conteneur.appendChild(carte);
-  });
-}
-
-// Marque une carte comme sélectionnée et met à jour l'état.
-function choisirType(idType) {
-  evaluationEnCours.typeObjet = idType;
-
-  // Mise à jour visuelle : on enlève la sélection de toutes les cartes,
-  // puis on la met sur celle choisie.
-  document.querySelectorAll(".carte-type").forEach((carte) => {
-    if (carte.dataset.idType === idType) {
-      carte.classList.add("carte-type--active");
-    } else {
-      carte.classList.remove("carte-type--active");
-    }
-    carte.setAttribute("aria-pressed", carte.dataset.idType === idType ? "true" : "false");
-  });
-
-  rafraichirBoutonCommencer();
-}
-
 // Active ou désactive le bouton "Commencer l'évaluation" selon que
-// le formulaire est complet (un nom non vide ET un type choisi).
+// le nom de la pratique est rempli.
 function rafraichirBoutonCommencer() {
   const nom = parId("champ-nom-objet").value.trim();
-  const typeChoisi = evaluationEnCours.typeObjet !== null;
   const bouton = parId("bouton-commencer-evaluation");
 
-  bouton.disabled = !(nom.length > 0 && typeChoisi);
+  bouton.disabled = nom.length === 0;
 }
 
-// Réinitialise l'écran d'entrée (champ vide, aucun type sélectionné).
+// Réinitialise l'écran d'entrée (champ vide).
 // Utile quand on démarre une nouvelle évaluation.
 function reinitialiserEntree() {
-  evaluationEnCours = { nomObjet: "", typeObjet: null, mode: "individuel" };
+  evaluationEnCours = { nomObjet: "", typeObjet: TYPE_OBJET_UNIQUE, mode: "individuel" };
   // Nouvelle évaluation : on repart de réponses vides. (Jusqu'à la v72, cette
   // remise à zéro se faisait au clic sur « Commencer », ce qui effaçait les
   // réponses quand on revenait du premier pilier à l'écran d'entrée.)
   reponses = {};
   commentaires = {};
   parId("champ-nom-objet").value = "";
-  // On régénère les cartes de type pour qu'elles soient toujours dans la
-  // langue courante (l'utilisateur a pu changer de langue depuis un autre
-  // écran avant d'arriver ici).
-  genererCartesType();
   rafraichirBoutonCommencer();
 }
 
-// Remplit l'écran d'entrée avec l'évaluation en cours (nom, domaine).
+// Remplit l'écran d'entrée avec l'évaluation en cours (nom).
 // Utilisé quand on revient du premier pilier, y compris après une reprise
 // (jusqu'à la v72, l'écran apparaissait alors vide).
 function remplirEntree() {
   parId("champ-nom-objet").value = evaluationEnCours.nomObjet || "";
-  genererCartesType(); // marque la carte du domaine déjà choisi
   rafraichirBoutonCommencer();
 }
 
 // Valide l'écran d'entrée et passe au questionnaire (1er pilier).
 // Les réponses déjà données sont conservées : si l'on revient du premier
-// pilier pour corriger le nom ou le domaine, on ne perd rien. (Les piliers
-// sont les mêmes dans tous les domaines ; seules les questions d'aide changent.)
+// pilier pour corriger le nom, on ne perd rien.
 function validerEntree() {
   evaluationEnCours.nomObjet = parId("champ-nom-objet").value.trim();
   // Sécurité : on ne continue que si tout est bien rempli.
-  if (!evaluationEnCours.nomObjet || !evaluationEnCours.typeObjet) {
+  if (!evaluationEnCours.nomObjet) {
     return;
   }
   afficherCritere(0);
   // v87 (constat C1) : on enregistre dès maintenant. Jusqu'ici, rien n'était
   // gardé avant la première réponse : fermer l'app à ce moment faisait perdre
-  // le nom et le domaine saisis.
+  // le nom saisi.
   sauvegarderEnCours();
 }
 
@@ -522,7 +471,9 @@ function validerEntree() {
 // on restaure le nom, le type, les réponses et la position.
 function reprendreEvaluation(donnees) {
   evaluationEnCours.nomObjet = donnees.nomObjet;
-  evaluationEnCours.typeObjet = donnees.typeObjet;
+  // Une évaluation commencée avant la v91 garde son ancien domaine : il ne
+  // change rien (mêmes questions pour tous depuis la v91).
+  evaluationEnCours.typeObjet = donnees.typeObjet || TYPE_OBJET_UNIQUE;
   // v81 : toujours « individuel ». Une évaluation en groupe commencée avant
   // la v81 (version de test) reprend comme une évaluation faite seul.
   evaluationEnCours.mode = "individuel";
@@ -686,8 +637,8 @@ function majProgression(critere) {
 function genererSousQuestions(critere) {
   const zone = parId("critere-aide-zone");
   const liste = document.createElement("ul");
-  // Questions du domaine choisi (ou questions de référence, voir questions-domaines.js)
-  sousQuestionsPour(critere, evaluationEnCours.typeObjet).forEach((q) => {
+  // v91 : un seul questionnaire pour toutes les pratiques.
+  critere.sousQuestions.forEach((q) => {
     const li = document.createElement("li");
     li.textContent = tr(q);
     liste.appendChild(li);
@@ -1106,8 +1057,7 @@ function construireCarteEvaluation(evaluation) {
   const carte = document.createElement("div");
   carte.className = "eval-carte";
 
-  const type = trouverTypeObjet(evaluation.typeObjet);
-  const typeLibelle = type ? tr(type.libelle) : "";
+  // v91 : le domaine n'est plus affiché (un seul questionnaire).
   const date = formaterDateLongue(evaluation.dateFin);
 
   // Évaluation en groupe (v73) : on l'indique, avec le nombre d'avis.
@@ -1115,7 +1065,7 @@ function construireCarteEvaluation(evaluation) {
   const mentionGroupe = groupe ? t("groupe_mode") + " (" + texteNombreAvis(evaluation.comptes) + ")" : "";
 
   let html = '<div class="eval-carte__nom"></div>';
-  html += '<div class="eval-carte__meta">' + echapper(joindrePoints([typeLibelle, mentionGroupe, date])) + '</div>';
+  html += '<div class="eval-carte__meta">' + echapper(joindrePoints([mentionGroupe, date])) + '</div>';
 
   html += '<div class="eval-carte__apercu">';
   PIERRES_ANGULAIRES.forEach((pierre) => {
@@ -1397,8 +1347,6 @@ function rafraichirEcranCourant() {
     afficherHistorique();
   } else if (id === "ecran-lexique") {
     construireLexique();
-  } else if (id === "ecran-entree") {
-    genererCartesType();
   } else if (id === "ecran-comparer") {
     construireListeComparaison();
     construireLocales();
@@ -1458,6 +1406,9 @@ function brancherBoutons() {
   // v90 (constat B8) : le lexique en fenêtre, depuis l'écran du pilier.
   parId("critere-lexique").addEventListener("click", ouvrirLexiqueFenetre);
   parId("lexique-fenetre-fermer").addEventListener("click", fermerLexiqueFenetre);
+  // v92 : passages du Document final du pilier affiché (document-final.js)
+  parId("critere-document-final").addEventListener("click", ouvrirDocumentFinalFenetre);
+  parId("document-final-fermer").addEventListener("click", fermerDocumentFinalFenetre);
 
   parId("lexique-retour").addEventListener("click", () => {
     afficherEcran("ecran-accueil");
@@ -1499,7 +1450,8 @@ function brancherBoutons() {
   // À chaque frappe dans le champ nom : on réévalue l'état du bouton.
   parId("champ-nom-objet").addEventListener("input", rafraichirBoutonCommencer);
   // v87 (constat C2) : la touche « Entrée » (« Terminé » sur téléphone) referme
-  // le clavier, qui masquait le choix du domaine juste en dessous.
+  // le clavier, qui masquait la suite de l'écran (le choix du domaine
+  // jusqu'à la v90, les exemples de pratiques depuis la v91).
   parId("champ-nom-objet").addEventListener("keydown", (e) => {
     if (e.key === "Enter") e.target.blur();
   });
@@ -1628,7 +1580,6 @@ document.addEventListener("DOMContentLoaded", () => {
   appliquerTraductions();         // applique les textes d'interface à la page
   typographieTextesFixes();       // espaces insécables des textes français fixes
 
-  genererCartesType();            // cartes de type d'objet
   construireBarreProgression();   // segments de la barre de progression
   brancherBoutons();              // on relie tous les boutons
   majLienInstallationAPropos();   // rappel d'installation dans « À propos »

@@ -37,8 +37,6 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   }
   const conteneur = document.getElementById("document-impression");
 
-  const type = trouverTypeObjet(evaluation.typeObjet);
-  const typeLibelle = type ? tr(type.libelle) : "";
   // Date fournie (archive) ou date du jour (évaluation qui vient de finir).
   const date = formaterDateLongue(dateISO || new Date());
 
@@ -58,11 +56,11 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   html += '<div class="pdf-objet-bloc">';
   html += '<p class="pdf-objet-label">' + t("pdf_objet_label") + '</p>';
   html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet) + '</p>';
-  html += '<p class="pdf-objet-meta">' + joindrePoints([typeLibelle, date ? tAvec("pdf_evaluation_date", { date: date }) : ""]) + '</p>';
-  html += ligneOrigineQuestions(evaluation);
+  html += '<p class="pdf-objet-meta">' + joindrePoints([date ? tAvec("pdf_evaluation_date", { date: date }) : ""]) + '</p>';
+  html += ligneOrigineQuestions();
   // v82 : le code de comparaison (le même que « Partager pour le groupe »).
   // La personne qui rassemble les évaluations peut le recopier depuis le PDF.
-  // Il ne contient que le domaine et les 14 réponses, déjà dans ce PDF.
+  // Il ne contient que les 14 réponses, déjà dans ce PDF.
   // Mêmes réponses = même code : on peut donc le recalculer pour une
   // évaluation rouverte depuis « Mes évaluations ».
   html += '<p class="pdf-objet-code">' + t("partage_code_label") + deuxPoints() +
@@ -104,8 +102,8 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
       html += '<td class="pdf-td-critere"><strong>' + critere.numero + '.</strong> ' + echapper(tr(critere.titre));
       // Questions d'aide du pilier, listées sous son titre (dans la même
       // cellule, pour qu'elles restent sur la même page que le pilier).
-      // Questions du domaine choisi (ou questions de référence).
-      const questions = sousQuestionsPour(critere, evaluation.typeObjet) || [];
+      // v91 : un seul questionnaire pour toutes les pratiques.
+      const questions = critere.sousQuestions || [];
       if (questions.length > 0) {
         html += '<ul class="pdf-sq">';
         questions.forEach((q) => {
@@ -168,16 +166,10 @@ function piedVersion() {
   return '<p class="pdf-version">' + tAvec("version_libelle", { version: VERSION_SPIRIT }) + '</p>';
 }
 
-// Ligne qui dit d'où viennent les questions d'aide imprimées (constat M6) :
-// questionnaire de référence validé par le Delphi, ou questions adaptées à
-// un domaine (sans les attribuer au Delphi, qui ne les a pas validées).
-function ligneOrigineQuestions(evaluation) {
-  const type = evaluation.domainesMultiples ? null : trouverTypeObjet(evaluation.typeObjet);
-  const questionsDomaine = !!(type && QUESTIONS_PAR_DOMAINE[type.id]);
-  const texte = questionsDomaine
-    ? tAvec("pdf_questions_domaine", { domaine: tr(type.libelle) })
-    : t("pdf_questions_reference");
-  return '<p class="pdf-objet-questions">' + texte + '</p>';
+// Ligne qui dit d'où viennent les questions d'aide imprimées (constat M6).
+// v91 : toujours le questionnaire de référence (plus de questions par domaine).
+function ligneOrigineQuestions() {
+  return '<p class="pdf-objet-questions">' + t("pdf_questions_reference") + '</p>';
 }
 
 
@@ -213,7 +205,7 @@ function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commen
   html += '<p class="pdf-objet-label">' + t("pdf_objet_label") + '</p>';
   html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet || t("comparer_sans_nom")) + '</p>';
   html += '<p class="pdf-objet-meta">' + joindrePoints([descriptionGroupe(evaluation, comptes), ligneDate]) + '</p>';
-  html += ligneOrigineQuestions(evaluation);
+  html += ligneOrigineQuestions();
   html += '</div>';
 
   /* --- Synthèse + légende --- */
@@ -236,7 +228,7 @@ function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commen
       if (estAvisPartage(compte)) {
         html += ' <span class="pdf-groupe-badge">' + t("groupe_badge") + '</span>';
       }
-      const questions = sousQuestionsPour(critere, evaluation.typeObjet) || [];
+      const questions = critere.sousQuestions || [];
       if (questions.length > 0) {
         html += '<ul class="pdf-sq">';
         questions.forEach((q) => { html += '<li>' + echapper(tr(q)) + '</li>'; });
@@ -426,7 +418,7 @@ function lancerImpressionReferences() {
       quand le PDF ne s'enregistre pas (par exemple dans le navigateur
       intégré d'une messagerie). Sans partage disponible, le texte est
       copié ; si la copie échoue aussi, il s'affiche pour être copié à la main.
-   Le résumé reprend ce que montre l'écran : nom, domaine et date ; par
+   Le résumé reprend ce que montre l'écran : nom et date ; par
    pierre angulaire, la phrase de lecture et la réponse de chaque pilier
    (pour un groupe : la répartition et les avis divergents) ; les
    observations ; le code de comparaison (évaluation faite seul).
@@ -464,8 +456,7 @@ function construireResumeTexte(evaluation, reponses, dateISO, commentaires, comp
     const date = formaterDateLongue(dateISO || (evaluation.origine === "comparaison" ? null : new Date()));
     lignes.push(joindrePoints([descriptionGroupe(evaluation, comptes), date]));
   } else {
-    const type = trouverTypeObjet(evaluation.typeObjet);
-    lignes.push(joindrePoints([type ? tr(type.libelle) : "", formaterDateLongue(dateISO || new Date())]));
+    lignes.push(formaterDateLongue(dateISO || new Date()));   // v91 : plus de domaine
   }
 
   // Par pierre angulaire

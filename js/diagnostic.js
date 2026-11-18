@@ -426,16 +426,14 @@ function afficherDiagnostic(evaluation, reponses, dateISO, commentaires, comptes
   document.getElementById("diagnostic-partager").classList.remove("cache");
   document.getElementById("diagnostic-envoyer-resultat").classList.add("cache");
 
-  // En-tête : nom de l'objet + type + date
+  // En-tête : nom de la pratique + date (v91 : plus de domaine)
   document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet;
 
-  const type = trouverTypeObjet(evaluation.typeObjet);
-  const typeLibelle = type ? tr(type.libelle) : "";
   // Si une date est fournie (évaluation archivée), on l'utilise ;
   // sinon, c'est une évaluation qui vient de se terminer → date du jour.
   // Date de l'évaluation archivée, ou date du jour si elle vient de se terminer.
   const date = formaterDateLongue(dateISO || new Date());
-  document.getElementById("diagnostic-meta").textContent = joindrePoints([typeLibelle, date]);
+  document.getElementById("diagnostic-meta").textContent = joindrePoints([date]);
 
   // Schéma radial
   document.getElementById("diagnostic-schema").innerHTML = construireSchemaRadial(reponses);
@@ -495,15 +493,12 @@ function texteNombreAvis(comptes) {
 }
 
 // Ligne de présentation d'un diagnostic de groupe (écran et PDF) :
-// « Gouverner · En groupe (6 avis) », ou pour une comparaison de codes
-// « Gouverner · 6 évaluations comparées » (« Plusieurs domaines » si besoin).
+// « En groupe (6 avis) », ou pour une comparaison de codes
+// « 6 évaluations comparées ». (Jusqu'à la v90, le domaine la précédait.)
 function descriptionGroupe(evaluation, comptes) {
-  const type = trouverTypeObjet(evaluation.typeObjet);
-  const domaine = evaluation.domainesMultiples ? t("groupe_domaines_multiples") : (type ? tr(type.libelle) : "");
-  const mention = evaluation.origine === "comparaison"
+  return evaluation.origine === "comparaison"
     ? tAvec("groupe_evaluations_comparees", { nombre: evaluation.nbEvaluations })
     : t("groupe_mode") + " (" + texteNombreAvis(comptes) + ")";
-  return (domaine ? domaine + " · " : "") + mention;
 }
 
 // Numéros des piliers aux avis divergents (ex. [1, 2, 6]).

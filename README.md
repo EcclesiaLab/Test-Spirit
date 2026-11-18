@@ -11,7 +11,7 @@ L'application est un projet d'**EcclesiaLab**, laboratoire de recherche sur l'in
 ## Ce que fait l'application
 
 - **Évaluer** une pratique ecclésiale (en néerlandais « kerkelijke praktijk » depuis la v85) en répondant, pilier par pilier, à un questionnaire avec quatre niveaux de réponse et « Non applicable » (*Solidement établi / À consolider / En chantier / À bâtir / Non applicable*). Le niveau « À consolider » et les pictogrammes de construction datent de la v80. Une évaluation se fait toujours seul (le mode « Évaluer en groupe » des versions 73 à 80 a été retiré en v81 ; les évaluations de groupe déjà enregistrées restent lisibles).
-- **Rassembler des évaluations** (v74, appelé « Comparer des évaluations » jusqu'à la v78) : c'est la seule manière d'évaluer à plusieurs depuis la v81. Chaque personne évalue de son côté, puis transmet un code de 9 caractères (ou un lien) contenant uniquement le domaine et ses 14 réponses (bouton « Partager pour le groupe » du diagnostic) ; une personne rassemble ces codes dans l'écran « Rassembler des évaluations », accessible depuis l'accueil (v79) ou depuis *Mes évaluations*, et obtient le diagnostic du groupe : la répartition des avis par pilier, sans moyenne, avec les piliers aux avis divergents signalés. Fonctionne en salle comme à distance, sans serveur. Depuis la v80, le code suit un format 2 (5 réponses possibles par pilier) ; les codes donnés avant la v80 restent lisibles. Le lien « Envoyer le résultat au groupe » contient tous les codes ; depuis la v86, il porte aussi la date du diagnostic (`&d=AAAA-MM-JJ`), affichée quand on le rouvre, par exemple pour comparer avec une nouvelle évaluation à 6 ou 12 mois.
+- **Rassembler des évaluations** (v74, appelé « Comparer des évaluations » jusqu'à la v78) : c'est la seule manière d'évaluer à plusieurs depuis la v81. Chaque personne évalue de son côté, puis transmet un code de 9 caractères (ou un lien) contenant uniquement ses 14 réponses (et une place technique pour l'ancien domaine, toujours « autre » depuis la v91) (bouton « Partager pour le groupe » du diagnostic) ; une personne rassemble ces codes dans l'écran « Rassembler des évaluations », accessible depuis l'accueil (v79) ou depuis *Mes évaluations*, et obtient le diagnostic du groupe : la répartition des avis par pilier, sans moyenne, avec les piliers aux avis divergents signalés. Fonctionne en salle comme à distance, sans serveur. Depuis la v80, le code suit un format 2 (5 réponses possibles par pilier) ; les codes donnés avant la v80 restent lisibles. Le lien « Envoyer le résultat au groupe » contient tous les codes ; depuis la v86, il porte aussi la date du diagnostic (`&d=AAAA-MM-JJ`), affichée quand on le rouvre, par exemple pour comparer avec une nouvelle évaluation à 6 ou 12 mois.
 - **Visualiser** un diagnostic sous forme de trois jauges (une par pierre angulaire), accompagné d'une lecture textuelle.
 - **Exporter** le résultat en PDF via la fonction d'impression du navigateur. Depuis la v82, le PDF d'une évaluation porte son code de comparaison en première page et se termine par une démarche « Évaluer à plusieurs, le temps d'une soirée ».
 - **Conserver** l'historique des évaluations sur l'appareil (consultation, réouverture, suppression).
@@ -45,8 +45,8 @@ Ces choix sont volontaires : ils rendent l'application sobre, durable et mainten
 ├── js/
 │   ├── donnees-spirit.js   ★ CŒUR ÉDITORIAL : piliers, pierres angulaires, textes
 │   ├── pictogrammes.js     Pictogrammes des réponses (maison en construction, v80)
-│   ├── questions-domaines.js  Questions d'aide des 4 domaines (version d'essai)
 │   ├── lexique.js          Lexique : mots de l'Église et de SPIRIT (provisoire)
+│   ├── document-final.js   Fenêtre « Document final » de l'écran du pilier (v92)
 │   ├── traductions.js      Textes d'interface (FR / EN / NL)
 │   ├── langue.js           Gestion du basculement de langue
 │   ├── app.js              Logique applicative (navigation, questionnaire, écrans)
@@ -96,13 +96,13 @@ Quelques règles à respecter dans ce fichier :
 À **chaque modification** d'un fichier (HTML, CSS, JS), il faut **incrémenter le numéro de version** du cache dans `service-worker.js` :
 
 ```js
-const CACHE_VERSION = "spirit-v90";   // → passer à "spirit-v91", etc.
+const CACHE_VERSION = "spirit-v93";   // → passer à "spirit-v94", etc.
 ```
 
 Changer en même temps le numéro affiché dans « À propos » et en pied de PDF, en tête de `js/app.js` :
 
 ```js
-const VERSION_SPIRIT = "90";          // → "91", etc.
+const VERSION_SPIRIT = "93";          // → "94", etc.
 ```
 
 Ce sont les **deux seuls** endroits à modifier (depuis la v87, le texte de « À propos » dans `index.html` se remplit tout seul). Le fichier `service-worker.js` doit changer à chaque version : c'est en le comparant à sa copie que le téléphone découvre qu'une mise à jour existe.
@@ -168,6 +168,15 @@ Reste notamment à finaliser : les tests sur appareils réels, et la relecture d
 **Réponses en grille (v89).** Sur téléphone et tablette, les quatre niveaux de réponse sont présentés en 2 × 2, « Non applicable » dessous sur toute la largeur, pour que les cinq réponses tiennent à l'écran sans défiler (choix du 13 novembre 2026, après essai en v88). Sur ordinateur, la liste est conservée. Les règles sont dans le dernier bloc de `css/styles.css`. Les anciens liens d'essai (`?essai=grille`, `?essai=liste`) sont sans effet depuis la v89.
 
 **Ajouts de la v90.** Sur le diagnostic, chaque carte de pierre angulaire se termine par un bloc repliable « Réponse pilier par pilier » (`construireDetailPiliers`, `js/diagnostic.js`). Sous « Exporter le diagnostic en PDF », une ligne d'aide adaptée à l'appareil et un bouton « Envoyer le résumé » qui envoie le diagnostic en texte simple par le partage du téléphone (`majAidePdf` et `envoyerResume`, en fin de `js/impression.js`). Sur l'écran du pilier, un bouton « Lexique » ouvre le lexique en fenêtre sans quitter l'évaluation (fin de `js/lexique.js`). L'accueil se resserre désormais jusqu'à 800 px de haut (au lieu de 700). Les textes nouveaux sont à valider par l'équipe (commentaires « v90 » dans `js/traductions.js`).
+
+**Un seul questionnaire (v91).** Décision de l'équipe du 18 novembre 2026 : les 4 domaines (Annoncer la foi, Célébrer la foi, Gouverner, Servir) et leurs questions propres sont retirés ; toutes les pratiques reçoivent le questionnaire de référence (l'ancien choix « Autre pratique »), dans la version adaptée par l'équipe pour le terrain (ordre revu aux piliers 1 et 9, une question retirée aux piliers 4 et 13, reformulations dont « La manière de mener la pratique… », titres des piliers 5 et 8 modifiés). L'équipe considère que cette adaptation ne change rien à la validation Delphi. L'anglais et le néerlandais des passages modifiés sont des propositions de Claude, à revérifier à la fin de la phase 3 (détail en tête de `js/donnees-spirit.js`).
+
+- L'écran d'entrée ne demande plus que le nom de la pratique (« De quelle pratique évaluez-vous la synodalité ? ») et montre quelques exemples de pratiques ecclésiales (`entree_exemples_*` dans `js/traductions.js`).
+- Le fichier `js/questions-domaines.js` est supprimé. **Sur GitHub, le supprimer aussi du dépôt** (il n'est plus chargé, mais autant ne pas le laisser traîner).
+- Le domaine n'est plus affiché nulle part (historique, diagnostic, diagnostic du groupe, PDF, résumé). Les évaluations et les codes faits avant la v91 avec un domaine s'ouvrent normalement, avec les questions actuelles ; des codes de domaines différents se rassemblent sans mention « Plusieurs domaines ».
+- Textes de présentation (bienvenue, « Qu'est-ce que SPIRIT ? », « Comment ça fonctionne ? ») : les domaines sont remplacés par des exemples de pratiques, et l'on y parle d'évaluer la synodalité de la pratique. Lexique : « Reddition de comptes » devient « Rendre compte », comme le titre du pilier 8.
+
+**Bouton « Document final » (v92).** Sur l'écran de chaque pilier, à côté de « Lexique », un bouton discret « Document final » ouvre une fenêtre avec les passages du *Document final* qui fondent ce pilier, chacun précédé de son numéro (DF en français, FD en anglais, SD en néerlandais). Les passages viennent de `JUSTIFICATIONS` (`js/donnees-spirit.js`), comme le PDF « Pour aller plus loin » : on ne les corrige qu'à cet endroit. Code dans `js/document-final.js` ; textes `df_*` dans `js/traductions.js` (à valider par l'équipe). Depuis la v93, la phrase d'introduction précise que ces passages ont été validés par le panel de théologiens.
 
 ---
 

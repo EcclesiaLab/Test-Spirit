@@ -11,7 +11,10 @@
   « Évaluer en groupe » sur un seul appareil a été retiré).
 
   CONFIDENTIALITÉ : SPIRIT n'envoie rien. Le code ne contient que le
-  domaine et les 14 réponses (ni nom, ni observation). Il passe par le
+  domaine et les 14 réponses (ni nom, ni observation). v91 : le domaine
+  vaut toujours « autre » pour une nouvelle évaluation, et il est ignoré
+  quand on rassemble les codes (un seul questionnaire pour tous). Sa place
+  reste dans le code pour que les codes déjà donnés restent lisibles. Il passe par le
   moyen choisi par les personnes (message, courriel, de vive voix). Dans
   un lien, le code est placé après le signe « # » : cette partie d'une
   adresse n'est jamais envoyée au site qui héberge l'app.
@@ -304,7 +307,6 @@ function construireListeComparaison() {
 
   donnees.elements.forEach((element, i) => {
     const lu = decoderCode(element.code);
-    const type = lu ? trouverTypeObjet(lu.domaine) : null;
     const ligne = document.createElement("div");
     ligne.className = "comparer__ligne";
 
@@ -315,7 +317,7 @@ function construireListeComparaison() {
     nom.textContent = tAvec("comparer_evaluation", { numero: i + 1 });
     const detail = document.createElement("span");
     detail.className = "comparer__ligne-detail";
-    detail.textContent = (type ? tr(type.libelle) + " · " : "") + t("comparer_source_" + element.source);
+    detail.textContent = t("comparer_source_" + element.source);   // v91 : plus de domaine affiché
     textes.appendChild(nom);
     textes.appendChild(detail);
 
@@ -475,13 +477,14 @@ function afficherDiagnosticComparaison(nom, codes, retour, date) {
   lus.forEach((lu) => {
     CRITERES.forEach((c) => { comptes[c.id][lu.reponses[c.id]]++; });
   });
-  const domaines = lus.map((lu) => lu.domaine).filter((d, i, liste) => liste.indexOf(d) === i);
+  // v91 : le domaine lu dans les codes est ignoré (un seul questionnaire
+  // pour tous) : des codes donnés avec des domaines différents avant la v91
+  // se rassemblent sans mention « Plusieurs domaines ».
   const evaluation = {
     nomObjet: nom || "",            // vide si la personne qui rassemble n'a pas nommé la pratique
-    typeObjet: domaines.length === 1 ? domaines[0] : null,
+    typeObjet: TYPE_OBJET_UNIQUE,
     mode: "groupe",
     origine: "comparaison",
-    domainesMultiples: domaines.length > 1,
     nbEvaluations: lus.length
   };
   diagnosticComparaison = { evaluation: evaluation, comptes: comptes, codes: lus.map((lu) => lu.code), retour: retour,
