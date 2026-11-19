@@ -374,6 +374,9 @@ const TRADUCTIONS = {
                             nl: "Hij bevat geen twee leesbare evaluaties: de diagnose van de groep kan niet worden getoond. Vraag de persoon die de link stuurde om hem opnieuw te delen." },
   // M10 (audit v72) : numéro de version visible (À propos et PDF)
   "version_libelle": { fr: "SPIRIT, version {version}", en: "SPIRIT, version {version}", nl: "SPIRIT, versie {version}" },
+  // v95 : mention en fin de chaque PDF (évaluation, groupe, « Pour aller plus loin »).
+  // EN et NL : propositions de Claude, à faire relire.
+  "pdf_propriete": { fr: "Propriété intellectuelle de l'EcclesiaLab", en: "Intellectual property of EcclesiaLab", nl: "Intellectueel eigendom van EcclesiaLab" },
   // F3 (audit v72) : titre de la page (onglet, lecteurs d'écran)
   "titre_page": { fr: "SPIRIT — Évaluation de la synodalité", en: "SPIRIT — Evaluating synodality", nl: "SPIRIT — Synodaliteit evalueren" },
   "pdf_diagnostic":   { fr: "Diagnostic", en: "Diagnosis", nl: "Diagnose" },
@@ -418,10 +421,10 @@ const TRADUCTIONS = {
   // v92 : bouton « Document final » sur l'écran du pilier, et sa fenêtre.
   // À valider par l'équipe (EN et NL : propositions de Claude ; NL : Jens ou Rick).
   "df_bouton": { fr: "Document final", en: "Final Document", nl: "Slotdocument" },
-  // v93 : mention du panel ajoutée (même formule que le PDF « Pour aller plus loin »).
-  "df_intro":  avecPanel({ fr: "Passages du Document final sur lesquels repose ce pilier, validés par un panel de {panel}.",
-                 en: "Passages from the Final Document on which this pillar is based, validated by a panel of {panel}.",
-                 nl: "Passages uit het Slotdocument waarop dit criterium berust, gevalideerd door een panel van {panel}." }),
+  // v95 : mention du panel retirée (demande de FX, 19 novembre 2026).
+  "df_intro":  { fr: "Passages du Document final sur lesquels repose ce pilier.",
+                 en: "Passages from the Final Document on which this pillar is based.",
+                 nl: "Passages uit het Slotdocument waarop dit criterium berust." },
   "df_pilier": { fr: "Pilier {numero}\u00a0— {titre}", en: "Pillar {numero} — {titre}", nl: "Criterium {numero} — {titre}" },
 
   // Dernière feuille du PDF : les 14 piliers et leurs fondements (Document final du Synode)

@@ -32,7 +32,7 @@
 */
 
 // ---- Numéro de version du cache (à incrémenter à chaque mise à jour) ----
-const CACHE_VERSION = "spirit-v94";
+const CACHE_VERSION = "spirit-v95";
 
 // ---- Liste des fichiers à mettre en cache dès l'installation ----
 // Ce sont les fichiers minimum pour que l'app s'affiche hors-ligne.

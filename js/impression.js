@@ -162,8 +162,12 @@ function sectionSoireeEtLogos() {
 }
 
 // Pied de page : numéro de version de SPIRIT (constat M10 de l'audit v72).
+// v95 : précédé de la mention « Propriété intellectuelle de l'EcclesiaLab ».
+// Cette fonction termine les trois PDF (évaluation, diagnostic du groupe,
+// « Pour aller plus loin ») : la mention figure donc sur les trois.
 function piedVersion() {
-  return '<p class="pdf-version">' + tAvec("version_libelle", { version: VERSION_SPIRIT }) + '</p>';
+  return '<p class="pdf-propriete">' + t("pdf_propriete") + '</p>' +
+         '<p class="pdf-version">' + tAvec("version_libelle", { version: VERSION_SPIRIT }) + '</p>';
 }
 
 // Ligne qui dit d'où viennent les questions d'aide imprimées (constat M6).

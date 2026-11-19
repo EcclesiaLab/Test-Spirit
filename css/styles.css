@@ -1934,12 +1934,20 @@ a.bouton {
     margin: 3px 0 0;
   }
 
+  /* v95 : mention de propriété intellectuelle, juste sous les logos */
+  .pdf-propriete {
+    text-align: center;
+    font-size: 8.5pt;
+    color: #163458;
+    margin-top: 10px;
+  }
+
   /* Numéro de version en fin de document (v75, constat M10) */
   .pdf-version {
     text-align: center;
     font-size: 7.5pt;
     color: #5A6A7A;
-    margin-top: 10px;
+    margin-top: 2px;
   }
 
   /* --- Sections --- */
