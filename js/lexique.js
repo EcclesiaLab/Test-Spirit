@@ -13,8 +13,7 @@
   Ce qui est repris de sources validées :
     - la définition de la synodalité : citation officielle du Document
       final (DF 28), reprise telle quelle de donnees-spirit.js ;
-    - « Discernement » et « Reddition de comptes » (v72 ; « Rendre compte »
-      depuis la v91) : définitions
+    - « Discernement » et « Reddition de comptes » (v72) : définitions
       rédigées à partir des citations officielles du DF déjà présentes
       dans l'app (DF 80, 83, 87 et 97), sans renvoi chiffré.
   Relecture d'équipe intégrée en v72 : pas de renvoi au DF dans les
@@ -166,15 +165,15 @@ const LEXIQUE = [
     definition: {
       fr: "Réponse à choisir quand le pilier ne concerne pas la pratique évaluée, compte tenu de sa nature. Le pilier n'est alors pas pris en compte dans le diagnostic. Si le pilier concerne la pratique mais n'est pas encore vécu, choisissez plutôt « À bâtir ».",
       en: "The answer to choose when the pillar does not concern the practice being evaluated, given its nature. The pillar is then not taken into account in the diagnosis. If the pillar does concern the practice but is not yet lived out, choose “To be built” instead.",
-      nl: "Het antwoord dat je kiest wanneer het criterium, gezien de aard van de kerkelijke praktijk, er geen betrekking op heeft. Het criterium wordt dan niet meegeteld in de diagnose. Heeft het criterium wel betrekking op de kerkelijke praktijk, maar wordt het nog niet beleefd? Kies dan ‘Nog op te bouwen’."
+      nl: "Het antwoord dat je kiest wanneer het criterium, gezien de aard van de geloofspraktijk, er geen betrekking op heeft. Het criterium wordt dan niet meegeteld in de diagnose. Heeft het criterium wel betrekking op de geloofspraktijk, maar wordt het nog niet beleefd? Kies dan ‘Nog op te bouwen’."
     }
   },
   {
     terme: { fr: "Pilier", en: "Pillar", nl: "Criterium" },
     definition: {
-      fr: "Dans SPIRIT, l'un des 14 critères qui servent à évaluer la synodalité d'une pratique. Les piliers sont répartis entre les trois pierres angulaires (5 pour la communion, 4 pour la participation, 5 pour la mission). Chacun nomme un aspect concret de la synodalité, comme l'hospitalité, la coresponsabilité ou la transparence, et s'accompagne de questions pour aider à répondre. Les piliers ont été validés par un panel de théologiens et théologiennes selon la méthode Delphi.",
-      en: "In SPIRIT, one of the 14 criteria used to evaluate the synodality of a practice. The pillars are grouped under the three cornerstones (5 for communion, 4 for participation, 5 for mission). Each one names a concrete aspect of synodality, such as hospitality, co-responsibility or transparency, and comes with questions to help answer it. The pillars were validated by a panel of theologians using the Delphi method.",
-      nl: "In SPIRIT een van de 14 criteria waarmee de synodaliteit van een kerkelijke praktijk geëvalueerd wordt. De criteria zijn verdeeld over de drie pijlers (5 voor gemeenschap, 4 voor participatie, 5 voor zending). Elk criterium benoemt een concreet aspect van synodaliteit, zoals gastvrijheid, medeverantwoordelijkheid of transparantie, en gaat vergezeld van vragen die helpen om te antwoorden. De criteria werden gevalideerd door een panel van theologen volgens de Delphi-methode."
+      fr: "Dans SPIRIT, l'un des 14 critères qui servent à évaluer une pratique. Les piliers sont répartis entre les trois pierres angulaires (5 pour la communion, 4 pour la participation, 5 pour la mission). Chacun nomme un aspect concret de la synodalité, comme l'hospitalité, la coresponsabilité ou la transparence, et s'accompagne de questions pour aider à répondre. Les piliers ont été validés par un panel de théologiens et théologiennes selon la méthode Delphi.",
+      en: "In SPIRIT, one of the 14 criteria used to evaluate a practice. The pillars are grouped under the three cornerstones (5 for communion, 4 for participation, 5 for mission). Each one names a concrete aspect of synodality, such as hospitality, co-responsibility or transparency, and comes with questions to help answer it. The pillars were validated by a panel of theologians using the Delphi method.",
+      nl: "In SPIRIT een van de 14 criteria waarmee een geloofspraktijk geëvalueerd wordt. De criteria zijn verdeeld over de drie pijlers (5 voor gemeenschap, 4 voor participatie, 5 voor zending). Elk criterium benoemt een concreet aspect van synodaliteit, zoals gastvrijheid, medeverantwoordelijkheid of transparantie, en gaat vergezeld van vragen die helpen om te antwoorden. De criteria werden gevalideerd door een panel van theologen volgens de Delphi-methode."
     }
   },
   {
@@ -186,11 +185,9 @@ const LEXIQUE = [
     }
   },
   {
-    // v91 : « Reddition de comptes » devient « Rendre compte », comme le titre
-    // du pilier 8. EN et NL inchangés (accountability / verantwoording).
-    terme: { fr: "Rendre compte", en: "Accountability", nl: "Verantwoording" },
+    terme: { fr: "Reddition de comptes", en: "Accountability", nl: "Verantwoording" },
     definition: {
-      fr: "Le fait, pour celles et ceux qui exercent une responsabilité, d'expliquer leurs décisions et l'usage des moyens qui leur sont confiés, et d'en répondre devant la communauté. Comme le souligne le Document final, avec la transparence et l'évaluation, cette pratique nourrit la confiance au sein de l'Église et renforce sa crédibilité.",
+      fr: "Le fait, pour celles et ceux qui exercent une responsabilité, d'expliquer leurs décisions et l'usage des moyens qui leur sont confiés, et d'en répondre devant la communauté. Le Document final parle de « rendre compte » : avec la transparence et l'évaluation, cette pratique nourrit la confiance au sein de l'Église et renforce sa crédibilité.",
       en: "The practice, for those who hold responsibility, of explaining their decisions and how they use the resources entrusted to them, and of answering for them to the community. As the Final Document stresses, together with transparency and evaluation, it builds trust within the Church and strengthens its credibility.",
       nl: "Het feit dat wie verantwoordelijkheid draagt, uitleg geeft over de genomen beslissingen en over het gebruik van de toevertrouwde middelen, en zich daarover verantwoordt tegenover de gemeenschap. Zoals het Slotdocument benadrukt, voedt verantwoording samen met transparantie en evaluatie het vertrouwen binnen de Kerk en versterkt ze haar geloofwaardigheid."
     }
@@ -206,10 +203,8 @@ const LEXIQUE = [
    AFFICHAGE DE L'ÉCRAN « LEXIQUE »
    Construit la liste dans la langue active, par ordre alphabétique.
    =========================================================== */
-// v90 : « idConteneur » permet de remplir aussi la liste de la fenêtre
-// ouverte depuis l'écran du pilier ; sans lui, c'est l'écran « Lexique ».
-function construireLexique(idConteneur) {
-  const conteneur = document.getElementById(idConteneur || "lexique-liste");
+function construireLexique() {
+  const conteneur = document.getElementById("lexique-liste");
   if (!conteneur) return;
   const langue = getLangue();
 
@@ -247,21 +242,3 @@ function construireLexique(idConteneur) {
     conteneur.appendChild(bloc);
   });
 }
-
-
-/* ===========================================================
-   v90 (constat B8 de l'audit v86) — LE LEXIQUE EN FENÊTRE
-   Pendant le questionnaire, le bouton « Lexique » (en haut du pilier)
-   ouvre la même liste dans une fenêtre : on lit une définition, on ferme,
-   et l'on est toujours sur le même pilier. La touche Échap et le geste
-   « retour » du téléphone la ferment aussi (fenetres.js, retour.js).
-   =========================================================== */
-function ouvrirLexiqueFenetre() {
-  construireLexique("lexique-fenetre-liste"); // dans la langue active
-  ouvrirFenetre("lexique-voile", { surEchap: fermerLexiqueFenetre });
-}
-
-function fermerLexiqueFenetre() {
-  fermerFenetre("lexique-voile"); // le focus revient sur le bouton « Lexique »
-}
-

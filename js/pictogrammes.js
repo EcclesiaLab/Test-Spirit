@@ -68,11 +68,9 @@ const COULEUR_PICTO_NA = "#888780";
 function pictogramme(idModalite, taille) {
   const dessin = PICTOGRAMMES[idModalite];
   if (!dessin) return "";
-  // v87 : cette variable s'appelait « t », comme la fonction de traduction
-  // t() ; elle la masquait à l'intérieur de cette fonction (constat C6).
-  const cote = taille || 34;
+  const t = taille || 34;
   const couleur = couleurModalite(idModalite) || COULEUR_PICTO_NA;
   return '<span class="picto" style="color:' + couleur + '">' +
-         '<svg viewBox="0 0 32 32" width="' + cote + '" height="' + cote + '" fill="none" stroke="currentColor" ' +
+         '<svg viewBox="0 0 32 32" width="' + t + '" height="' + t + '" fill="none" stroke="currentColor" ' +
          'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + dessin + '</svg></span>';
 }

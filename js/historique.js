@@ -64,8 +64,7 @@ function ecrireHistorique(liste) {
 
 
 // Archive une évaluation terminée : l'ajoute en tête de la liste.
-// Renvoie l'identifiant attribué, ou null si l'écriture a échoué (mémoire de
-// l'appareil pleine ou refusée) : l'appelant peut alors prévenir (v87, B4).
+// Renvoie l'identifiant attribué.
 function archiverEvaluation(evaluation, reponses, commentaires) {
   const liste = lireHistorique();
 
@@ -81,9 +80,7 @@ function archiverEvaluation(evaluation, reponses, commentaires) {
 
   // On ajoute la nouvelle évaluation en tête (la plus récente en premier).
   liste.unshift(entree);
-  if (!ecrireHistorique(liste)) {
-    return null; // rien n'a été enregistré
-  }
+  ecrireHistorique(liste);
   // On demande au navigateur de ne pas effacer ces données (sauvegarde.js).
   protegerDonnees();
 
