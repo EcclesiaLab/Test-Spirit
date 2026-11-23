@@ -346,8 +346,47 @@ function construireLectures(reponses) {
     html += '<div class="lecture-pierre" style="border-left-color:' + pierre.couleur + '">' +
               '<div class="lecture-pierre__titre" style="color:' + pierre.couleur + '">' + tr(pierre.nom) + '</div>' +
               '<div class="lecture-pierre__texte">' + texte + '</div>' +
+              construireDetailPiliers(pierre, reponses) +
             '</div>';
   });
+  return html;
+}
+
+/*
+  v90 (constat B1 de l'audit v86) — DÉTAIL PILIER PAR PILIER
+  Jusqu'ici, le diagnostic à l'écran disait « 2 piliers solidement établis,
+  1 en chantier… » sans dire lesquels : le détail n'était que dans le PDF.
+  Chaque carte de pierre angulaire se termine donc par un bloc replié
+  (balise <details>, qui s'ouvre et se ferme sans JavaScript) :
+    - fermé, il montre une ligne de petits pictogrammes, un par pilier ;
+    - ouvert, il donne pour chaque pilier son numéro, son titre, le
+      pictogramme et le libellé de la réponse.
+  Décision du 13 novembre 2026 : réponse seule, sans les citations du
+  Document final (elles restent dans « Pour aller plus loin »).
+  Une réponse manquante (évaluation ancienne) s'affiche « — », comme dans
+  le PDF.
+*/
+function construireDetailPiliers(pierre, reponses) {
+  const piliers = CRITERES.filter((c) => c.pierre === pierre.id);
+  // Fermé : un petit pictogramme par pilier (décoratif pour les lecteurs
+  // d'écran, qui lisent le détail complet une fois le bloc ouvert).
+  const apercu = piliers.map((c) => pictogramme(reponses[c.id], 18)).join("");
+  let html = '<details class="detail-piliers">' +
+    '<summary class="detail-piliers__resume">' +
+      '<span class="detail-piliers__libelle">' + t("diagnostic_detail_piliers") + '</span>' +
+      '<span class="detail-piliers__apercu" aria-hidden="true">' + apercu + '</span>' +
+    '</summary>' +
+    '<ul class="detail-piliers__liste">';
+  piliers.forEach((c) => {
+    const modalite = MODALITES.find((m) => m.id === reponses[c.id]);
+    html += '<li class="detail-piliers__pilier">' +
+      '<span class="detail-piliers__titre"><span class="detail-piliers__numero">' + c.numero + '.</span> ' + echapper(tr(c.titre)) + '</span>' +
+      '<span class="detail-piliers__reponse">' +
+        (modalite ? pictogramme(modalite.id, 22) + '<span>' + tr(modalite.libelle) + '</span>' : '<span>—</span>') +
+      '</span>' +
+    '</li>';
+  });
+  html += '</ul></details>';
   return html;
 }
 
@@ -387,16 +426,14 @@ function afficherDiagnostic(evaluation, reponses, dateISO, commentaires, comptes
   document.getElementById("diagnostic-partager").classList.remove("cache");
   document.getElementById("diagnostic-envoyer-resultat").classList.add("cache");
 
-  // En-tête : nom de l'objet + type + date
+  // En-tête : nom de la pratique + date (v91 : plus de domaine)
   document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet;
 
-  const type = trouverTypeObjet(evaluation.typeObjet);
-  const typeLibelle = type ? tr(type.libelle) : "";
   // Si une date est fournie (évaluation archivée), on l'utilise ;
   // sinon, c'est une évaluation qui vient de se terminer → date du jour.
   // Date de l'évaluation archivée, ou date du jour si elle vient de se terminer.
   const date = formaterDateLongue(dateISO || new Date());
-  document.getElementById("diagnostic-meta").textContent = joindrePoints([typeLibelle, date]);
+  document.getElementById("diagnostic-meta").textContent = joindrePoints([date]);
 
   // Schéma radial
   document.getElementById("diagnostic-schema").innerHTML = construireSchemaRadial(reponses);
@@ -409,6 +446,10 @@ function afficherDiagnostic(evaluation, reponses, dateISO, commentaires, comptes
 
   // Observations libres saisies par l'utilisateur
   document.getElementById("diagnostic-observations").innerHTML = construireObservations(commentaires);
+
+  // Bandeau « évaluation non enregistrée », si besoin (v87, voir app.js)
+  majAlerteArchivage();
+  majAidePdf(); // v90 (B3)
 
   // On affiche l'écran
   afficherEcran("ecran-diagnostic");
@@ -452,15 +493,12 @@ function texteNombreAvis(comptes) {
 }
 
 // Ligne de présentation d'un diagnostic de groupe (écran et PDF) :
-// « Gouverner · En groupe (6 avis) », ou pour une comparaison de codes
-// « Gouverner · 6 évaluations comparées » (« Plusieurs domaines » si besoin).
+// « En groupe (6 avis) », ou pour une comparaison de codes
+// « 6 évaluations comparées ». (Jusqu'à la v90, le domaine la précédait.)
 function descriptionGroupe(evaluation, comptes) {
-  const type = trouverTypeObjet(evaluation.typeObjet);
-  const domaine = evaluation.domainesMultiples ? t("groupe_domaines_multiples") : (type ? tr(type.libelle) : "");
-  const mention = evaluation.origine === "comparaison"
+  return evaluation.origine === "comparaison"
     ? tAvec("groupe_evaluations_comparees", { nombre: evaluation.nbEvaluations })
     : t("groupe_mode") + " (" + texteNombreAvis(comptes) + ")";
-  return (domaine ? domaine + " · " : "") + mention;
 }
 
 // Numéros des piliers aux avis divergents (ex. [1, 2, 6]).
@@ -556,13 +594,19 @@ function afficherDiagnosticGroupe(evaluation, comptes, dateISO, commentaires) {
   document.getElementById("diagnostic-envoyer-resultat").classList.toggle("cache", evaluation.origine !== "comparaison");
 
   document.getElementById("diagnostic-objet").textContent = evaluation.nomObjet || t("comparer_sans_nom");
-  const date = formaterDateLongue(dateISO || new Date());
+  // v86 : pour un rassemblement de codes, la date est celle du diagnostic
+  // (portée par le lien) ; si on ne la connaît pas (lien d'avant la v86),
+  // on n'en affiche aucune plutôt que la date du jour.
+  const date = formaterDateLongue(dateISO || (evaluation.origine === "comparaison" ? null : new Date()));
   document.getElementById("diagnostic-meta").textContent = joindrePoints([descriptionGroupe(evaluation, comptes), date]);
 
   document.getElementById("diagnostic-schema").innerHTML = construireSyntheseGroupe(comptes);
   document.getElementById("diagnostic-legende").innerHTML = construireLegende();
   document.getElementById("diagnostic-lectures").innerHTML = construireRepartitionGroupe(comptes);
   document.getElementById("diagnostic-observations").innerHTML = construireObservations(commentaires, "groupe_observations_titre");
+
+  majAlerteArchivage(); // v87 : jamais affiché pour un groupe (voir app.js)
+  majAidePdf();         // v90 (B3)
 
   afficherEcran("ecran-diagnostic");
 }

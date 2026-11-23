@@ -37,8 +37,6 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   }
   const conteneur = document.getElementById("document-impression");
 
-  const type = trouverTypeObjet(evaluation.typeObjet);
-  const typeLibelle = type ? tr(type.libelle) : "";
   // Date fournie (archive) ou date du jour (évaluation qui vient de finir).
   const date = formaterDateLongue(dateISO || new Date());
 
@@ -58,11 +56,11 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
   html += '<div class="pdf-objet-bloc">';
   html += '<p class="pdf-objet-label">' + t("pdf_objet_label") + '</p>';
   html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet) + '</p>';
-  html += '<p class="pdf-objet-meta">' + joindrePoints([typeLibelle, date ? tAvec("pdf_evaluation_date", { date: date }) : ""]) + '</p>';
-  html += ligneOrigineQuestions(evaluation);
+  html += '<p class="pdf-objet-meta">' + joindrePoints([date ? tAvec("pdf_evaluation_date", { date: date }) : ""]) + '</p>';
+  html += ligneOrigineQuestions();
   // v82 : le code de comparaison (le même que « Partager pour le groupe »).
   // La personne qui rassemble les évaluations peut le recopier depuis le PDF.
-  // Il ne contient que le domaine et les 14 réponses, déjà dans ce PDF.
+  // Il ne contient que les 14 réponses, déjà dans ce PDF.
   // Mêmes réponses = même code : on peut donc le recalculer pour une
   // évaluation rouverte depuis « Mes évaluations ».
   html += '<p class="pdf-objet-code">' + t("partage_code_label") + deuxPoints() +
@@ -104,8 +102,8 @@ function construireDocumentImpression(evaluation, reponses, dateISO, commentaire
       html += '<td class="pdf-td-critere"><strong>' + critere.numero + '.</strong> ' + echapper(tr(critere.titre));
       // Questions d'aide du pilier, listées sous son titre (dans la même
       // cellule, pour qu'elles restent sur la même page que le pilier).
-      // Questions du domaine choisi (ou questions de référence).
-      const questions = sousQuestionsPour(critere, evaluation.typeObjet) || [];
+      // v91 : un seul questionnaire pour toutes les pratiques.
+      const questions = critere.sousQuestions || [];
       if (questions.length > 0) {
         html += '<ul class="pdf-sq">';
         questions.forEach((q) => {
@@ -164,20 +162,18 @@ function sectionSoireeEtLogos() {
 }
 
 // Pied de page : numéro de version de SPIRIT (constat M10 de l'audit v72).
+// v95 : précédé de la mention « Propriété intellectuelle de l'EcclesiaLab ».
+// Cette fonction termine les trois PDF (évaluation, diagnostic du groupe,
+// « Pour aller plus loin ») : la mention figure donc sur les trois.
 function piedVersion() {
-  return '<p class="pdf-version">' + tAvec("version_libelle", { version: VERSION_SPIRIT }) + '</p>';
+  return '<p class="pdf-propriete">' + t("pdf_propriete") + '</p>' +
+         '<p class="pdf-version">' + tAvec("version_libelle", { version: VERSION_SPIRIT }) + '</p>';
 }
 
-// Ligne qui dit d'où viennent les questions d'aide imprimées (constat M6) :
-// questionnaire de référence validé par le Delphi, ou questions adaptées à
-// un domaine (sans les attribuer au Delphi, qui ne les a pas validées).
-function ligneOrigineQuestions(evaluation) {
-  const type = evaluation.domainesMultiples ? null : trouverTypeObjet(evaluation.typeObjet);
-  const questionsDomaine = !!(type && QUESTIONS_PAR_DOMAINE[type.id]);
-  const texte = questionsDomaine
-    ? tAvec("pdf_questions_domaine", { domaine: tr(type.libelle) })
-    : t("pdf_questions_reference");
-  return '<p class="pdf-objet-questions">' + texte + '</p>';
+// Ligne qui dit d'où viennent les questions d'aide imprimées (constat M6).
+// v91 : toujours le questionnaire de référence (plus de questions par domaine).
+function ligneOrigineQuestions() {
+  return '<p class="pdf-objet-questions">' + t("pdf_questions_reference") + '</p>';
 }
 
 
@@ -190,7 +186,11 @@ function ligneOrigineQuestions(evaluation) {
    =========================================================== */
 function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commentaires) {
   const conteneur = document.getElementById("document-impression");
-  const date = formaterDateLongue(dateISO || new Date());
+  // v86 : rassemblement de codes → « Diagnostic du … » avec la date du
+  // diagnostic, ou aucune date si on ne la connaît pas (voir comparaison.js).
+  const rassemblement = evaluation.origine === "comparaison";
+  const date = formaterDateLongue(dateISO || (rassemblement ? null : new Date()));
+  const ligneDate = date ? tAvec(rassemblement ? "pdf_diagnostic_date" : "pdf_evaluation_date", { date: date }) : "";
 
   let html = "";
 
@@ -208,8 +208,8 @@ function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commen
   html += '<div class="pdf-objet-bloc">';
   html += '<p class="pdf-objet-label">' + t("pdf_objet_label") + '</p>';
   html += '<p class="pdf-objet-nom">' + echapper(evaluation.nomObjet || t("comparer_sans_nom")) + '</p>';
-  html += '<p class="pdf-objet-meta">' + joindrePoints([descriptionGroupe(evaluation, comptes), date ? tAvec("pdf_evaluation_date", { date: date }) : ""]) + '</p>';
-  html += ligneOrigineQuestions(evaluation);
+  html += '<p class="pdf-objet-meta">' + joindrePoints([descriptionGroupe(evaluation, comptes), ligneDate]) + '</p>';
+  html += ligneOrigineQuestions();
   html += '</div>';
 
   /* --- Synthèse + légende --- */
@@ -232,7 +232,7 @@ function construireDocumentImpressionGroupe(evaluation, comptes, dateISO, commen
       if (estAvisPartage(compte)) {
         html += ' <span class="pdf-groupe-badge">' + t("groupe_badge") + '</span>';
       }
-      const questions = sousQuestionsPour(critere, evaluation.typeObjet) || [];
+      const questions = critere.sousQuestions || [];
       if (questions.length > 0) {
         html += '<ul class="pdf-sq">';
         questions.forEach((q) => { html += '<li>' + echapper(tr(q)) + '</li>'; });
@@ -409,4 +409,114 @@ function lancerImpressionReferences() {
   window.addEventListener("afterprint", restaurerTitre);
 
   ouvrirImpression();   // v84 : après le chargement des polices
+}
+
+
+/* ===========================================================
+   v90 (constat B3 de l'audit v86) — AIDE AU PDF ET RÉSUMÉ EN TEXTE
+   -----------------------------------------------------------
+   1. Sous le bouton « Exporter… en PDF », une ligne dit quoi choisir dans
+      la fenêtre d'impression, selon l'appareil (iPhone, Android, ordinateur).
+   2. « Envoyer le résumé » : le diagnostic en texte simple, envoyé par le
+      partage du téléphone (Messages, courriel, WhatsApp…). C'est un repli
+      quand le PDF ne s'enregistre pas (par exemple dans le navigateur
+      intégré d'une messagerie). Sans partage disponible, le texte est
+      copié ; si la copie échoue aussi, il s'affiche pour être copié à la main.
+   Le résumé reprend ce que montre l'écran : nom et date ; par
+   pierre angulaire, la phrase de lecture et la réponse de chaque pilier
+   (pour un groupe : la répartition et les avis divergents) ; les
+   observations ; le code de comparaison (évaluation faite seul).
+   =========================================================== */
+
+// Ligne d'aide sous le bouton PDF.
+function majAidePdf() {
+  const zone = document.getElementById("diagnostic-aide-pdf");
+  if (!zone) return;
+  const telephone = detecterTelephone(); // "iphone", "android" ou null (app.js)
+  zone.textContent = t(telephone === "iphone" ? "pdf_aide_iphone"
+                     : telephone === "android" ? "pdf_aide_android"
+                     : "pdf_aide_ordinateur");
+}
+
+// Texte brut d'un fragment de HTML (les phrases de lecture contiennent
+// parfois des balises ou des espaces insécables codés).
+function texteBrut(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return div.textContent.replace(/\s+/g, " ").trim();
+}
+
+// Construit le résumé (une seule chaîne de texte, lignes séparées par \n).
+function construireResumeTexte(evaluation, reponses, dateISO, commentaires, comptes) {
+  const groupe = estModeGroupe(evaluation);
+  const lignes = [];
+  reponses = reponses || {};
+  commentaires = commentaires || {};
+  comptes = comptes || {};
+
+  // En-tête
+  lignes.push("SPIRIT — " + (evaluation.nomObjet || t("comparer_sans_nom")));
+  if (groupe) {
+    const date = formaterDateLongue(dateISO || (evaluation.origine === "comparaison" ? null : new Date()));
+    lignes.push(joindrePoints([descriptionGroupe(evaluation, comptes), date]));
+  } else {
+    lignes.push(formaterDateLongue(dateISO || new Date()));   // v91 : plus de domaine
+  }
+
+  // Par pierre angulaire
+  PIERRES_ANGULAIRES.forEach((pierre) => {
+    lignes.push("");
+    const piliers = CRITERES.filter((c) => c.pierre === pierre.id);
+    if (groupe) {
+      lignes.push(tr(pierre.nom).toUpperCase());
+      piliers.forEach((c) => {
+        const compte = comptes[c.id] || {};
+        lignes.push(c.numero + ". " + tr(c.titre) + (estAvisPartage(compte) ? " — " + t("groupe_badge") : ""));
+        lignes.push("   " + decrireRepartition(compte));
+      });
+    } else {
+      lignes.push(tr(pierre.nom).toUpperCase() + deuxPoints() + texteBrut(redigerLecture(pierre.id, calculerComposition(pierre.id, reponses))));
+      piliers.forEach((c) => {
+        const modalite = MODALITES.find((m) => m.id === reponses[c.id]);
+        lignes.push(c.numero + ". " + tr(c.titre) + deuxPoints() + (modalite ? tr(modalite.libelle) : "—"));
+      });
+    }
+  });
+
+  // Observations
+  const obs = CRITERES.filter((c) => (commentaires[c.id] || "").trim() !== "");
+  if (obs.length > 0) {
+    lignes.push("");
+    lignes.push(t(groupe ? "groupe_observations_titre" : "diagnostic_observations_titre").toUpperCase());
+    obs.forEach((c) => lignes.push(c.numero + ". " + tr(c.titre) + deuxPoints() + commentaires[c.id].trim()));
+  }
+
+  // Code de comparaison (évaluation faite seul), comme dans le PDF
+  if (!groupe) {
+    lignes.push("");
+    lignes.push(t("partage_code_label") + deuxPoints() + formaterCode(encoderCode(evaluation.typeObjet, reponses)));
+  }
+
+  // Pied : version et adresse de l'application (lue sur la page, donc
+  // toujours juste, même après un changement d'adresse).
+  lignes.push("");
+  lignes.push(tAvec("version_libelle", { version: VERSION_SPIRIT }) + " — " + window.location.origin + window.location.pathname);
+  return lignes.join("\n");
+}
+
+// Envoie le résumé : partage du téléphone, sinon copie, sinon affichage.
+function envoyerResume(evaluation, reponses, dateISO, commentaires, comptes) {
+  const texte = construireResumeTexte(evaluation, reponses, dateISO, commentaires, comptes);
+  if (navigator.share) {
+    navigator.share({ title: "SPIRIT — " + (evaluation.nomObjet || ""), text: texte }).catch(() => {
+      // Partage annulé par l'utilisateur : on ne fait rien.
+    });
+    return;
+  }
+  copierTexte(texte).then((ok) => {
+    afficherMessage(t("resume_bouton"), ok ? t("resume_copie") : t("resume_a_copier"), ok ? null : texte);
+    // Le texte à copier garde ses retours à la ligne (classe retirée à la
+    // prochaine fenêtre, voir poserQuestion dans fenetres.js).
+    document.getElementById("question-detail").classList.toggle("question__detail--texte", !ok);
+  });
 }

@@ -13,7 +13,9 @@
       d'écran) entre dans la fenêtre, puis revient à sa place à la fermeture ;
     - la touche Tab tourne à l'intérieur de la fenêtre ;
     - la touche Échap ferme la fenêtre (sauf le choix de la langue, où il
-      faut choisir).
+      faut choisir) ;
+    - le geste « retour » du téléphone fait comme la touche Échap (v88,
+      voir retour.js).
 
   On y trouve aussi poserQuestion(), qui remplace les fenêtres du téléphone
   (confirm, alert) — constat E2 de l'audit v72 : ces fenêtres-là affichent
@@ -66,6 +68,7 @@ function ouvrirFenetre(idVoile, options) {
   if (!boite.hasAttribute("tabindex")) boite.setAttribute("tabindex", "-1");
   boite.scrollTop = 0;
   boite.focus({ preventScroll: true });
+  ajusterReserve(); // v88 : « retour » fermera cette fenêtre (voir retour.js)
 }
 
 // Ferme une fenêtre et rend le focus à l'élément qui l'avait avant.
@@ -78,6 +81,7 @@ function fermerFenetre(idVoile) {
   if (i === -1) { majInertie(); return; }
   const fenetre = pileFenetres.splice(i, 1)[0];
   majInertie();
+  ajusterReserve(); // v88 : geste « retour » (voir retour.js)
   // Une mise à jour attendait peut-être la fermeture de cette fenêtre (app.js).
   if (pileFenetres.length === 0 && typeof appliquerMiseAJourSiPossible === "function") {
     setTimeout(appliquerMiseAJourSiPossible, 0);
@@ -88,11 +92,6 @@ function fermerFenetre(idVoile) {
       cible.focus({ preventScroll: true });
     }
   }
-}
-
-// Une fenêtre est-elle ouverte ?
-function fenetreOuverte(idVoile) {
-  return pileFenetres.some((f) => f.voile.id === idVoile);
 }
 
 // Clavier : Échap ferme, Tab reste dans la fenêtre du dessus.
@@ -147,6 +146,7 @@ function poserQuestion(question) {
 
   const detail = document.getElementById("question-detail");
   detail.textContent = question.detail || "";
+  detail.classList.remove("question__detail--texte"); // v90 : voir envoyerResume
   detail.classList.toggle("cache", !question.detail);
 
   const zone = document.getElementById("question-boutons");

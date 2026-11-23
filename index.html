@@ -8,17 +8,37 @@
   <title>SPIRIT — Évaluation de la synodalité</title>
   <meta name="description" content="Évaluer la synodalité d'une pratique, d'un projet ou d'un groupe ecclésial.">
 
+  <!-- v87 (constat C8) — Aperçu du lien dans les messageries (WhatsApp, Signal,
+       Messenger, courriel…) : sans ces balises, un lien SPIRIT s'affiche comme
+       une adresse nue. Elles sont lues par la messagerie, sans exécuter l'app :
+       le texte est donc en français seulement, et les adresses doivent être
+       complètes.
+       ⚠ À CHANGER le jour où l'application change d'adresse (deux lignes). -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SPIRIT">
+  <meta property="og:title" content="SPIRIT — Évaluation de la synodalité">
+  <meta property="og:description" content="Évaluer la synodalité d'une pratique, d'un projet ou d'un groupe ecclésial.">
+  <meta property="og:url" content="https://ecclesialab.github.io/Test-Spirit/">
+  <meta property="og:image" content="https://ecclesialab.github.io/Test-Spirit/images/apercu-lien.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SPIRIT — Évaluation de la synodalité">
+
   <!-- Couleur de la barre du navigateur sur mobile (reprend le bleu marine) -->
   <meta name="theme-color" content="#163458">
 
   <!-- Lien vers le manifeste : indique au téléphone comment installer l'app -->
   <link rel="manifest" href="manifest.json">
 
-  <!-- Réglages pour l'installation sur iPhone/iPad -->
+  <!-- Réglages pour l'installation sur iPhone/iPad.
+       v87 (constat C9) : « mobile-web-app-capable » est le nom actuel de ce
+       réglage ; l'ancien nom « apple-… » reste pour les iPhone plus anciens.
+       L'icône de l'écran d'accueil de l'iPhone mesure 180 px. -->
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="SPIRIT">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
 
   <!-- Icône classique de l'onglet -->
   <link rel="icon" type="image/png" href="icons/icon-192.png">
@@ -121,26 +141,42 @@
       <div class="entree__contenu">
 
         <!-- Champ : nom de l'objet évalué -->
-        <label class="entree__label" for="champ-nom-objet" data-t="entree_question_nom">Quelle pratique évaluez-vous ?</label>
+        <label class="entree__label" for="champ-nom-objet" data-t="entree_question_nom">De quelle pratique évaluez-vous la synodalité ?</label>
         <input
           type="text"
           class="entree__champ"
           id="champ-nom-objet"
-          placeholder="Ex. : Conseil pastoral, Retraite des confirmands…"
+          placeholder="Ex. : Conseil pastoral de l'unité Saint-Jean"
           data-t-placeholder="entree_placeholder"
           maxlength="80"
+          enterkeyhint="done"
           autocomplete="off">
         <p class="entree__aide" id="entree-aide-nom" data-t="entree_aide_nom">Ce nom servira à retrouver l'évaluation et à titrer le document final.</p>
 
-        <!-- Choix : type d'objet.
-             Les trois cartes seront générées automatiquement par app.js
-             à partir du fichier de données (TYPES_OBJET). -->
-        <fieldset class="entree__types">
-          <legend class="entree__label" data-t="entree_question_type">Dans quel domaine s'inscrit la pratique ?</legend>
-          <div id="liste-types-objet">
-            <!-- Cartes injectées par JavaScript -->
-          </div>
-        </fieldset>
+        <!-- v91 : le choix du domaine (Annoncer la foi, Célébrer la foi,
+             Gouverner, Servir, Autre pratique) a été retiré : toutes les
+             pratiques ont le même questionnaire. À la place, quelques
+             exemples aident à comprendre ce qu'est une pratique ecclésiale.
+             Simple texte, non cliquable.
+             v94 : une pratique par ligne (choix de FX du 18 novembre 2026).
+             v96 : exemples revus par Arnaud Join-Lambert (19 novembre 2026),
+             tous formulés comme des équipes ; la dernière puce « … » montre
+             que la liste reste ouverte.
+             Pour changer un exemple : modifier sa clé « entree_exemple_N »
+             dans js/traductions.js ; pour en ajouter un : une ligne <li> ici
+             et une clé de plus là-bas. -->
+        <div class="entree__exemples">
+          <p class="entree__exemples-titre" data-t="entree_exemples_titre">Par exemple</p>
+          <ul class="entree__exemples-liste">
+            <li data-t="entree_exemple_1">Un conseil pastoral</li>
+            <li data-t="entree_exemple_2">Une équipe de catéchistes</li>
+            <li data-t="entree_exemple_3">Une équipe de préparation au mariage</li>
+            <li data-t="entree_exemple_4">Un service d'accueil</li>
+            <li data-t="entree_exemple_5">Une équipe menant des maraudes</li>
+            <li data-t="entree_exemple_6">Une équipe ou une communauté animant un lieu de retraite spirituelle</li>
+            <li>…</li>
+          </ul>
+        </div>
 
         <!-- v81 : le choix « Évaluer seul / Évaluer en groupe » (v73) a été
              retiré. Pour évaluer à plusieurs, chacun évalue seul puis une
@@ -187,7 +223,23 @@
 
       <!-- Contenu du critère -->
       <div class="critere__contenu">
-        <p class="critere__numero" id="critere-numero">Pilier 1</p>
+        <!-- v90 (constat B8) : le lexique s'ouvre en fenêtre, sans quitter
+             le pilier (même contenu que l'écran « Lexique » de l'accueil).
+             v92 : à côté, le bouton « Document final » ouvre les passages du
+             Document final qui fondent le pilier affiché (js/document-final.js). -->
+        <div class="critere__entete">
+          <p class="critere__numero" id="critere-numero">Pilier 1</p>
+          <div class="critere__outils">
+            <button class="critere__lexique" id="critere-document-final" type="button" aria-haspopup="dialog">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 11h5M10 14.5h5M10 18h3"/></svg>
+              <span data-t="df_bouton">Document final</span>
+            </button>
+            <button class="critere__lexique" id="critere-lexique" type="button" aria-haspopup="dialog">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.3 5.2 8 4.5 5.5 4.5H3v14h2.5c2.5 0 4.8.7 6.5 2 1.7-1.3 4-2 6.5-2H21v-14h-2.5c-2.5 0-4.8.7-6.5 2z"/><path d="M12 6.5v14"/></svg>
+              <span data-t="accueil_lexique">Lexique</span>
+            </button>
+          </div>
+        </div>
         <h2 class="critere__titre" id="critere-titre">—</h2>
 
         <!-- Bouton pour masquer/afficher les sous-questions.
@@ -241,6 +293,11 @@
           <p class="diagnostic__meta" id="diagnostic-meta">—</p>
         </div>
 
+        <!-- v87 (constat B4) : affiché seulement si l'évaluation qui vient
+             d'être terminée n'a pas pu être enregistrée (mémoire de l'appareil
+             pleine ou refusée). role="alert" : lu par les lecteurs d'écran. -->
+        <p class="diagnostic__alerte cache" id="diagnostic-alerte" role="alert" data-t="diagnostic_non_enregistre"></p>
+
         <!-- Sur ordinateur, le contenu se répartit en deux colonnes :
              à gauche le schéma (qui reste visible), à droite les textes.
              Sur téléphone, ces deux blocs s'empilent comme avant. -->
@@ -270,6 +327,11 @@
              consultation qu'on parcourt tranquillement. -->
         <div class="diagnostic__actions">
           <button class="bouton" id="diagnostic-pdf" data-t="diagnostic_pdf">Exporter le diagnostic en PDF</button>
+          <!-- v90 (constat B3) : comment enregistrer le PDF, selon l'appareil
+               (texte posé par diagnostic.js), et un repli en texte simple qui
+               passe par le partage du téléphone (ou se copie). -->
+          <p class="diagnostic__aide-pdf" id="diagnostic-aide-pdf"></p>
+          <button class="bouton bouton--contour" id="diagnostic-resume" type="button" data-t="resume_bouton">Envoyer le résumé</button>
           <!-- v74 : partager une évaluation faite seul (code ou lien), ou
                renvoyer au groupe le résultat d'une comparaison -->
           <button class="bouton bouton--contour cache" id="diagnostic-partager" type="button" data-t="partage_bouton">Partager pour le groupe</button>
@@ -371,15 +433,15 @@
           <p>SPIRIT est né de cet appel. Le nom signifie <em>Synodalité des Pratiques : Indicateurs pour le Renouveau, l'Implémentation et la Transformation</em>.</p>
 
           <h3 class="page-info__titre">Ce que SPIRIT vous permet de faire</h3>
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>En 15 minutes, l'outil SPIRIT aide à mesurer le caractère synodal d'une pratique ecclésiale, qu'il s'agisse d'annoncer la foi, de célébrer la foi, de gouverner ou de servir. En répondant à un questionnaire sur 14 piliers issus du <em>Document final</em> du Synode, vous obtenez un diagnostic visuel qui montre où en est la pratique évaluée dans sa dynamique synodale.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>En 15 minutes, l'outil SPIRIT aide à mesurer le caractère synodal d'une pratique ecclésiale, par exemple un conseil pastoral, une équipe de visiteurs de malades, une équipe de préparation à un sacrement, une équipe d'aumônerie, une équipe gérant une maison d'Église, etc. En répondant à un questionnaire sur 14 piliers issus du <em>Document final</em> du Synode, vous obtenez un diagnostic visuel qui montre où en est la pratique évaluée dans sa dynamique synodale.</p>
 
           <h3 class="page-info__titre">Un outil scientifiquement validé</h3>
           <p>Les 14 piliers de SPIRIT, répartis selon les trois pierres angulaires de la synodalité, ont été validés par un panel de <span data-t="panel_theologiens">près de 50 théologiens et théologiennes</span> du monde entier selon la méthode Delphi, qui permet de construire progressivement un consensus scientifique.</p>
 
           <h3 class="page-info__titre">Comment ça fonctionne ?</h3>
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>Vous donnez un nom à la pratique à évaluer et vous choisissez son domaine : annoncer la foi, célébrer la foi, gouverner ou servir (ou « autre pratique »). Pour chacun des 14 piliers, répartis selon les 3 pierres angulaires de la synodalité (communion, participation et mission), vous indiquez s'il est solidement établi, à consolider, en chantier, à bâtir ou non applicable. Des questions, adaptées à ce domaine, vous aident dans votre réflexion. Vous n'avez pas à répondre à chacune d'entre elles, mais vous évaluez l'ensemble du pilier. Au terme, l'application génère un diagnostic visuel, que vous pouvez exporter en PDF. Le PDF inclut un rapport détaillé d'évaluation pour chacun des piliers. Les références au <em>Document final</em> de chaque pilier sont rassemblées dans un second PDF, accessible par le bouton « Pour aller plus loin ». L'évaluation peut aussi se faire à plusieurs : chacun évalue de son côté, puis une personne rassemble les codes de comparaison pour obtenir le diagnostic du groupe.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>Vous donnez un nom à la pratique dont vous évaluez la synodalité. Pour chacun des 14 piliers, répartis selon les 3 pierres angulaires de la synodalité (communion, participation et mission), vous indiquez s'il est solidement établi, à consolider, en chantier, à bâtir, ou si ce pilier est non applicable. Des questions vous aident dans votre réflexion. Vous n'avez pas à répondre à chacune d'entre elles, mais vous évaluez l'ensemble du pilier. Au terme, l'application génère un diagnostic visuel, que vous pouvez exporter en PDF. Le PDF inclut un rapport détaillé d'évaluation pour chacun des piliers. Les références au <em>Document final</em> de chaque pilier sont rassemblées dans un second PDF, accessible par le bouton « Pour aller plus loin ». L'évaluation peut aussi se faire à plusieurs : chacun évalue de son côté, puis une personne rassemble les codes de comparaison pour obtenir le diagnostic du groupe.</p>
         </div>
 
         <!-- Version anglaise (traduction officielle de l'équipe) -->
@@ -388,36 +450,36 @@
           <p>The <em>Final Document</em> of the Synod on Synodality (2024) presents communion, participation and mission as three cornerstones (§ 142). It also invites us to develop <em>"effective forms and processes of accountability and evaluation in a synodal way"</em> (§ 101). SPIRIT was born out of this call. The name stands for <em>Synodal Practice Indicators for Renewal, Implementation, and Transformation</em>.</p>
 
           <h3 class="page-info__titre">What SPIRIT enables you to do</h3>
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>In just 15 minutes, the SPIRIT tool helps assess the synodal character of an ecclesial practice, whether proclaiming the faith, celebrating the faith, governing or serving. By answering a questionnaire based on 14 pillars drawn from the <em>Final Document</em> of the Synod on Synodality, you receive a visual assessment showing where the practice being evaluated stands in its synodal journey.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>In just 15 minutes, the SPIRIT tool helps assess the synodal character of an ecclesial practice, such as a pastoral council, a team visiting the sick, a sacramental preparation team, a chaplaincy team, a team running a church centre, etc. By answering a questionnaire based on 14 pillars drawn from the <em>Final Document</em> of the Synod on Synodality, you receive a visual assessment showing where the practice being evaluated stands in its synodal journey.</p>
 
           <h3 class="page-info__titre">A Scientifically Validated Tool</h3>
           <p>The 14 SPIRIT pillars, organized according to the three cornerstones of synodality, were validated by a panel of <span data-t="panel_theologiens">nearly 50 theologians</span> from around the world using the Delphi method, a structured research process that progressively builds scientific consensus among experts.</p>
 
           <h3 class="page-info__titre">How does it work?</h3>
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>You give the practice you wish to assess a name and choose its area: proclaiming the faith, celebrating the faith, governing or serving (or ‘other practice’). For each of the 14 pillars, organized according to the three cornerstones of synodality (communion, participation and mission) you indicate whether it is well established, to be consolidated, under development, to be built or not applicable. Guiding questions, adapted to this area, are provided to support your reflection. You do not need to answer every question; rather, you assess the pillar as a whole. At the end of the process, the application generates a visual assessment, which you can export as a PDF. The PDF includes a detailed evaluation report for each pillar. References to the <em>Final Document</em> for each pillar are gathered in a second PDF, available via the ‘Going deeper’ button. The evaluation can also be carried out by several people: each person evaluates separately, then one person gathers the comparison codes to obtain the group diagnosis.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>You give a name to the practice whose synodality you wish to assess. For each of the 14 pillars, organized according to the three cornerstones of synodality (communion, participation and mission) you indicate whether it is well established, to be consolidated, under development, to be built, or whether the pillar is not applicable. Guiding questions are provided to support your reflection. You do not need to answer every question; rather, you assess the pillar as a whole. At the end of the process, the application generates a visual assessment, which you can export as a PDF. The PDF includes a detailed evaluation report for each pillar. References to the <em>Final Document</em> for each pillar are gathered in a second PDF, available via the ‘Going deeper’ button. The evaluation can also be carried out by several people: each person evaluates separately, then one person gathers the comparison codes to obtain the group diagnosis.</p>
         </div>
 
         <!-- Version néerlandaise (traduction à valider par l'équipe) -->
         <div data-lang="nl">
-          <h3 class="page-info__titre">De synodaliteit van een geloofspraktijk evalueren</h3>
+          <h3 class="page-info__titre">De synodaliteit van een kerkelijke praktijk evalueren</h3>
           <p>Het <em>Slotdocument</em> van de Synode over synodaliteit (2024) presenteert gemeenschap, participatie en zending als 3 pijlers (§ 142). Het nodigt ons ook uit om <em>op synodale wijze efficiënte methoden en procedures voor verantwoording en evaluatie te ontwikkelen</em> (§ 101). SPIRIT is uit die oproep ontstaan. De naam staat voor <em>Synodaliteit van Praktijken : Indicatoren voor Renovatie, Implementatie en Transformatie</em>.</p>
 
           <h3 class="page-info__titre">Wat je met SPIRIT kunt doen</h3>
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>In 15 minuten helpt het SPIRIT-instrument om het synodale karakter van een geloofspraktijk in te schatten, of het nu gaat om het geloof verkondigen, het geloof vieren, besturen of dienen. Door een vragenlijst over 14 criteria uit het <em>Slotdocument</em> van de Synode te beantwoorden, krijg je een visuele diagnose die toont waar de geëvalueerde geloofspraktijk staat in haar synodale weg.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>In 15 minuten helpt het SPIRIT-instrument om het synodale karakter van een kerkelijke praktijk in te schatten, zoals een pastorale raad, een ploeg ziekenbezoekers, een ploeg die op een sacrament voorbereidt, een ploeg van een aalmoezenierij, een ploeg die een parochiehuis beheert, enz. Door een vragenlijst over 14 criteria uit het <em>Slotdocument</em> van de Synode te beantwoorden, krijg je een visuele diagnose die toont waar de geëvalueerde kerkelijke praktijk staat in haar synodale weg.</p>
 
           <h3 class="page-info__titre">Een wetenschappelijk gevalideerd instrument</h3>
           <p>De 14 criteria van SPIRIT, verdeeld over de drie pijlers van synodaliteit, werden gevalideerd door een panel van <span data-t="panel_theologiens">bijna 50 theologen en theologes</span> uit de hele wereld volgens de Delphi-methode, een gestructureerd onderzoeksproces dat geleidelijk een wetenschappelijke consensus opbouwt.</p>
 
           <h3 class="page-info__titre">Hoe werkt het?</h3>
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>Je geeft de geloofspraktijk die je wilt evalueren een naam en kiest het domein: het geloof verkondigen, het geloof vieren, besturen of dienen (of ‘andere geloofspraktijk’). Voor elk van de 14 criteria, verdeeld over de 3 pijlers van synodaliteit (gemeenschap, participatie en zending), geef je aan of het stevig verankerd, te consolideren, in opbouw, nog op te bouwen of niet van toepassing is. Vragen, aangepast aan dit domein, helpen je bij je reflectie. Je hoeft ze niet allemaal te beantwoorden, maar je beoordeelt het criterium in zijn geheel. Op het einde genereert de applicatie een visuele diagnose, die je als pdf kunt exporteren. De pdf bevat een gedetailleerd evaluatierapport voor elk criterium. De verwijzingen naar het <em>Slotdocument</em> voor elk criterium zijn gebundeld in een tweede pdf, beschikbaar via de knop ‘Verder verdiepen’. De evaluatie kan ook met meerdere personen gebeuren: ieder evalueert afzonderlijk, waarna één persoon de vergelijkingscodes verzamelt om de diagnose van de groep te verkrijgen.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>Je geeft een naam aan de kerkelijke praktijk waarvan je de synodaliteit wilt evalueren. Voor elk van de 14 criteria, verdeeld over de 3 pijlers van synodaliteit (gemeenschap, participatie en zending), geef je aan of het stevig verankerd, te consolideren, in opbouw of nog op te bouwen is, of dat dit criterium niet van toepassing is. Hulpvragen helpen je bij je reflectie. Je hoeft ze niet allemaal te beantwoorden, maar je beoordeelt het criterium in zijn geheel. Op het einde genereert de applicatie een visuele diagnose, die je als pdf kunt exporteren. De pdf bevat een gedetailleerd evaluatierapport voor elk criterium. De verwijzingen naar het <em>Slotdocument</em> voor elk criterium zijn gebundeld in een tweede pdf, beschikbaar via de knop ‘Verder verdiepen’. De evaluatie kan ook met meerdere personen gebeuren: ieder evalueert afzonderlijk, waarna één persoon de vergelijkingscodes verzamelt om de diagnose van de groep te verkrijgen.</p>
         </div>
 
         <div class="page-info__logo-zone">
-          <img class="page-info__logo" src="icons/logo-uclouvain.png" alt="UCLouvain">
+          <img class="page-info__logo" src="icons/logo-uclouvain.png" alt="UCLouvain" loading="lazy">
         </div>
 
       </div>
@@ -485,11 +547,13 @@
 
         <!-- Logo de l'université de rattachement, en pied de page -->
         <div class="page-info__logo-pied">
-          <img src="icons/logo-uclouvain.png" alt="UCLouvain — Université catholique de Louvain" class="page-info__logo-uclouvain">
+          <img src="icons/logo-uclouvain.png" alt="UCLouvain — Université catholique de Louvain" class="page-info__logo-uclouvain" loading="lazy">
         </div>
 
-        <!-- Numéro de version (v75) : utile quand un testeur signale un problème -->
-        <p class="page-info__version" id="a-propos-version">SPIRIT, version 84</p>
+        <!-- Numéro de version (v75) : utile quand un testeur signale un problème.
+             v87 : le numéro n'est plus écrit ici ; app.js le remplit à partir
+             de VERSION_SPIRIT (un endroit de moins à modifier à chaque version). -->
+        <p class="page-info__version" id="a-propos-version"></p>
 
       </div>
     </section>
@@ -525,24 +589,24 @@
       <div class="bienvenue__texte">
         <!-- Version française (texte validé par l'équipe) -->
         <div data-lang="fr">
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>En 15 minutes, l'outil SPIRIT aide à mesurer le caractère synodal d'une pratique ecclésiale : annoncer la foi, célébrer la foi, gouverner, servir. En répondant à un questionnaire sur 14 piliers issus du <em>Document final</em> du Synode sur la synodalité (2024), vous obtenez un diagnostic visuel qui montre où en est la pratique évaluée dans sa dynamique synodale.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>En 15 minutes, l'outil SPIRIT aide à mesurer le caractère synodal d'une pratique ecclésiale, par exemple un conseil pastoral, une équipe de visiteurs de malades, une équipe de préparation à un sacrement, une équipe d'aumônerie, une équipe gérant une maison d'Église, etc. En répondant à un questionnaire sur 14 piliers issus du <em>Document final</em> du Synode sur la synodalité (2024), vous obtenez un diagnostic visuel qui montre où en est la pratique évaluée dans sa dynamique synodale.</p>
 
           <p>Évaluer avec SPIRIT ne signifie pas juger, mais discerner et faire grandir. Vos données sont conservées uniquement sur cet appareil. À vous de jouer !</p>
         </div>
 
         <!-- Version anglaise (traduction officielle de l'équipe) -->
         <div data-lang="en">
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>In just 15 minutes, the SPIRIT tool helps assess the synodal character of an ecclesial practice, whether proclaiming the faith, celebrating the faith, governing or serving. By answering a questionnaire based on 14 pillars drawn from the <em>Final Document</em> of the Synod on Synodality (2024), you receive a visual assessment showing where the practice being evaluated stands in its synodal journey.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>In just 15 minutes, the SPIRIT tool helps assess the synodal character of an ecclesial practice, such as a pastoral council, a team visiting the sick, a sacramental preparation team, a chaplaincy team, a team running a church centre, etc. By answering a questionnaire based on 14 pillars drawn from the <em>Final Document</em> of the Synod on Synodality (2024), you receive a visual assessment showing where the practice being evaluated stands in its synodal journey.</p>
 
           <p>Evaluating with SPIRIT does not mean judging, but rather discerning and fostering growth. Your data is stored only on this device. It's your turn!</p>
         </div>
 
         <!-- Version néerlandaise (traduction à valider par l'équipe) -->
         <div data-lang="nl">
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>In 15 minuten helpt het SPIRIT-instrument om het synodale karakter van een geloofspraktijk in te schatten: het geloof verkondigen, het geloof vieren, besturen, dienen. Door een vragenlijst over 14 criteria uit het <em>Slotdocument</em> van de Synode over synodaliteit (2024) te beantwoorden, krijg je een visuele diagnose die toont waar de geëvalueerde geloofspraktijk staat in haar synodale weg.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>In 15 minuten helpt het SPIRIT-instrument om het synodale karakter van een kerkelijke praktijk in te schatten, zoals een pastorale raad, een ploeg ziekenbezoekers, een ploeg die op een sacrament voorbereidt, een ploeg van een aalmoezenierij, een ploeg die een parochiehuis beheert, enz. Door een vragenlijst over 14 criteria uit het <em>Slotdocument</em> van de Synode over synodaliteit (2024) te beantwoorden, krijg je een visuele diagnose die toont waar de geëvalueerde kerkelijke praktijk staat in haar synodale weg.</p>
 
           <p>Evalueren met SPIRIT betekent niet oordelen, maar onderscheiden en laten groeien. Je gegevens worden alleen op dit toestel bewaard. Aan jou!</p>
         </div>
@@ -564,30 +628,67 @@
       <div class="bienvenue__texte">
         <!-- Version française (texte validé par l'équipe) -->
         <div data-lang="fr">
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>Vous donnez un nom à la pratique à évaluer et vous choisissez son domaine : annoncer la foi, célébrer la foi, gouverner ou servir (ou « autre pratique »). Pour chacun des 14 piliers, répartis selon les 3 pierres angulaires de la synodalité (communion, participation et mission), vous indiquez s'il est <em>« solidement établi, à consolider, en chantier, à bâtir ou non applicable »</em>. Des questions, adaptées à ce domaine, vous aident dans votre réflexion. Vous n'avez pas à répondre à chacune d'entre elles, mais vous évaluez l'ensemble du pilier.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>Vous donnez un nom à la pratique dont vous évaluez la synodalité. Pour chacun des 14 piliers, répartis selon les 3 pierres angulaires de la synodalité (communion, participation et mission), vous indiquez s'il est <em>« solidement établi, à consolider, en chantier, à bâtir »</em>, ou si ce pilier est <em>« non applicable »</em>. Des questions vous aident dans votre réflexion. Vous n'avez pas à répondre à chacune d'entre elles, mais vous évaluez l'ensemble du pilier.</p>
 
           <p>Au terme, l'application génère un diagnostic visuel, que vous pouvez exporter en PDF. Le PDF inclut un rapport détaillé d'évaluation pour chacun des piliers. Les références au <em>Document final</em> de chaque pilier sont rassemblées dans un second PDF, accessible par le bouton « Pour aller plus loin ». L'évaluation peut aussi se faire à plusieurs : chacun évalue de son côté, puis une personne rassemble les codes de comparaison pour obtenir le diagnostic du groupe.</p>
         </div>
 
         <!-- Version anglaise (traduction officielle de l'équipe) -->
         <div data-lang="en">
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>You give the practice you wish to assess a name and choose its area: proclaiming the faith, celebrating the faith, governing or serving (or ‘other practice’). For each of the 14 pillars, organized according to the three cornerstones of synodality (communion, participation and mission) you indicate whether it is <em>"well established, to be consolidated, under development, to be built or not applicable"</em>. Guiding questions, adapted to this area, are provided to support your reflection. You do not need to answer every question; rather, you assess the pillar as a whole.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>You give a name to the practice whose synodality you wish to assess. For each of the 14 pillars, organized according to the three cornerstones of synodality (communion, participation and mission) you indicate whether it is <em>"well established, to be consolidated, under development, to be built"</em>, or whether the pillar is <em>"not applicable"</em>. Guiding questions are provided to support your reflection. You do not need to answer every question; rather, you assess the pillar as a whole.</p>
 
           <p>At the end of the process, the application generates a visual assessment, which you can export as a PDF. The PDF includes a detailed evaluation report for each pillar. References to the <em>Final Document</em> for each pillar are gathered in a second PDF, available via the ‘Going deeper’ button. The evaluation can also be carried out by several people: each person evaluates separately, then one person gathers the comparison codes to obtain the group diagnosis.</p>
         </div>
 
         <!-- Version néerlandaise (traduction à valider par l'équipe) -->
         <div data-lang="nl">
-          <!-- ⚠ Passage adapté aux 4 domaines (v66), revu en v75 (audit M3-M4 : pistes, PDF, groupe, objet évalué) : à valider par l'équipe -->
-          <p>Je geeft de geloofspraktijk die je wilt evalueren een naam en kiest het domein: het geloof verkondigen, het geloof vieren, besturen of dienen (of ‘andere geloofspraktijk’). Voor elk van de 14 criteria, verdeeld over de 3 pijlers van synodaliteit (gemeenschap, participatie en zending), geef je aan of het “stevig verankerd, te consolideren, in opbouw, nog op te bouwen of niet van toepassing” is. Vragen, aangepast aan dit domein, helpen je bij je reflectie. Je hoeft ze niet allemaal te beantwoorden, maar je beoordeelt het criterium in zijn geheel.</p>
+          <!-- ⚠ v91 : domaines retirés (un seul questionnaire) ; exemples de pratiques à la place. Passage à valider par l'équipe (EN et NL : propositions de Claude) -->
+          <p>Je geeft een naam aan de kerkelijke praktijk waarvan je de synodaliteit wilt evalueren. Voor elk van de 14 criteria, verdeeld over de 3 pijlers van synodaliteit (gemeenschap, participatie en zending), geef je aan of het “stevig verankerd, te consolideren, in opbouw of nog op te bouwen” is, of dat dit criterium “niet van toepassing” is. Hulpvragen helpen je bij je reflectie. Je hoeft ze niet allemaal te beantwoorden, maar je beoordeelt het criterium in zijn geheel.</p>
 
           <p>Op het einde genereert de applicatie een visuele diagnose, die je als pdf kunt exporteren. De pdf bevat een gedetailleerd evaluatierapport voor elk criterium. De verwijzingen naar het <em>Slotdocument</em> voor elk criterium zijn gebundeld in een tweede pdf, beschikbaar via de knop ‘Verder verdiepen’. De evaluatie kan ook met meerdere personen gebeuren: ieder evalueert afzonderlijk, waarna één persoon de vergelijkingscodes verzamelt om de diagnose van de groep te verkrijgen.</p>
         </div>
       </div>
       <div class="bienvenue__bouton-zone">
         <button class="bouton" id="bouton-fermer-fonctionnement" data-t="fonctionnement_compris">J'ai compris</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===========================================================
+       v90 (constat B8) — LE LEXIQUE EN FENÊTRE
+       Ouvert depuis l'écran du pilier (bouton « Lexique »), pour lire une
+       définition sans quitter l'évaluation. La liste est construite par
+       construireLexique() (lexique.js), comme celle de l'écran « Lexique ».
+       =========================================================== -->
+  <div class="bienvenue-voile cache" id="lexique-voile">
+    <section class="bienvenue lexique-fenetre" role="dialog" aria-labelledby="lexique-fenetre-titre" aria-modal="true" tabindex="-1">
+      <h2 class="bienvenue__titre" id="lexique-fenetre-titre" data-t="page_lexique_titre">Lexique</h2>
+      <p class="lexique__intro" data-t="lexique_intro">Quelques mots de l'Église et de SPIRIT, expliqués simplement.</p>
+      <dl class="lexique" id="lexique-fenetre-liste"></dl>
+      <div class="bienvenue__bouton-zone">
+        <button class="bouton" id="lexique-fenetre-fermer" type="button" data-t="partage_fermer">Fermer</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===========================================================
+       v92 — LE DOCUMENT FINAL EN FENÊTRE
+       Ouvert depuis l'écran du pilier (bouton « Document final ») : les
+       passages du Document final qui fondent le pilier affiché, avec leur
+       numéro (DF, FD ou SD selon la langue). Mêmes passages que dans le PDF
+       « Pour aller plus loin » (JUSTIFICATIONS, donnees-spirit.js). Contenu
+       construit par js/document-final.js.
+       =========================================================== -->
+  <div class="bienvenue-voile cache" id="document-final-voile">
+    <section class="bienvenue lexique-fenetre document-final-fenetre" role="dialog" aria-labelledby="document-final-titre" aria-modal="true" tabindex="-1">
+      <h2 class="bienvenue__titre" id="document-final-titre" data-t="df_bouton">Document final</h2>
+      <p class="document-final__pilier" id="document-final-pilier"></p>
+      <p class="lexique__intro" data-t="df_intro">Passages du Document final sur lesquels repose ce pilier.</p>
+      <div id="document-final-liste"></div>
+      <div class="bienvenue__bouton-zone">
+        <button class="bouton" id="document-final-fermer" type="button" data-t="partage_fermer">Fermer</button>
       </div>
     </section>
   </div>
@@ -624,12 +725,13 @@
        FENÊTRE « PARTAGER POUR UNE COMPARAISON » (v74)
        Affiche le code de l'évaluation (9 caractères) et propose de
        l'envoyer sous forme de lien ou de le copier. Le code ne contient
-       que le domaine et les 14 réponses : ni nom, ni observation.
+       que les 14 réponses : ni nom, ni observation. (Il garde une place
+       technique pour l'ancien domaine, toujours « autre » depuis la v91.)
        ============================================================ -->
   <div class="bienvenue-voile cache" id="partage-voile">
     <section class="bienvenue partage" role="dialog" aria-modal="true" aria-labelledby="partage-titre" tabindex="-1">
       <h2 class="bienvenue__titre" id="partage-titre" data-t="partage_bouton">Partager pour le groupe</h2>
-      <p class="partage__texte" data-t="partage_texte">Ce code contient seulement le domaine et les réponses aux 14 piliers : ni nom, ni observation.</p>
+      <p class="partage__texte" data-t="partage_texte">Ce code contient seulement les réponses aux 14 piliers : ni nom, ni observation.</p>
       <div class="partage__code-bloc">
         <span class="partage__code-label" data-t="partage_code_label">Code de comparaison</span>
         <span class="partage__code" id="partage-code">—</span>
@@ -679,13 +781,15 @@
 
   <script src="js/donnees-spirit.js"></script>
 
-  <!-- Questions d'aide propres à chaque domaine (version d'essai). -->
   <!-- Pictogrammes des réponses (v80) : une maison à différents stades de construction -->
   <script src="js/pictogrammes.js"></script>
-  <script src="js/questions-domaines.js"></script>
+  <!-- v91 : js/questions-domaines.js (questions propres aux 4 domaines) retiré. -->
 
   <!-- Lexique (écran « Lexique », version provisoire). -->
   <script src="js/lexique.js"></script>
+
+  <!-- Passages du Document final, en fenêtre depuis le pilier (v92). -->
+  <script src="js/document-final.js"></script>
 
   <!-- Logique du diagnostic (calcul + dessin des jauges). Chargé avant app.js. -->
   <script src="js/diagnostic.js"></script>
@@ -706,6 +810,8 @@
   <script src="js/comparaison.js"></script>
 
   <!-- Notre logique applicative -->
+  <!-- Geste « retour » du téléphone (v88) -->
+  <script src="js/retour.js"></script>
   <script src="js/app.js"></script>
 
 </body>

@@ -11,7 +11,10 @@
   « Évaluer en groupe » sur un seul appareil a été retiré).
 
   CONFIDENTIALITÉ : SPIRIT n'envoie rien. Le code ne contient que le
-  domaine et les 14 réponses (ni nom, ni observation). Il passe par le
+  domaine et les 14 réponses (ni nom, ni observation). v91 : le domaine
+  vaut toujours « autre » pour une nouvelle évaluation, et il est ignoré
+  quand on rassemble les codes (un seul questionnaire pour tous). Sa place
+  reste dans le code pour que les codes déjà donnés restent lisibles. Il passe par le
   moyen choisi par les personnes (message, courriel, de vive voix). Dans
   un lien, le code est placé après le signe « # » : cette partie d'une
   adresse n'est jamais envoyée au site qui héberge l'app.
@@ -146,7 +149,8 @@ function formaterCode(code) {
 /* ===========================================================
    2. LES LIENS
    #c=CODE&n=NOM          : une évaluation à ajouter à une comparaison
-   #r=CODE1.CODE2…&n=NOM  : le résultat d'une comparaison, à afficher
+   #r=CODE1.CODE2…&n=NOM&d=AAAA-MM-JJ : le résultat d'une comparaison, à
+                            afficher (d = date du diagnostic, depuis la v86)
    =========================================================== */
 function adresseApp() {
   return window.location.origin + window.location.pathname;
@@ -156,8 +160,42 @@ function lienContribution(code, nom) {
   return adresseApp() + "#c=" + code + (nom ? "&n=" + encodeURIComponent(nom) : "");
 }
 
-function lienResultat(codes, nom) {
-  return adresseApp() + "#r=" + codes.join(".") + (nom ? "&n=" + encodeURIComponent(nom) : "");
+function lienResultat(codes, nom, date) {
+  return adresseApp() + "#r=" + codes.join(".") + (nom ? "&n=" + encodeURIComponent(nom) : "") +
+         (date ? "&d=" + date : "");
+}
+
+/* v86 — La date du diagnostic du groupe.
+   Pourquoi : un lien de résultat gardé dans un compte rendu peut être
+   rouvert des mois plus tard (par exemple pour comparer avec une nouvelle
+   évaluation à 6 ou 12 mois). Sans date dans le lien, l'écran affichait la
+   date du jour, ce qui trompait. Le lien porte donc la date du diagnostic.
+   Format : « AAAA-MM-JJ » (court, lisible, sans heure). */
+
+// Date du jour, au format AAAA-MM-JJ, selon l'heure de l'appareil.
+// (On n'utilise pas toISOString(), qui donne le jour en heure de Greenwich :
+// à 0 h 30 à Bruxelles, ce serait encore la veille.)
+function dateDuJourISO() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
+
+// Lit une date « AAAA-MM-JJ » venue d'un lien. Renvoie la date en objet Date
+// (au jour local), ou null si elle est absente ou invalide (ex. 2026-02-31).
+// (On n'utilise pas new Date("2026-11-05"), qui lit minuit à Greenwich :
+// au Québec, la date affichée serait le 4 novembre.)
+function dateDepuisISO(texte) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(texte || "");
+  if (!m) return null;
+  const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  if (d.getFullYear() !== Number(m[1]) || d.getMonth() !== Number(m[2]) - 1 || d.getDate() !== Number(m[3])) return null;
+  return d;
+}
+
+// Date du diagnostic de comparaison affiché (objet Date), ou null si elle
+// n'est pas connue (lien envoyé avant la v86).
+function dateDiagnosticComparaison() {
+  return diagnosticComparaison ? dateDepuisISO(diagnosticComparaison.date) : null;
 }
 
 // Lit les paramètres placés après « # » dans un lien (ou dans le texte collé).
@@ -180,7 +218,8 @@ function lireParametresLien(texte) {
 // (pour ne pas le traiter une deuxième fois en rechargeant la page).
 function effacerFragment() {
   try {
-    history.replaceState(null, "", window.location.pathname + window.location.search);
+    // v88 : on conserve « history.state », où retour.js note sa position.
+    history.replaceState(history.state, "", window.location.pathname + window.location.search);
   } catch (e) { /* sans effet bloquant */ }
 }
 
@@ -268,7 +307,6 @@ function construireListeComparaison() {
 
   donnees.elements.forEach((element, i) => {
     const lu = decoderCode(element.code);
-    const type = lu ? trouverTypeObjet(lu.domaine) : null;
     const ligne = document.createElement("div");
     ligne.className = "comparer__ligne";
 
@@ -279,7 +317,7 @@ function construireListeComparaison() {
     nom.textContent = tAvec("comparer_evaluation", { numero: i + 1 });
     const detail = document.createElement("span");
     detail.className = "comparer__ligne-detail";
-    detail.textContent = (type ? tr(type.libelle) + " · " : "") + t("comparer_source_" + element.source);
+    detail.textContent = t("comparer_source_" + element.source);   // v91 : plus de domaine affiché
     textes.appendChild(nom);
     textes.appendChild(detail);
 
@@ -431,32 +469,36 @@ function viderComparaison() {
 // au PDF, à l'envoi du résultat et au changement de langue.
 let diagnosticComparaison = null;
 
-function afficherDiagnosticComparaison(nom, codes, retour) {
+// « date » : AAAA-MM-JJ, ou null si on ne la connaît pas (ancien lien).
+function afficherDiagnosticComparaison(nom, codes, retour, date) {
   const lus = codes.map(decoderCode).filter(Boolean);
   const comptes = {};
   CRITERES.forEach((c) => { comptes[c.id] = compteVide(); });
   lus.forEach((lu) => {
     CRITERES.forEach((c) => { comptes[c.id][lu.reponses[c.id]]++; });
   });
-  const domaines = lus.map((lu) => lu.domaine).filter((d, i, liste) => liste.indexOf(d) === i);
+  // v91 : le domaine lu dans les codes est ignoré (un seul questionnaire
+  // pour tous) : des codes donnés avec des domaines différents avant la v91
+  // se rassemblent sans mention « Plusieurs domaines ».
   const evaluation = {
     nomObjet: nom || "",            // vide si la personne qui rassemble n'a pas nommé la pratique
-    typeObjet: domaines.length === 1 ? domaines[0] : null,
+    typeObjet: TYPE_OBJET_UNIQUE,
     mode: "groupe",
     origine: "comparaison",
-    domainesMultiples: domaines.length > 1,
     nbEvaluations: lus.length
   };
-  diagnosticComparaison = { evaluation: evaluation, comptes: comptes, codes: lus.map((lu) => lu.code), retour: retour };
+  diagnosticComparaison = { evaluation: evaluation, comptes: comptes, codes: lus.map((lu) => lu.code), retour: retour,
+                            date: dateDepuisISO(date) ? date : null };   // v86
   consultationArchive = false;
-  afficherDiagnostic(evaluation, {}, undefined, {}, comptes);
+  afficherDiagnostic(evaluation, {}, dateDiagnosticComparaison(), {}, comptes);
 }
 
 function voirDiagnosticComparaison() {
   enregistrerNomComparaison();
   const donnees = lireComparaison();
   if (donnees.elements.length < 2) return;
-  afficherDiagnosticComparaison(donnees.nom, donnees.elements.map((e) => e.code), "comparer");
+  // Diagnostic calculé maintenant à partir de la liste : il porte la date du jour.
+  afficherDiagnosticComparaison(donnees.nom, donnees.elements.map((e) => e.code), "comparer", dateDuJourISO());
 }
 
 
@@ -515,7 +557,9 @@ function copierCodePartage() {
 // « Envoyer le résultat au groupe » : un lien qui contient tous les codes.
 function envoyerResultatGroupe() {
   if (!diagnosticComparaison) return;
-  const url = lienResultat(diagnosticComparaison.codes, diagnosticComparaison.evaluation.nomObjet);
+  // v86 : le lien garde la date du diagnostic (celle d'origine si le
+  // diagnostic a lui-même été ouvert depuis un lien daté).
+  const url = lienResultat(diagnosticComparaison.codes, diagnosticComparaison.evaluation.nomObjet, diagnosticComparaison.date);
   envoyerLien(url, t("resultat_message"), (ok) => {
     afficherMessage(t("resultat_envoyer"), ok ? t("partage_lien_copie") : t("resultat_lien_copier"), url);
   });
@@ -543,6 +587,14 @@ function traiterLienEntrant() {
     afficherComparer(resultat, "accueil");
   } else if (params.r) {
     effacerFragment();
-    afficherDiagnosticComparaison(params.n || "", params.r.split("."), "accueil");
+    const codes = params.r.split(".");
+    // v87 (constat B5) : un lien abîmé (coupé par une messagerie, mal recopié)
+    // peut ne plus contenir deux évaluations lisibles. Plutôt qu'un diagnostic
+    // vide (« 0 évaluations comparées »), on le dit.
+    if (codes.map(decoderCode).filter(Boolean).length < 2) {
+      afficherMessage(t("lien_incomplet_titre"), t("lien_incomplet_texte"));
+      return;
+    }
+    afficherDiagnosticComparaison(params.n || "", codes, "accueil", params.d || null);
   }
 }

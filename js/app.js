@@ -40,6 +40,22 @@ if ("serviceWorker" in navigator) {
       navigator.serviceWorker.addEventListener("controllerchange", surNouvelleVersion);
     }
   });
+
+  // --- v87 (constat C3) : recherche d'une mise à jour au retour dans l'app ---
+  // Le navigateur ne cherche une nouvelle version qu'à l'ouverture de la page.
+  // Or une app installée reste souvent ouverte en arrière-plan pendant des
+  // jours : elle ne voyait alors jamais les mises à jour. Quand SPIRIT revient
+  // au premier plan, on demande donc une vérification (au plus une par heure).
+  // La nouvelle version s'applique ensuite comme d'habitude, au retour à l'accueil.
+  let derniereVerification = Date.now();
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState !== "visible") return;
+    if (Date.now() - derniereVerification < 60 * 60 * 1000) return;
+    derniereVerification = Date.now();
+    navigator.serviceWorker.getRegistration()
+      .then((enregistrement) => { if (enregistrement) return enregistrement.update(); })
+      .catch(() => { /* hors connexion : on réessaiera plus tard */ });
+  });
 }
 
 /* Depuis la v75 (constat M1 de l'audit v72), on ne recharge plus en plein
@@ -70,8 +86,12 @@ function appliquerMiseAJourSiPossible() {
    =========================================================== */
 
 // Numéro de version affiché dans « À propos » et en pied de PDF (constat M10).
-// ⚠ À changer en même temps que CACHE_VERSION dans service-worker.js.
-const VERSION_SPIRIT = "84";
+// ⚠ À CHAQUE VERSION, DEUX NUMÉROS À CHANGER, et seulement deux (v87) :
+//    1. celui-ci ;
+//    2. CACHE_VERSION dans service-worker.js.
+// Le texte de « À propos » dans index.html se remplit tout seul.
+const VERSION_SPIRIT = "96";
+
 
 // Clé de mémoire locale : la bienvenue a-t-elle déjà été vue ?
 const CLE_BIENVENUE_VUE = "spirit_bienvenue_vue";
@@ -116,6 +136,9 @@ function afficherEcran(idEcran) {
   }
   // Mise à jour en attente : elle s'applique au retour à l'accueil (M1).
   if (idEcran === "ecran-accueil") appliquerMiseAJourSiPossible();
+
+  // v88 : geste « retour » du téléphone (voir retour.js).
+  ajusterReserve();
 
   // Remarque : la fenêtre « Comment ça fonctionne ? » n'est plus déclenchée
   // ici, mais au clic sur « Démarrer une évaluation » (voir brancherBoutons),
@@ -343,6 +366,24 @@ function lancerInstallationNative() {
   invitationInstallation.userChoice.then(apres, apres);
 }
 
+// v87 (constat C3) — Le visuel des étapes d'installation ne fait pas partie
+// des fichiers copiés d'avance sur l'appareil (il y en a six : deux téléphones,
+// trois langues). S'il était demandé pour la première fois hors connexion, la
+// fenêtre montrait une image cassée. On demande donc dès le lancement celui
+// qui correspond à ce téléphone et à la langue : le service worker le garde
+// alors en mémoire. Rien à faire sur ordinateur ou si l'app est déjà installée.
+function mettreVisuelInstallationEnCache() {
+  if (!installationPossibleIci() || !("serviceWorker" in navigator)) return;
+  const adresse = "images/installation-" + detecterTelephone() + "-" + getLangue() + ".png";
+  const demander = () => { fetch(adresse).catch(() => { /* hors connexion : tant pis */ }); };
+  if (navigator.serviceWorker.controller) {
+    demander();
+  } else {
+    // Toute première visite : le service worker n'a pas encore pris la main.
+    navigator.serviceWorker.addEventListener("controllerchange", demander, { once: true });
+  }
+}
+
 // Montre le bouton de rappel dans « À propos » seulement quand c'est utile.
 function majLienInstallationAPropos() {
   const bloc = parId("a-propos-installation");
@@ -358,7 +399,7 @@ function majLienInstallationAPropos() {
    =========================================================== */
 let evaluationEnCours = {
   nomObjet: "",
-  typeObjet: null,  // recevra l'id du type choisi (ex. "gouverner")
+  typeObjet: TYPE_OBJET_UNIQUE, // v91 : toujours « autre » (plus de choix de domaine)
   mode: "individuel" // v81 : toujours « individuel » (une réponse par pilier)
 };
 
@@ -372,104 +413,57 @@ function estModeGroupe(evaluation) {
 
 
 /* ===========================================================
-   5. ÉCRAN D'ENTRÉE (nom de l'objet + type)
+   5. ÉCRAN D'ENTRÉE (nom de la pratique)
+   v91 : le choix du domaine (cartes « Annoncer la foi », « Célébrer la
+   foi », « Gouverner », « Servir », « Autre pratique ») a été retiré.
+   L'écran ne demande plus que le nom de la pratique ; des exemples de
+   pratiques sont écrits dans index.html.
    =========================================================== */
 
-// Génère les cartes de type d'objet à partir du fichier de données.
-function genererCartesType() {
-  const conteneur = parId("liste-types-objet");
-  conteneur.innerHTML = ""; // on vide d'abord (au cas où)
-
-  TYPES_OBJET.forEach((type) => {
-    // On crée un bouton-carte pour chaque type.
-    const carte = document.createElement("button");
-    carte.type = "button";
-    carte.className = "carte-type";
-    carte.dataset.idType = type.id; // on retient l'id dans l'attribut data-id-type
-
-    carte.innerHTML =
-      '<span class="carte-type__titre">' + tr(type.libelle) + '</span>' +
-      '<span class="carte-type__description">' + tr(type.description) + '</span>';
-
-    // Carte déjà choisie (par ex. quand on régénère les cartes après un
-    // changement de langue, ou en revenant du premier pilier) : on la garde active.
-    if (evaluationEnCours.typeObjet === type.id) {
-      carte.classList.add("carte-type--active");
-    }
-    carte.setAttribute("aria-pressed", evaluationEnCours.typeObjet === type.id ? "true" : "false");
-
-    // Au clic : on sélectionne cette carte.
-    carte.addEventListener("click", () => choisirType(type.id));
-
-    conteneur.appendChild(carte);
-  });
-}
-
-// Marque une carte comme sélectionnée et met à jour l'état.
-function choisirType(idType) {
-  evaluationEnCours.typeObjet = idType;
-
-  // Mise à jour visuelle : on enlève la sélection de toutes les cartes,
-  // puis on la met sur celle choisie.
-  document.querySelectorAll(".carte-type").forEach((carte) => {
-    if (carte.dataset.idType === idType) {
-      carte.classList.add("carte-type--active");
-    } else {
-      carte.classList.remove("carte-type--active");
-    }
-    carte.setAttribute("aria-pressed", carte.dataset.idType === idType ? "true" : "false");
-  });
-
-  rafraichirBoutonCommencer();
-}
-
 // Active ou désactive le bouton "Commencer l'évaluation" selon que
-// le formulaire est complet (un nom non vide ET un type choisi).
+// le nom de la pratique est rempli.
 function rafraichirBoutonCommencer() {
   const nom = parId("champ-nom-objet").value.trim();
-  const typeChoisi = evaluationEnCours.typeObjet !== null;
   const bouton = parId("bouton-commencer-evaluation");
 
-  bouton.disabled = !(nom.length > 0 && typeChoisi);
+  bouton.disabled = nom.length === 0;
 }
 
-// Réinitialise l'écran d'entrée (champ vide, aucun type sélectionné).
+// Réinitialise l'écran d'entrée (champ vide).
 // Utile quand on démarre une nouvelle évaluation.
 function reinitialiserEntree() {
-  evaluationEnCours = { nomObjet: "", typeObjet: null, mode: "individuel" };
+  evaluationEnCours = { nomObjet: "", typeObjet: TYPE_OBJET_UNIQUE, mode: "individuel" };
   // Nouvelle évaluation : on repart de réponses vides. (Jusqu'à la v72, cette
   // remise à zéro se faisait au clic sur « Commencer », ce qui effaçait les
   // réponses quand on revenait du premier pilier à l'écran d'entrée.)
   reponses = {};
   commentaires = {};
   parId("champ-nom-objet").value = "";
-  // On régénère les cartes de type pour qu'elles soient toujours dans la
-  // langue courante (l'utilisateur a pu changer de langue depuis un autre
-  // écran avant d'arriver ici).
-  genererCartesType();
   rafraichirBoutonCommencer();
 }
 
-// Remplit l'écran d'entrée avec l'évaluation en cours (nom, domaine).
+// Remplit l'écran d'entrée avec l'évaluation en cours (nom).
 // Utilisé quand on revient du premier pilier, y compris après une reprise
 // (jusqu'à la v72, l'écran apparaissait alors vide).
 function remplirEntree() {
   parId("champ-nom-objet").value = evaluationEnCours.nomObjet || "";
-  genererCartesType(); // marque la carte du domaine déjà choisi
   rafraichirBoutonCommencer();
 }
 
 // Valide l'écran d'entrée et passe au questionnaire (1er pilier).
 // Les réponses déjà données sont conservées : si l'on revient du premier
-// pilier pour corriger le nom ou le domaine, on ne perd rien. (Les piliers
-// sont les mêmes dans tous les domaines ; seules les questions d'aide changent.)
+// pilier pour corriger le nom, on ne perd rien.
 function validerEntree() {
   evaluationEnCours.nomObjet = parId("champ-nom-objet").value.trim();
   // Sécurité : on ne continue que si tout est bien rempli.
-  if (!evaluationEnCours.nomObjet || !evaluationEnCours.typeObjet) {
+  if (!evaluationEnCours.nomObjet) {
     return;
   }
   afficherCritere(0);
+  // v87 (constat C1) : on enregistre dès maintenant. Jusqu'ici, rien n'était
+  // gardé avant la première réponse : fermer l'app à ce moment faisait perdre
+  // le nom saisi.
+  sauvegarderEnCours();
 }
 
 
@@ -477,15 +471,20 @@ function validerEntree() {
 // on restaure le nom, le type, les réponses et la position.
 function reprendreEvaluation(donnees) {
   evaluationEnCours.nomObjet = donnees.nomObjet;
-  evaluationEnCours.typeObjet = donnees.typeObjet;
+  // Une évaluation commencée avant la v91 garde son ancien domaine : il ne
+  // change rien (mêmes questions pour tous depuis la v91).
+  evaluationEnCours.typeObjet = donnees.typeObjet || TYPE_OBJET_UNIQUE;
   // v81 : toujours « individuel ». Une évaluation en groupe commencée avant
   // la v81 (version de test) reprend comme une évaluation faite seul.
   evaluationEnCours.mode = "individuel";
   reponses = donnees.reponses || {};
   commentaires = donnees.commentaires || {};
-  // On reprend au critère où l'utilisateur s'était arrêté (sécurité sur l'index).
-  let index = donnees.indexCritere || 0;
-  if (index < 0 || index >= CRITERES.length) index = 0;
+  // v87 (constat C1) : on reprend au premier pilier SANS réponse. Jusqu'ici on
+  // rouvrait le dernier pilier enregistré, c'est-à-dire le dernier auquel on
+  // avait répondu : quitté au pilier 3, on reprenait au pilier 2.
+  // Si les 14 piliers ont une réponse, on rouvre le dernier (« Voir le diagnostic »).
+  let index = CRITERES.findIndex((critere) => !pilierRenseigne(critere));
+  if (index === -1) index = CRITERES.length - 1;
   afficherCritere(index);
 }
 
@@ -638,8 +637,8 @@ function majProgression(critere) {
 function genererSousQuestions(critere) {
   const zone = parId("critere-aide-zone");
   const liste = document.createElement("ul");
-  // Questions du domaine choisi (ou questions de référence, voir questions-domaines.js)
-  sousQuestionsPour(critere, evaluationEnCours.typeObjet).forEach((q) => {
+  // v91 : un seul questionnaire pour toutes les pratiques.
+  critere.sousQuestions.forEach((q) => {
     const li = document.createElement("li");
     li.textContent = tr(q);
     liste.appendChild(li);
@@ -745,6 +744,34 @@ function choisirModalite(critere, modalite, boutonClique) {
 
   // Sauvegarde automatique (pour pouvoir reprendre plus tard).
   sauvegarderEnCours();
+}
+
+// v87 (constat B4) — Vrai si l'évaluation qui vient d'être terminée n'a pas pu
+// être enregistrée dans « Mes évaluations » (mémoire de l'appareil pleine, ou
+// refusée par le navigateur). Le diagnostic affiche alors un bandeau.
+let archivageEchoue = false;
+
+// Montre ou cache ce bandeau. Appelée à chaque affichage d'un diagnostic :
+// il ne concerne ni une évaluation rouverte depuis « Mes évaluations », ni le
+// diagnostic d'un groupe.
+function majAlerteArchivage() {
+  const visible = archivageEchoue && !consultationArchive && !diagnosticComparaison;
+  parId("diagnostic-alerte").classList.toggle("cache", !visible);
+}
+
+// v90 : les données du diagnostic affiché, dans l'ordre attendu par
+// lancerImpression() et envoyerResume() : évaluation, réponses, date,
+// observations, comptes (groupe). Trois cas : un rassemblement de codes,
+// une évaluation rouverte depuis « Mes évaluations », ou l'évaluation qui
+// vient de se terminer (date : celle du jour).
+function donneesDiagnosticAffiche() {
+  if (diagnosticComparaison) {
+    return [diagnosticComparaison.evaluation, {}, dateDiagnosticComparaison(), {}, diagnosticComparaison.comptes];
+  }
+  if (consultationArchive) {
+    return [evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation];
+  }
+  return [evaluationEnCours, reponses, undefined, commentaires];
 }
 
 // Affiche un critère donné (par son index dans CRITERES).
@@ -990,8 +1017,15 @@ function terminerQuestionnaire() {
   idEvaluationDiagnostic = archiverEvaluation(evaluationEnCours, reponses, commentaires);
   diagnosticComparaison = null;
 
-  // L'évaluation "en cours" est terminée : on l'efface de la reprise.
-  effacerEnCours();
+  // v87 (constat B4) : archiverEvaluation() renvoie null si rien n'a pu être
+  // écrit. Jusqu'ici, le diagnostic s'affichait comme si de rien n'était et
+  // l'évaluation manquait ensuite dans « Mes évaluations », sans explication.
+  archivageEchoue = (idEvaluationDiagnostic === null);
+
+  // L'évaluation "en cours" est terminée : on l'efface de la reprise…
+  // sauf si l'archivage a échoué : on la garde alors, pour pouvoir la
+  // reprendre plus tard et retenter l'enregistrement.
+  if (!archivageEchoue) effacerEnCours();
 
   // On affiche le diagnostic à partir des réponses collectées.
   afficherDiagnostic(evaluationEnCours, reponses, undefined, commentaires);
@@ -1023,8 +1057,7 @@ function construireCarteEvaluation(evaluation) {
   const carte = document.createElement("div");
   carte.className = "eval-carte";
 
-  const type = trouverTypeObjet(evaluation.typeObjet);
-  const typeLibelle = type ? tr(type.libelle) : "";
+  // v91 : le domaine n'est plus affiché (un seul questionnaire).
   const date = formaterDateLongue(evaluation.dateFin);
 
   // Évaluation en groupe (v73) : on l'indique, avec le nombre d'avis.
@@ -1032,7 +1065,7 @@ function construireCarteEvaluation(evaluation) {
   const mentionGroupe = groupe ? t("groupe_mode") + " (" + texteNombreAvis(evaluation.comptes) + ")" : "";
 
   let html = '<div class="eval-carte__nom"></div>';
-  html += '<div class="eval-carte__meta">' + echapper(joindrePoints([typeLibelle, mentionGroupe, date])) + '</div>';
+  html += '<div class="eval-carte__meta">' + echapper(joindrePoints([mentionGroupe, date])) + '</div>';
 
   html += '<div class="eval-carte__apercu">';
   PIERRES_ANGULAIRES.forEach((pierre) => {
@@ -1290,6 +1323,7 @@ function changerLangue(code) {
   // Si un écran au contenu dynamique est affiché, on le régénère pour qu'il
   // passe dans la nouvelle langue.
   rafraichirEcranCourant();
+  mettreVisuelInstallationEnCache(); // le visuel d'installation dépend de la langue
 }
 
 // Régénère le contenu dynamique de l'écran actuellement affiché, si besoin.
@@ -1303,7 +1337,7 @@ function rafraichirEcranCourant() {
   } else if (id === "ecran-diagnostic") {
     // On régénère le diagnostic dans la bonne langue.
     if (diagnosticComparaison) {
-      afficherDiagnostic(diagnosticComparaison.evaluation, {}, undefined, {}, diagnosticComparaison.comptes);
+      afficherDiagnostic(diagnosticComparaison.evaluation, {}, dateDiagnosticComparaison(), {}, diagnosticComparaison.comptes);
     } else if (consultationArchive) {
       afficherDiagnostic(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation);
     } else {
@@ -1313,8 +1347,6 @@ function rafraichirEcranCourant() {
     afficherHistorique();
   } else if (id === "ecran-lexique") {
     construireLexique();
-  } else if (id === "ecran-entree") {
-    genererCartesType();
   } else if (id === "ecran-comparer") {
     construireListeComparaison();
     construireLocales();
@@ -1371,6 +1403,13 @@ function brancherBoutons() {
     construireLexique();
     afficherEcran("ecran-lexique");
   });
+  // v90 (constat B8) : le lexique en fenêtre, depuis l'écran du pilier.
+  parId("critere-lexique").addEventListener("click", ouvrirLexiqueFenetre);
+  parId("lexique-fenetre-fermer").addEventListener("click", fermerLexiqueFenetre);
+  // v92 : passages du Document final du pilier affiché (document-final.js)
+  parId("critere-document-final").addEventListener("click", ouvrirDocumentFinalFenetre);
+  parId("document-final-fermer").addEventListener("click", fermerDocumentFinalFenetre);
+
   parId("lexique-retour").addEventListener("click", () => {
     afficherEcran("ecran-accueil");
   });
@@ -1410,6 +1449,12 @@ function brancherBoutons() {
 
   // À chaque frappe dans le champ nom : on réévalue l'état du bouton.
   parId("champ-nom-objet").addEventListener("input", rafraichirBoutonCommencer);
+  // v87 (constat C2) : la touche « Entrée » (« Terminé » sur téléphone) referme
+  // le clavier, qui masquait la suite de l'écran (le choix du domaine
+  // jusqu'à la v90, les exemples de pratiques depuis la v91).
+  parId("champ-nom-objet").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") e.target.blur();
+  });
 
   // Bouton "Commencer l'évaluation".
   parId("bouton-commencer-evaluation").addEventListener("click", validerEntree);
@@ -1460,13 +1505,12 @@ function brancherBoutons() {
   // Export PDF : on utilise les données de consultation si on consulte une
   // archive, sinon celles de l'évaluation en cours.
   parId("diagnostic-pdf").addEventListener("click", () => {
-    if (diagnosticComparaison) {
-      lancerImpression(diagnosticComparaison.evaluation, {}, undefined, {}, diagnosticComparaison.comptes);
-    } else if (consultationArchive) {
-      lancerImpression(evaluationConsultation, reponsesConsultation, dateConsultation, commentairesConsultation, comptesConsultation);
-    } else {
-      lancerImpression(evaluationEnCours, reponses, undefined, commentaires);
-    }
+    lancerImpression(...donneesDiagnosticAffiche());
+  });
+
+  // v90 (constat B3) : le même diagnostic, en texte simple.
+  parId("diagnostic-resume").addEventListener("click", () => {
+    envoyerResume(...donneesDiagnosticAffiche());
   });
 
   // Bouton « Pour aller plus loin » : génère un PDF séparé contenant
@@ -1536,10 +1580,10 @@ document.addEventListener("DOMContentLoaded", () => {
   appliquerTraductions();         // applique les textes d'interface à la page
   typographieTextesFixes();       // espaces insécables des textes français fixes
 
-  genererCartesType();            // cartes de type d'objet
   construireBarreProgression();   // segments de la barre de progression
   brancherBoutons();              // on relie tous les boutons
   majLienInstallationAPropos();   // rappel d'installation dans « À propos »
+  mettreVisuelInstallationEnCache(); // v87 : visuel d'installation disponible hors connexion
   gererBienvenueAuDemarrage();    // bienvenue au 1er lancement (puis installation)
   traiterLienEntrant();           // lien de comparaison reçu (v74)
   window.addEventListener("hashchange", traiterLienEntrant);

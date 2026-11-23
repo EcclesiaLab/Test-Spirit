@@ -22,11 +22,17 @@
   le téléphone à remplacer l'ancienne copie en cache par la nouvelle.
   Si tu oublies, les utilisateurs pourraient continuer à voir l'ancienne
   version. C'est l'erreur la plus courante avec les service workers.
+
+  ⚠ À CHAQUE VERSION, DEUX NUMÉROS À CHANGER, et seulement deux (v87) :
+     1. CACHE_VERSION ci-dessous ;
+     2. VERSION_SPIRIT dans js/app.js (numéro affiché dans « À propos »).
+  Ce fichier-ci DOIT changer à chaque version : c'est en le comparant à sa
+  copie que le téléphone découvre qu'une mise à jour existe.
   ============================================================
 */
 
 // ---- Numéro de version du cache (à incrémenter à chaque mise à jour) ----
-const CACHE_VERSION = "spirit-v84";
+const CACHE_VERSION = "spirit-v96";
 
 // ---- Liste des fichiers à mettre en cache dès l'installation ----
 // Ce sont les fichiers minimum pour que l'app s'affiche hors-ligne.
@@ -40,20 +46,22 @@ const FICHIERS_A_CACHER = [
   "./js/traductions.js",
   "./js/donnees-spirit.js",
   "./js/pictogrammes.js",
-  "./js/questions-domaines.js",
   "./js/lexique.js",
+  "./js/document-final.js",
   "./js/diagnostic.js",
   "./js/impression.js",
   "./js/historique.js",
   "./js/sauvegarde.js",
   "./js/fenetres.js",
   "./js/comparaison.js",
+  "./js/retour.js",
   "./js/app.js",
   "./manifest.json",
+  // v87 : les deux icônes de 512 px ne sont plus copiées ici (environ 90 Ko).
+  // Elles ne servent qu'au téléphone, au moment de l'installation, qui se
+  // fait en ligne ; l'app elle-même ne les affiche jamais.
   "./icons/icon-192.png",
-  "./icons/icon-512.png",
   "./icons/icon-maskable-192.png",
-  "./icons/icon-maskable-512.png",
   "./icons/logo-spirit.png",
   "./icons/logo-uclouvain.png",
   "./icons/logo-ecclesialab.png",
@@ -116,6 +124,13 @@ self.addEventListener("activate", (event) => {
     au passage (utile par exemple pour les images de la fenêtre d'installation
     ou les polices « latin-ext », qui ne sont pas dans la liste initiale mais
     seront mises en cache à leur première utilisation en ligne).
+
+  v87 — CAS DE LA PAGE ELLE-MÊME
+  Les réseaux sociaux et certaines messageries ajoutent un « paramètre » à la
+  fin des liens (par ex. « ?fbclid=… »). Pour le cache, c'était à chaque fois
+  une adresse nouvelle : la page était redemandée au réseau (donc introuvable
+  hors connexion) et une copie de plus s'empilait sur l'appareil. Quand c'est
+  la page qui est demandée (« navigation »), on ignore donc ce paramètre.
 */
 self.addEventListener("fetch", (event) => {
   // On ne gère que les requêtes GET (récupération de fichiers).
@@ -123,8 +138,10 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  const estNavigation = event.request.mode === "navigate";
+
   event.respondWith(
-    caches.match(event.request).then((reponseEnCache) => {
+    caches.match(event.request, { ignoreSearch: estNavigation }).then((reponseEnCache) => {
       // Si le fichier est déjà en cache, on le renvoie.
       if (reponseEnCache) {
         return reponseEnCache;
@@ -135,7 +152,9 @@ self.addEventListener("fetch", (event) => {
         .then((reponseReseau) => {
           // On met une copie en cache pour les prochaines fois,
           // mais seulement si la réponse est valide.
-          if (reponseReseau && reponseReseau.status === 200) {
+          // (v87 : jamais de copie d'une page demandée avec un paramètre.)
+          const pageAvecParametre = estNavigation && new URL(event.request.url).search !== "";
+          if (reponseReseau && reponseReseau.status === 200 && !pageAvecParametre) {
             const copie = reponseReseau.clone();
             caches.open(CACHE_VERSION).then((cache) => {
               cache.put(event.request, copie);

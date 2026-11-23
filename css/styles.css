@@ -298,18 +298,6 @@ body {
   transform: translateY(1px);
 }
 
-/* Variante "accent" du bouton (orange) — pour les actions secondaires fortes,
-   par exemple "Reprendre l'évaluation en cours" */
-.bouton--accent {
-  background-color: var(--orange);
-  color: var(--blanc);
-  box-shadow: 0 2px 8px rgba(250, 130, 20, 0.25);
-}
-
-.bouton--accent:hover {
-  background-color: var(--orange-fonce);
-}
-
 /* Variante "contour" (fond transparent, bordure) — action secondaire douce */
 .bouton--contour {
   background-color: transparent;
@@ -472,7 +460,7 @@ body {
 }
 /* Petite note sur fond crème (précaution propre à l'iPhone) */
 .installation__note {
-  font-size: 0.82rem;
+  font-size: 0.875rem;  /* v87 : 14 px au lieu de 13,1 (lisibilité, constat B7) */
   line-height: 1.4;
   color: var(--texte-doux);
   background-color: var(--creme);
@@ -511,7 +499,7 @@ body {
   padding-bottom: 0.5rem;
 }
 .installation__rappel {
-  font-size: 0.8rem;
+  font-size: 0.875rem;  /* v87 : 14 px au lieu de 12,8 (lisibilité, constat B7) */
   color: var(--texte-doux);
   margin-top: 0.15rem;
 }
@@ -623,59 +611,55 @@ body {
 
 /* Texte d'aide sous le champ */
 .entree__aide {
-  font-size: 0.86rem;
+  font-size: 0.875rem;  /* v87 : 14 px au lieu de 13,8 (lisibilité, constat B7) */
   color: var(--texte-doux);
   margin-top: var(--espace-xs);
 }
 
-/* Bloc des types d'objet */
-.entree__types {
-  border: none;
+/* v91 — Exemples de pratiques ecclésiales (à la place des cartes de
+   domaine, retirées). v94 : encadré discret « PAR EXEMPLE », une pratique
+   par ligne, avec des puces orange comme les questions d'aide. Fond sans
+   bordure, pour qu'il ne ressemble pas à un bouton. */
+.entree__exemples {
   margin-top: var(--espace-lg);
+  padding: 0.85rem 1rem;
+  background-color: var(--creme-fonce);
+  border-radius: var(--arrondi);
+}
+
+.entree__exemples-titre {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--texte-doux);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.entree__exemples-liste {
+  list-style: none;
+  margin: 0.4rem 0 0;
   padding: 0;
 }
 
-/* Une carte de type d'objet (générée par JS) */
-.carte-type {
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: 1.5px solid var(--bordure);
-  background-color: var(--blanc);
-  border-radius: var(--arrondi);
-  padding: 0.85rem 1rem;
-  margin-bottom: var(--espace-sm);
-  cursor: pointer;
-  font-family: var(--police-corps);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.carte-type:hover {
-  border-color: var(--marine-clair);
-}
-
-/* Carte sélectionnée : bordure marine épaisse + légère ombre */
-.carte-type--active {
-  border: 2px solid var(--marine);
-  box-shadow: 0 2px 6px rgba(22, 52, 88, 0.10);
-}
-
-.carte-type__titre {
-  display: block;
-  font-weight: 600;
+.entree__exemples-liste li {
+  position: relative;
+  padding-left: 0.9rem;
+  margin: 0.18rem 0;
+  font-size: 0.94rem;
+  line-height: 1.35;
   color: var(--texte);
-  font-size: 1rem;
 }
 
-.carte-type--active .carte-type__titre {
-  color: var(--marine);
-}
-
-.carte-type__description {
-  display: block;
-  font-size: 0.85rem;
-  color: var(--texte-doux);
-  margin-top: 2px;
+/* La puce : un petit rond orange */
+.entree__exemples-liste li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--orange);
 }
 
 /* Pied de l'écran d'entrée : bouton de validation fixé en bas */
@@ -730,7 +714,7 @@ body {
 .progression__infos {
   display: flex;
   justify-content: space-between;
-  font-size: 0.78rem;
+  font-size: 0.875rem;  /* v87 : 14 px au lieu de 12,5 (lisibilité, constat B7) */
   color: var(--texte-doux);
 }
 
@@ -781,11 +765,142 @@ body {
 }
 
 .critere__numero {
-  font-size: 0.78rem;
+  font-size: 0.875rem;  /* v87 : 14 px au lieu de 12,5 (lisibilité, constat B7) */
   color: var(--texte-doux);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 2px;
+}
+
+/* v90 (constat B8) : « PILIER 1 » à gauche, bouton « Lexique » à droite.
+   Le bouton reste petit à l'œil (pour ne pas faire descendre les réponses) ;
+   sa zone tactile atteint 44 px grâce à une zone invisible (::after). */
+.critere__entete {
+  display: flex;
+  flex-wrap: wrap;          /* v92 : sur un écran très étroit, les boutons passent dessous */
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 0.6rem;
+  margin-bottom: 2px;
+}
+.critere__entete .critere__numero {
+  margin-bottom: 0;
+}
+/* v92 : « Document final » et « Lexique », côte à côte. L'écart de 0,75rem
+   (12 px) est le minimum pour que leurs zones tactiles invisibles (6 px de
+   chaque côté) ne se chevauchent pas. */
+.critere__outils {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+.critere__lexique {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+  padding: 0.15rem 0.1rem;
+  border: none;
+  background: none;
+  font-family: var(--police-corps);
+  font-size: 0.875rem;
+  color: var(--marine);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.critere__lexique::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  top: -12px;
+  bottom: -12px;
+}
+
+/* La fenêtre du lexique : texte comme sur l'écran « Lexique », et bouton
+   « Fermer » toujours visible en bas pendant que la liste défile. */
+.lexique-fenetre .lexique__definition p {
+  font-size: 0.93rem;
+  line-height: 1.5;
+  margin: 0;
+}
+.lexique-fenetre .lexique__intro {
+  font-size: 0.93rem;
+  text-align: center;
+  margin: 0 0 var(--espace-xs);
+}
+/* v94 — Sur téléphone et tablette (moins de 960 px), « Document final » et
+   « Lexique » deviennent deux petits boutons arrondis, et le titre du pilier
+   prend un peu d'air (choix de FX du 18 novembre 2026, variante C). Sur
+   ordinateur, rien ne change : liens soulignés comme en v93. */
+@media (max-width: 959px) {
+  .critere__entete {
+    margin-bottom: 0.6rem;
+  }
+  .critere__outils {
+    gap: 0.5rem;
+  }
+  .critere__outils .critere__lexique {
+    padding: 0.28rem 0.7rem;
+    border: 1px solid var(--bordure);
+    border-radius: 999px;
+    background-color: var(--blanc);
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+  .critere__outils .critere__lexique svg {
+    width: 16px;
+    height: 16px;
+  }
+  /* Zone tactile : 7 px de plus en haut et en bas (environ 44 px en tout),
+     3 px sur les côtés, pour ne pas empiéter sur le bouton voisin (8 px). */
+  .critere__outils .critere__lexique::after {
+    top: -7px;
+    bottom: -7px;
+    left: -3px;
+    right: -3px;
+  }
+}
+/* Très petits écrans (iPhone SE de 1re génération, 320 px) : sans les
+   icônes, les deux boutons tiennent encore sur la ligne de « PILIER 14 ». */
+@media (max-width: 340px) {
+  .critere__outils .critere__lexique svg {
+    display: none;
+  }
+}
+
+/* v92 : la fenêtre « Document final » (même cadre que celle du lexique). */
+.document-final__pilier {
+  text-align: center;
+  font-family: var(--police-titre);
+  font-weight: 600;
+  color: var(--marine);
+  margin: 0 0 var(--espace-xs);
+}
+.document-final__passage {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--bordure);
+}
+.document-final__passage:last-child {
+  border-bottom: none;
+}
+.document-final__ref {
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.03em;
+  color: var(--marine);   /* l'orange foncé n'offrirait pas assez de contraste sur blanc */
+  margin: 0;
+}
+.lexique-fenetre .bienvenue__bouton-zone {
+  position: sticky;
+  bottom: calc(-1 * var(--espace-md));
+  margin: 0 calc(-1 * var(--espace-md)) calc(-1 * var(--espace-md));
+  padding: var(--espace-sm) var(--espace-md) var(--espace-md);
+  background-color: var(--blanc);
+  border-top: 1px solid var(--bordure);
 }
 
 .critere__titre {
@@ -885,20 +1000,6 @@ body {
   line-height: 0;
 }
 
-/* La pastille de couleur (encore utilisée par le sommaire sur ordinateur) */
-.modalite__pastille {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-/* Pastille spéciale "Non applicable" : contour pointillé, sans remplissage */
-.modalite__pastille--vide {
-  background-color: transparent !important;
-  border: 1.5px dashed #B4B2A9;
-}
-
 /* Modalité sélectionnée : bordure plus épaisse + gras.
    La couleur précise (bordure + fond teinté) est appliquée par JS,
    pour coller à la modalité choisie. */
@@ -959,6 +1060,29 @@ body {
   margin-bottom: var(--espace-md);
 }
 
+/* v90 (constat B3) : aide sous « Exporter… en PDF » */
+.diagnostic__aide-pdf {
+  margin: 0.4rem 0 var(--espace-sm);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--texte-doux);
+  text-align: center;
+}
+
+/* v87 (constat B4) : l'évaluation n'a pas pu être enregistrée sur l'appareil */
+.diagnostic__alerte {
+  margin: 0 0 var(--espace-md);
+  padding: 0.7rem 0.9rem;
+  background-color: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-left: 4px solid var(--orange);
+  border-radius: var(--arrondi-petit);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--texte);
+  text-align: left;
+}
+
 .diagnostic__objet {
   font-family: var(--police-titre);
   font-size: 1.4rem;
@@ -968,7 +1092,7 @@ body {
 }
 
 .diagnostic__meta {
-  font-size: 0.85rem;
+  font-size: 0.875rem;  /* v87 : 14 px au lieu de 13,6 (lisibilité, constat B7) */
   color: var(--texte-doux);
   margin-top: 2px;
 }
@@ -1010,10 +1134,6 @@ body {
   flex-shrink: 0;
 }
 
-.diagnostic__legende-pastille--vide {
-  background-color: transparent !important;
-  border: 1.5px dashed #B4B2A9;
-}
 /* v80 : « Non applicable » en hachures, comme dans les anneaux et les barres */
 .diagnostic__legende-pastille--na {
   background: repeating-linear-gradient(135deg, #C9C2B4 0 2.5px, #ECE7DD 2.5px 5px);
@@ -1044,6 +1164,76 @@ body {
   font-size: 0.9rem;
   color: #4A5A6A;
   line-height: 1.5;
+}
+
+/* v90 (constat B1) : détail pilier par pilier, replié, au bas de chaque
+   carte de pierre angulaire (voir construireDetailPiliers, diagnostic.js). */
+.detail-piliers {
+  margin-top: var(--espace-xs);
+  border-top: 1px solid var(--bordure);
+}
+.detail-piliers__resume {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  min-height: 44px;            /* zone tactile */
+  cursor: pointer;
+  list-style: none;            /* sans le triangle du navigateur… */
+  font-size: 0.9rem;
+  color: var(--marine);
+}
+.detail-piliers__resume::-webkit-details-marker {
+  display: none;               /* … y compris sur Safari */
+}
+/* Triangle maison, comme « ▾ Pour vous aider à répondre » */
+.detail-piliers__libelle::before {
+  content: "▸ ";
+}
+.detail-piliers[open] .detail-piliers__libelle::before {
+  content: "▾ ";
+}
+.detail-piliers__libelle {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.detail-piliers__apercu {
+  display: inline-flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.detail-piliers[open] .detail-piliers__apercu {
+  display: none;               /* ouvert : le détail suffit */
+}
+.detail-piliers__liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.detail-piliers__pilier {
+  padding: 0.45rem 0;
+  border-top: 1px solid var(--bordure);
+}
+.detail-piliers__pilier:first-child {
+  border-top: none;
+}
+.detail-piliers__titre {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: var(--texte);
+}
+.detail-piliers__numero {
+  color: var(--texte-doux);
+}
+.detail-piliers__reponse {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--texte);
 }
 
 /* Note transitoire sur les pistes d'action : encadré discret, ton informatif. */
@@ -1291,30 +1481,6 @@ a.bouton {
   opacity: 0.9;
 }
 
-/* Liste des trois pierres angulaires */
-.page-info__liste {
-  list-style: none;
-  margin: 0 0 var(--espace-sm);
-  padding: 0;
-}
-
-.page-info__liste li {
-  font-size: 0.98rem;
-  line-height: 1.6;
-  color: var(--texte);
-  padding-left: 1.1rem;
-  position: relative;
-  margin-bottom: var(--espace-xs);
-}
-
-.page-info__liste li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: var(--orange);
-  font-weight: 700;
-}
-
 /* Logo de l'université en pied de la page À propos */
 .page-info__logo-pied {
   margin-top: var(--espace-lg);
@@ -1359,6 +1525,10 @@ a.bouton {
   font-size: 0.78rem;
   font-weight: 600;
   padding: 0.3rem 0.55rem;
+  /* v87 : taille volontairement inchangée. Élargir ces trois boutons (essayé :
+     44 px chacun) les fait toucher le logo sur les téléphones de 360 px de
+     large. Leur zone tactile est de 36 × 44 px grâce à la zone invisible
+     définie plus bas (« Zones tactiles agrandies »). */
   cursor: pointer;
   border-radius: var(--arrondi-petit);
   transition: background-color 0.15s ease, color 0.15s ease;
@@ -1414,7 +1584,10 @@ a.bouton {
    l'accueil est resserré pour que le bouton « Démarrer une évaluation »
    et les liens tiennent à l'écran sans avoir à faire défiler.
    =========================================================== */
-@media (max-height: 700px) and (max-width: 959px) {
+/* v90 : seuil porté de 700 à 800 px de haut. Entre les deux (Galaxy S8,
+   Pixel 5… dans le navigateur), l'accueil dépassait de 20 à 55 px en
+   néerlandais, et il fallait faire défiler pour voir le dernier lien. */
+@media (max-height: 800px) and (max-width: 959px) {
   .accueil__entete {
     /* laisse la place au sélecteur de langue, en haut à droite */
     padding-top: var(--espace-md);
@@ -1434,6 +1607,13 @@ a.bouton {
   .lien-secondaire {
     padding-top: 0.35rem;
     padding-bottom: 0.35rem;
+  }
+}
+/* v90 : entre 701 et 800 px de haut, le logo reste un peu plus grand
+   (46 % au lieu de 36 %) : la place gagnée par le reste suffit. */
+@media (min-height: 701px) and (max-height: 800px) and (max-width: 959px) {
+  .accueil__logo {
+    max-width: 46%;
   }
 }
 
@@ -1754,12 +1934,20 @@ a.bouton {
     margin: 3px 0 0;
   }
 
+  /* v95 : mention de propriété intellectuelle, juste sous les logos */
+  .pdf-propriete {
+    text-align: center;
+    font-size: 8.5pt;
+    color: #163458;
+    margin-top: 10px;
+  }
+
   /* Numéro de version en fin de document (v75, constat M10) */
   .pdf-version {
     text-align: center;
     font-size: 7.5pt;
     color: #5A6A7A;
-    margin-top: 10px;
+    margin-top: 2px;
   }
 
   /* --- Sections --- */
@@ -2015,7 +2203,7 @@ a.bouton {
   border: 1px solid var(--bordure);
   border-radius: var(--arrondi-petit);
   font-family: var(--police-corps);
-  font-size: 0.9rem;
+  font-size: 1rem;  /* v87 : 16 px. En dessous, Safari sur iPhone agrandit toute la page quand on touche le champ (constat B2) */
   color: var(--texte);
   background-color: var(--blanc);
   resize: vertical;
@@ -2378,7 +2566,7 @@ a.bouton {
   background-color: var(--creme);
 }
 .comparer__minimum {
-  font-size: 0.85rem;
+  font-size: 0.875rem;  /* v87 : 14 px au lieu de 13,6 (lisibilité, constat B7) */
   color: var(--texte-doux);
   margin: 0 0 0.5rem;
   text-align: center;
@@ -2401,7 +2589,7 @@ a.bouton {
   margin-bottom: var(--espace-sm);
 }
 .partage__code-label {
-  font-size: 0.85rem;
+  font-size: 0.875rem;  /* v87 : 14 px au lieu de 13,6 (lisibilité, constat B7) */
   color: var(--texte-doux);
 }
 .partage__code {
@@ -2428,7 +2616,7 @@ a.bouton {
   word-break: break-all;
 }
 .partage__note {
-  font-size: 0.82rem;
+  font-size: 0.875rem;  /* v87 : 14 px au lieu de 13,1 (lisibilité, constat B7) */
   line-height: 1.45;
   color: var(--texte-doux);
   margin: 0.3rem 0 0;
@@ -2467,6 +2655,16 @@ a.bouton {
   word-break: break-all;
   user-select: all;
   -webkit-user-select: all;
+}
+/* v90 : le résumé en texte (s'il n'a pas pu être copié) garde ses retours
+   à la ligne, se coupe entre les mots et défile s'il est long. */
+.question__detail--texte {
+  white-space: pre-wrap;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  max-height: 40vh;
+  overflow-y: auto;
+  text-align: left;
 }
 .question__boutons {
   margin-top: var(--espace-sm);
@@ -2539,6 +2737,30 @@ a.bouton {
   top: -7px;
   bottom: -7px;
 }
+/* v87 (constat B7) — même principe pour deux autres éléments :
+   - les liens du bas de l'accueil (33 px de haut, séparés de 8 px) : la zone
+     invisible occupe l'espace entre deux liens, soit environ 42 px par lien ;
+   - la croix du questionnaire (40 px) : zone de 44 px. */
+.lien-secondaire,
+.progression__quitter {
+  position: relative;
+}
+.lien-secondaire::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -4px;
+  bottom: -4px;
+}
+.progression__quitter::after {
+  content: "";
+  position: absolute;
+  top: -4px;     /* 4 px de chaque côté, mesurés depuis l'intérieur de la bordure */
+  right: -4px;
+  bottom: -4px;
+  left: -4px;
+}
 /* Barre de progression : segments de 5 px de haut, cliquables pour revenir
    en arrière. Leur zone tactile passe à environ 29 px. */
 .progression__segment {
@@ -2579,4 +2801,52 @@ a.bouton {
   top: calc(-0.7rem - 1px);
   border-top: 1px solid var(--bordure);
   pointer-events: none;
+}
+
+
+/* ===========================================================
+   v89 — LES RÉPONSES EN GRILLE (téléphone et tablette)
+   -----------------------------------------------------------
+   Constat A1 de l'audit v86 : en liste, les cinq réponses d'un pilier
+   n'étaient presque jamais toutes visibles sans faire défiler.
+   Les quatre niveaux de l'échelle sont donc présentés en 2 × 2, et
+   « Non applicable » dessous, sur toute la largeur :
+
+        Solidement établi  |  À consolider
+        En chantier        |  À bâtir
+        ----------- Non applicable -----------
+
+   L'ordre se lit de gauche à droite, puis de haut en bas.
+   Choix de FX (13 novembre 2026), après essai des deux dispositions en v88.
+   Sur ordinateur (960 px et plus), la liste est conservée.
+   =========================================================== */
+@media (max-width: 959px) {
+  .modalites {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+  }
+  .modalite {
+    margin: 0;
+    padding: 0.5rem 0.6rem;
+    gap: 0.45rem;
+    font-size: 0.93rem;
+    line-height: 1.2;
+    min-height: 48px;
+  }
+  .modalite__picto svg {
+    width: 28px;
+    height: 28px;
+  }
+  .modalite[data-id-modalite="non-applicable"] {
+    grid-column: 1 / -1;
+    min-height: 44px;
+    margin-top: 0.4rem;
+  }
+  .modalite[data-id-modalite="non-applicable"]::before {
+    top: calc(-0.4rem - 1px); /* la ligne de séparation, au milieu de l'espace */
+  }
+  .critere__titre {
+    margin-bottom: 0.5rem;
+  }
 }
